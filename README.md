@@ -12,10 +12,11 @@ All instructions below are tested to work for:
 
     `git remote add fork https://github.com/<your-username-here>/flexport-earth.git`
 
-# Set up a new environment
+# Set up a new Azure subscription
+Provision an Azure subscription for Earth deployments. This only needs to be executed once against a subscription.
 
-    .\setup-subscription.ps1
+    .\provision-azure-subscription.ps1
 
 # Destroy an environment
 
-    .\destroy-environment.ps1
+    .\deprovision-azure-subscription.ps1
