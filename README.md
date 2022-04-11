@@ -15,8 +15,11 @@ All instructions below are tested to work for:
 # Set up a new Azure subscription
 Provision an Azure subscription for Earth deployments. This only needs to be executed once against a subscription.
 
-    .\provision-azure-subscription.ps1
+1. az account set --subscription "target-subscription-name-here"
+2. .\provision-azure-subscription.ps1 -AzureSubscriptionName "target-subscription-name-here"
+3. Save the output information as secrets in CD automation.
 
 # Destroy an environment
 
-    .\deprovision-azure-subscription.ps1
+1. az account set --subscription "target-subscription-name-here"
+2. \deprovision-azure-subscription.ps1
