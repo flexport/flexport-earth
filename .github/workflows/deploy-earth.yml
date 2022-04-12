@@ -12,5 +12,5 @@ jobs:
           ref: ${{ github.ref }}
 
       - run: |
-          ./deploy-earth.ps1 -ServicePrincipalUsername "${{ secrets.AZURE_DEPLOY_SERVICE_PRINCIPAL_USERNAME }}" -ServicePrincipalPassword "${{ secrets.AZURE_DEPLOY_SERVICE_PRINCIPAL_PASSWORD }}" -ServicePrincipalPassword "${{ secrets.AZURE_DEPLOY_SERVICE_PRINCIPAL_TENANT }}"
+          ./deploy-earth.ps1 -ServicePrincipalUsername "${{ secrets.AZURE_DEPLOY_SERVICE_PRINCIPAL_USERNAME }}" -ServicePrincipalPassword "${{ secrets.AZURE_DEPLOY_SERVICE_PRINCIPAL_PASSWORD }}" -ServicePrincipalTenant "${{ secrets.AZURE_DEPLOY_SERVICE_PRINCIPAL_TENANT }}"
         shell: pwsh
