@@ -4,7 +4,7 @@ on: [push]
 
 jobs:
   build:
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-20.04.4
 
     steps:
       - uses: actions/checkout@main
@@ -12,5 +12,5 @@ jobs:
           ref: ${{ github.ref }}
 
       - run: |
-          ./deploy-earth.ps1
+          ./deploy-earth.ps1 -ServicePrincipleUsername "${{ secrets.AZURE_DEPLOY_SERVICE_PRINCIPLE_USERNAME }}" -ServicePrinciplePassword "${{ secrets.AZURE_DEPLOY_SERVICE_PRINCIPLE_PASSWORD }}" -ServicePrinciplePassword "${{ secrets.AZURE_DEPLOY_SERVICE_PRINCIPLE_TENANT }}"
         shell: pwsh
