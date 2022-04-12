@@ -11,10 +11,6 @@ jobs:
         with:
           ref: ${{ github.ref }}
 
-      - uses: azure/login@v1
-        with:
-          creds: ${{ secrets.AZURE_CREDENTIALS }}
-      
-      - name: logout
-        run: |
-          az logout
+      - run: |
+          ./deploy-earth.ps1
+        shell: pwsh
