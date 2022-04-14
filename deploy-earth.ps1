@@ -20,4 +20,4 @@ az `
     deployment sub create `
     --location WestUS `
     --template-file create-resource-group.bicep `
-    --parameters "{""resourceGroupLocation"":{""value"":""WestUS""}}"
+    --parameters '{\"environmentName\":{\"value\":\"PR\"}, \"resourceGroupLocation\":{\"value\":\"WestUS\"}}'
