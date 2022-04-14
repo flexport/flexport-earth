@@ -44,15 +44,10 @@ stages:
     - publish: '$(Build.ArtifactStagingDirectory)'
       artifact: drop
 
-- stage: 'Dev'
-  displayName: 'Deploy to the dev environment'
+- stage: 'Test PR'
+  displayName: 'Deploy to a PR Environment'
   dependsOn: Build
-  condition: |
-    and
-    (
-      succeeded(),
-      eq(variables['Build.SourceBranchName'], variables['releaseBranchName'])
-    )
+  condition: succeeded()
   jobs:
   - deployment: Deploy
     pool:
@@ -66,9 +61,9 @@ stages:
           steps:
           - download: current
             artifact: drop
-          - task: AzureWebApp@1
+          - task: AzureCLI@2
             displayName: 'Azure App Service Deploy: website'
             inputs:
-              azureSubscription: 'Malex'
-              appName: '$(WebAppNameDev)'
-              package: '$(Pipeline.Workspace)/drop/$(buildConfiguration)/*.zip'
+              azureSubscription: 'Development'
+              scriptType: pscore
+              scriptPath: deploy-earth.ps1
