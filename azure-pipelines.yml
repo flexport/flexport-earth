@@ -66,4 +66,4 @@ stages:
             inputs:
               azureSubscription: 'Development'
               scriptType: pscore
-              scriptPath: deploy-earth.ps1
+              scriptPath: '$(Pipeline.Workspace)\drop\deploy-earth.ps1'
