@@ -44,7 +44,7 @@ stages:
     - publish: '$(Build.ArtifactStagingDirectory)'
       artifact: drop
 
-- stage: 'Test PR'
+- stage: 'TestPR'
   displayName: 'Deploy to a PR Environment'
   dependsOn: Build
   condition: succeeded()
