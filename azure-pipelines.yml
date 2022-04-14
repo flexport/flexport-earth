@@ -22,7 +22,6 @@ stages:
       - npm
 
     variables:
-      wwwrootDir: 'Tailspin.SpaceGame.Web/wwwroot'
       dotnetSdkVersion: '5.x'
 
     steps:
@@ -73,4 +72,5 @@ stages:
               azureSubscription: 'Development'
               workingDirectory: '$(Pipeline.Workspace)/drop'
               scriptType: pscore
+              arguments: '-EnvironmentName "PR"'
               scriptPath: '$(Pipeline.Workspace)/drop/deploy-earth.ps1'
