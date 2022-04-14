@@ -41,6 +41,12 @@ stages:
         contents: deploy-earth.ps1
         TargetFolder: '$(Build.ArtifactStagingDirectory)'
 
+    - task: CopyFiles@2
+      displayName: 'Copy bicep to artifact staging'
+      inputs:
+        contents: create-resource-group.bicep
+        TargetFolder: '$(Build.ArtifactStagingDirectory)'
+
     - publish: '$(Build.ArtifactStagingDirectory)'
       artifact: drop
 
