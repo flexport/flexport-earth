@@ -71,5 +71,6 @@ stages:
             displayName: 'Azure App Service Deploy: website'
             inputs:
               azureSubscription: 'Development'
+              workingDirectory: '$(Pipeline.Workspace)/drop'
               scriptType: pscore
-              scriptPath: '$(Pipeline.Workspace)/drop/deploy-earth.ps1'
+              scriptPath: deploy-earth.ps1
