@@ -1,6 +1,9 @@
 # This file tested with azure-cli 2.33.1
-# [CmdletBinding()]
-# param (
+[CmdletBinding()]
+param (
+    [Parameter(Mandatory=$true)]
+    [String]
+    $EnvironmentName
 #     [Parameter(Mandatory=$true)]
 #     [String]
 #     $ServicePrincipalUsername,
@@ -10,7 +13,7 @@
 #     [Parameter(Mandatory=$true)]
 #     [String]
 #     $ServicePrincipalTenant
-# )
+)
 
 $ErrorActionPreference = "Stop"
 
@@ -20,4 +23,4 @@ az `
     deployment sub create `
     --location WestUS `
     --template-file create-resource-group.bicep `
-    --parameters '{\"environmentName\":{\"value\":\"PR\"}, \"resourceGroupLocation\":{\"value\":\"WestUS\"}}'
+    --parameters '{\"environmentName\":{\"value\":\"' & $EnvironmentName & '\"}, \"resourceGroupLocation\":{\"value\":\"WestUS\"}}'
