@@ -9,6 +9,8 @@ trigger:
 variables:
   buildConfiguration: 'Release'
   releaseBranchName: 'release'
+  isMain: $[eq(variables['Build.SourceBranch'], 'refs/heads/main')]
+  isPR: $[startsWith(variables['Build.SourceBranch'], 'refs/pull/')]
 
 stages:
 - stage: 'Build'
@@ -52,7 +54,7 @@ stages:
 - stage: 'TestPR'
   displayName: 'Deploy to a PR Environment'
   dependsOn: Build
-  condition: succeeded()
+  condition: and(succeeded(), eq(variables.isPR, 'true'))
   jobs:
   - deployment: Deploy
     pool:
@@ -67,10 +69,36 @@ stages:
           - download: current
             artifact: drop
           - task: AzureCLI@2
-            displayName: 'Azure App Service Deploy: website'
+            displayName: 'Deploy'
             inputs:
               azureSubscription: 'Development'
               workingDirectory: '$(Pipeline.Workspace)/drop'
               scriptType: pscore
               arguments: '-EnvironmentName pr$(System.PullRequest.PullRequestNumber)'
+              scriptPath: '$(Pipeline.Workspace)/drop/deploy-earth.ps1'
+
+- stage: 'Dev'
+  displayName: 'Deploy to the Development environment'
+  dependsOn: Build
+  condition: and(succeeded(), eq(variables.isMain, 'true'))
+  jobs:
+  - deployment: Deploy
+    pool:
+      vmImage: 'ubuntu-20.04'
+    environment: Development
+    variables:
+    - group: Release
+    strategy:
+      runOnce:
+        deploy:
+          steps:
+          - download: current
+            artifact: drop
+          - task: AzureCLI@2
+            displayName: 'Deploy'
+            inputs:
+              azureSubscription: 'Development'
+              workingDirectory: '$(Pipeline.Workspace)/drop'
+              scriptType: pscore
+              arguments: '-EnvironmentName dev'
               scriptPath: '$(Pipeline.Workspace)/drop/deploy-earth.ps1'
