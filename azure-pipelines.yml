@@ -82,6 +82,18 @@ stages:
               scriptType: pscore
               arguments: '-EnvironmentName pr$(System.PullRequest.PullRequestNumber)'
               scriptPath: '$(Pipeline.Workspace)/drop/deploy-earth.ps1'
+  - deployment: Destroy
+    pool:
+      vmImage: 'ubuntu-20.04'
+    environment: Development
+    variables:
+    - group: Release
+    strategy:
+      runOnce:
+        deploy:
+          steps:
+          - download: current
+            artifact: drop
           - task: AzureCLI@2
             displayName: 'Destroy'
             condition: succeeded()
