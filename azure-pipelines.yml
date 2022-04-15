@@ -158,3 +158,31 @@ stages:
               scriptType: pscore
               arguments: '-EnvironmentName stg'
               scriptPath: '$(Pipeline.Workspace)/drop/deploy-earth.ps1'
+
+- stage: 'Production'
+  displayName: 'Deploy to the Production environment'
+  dependsOn:
+  - Build
+  - Staging
+  condition: succeeded()
+  jobs:
+  - deployment: Deploy
+    pool:
+      vmImage: 'ubuntu-20.04'
+    environment: Production
+    variables:
+    - group: Release
+    strategy:
+      runOnce:
+        deploy:
+          steps:
+          - download: current
+            artifact: drop
+          - task: AzureCLI@2
+            displayName: 'Deploy'
+            inputs:
+              azureSubscription: 'Production'
+              workingDirectory: '$(Pipeline.Workspace)/drop'
+              scriptType: pscore
+              arguments: '-EnvironmentName prod'
+              scriptPath: '$(Pipeline.Workspace)/drop/deploy-earth.ps1'
