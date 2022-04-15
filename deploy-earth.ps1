@@ -16,11 +16,14 @@ param (
 )
 
 $ErrorActionPreference = "Stop"
+$InformationPreference = "Continue"
 
 # az login --service-principal -u $ServicePrincipalUsername -p $ServicePrincipalPassword --tenant $ServicePrincipalTenant
+
+$Parameters = '{\"environmentName\":{\"value\":\"' + $EnvironmentName + '\"}, \"resourceGroupLocation\":{\"value\":\"WestUS\"}}'
 
 az `
     deployment sub create `
     --location WestUS `
     --template-file create-resource-group.bicep `
-    --parameters '{\"environmentName\":{\"value\":\"{0}\"}, \"resourceGroupLocation\":{\"value\":\"WestUS\"}}' -f $EnvironmentName
+    --parameters $Parameters
