@@ -43,6 +43,12 @@ stages:
         TargetFolder: '$(Build.ArtifactStagingDirectory)'
 
     - task: CopyFiles@2
+      displayName: 'Copy clean up to artifact staging'
+      inputs:
+        contents: destroy-earth.ps1
+        TargetFolder: '$(Build.ArtifactStagingDirectory)'
+
+    - task: CopyFiles@2
       displayName: 'Copy bicep to artifact staging'
       inputs:
         contents: create-resource-group.bicep
