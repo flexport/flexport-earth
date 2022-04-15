@@ -76,6 +76,14 @@ stages:
               scriptType: pscore
               arguments: '-EnvironmentName pr$(System.PullRequest.PullRequestNumber)'
               scriptPath: '$(Pipeline.Workspace)/drop/deploy-earth.ps1'
+          - task: AzureCLI@2
+            displayName: 'Destroy'
+            inputs:
+              azureSubscription: 'Development'
+              workingDirectory: '$(Pipeline.Workspace)/drop'
+              scriptType: pscore
+              arguments: '-EnvironmentName pr$(System.PullRequest.PullRequestNumber)'
+              scriptPath: '$(Pipeline.Workspace)/drop/destroy-earth.ps1'
 
 - stage: 'Dev'
   displayName: 'Deploy to the Development environment'
