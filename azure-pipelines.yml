@@ -9,6 +9,8 @@ trigger:
 variables:
   buildConfiguration: 'Release'
   releaseBranchName: 'release'
+  isMain: $[eq(variables['Build.SourceBranch'], 'refs/heads/main')]
+  isPR: $[eq(variables['Build.Reason'], 'PullRequest'))]
 
 stages:
 - stage: 'Build'
@@ -52,7 +54,7 @@ stages:
 - stage: 'TestPR'
   displayName: 'Deploy to a PR Environment'
   dependsOn: Build
-  condition: succeeded()
+  condition: and(succeeded(), eq(variables.isPR, 'true'))
   jobs:
   - deployment: Deploy
     pool:
@@ -78,7 +80,7 @@ stages:
 - stage: 'Dev'
   displayName: 'Deploy to the Development environment'
   dependsOn: Build
-  condition: succeeded()
+  condition: and(succeeded(), eq(variables.isMain, 'true'))
   jobs:
   - deployment: Deploy
     pool:
