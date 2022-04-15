@@ -72,5 +72,5 @@ stages:
               azureSubscription: 'Development'
               workingDirectory: '$(Pipeline.Workspace)/drop'
               scriptType: pscore
-              arguments: '-EnvironmentName $(System.PullRequest.PullRequestNumber)'
+              arguments: '-EnvironmentName pr$(System.PullRequest.PullRequestNumber)'
               scriptPath: '$(Pipeline.Workspace)/drop/deploy-earth.ps1'
