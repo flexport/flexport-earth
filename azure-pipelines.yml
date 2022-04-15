@@ -43,6 +43,12 @@ stages:
         TargetFolder: '$(Build.ArtifactStagingDirectory)'
 
     - task: CopyFiles@2
+      displayName: 'Copy clean up to artifact staging'
+      inputs:
+        contents: destroy-earth.ps1
+        TargetFolder: '$(Build.ArtifactStagingDirectory)'
+
+    - task: CopyFiles@2
       displayName: 'Copy bicep to artifact staging'
       inputs:
         contents: create-resource-group.bicep
@@ -76,6 +82,28 @@ stages:
               scriptType: pscore
               arguments: '-EnvironmentName pr$(System.PullRequest.PullRequestNumber)'
               scriptPath: '$(Pipeline.Workspace)/drop/deploy-earth.ps1'
+  - deployment: Destroy
+    dependsOn: Deploy
+    pool:
+      vmImage: 'ubuntu-20.04'
+    environment: Development
+    variables:
+    - group: Release
+    strategy:
+      runOnce:
+        deploy:
+          steps:
+          - download: current
+            artifact: drop
+          - task: AzureCLI@2
+            displayName: 'Destroy'
+            condition: succeeded()
+            inputs:
+              azureSubscription: 'Development'
+              workingDirectory: '$(Pipeline.Workspace)/drop'
+              scriptType: pscore
+              arguments: '-EnvironmentName pr$(System.PullRequest.PullRequestNumber)'
+              scriptPath: '$(Pipeline.Workspace)/drop/destroy-earth.ps1'
 
 - stage: 'Dev'
   displayName: 'Deploy to the Development environment'
