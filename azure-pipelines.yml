@@ -57,7 +57,7 @@ stages:
     - publish: '$(Build.ArtifactStagingDirectory)'
       artifact: drop
 
-- stage: 'TestPR'
+- stage: 'PullRequest'
   displayName: 'Deploy to a PR Environment'
   dependsOn: Build
   condition: and(succeeded(), eq(variables.isPR, 'true'))
@@ -105,7 +105,7 @@ stages:
               arguments: '-EnvironmentName pr$(System.PullRequest.PullRequestNumber)'
               scriptPath: '$(Pipeline.Workspace)/drop/destroy-earth.ps1'
 
-- stage: 'Dev'
+- stage: 'Development'
   displayName: 'Deploy to the Development environment'
   dependsOn: Build
   condition: and(succeeded(), eq(variables.isMain, 'true'))
@@ -129,4 +129,32 @@ stages:
               workingDirectory: '$(Pipeline.Workspace)/drop'
               scriptType: pscore
               arguments: '-EnvironmentName dev'
+              scriptPath: '$(Pipeline.Workspace)/drop/deploy-earth.ps1'
+
+- stage: 'Staging'
+  displayName: 'Deploy to the Staging environment'
+  dependsOn:
+  - Build
+  - Development
+  condition: succeeded()
+  jobs:
+  - deployment: Deploy
+    pool:
+      vmImage: 'ubuntu-20.04'
+    environment: Staging
+    variables:
+    - group: Release
+    strategy:
+      runOnce:
+        deploy:
+          steps:
+          - download: current
+            artifact: drop
+          - task: AzureCLI@2
+            displayName: 'Deploy'
+            inputs:
+              azureSubscription: 'Staging'
+              workingDirectory: '$(Pipeline.Workspace)/drop'
+              scriptType: pscore
+              arguments: '-EnvironmentName stg'
               scriptPath: '$(Pipeline.Workspace)/drop/deploy-earth.ps1'
