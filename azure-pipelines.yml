@@ -10,7 +10,7 @@ variables:
   buildConfiguration: 'Release'
   releaseBranchName: 'release'
   isMain: $[eq(variables['Build.SourceBranch'], 'refs/heads/main')]
-  isPR: $[eq(variables['Build.Reason'], 'PullRequest'))]
+  isPR: $[eq(variables['Build.Reason'], 'PullRequest')]
 
 stages:
 - stage: 'Build'
