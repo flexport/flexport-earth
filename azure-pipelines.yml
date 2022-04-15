@@ -83,6 +83,7 @@ stages:
               arguments: '-EnvironmentName pr$(System.PullRequest.PullRequestNumber)'
               scriptPath: '$(Pipeline.Workspace)/drop/deploy-earth.ps1'
   - deployment: Destroy
+    dependsOn: Deploy
     pool:
       vmImage: 'ubuntu-20.04'
     environment: Development
