@@ -9,6 +9,7 @@ variables:
   deployEarthScriptPath: '$(releasablesWorkingDirectory)/deploy-earth.ps1'
   isMain: $[eq(variables['Build.SourceBranch'], 'refs/heads/main')]
   isPR: $[startsWith(variables['Build.SourceBranch'], 'refs/pull/')]
+  vmImage: 'ubuntu-20.04'
 
 stages:
 - stage: 'Build'
@@ -17,19 +18,11 @@ stages:
   - job: 'Build'
     displayName: 'Build job'
     pool:
-      vmImage: 'ubuntu-20.04'
+      vmImage: $(vmImage)
       demands:
       - npm
 
-    variables:
-      dotnetSdkVersion: '5.x'
-
     steps:
-    - task: UseDotNet@2
-      displayName: 'Use .NET SDK $(dotnetSdkVersion)'
-      inputs:
-        version: '$(dotnetSdkVersion)'
-
     - script: 'echo "$(Build.DefinitionName), $(Build.BuildId), $(Build.BuildNumber)" > buildinfo.txt'
       displayName: 'Write build info'
       workingDirectory: '$(Build.ArtifactStagingDirectory)'
@@ -82,107 +75,4 @@ stages:
     environmentNameShort: prod
     dependsOn: Staging
     azureSubscriptionName: Production
-  # - deployment: Destroy
-  #   dependsOn: Deploy
-  #   pool:
-  #     vmImage: 'ubuntu-20.04'
-  #   environment: Development
-  #   variables:
-  #   - group: Release
-  #   strategy:
-  #     runOnce:
-  #       deploy:
-  #         steps:
-  #         - download: current
-  #           artifact: $(artifactName)
-  #         - task: AzureCLI@2
-  #           displayName: 'Destroy'
-  #           condition: succeeded()
-  #           inputs:
-  #             azureSubscription: 'Development'
-  #             workingDirectory: '$(releasablesWorkingDirectory)'
-  #             scriptType: pscore
-  #             arguments: '-EnvironmentName pr$(System.PullRequest.PullRequestNumber)'
-  #             scriptPath: '$(deployEarthScriptPath)'
-
-# - stage: 'Development'
-#   displayName: 'Deploy to the Development environment'
-#   dependsOn: Build
-#   condition: and(succeeded(), eq(variables.isMain, 'true'))
-#   jobs:
-#   - deployment: Deploy
-#     pool:
-#       vmImage: 'ubuntu-20.04'
-#     environment: Development
-#     variables:
-#     - group: Release
-#     strategy:
-#       runOnce:
-#         deploy:
-#           steps:
-#           - download: current
-#             artifact: $(artifactName)
-#           - task: AzureCLI@2
-#             displayName: 'Deploy'
-#             inputs:
-#               azureSubscription: 'Development'
-#               workingDirectory: '$(releasablesWorkingDirectory)'
-#               scriptType: pscore
-#               arguments: '-EnvironmentName dev'
-#               scriptPath: '$(deployEarthScriptPath)'
-
-# - stage: 'Staging'
-#   displayName: 'Deploy to the Staging environment'
-#   dependsOn:
-#   - Build
-#   - Development
-#   condition: succeeded()
-#   jobs:
-#   - deployment: Deploy
-#     pool:
-#       vmImage: 'ubuntu-20.04'
-#     environment: Staging
-#     variables:
-#     - group: Release
-#     strategy:
-#       runOnce:
-#         deploy:
-#           steps:
-#           - download: current
-#             artifact: $(artifactName)
-#           - task: AzureCLI@2
-#             displayName: 'Deploy'
-#             inputs:
-#               azureSubscription: 'Staging'
-#               workingDirectory: '$(releasablesWorkingDirectory)'
-#               scriptType: pscore
-#               arguments: '-EnvironmentName stg'
-#               scriptPath: '$(deployEarthScriptPath)'
-
-# - stage: 'Production'
-#   displayName: 'Deploy to the Production environment'
-#   dependsOn:
-#   - Build
-#   - Staging
-#   condition: succeeded()
-#   jobs:
-#   - deployment: Deploy
-#     pool:
-#       vmImage: 'ubuntu-20.04'
-#     environment: Production
-#     variables:
-#     - group: Release
-#     strategy:
-#       runOnce:
-#         deploy:
-#           steps:
-#           - download: current
-#             artifact: $(artifactName)
-#           - task: AzureCLI@2
-#             displayName: 'Deploy'
-#             inputs:
-#               azureSubscription: 'Production'
-#               workingDirectory: '$(releasablesWorkingDirectory)'
-#               scriptType: pscore
-#               arguments: '-EnvironmentName prod'
-#               scriptPath: '$(deployEarthScriptPath)'
+ 

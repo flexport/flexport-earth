@@ -6,7 +6,7 @@ stages:
   jobs:
   - deployment: Deploy
     pool:
-      vmImage: 'ubuntu-20.04'
+      vmImage: $(vmImage)
     environment: ${{ parameters.environmentNameFull }}
     variables:
     - group: Release
@@ -29,7 +29,7 @@ stages:
     dependsOn: Deploy
     condition: ${{ parameters.destroyCondition }}
     pool:
-      vmImage: 'ubuntu-20.04'
+      vmImage: $(vmImage)
     environment: ${{ parameters.environmentNameFull }}
     variables:
     - group: Release
