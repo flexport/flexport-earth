@@ -1,0 +1,26 @@
+stages:
+- stage: ${{ parameters.stageName }}
+  displayName: 'Deploy to ${{ parameters.environmentName }}'
+  dependsOn: ${{ parameters.dependsOn }}
+  condition: and(succeeded(), eq(variables.isPR, 'true'))
+  jobs:
+  - deployment: Deploy
+    pool:
+      vmImage: 'ubuntu-20.04'
+    environment: ${{ parameters.environmentName }}
+    variables:
+    - group: Release
+    strategy:
+      runOnce:
+        deploy:
+          steps:
+          - download: current
+            artifact: $(artifactName)
+          - task: AzureCLI@2
+            displayName: 'Deploy'
+            inputs:
+              azureSubscription: ${{ parameters.azureSubscriptionName }}
+              workingDirectory: ${{ parameters.releasablesWorkingDirectory }}
+              scriptType: pscore
+              arguments: '-EnvironmentName pr$(System.PullRequest.PullRequestNumber)'
+              scriptPath: '${{ parameters.releasablesWorkingDirectory }}/deploy-earth.ps1'
