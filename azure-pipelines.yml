@@ -39,7 +39,7 @@ stages:
     - task: CopyFiles@2
       displayName: 'Copy releasables to artifacts'
       inputs:
-        contents: releasables/*
+        contents: releasables/**
         TargetFolder: '$(Build.ArtifactStagingDirectory)'
 
     - publish: '$(Build.ArtifactStagingDirectory)'
@@ -66,10 +66,10 @@ stages:
             displayName: 'Deploy'
             inputs:
               azureSubscription: 'Development'
-              workingDirectory: '$(Pipeline.Workspace)/drop'
+              workingDirectory: '$(Pipeline.Workspace)/drop/releasables'
               scriptType: pscore
               arguments: '-EnvironmentName pr$(System.PullRequest.PullRequestNumber)'
-              scriptPath: '$(Pipeline.Workspace)/drop/deploy-earth.ps1'
+              scriptPath: '$(Pipeline.Workspace)/drop/releasables/deploy-earth.ps1'
   - deployment: Destroy
     dependsOn: Deploy
     pool:
