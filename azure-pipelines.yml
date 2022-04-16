@@ -57,7 +57,7 @@ stages:
     condition: and(succeeded(), eq(variables.isMain, 'true'))
     stageName: Development
     environmentName: Development
-    dependsOn: PullRequest
+    dependsOn: Build
     azureSubscriptionName: Development
     releasablesWorkingDirectory: $(releasablesWorkingDirectory)
     
