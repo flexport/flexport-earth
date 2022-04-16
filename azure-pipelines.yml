@@ -117,7 +117,7 @@ stages:
               workingDirectory: '$(Pipeline.Workspace)/drop'
               scriptType: pscore
               arguments: '-EnvironmentName dev'
-              scriptPath: '$(Pipeline.Workspace)/drop/releasbles/deploy-earth.ps1'
+              scriptPath: '$(Pipeline.Workspace)/drop/deploy-earth.ps1'
 
 - stage: 'Staging'
   displayName: 'Deploy to the Staging environment'
@@ -145,7 +145,7 @@ stages:
               workingDirectory: '$(Pipeline.Workspace)/drop'
               scriptType: pscore
               arguments: '-EnvironmentName stg'
-              scriptPath: '$(Pipeline.Workspace)/drop/releasbles/deploy-earth.ps1'
+              scriptPath: '$(Pipeline.Workspace)/drop/deploy-earth.ps1'
 
 - stage: 'Production'
   displayName: 'Deploy to the Production environment'
@@ -173,4 +173,4 @@ stages:
               workingDirectory: '$(Pipeline.Workspace)/drop'
               scriptType: pscore
               arguments: '-EnvironmentName prod'
-              scriptPath: '$(Pipeline.Workspace)/drop/releasbles/deploy-earth.ps1'
+              scriptPath: '$(Pipeline.Workspace)/drop/deploy-earth.ps1'
