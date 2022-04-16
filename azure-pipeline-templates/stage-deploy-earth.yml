@@ -22,5 +22,5 @@ stages:
               azureSubscription: ${{ parameters.azureSubscriptionName }}
               workingDirectory: ${{ parameters.releasablesWorkingDirectory }}
               scriptType: pscore
-              arguments: '-EnvironmentName pr$(System.PullRequest.PullRequestNumber)'
+              arguments: '-EnvironmentName ${{ parameters.environmentName }}'
               scriptPath: '${{ parameters.releasablesWorkingDirectory }}/deploy-earth.ps1'
