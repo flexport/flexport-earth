@@ -39,7 +39,7 @@ stages:
     - task: CopyFiles@2
       displayName: 'Copy releasables to artifacts'
       inputs:
-        contents: releasables/*
+        contents: releasables/**
         TargetFolder: '$(Build.ArtifactStagingDirectory)'
 
     - publish: '$(Build.ArtifactStagingDirectory)'
