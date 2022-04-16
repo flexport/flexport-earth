@@ -43,132 +43,125 @@ stages:
     - publish: '$(Build.ArtifactStagingDirectory)'
       artifact: $(artifactName)
 
-- stage: 'PullRequest'
-  displayName: 'Deploy to a PR Environment'
-  dependsOn: Build
-  condition: and(succeeded(), eq(variables.isPR, 'true'))
-  jobs:
-  - deployment: Deploy
-    pool:
-      vmImage: 'ubuntu-20.04'
-    environment: Development
-    variables:
-    - group: Release
-    strategy:
-      runOnce:
-        deploy:
-          steps:
-          - download: current
-            artifact: $(artifactName)
-          - task: AzureCLI@2
-            displayName: 'Deploy'
-            inputs:
-              azureSubscription: 'Development'
-              workingDirectory: '$(releasablesWorkingDirectory)'
-              scriptType: pscore
-              arguments: '-EnvironmentName pr$(System.PullRequest.PullRequestNumber)'
-              scriptPath: '$(deployEarthScriptPath)'
-  - deployment: Destroy
-    dependsOn: Deploy
-    pool:
-      vmImage: 'ubuntu-20.04'
-    environment: Development
-    variables:
-    - group: Release
-    strategy:
-      runOnce:
-        deploy:
-          steps:
-          - download: current
-            artifact: $(artifactName)
-          - task: AzureCLI@2
-            displayName: 'Destroy'
-            condition: succeeded()
-            inputs:
-              azureSubscription: 'Development'
-              workingDirectory: '$(releasablesWorkingDirectory)'
-              scriptType: pscore
-              arguments: '-EnvironmentName pr$(System.PullRequest.PullRequestNumber)'
-              scriptPath: '$(deployEarthScriptPath)'
+- template: azure-pipeline-templates/stage-deploy-earth.yml
+  parameters:
+    condition: and(succeeded(), eq(variables.isPR, 'true'))
+    stageName: PullRequest
+    environmentName: Development
+    dependsOn: Build
+    azureSubscriptionName: Development
+    releasablesWorkingDirectory: $(releasablesWorkingDirectory)
 
-- stage: 'Development'
-  displayName: 'Deploy to the Development environment'
-  dependsOn: Build
-  condition: and(succeeded(), eq(variables.isMain, 'true'))
-  jobs:
-  - deployment: Deploy
-    pool:
-      vmImage: 'ubuntu-20.04'
-    environment: Development
-    variables:
-    - group: Release
-    strategy:
-      runOnce:
-        deploy:
-          steps:
-          - download: current
-            artifact: $(artifactName)
-          - task: AzureCLI@2
-            displayName: 'Deploy'
-            inputs:
-              azureSubscription: 'Development'
-              workingDirectory: '$(releasablesWorkingDirectory)'
-              scriptType: pscore
-              arguments: '-EnvironmentName dev'
-              scriptPath: '$(deployEarthScriptPath)'
+- template: azure-pipeline-templates/stage-deploy-earth.yml
+  parameters:
+    condition: and(succeeded(), eq(variables.isMain, 'true'))
+    stageName: Development
+    environmentName: Development
+    dependsOn: PullRequest
+    azureSubscriptionName: Development
+    releasablesWorkingDirectory: $(releasablesWorkingDirectory)
+    
+  # - deployment: Destroy
+  #   dependsOn: Deploy
+  #   pool:
+  #     vmImage: 'ubuntu-20.04'
+  #   environment: Development
+  #   variables:
+  #   - group: Release
+  #   strategy:
+  #     runOnce:
+  #       deploy:
+  #         steps:
+  #         - download: current
+  #           artifact: $(artifactName)
+  #         - task: AzureCLI@2
+  #           displayName: 'Destroy'
+  #           condition: succeeded()
+  #           inputs:
+  #             azureSubscription: 'Development'
+  #             workingDirectory: '$(releasablesWorkingDirectory)'
+  #             scriptType: pscore
+  #             arguments: '-EnvironmentName pr$(System.PullRequest.PullRequestNumber)'
+  #             scriptPath: '$(deployEarthScriptPath)'
 
-- stage: 'Staging'
-  displayName: 'Deploy to the Staging environment'
-  dependsOn:
-  - Build
-  - Development
-  condition: succeeded()
-  jobs:
-  - deployment: Deploy
-    pool:
-      vmImage: 'ubuntu-20.04'
-    environment: Staging
-    variables:
-    - group: Release
-    strategy:
-      runOnce:
-        deploy:
-          steps:
-          - download: current
-            artifact: $(artifactName)
-          - task: AzureCLI@2
-            displayName: 'Deploy'
-            inputs:
-              azureSubscription: 'Staging'
-              workingDirectory: '$(releasablesWorkingDirectory)'
-              scriptType: pscore
-              arguments: '-EnvironmentName stg'
-              scriptPath: '$(deployEarthScriptPath)'
+# - stage: 'Development'
+#   displayName: 'Deploy to the Development environment'
+#   dependsOn: Build
+#   condition: and(succeeded(), eq(variables.isMain, 'true'))
+#   jobs:
+#   - deployment: Deploy
+#     pool:
+#       vmImage: 'ubuntu-20.04'
+#     environment: Development
+#     variables:
+#     - group: Release
+#     strategy:
+#       runOnce:
+#         deploy:
+#           steps:
+#           - download: current
+#             artifact: $(artifactName)
+#           - task: AzureCLI@2
+#             displayName: 'Deploy'
+#             inputs:
+#               azureSubscription: 'Development'
+#               workingDirectory: '$(releasablesWorkingDirectory)'
+#               scriptType: pscore
+#               arguments: '-EnvironmentName dev'
+#               scriptPath: '$(deployEarthScriptPath)'
 
-- stage: 'Production'
-  displayName: 'Deploy to the Production environment'
-  dependsOn:
-  - Build
-  - Staging
-  condition: succeeded()
-  jobs:
-  - deployment: Deploy
-    pool:
-      vmImage: 'ubuntu-20.04'
-    environment: Production
-    variables:
-    - group: Release
-    strategy:
-      runOnce:
-        deploy:
-          steps:
-          - download: current
-            artifact: $(artifactName)
-          - task: AzureCLI@2
-            displayName: 'Deploy'
-            inputs:
-              azureSubscription: 'Production'
-              workingDirectory: '$(releasablesWorkingDirectory)'
-              scriptType: pscore
-              arguments: '-EnvironmentName prod'
-              scriptPath: '$(deployEarthScriptPath)'
+# - stage: 'Staging'
+#   displayName: 'Deploy to the Staging environment'
+#   dependsOn:
+#   - Build
+#   - Development
+#   condition: succeeded()
+#   jobs:
+#   - deployment: Deploy
+#     pool:
+#       vmImage: 'ubuntu-20.04'
+#     environment: Staging
+#     variables:
+#     - group: Release
+#     strategy:
+#       runOnce:
+#         deploy:
+#           steps:
+#           - download: current
+#             artifact: $(artifactName)
+#           - task: AzureCLI@2
+#             displayName: 'Deploy'
+#             inputs:
+#               azureSubscription: 'Staging'
+#               workingDirectory: '$(releasablesWorkingDirectory)'
+#               scriptType: pscore
+#               arguments: '-EnvironmentName stg'
+#               scriptPath: '$(deployEarthScriptPath)'
+
+# - stage: 'Production'
+#   displayName: 'Deploy to the Production environment'
+#   dependsOn:
+#   - Build
+#   - Staging
+#   condition: succeeded()
+#   jobs:
+#   - deployment: Deploy
+#     pool:
+#       vmImage: 'ubuntu-20.04'
+#     environment: Production
+#     variables:
+#     - group: Release
+#     strategy:
+#       runOnce:
+#         deploy:
+#           steps:
+#           - download: current
+#             artifact: $(artifactName)
+#           - task: AzureCLI@2
+#             displayName: 'Deploy'
+#             inputs:
+#               azureSubscription: 'Production'
+#               workingDirectory: '$(releasablesWorkingDirectory)'
+#               scriptType: pscore
+#               arguments: '-EnvironmentName prod'
+#               scriptPath: '$(deployEarthScriptPath)'
