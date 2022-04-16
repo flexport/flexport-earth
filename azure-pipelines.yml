@@ -37,21 +37,9 @@ stages:
       workingDirectory: '$(Build.ArtifactStagingDirectory)'
 
     - task: CopyFiles@2
-      displayName: 'Copy release to artifact staging'
+      displayName: 'Copy releasables to artifacts'
       inputs:
-        contents: deploy-earth.ps1
-        TargetFolder: '$(Build.ArtifactStagingDirectory)'
-
-    - task: CopyFiles@2
-      displayName: 'Copy clean up to artifact staging'
-      inputs:
-        contents: destroy-earth.ps1
-        TargetFolder: '$(Build.ArtifactStagingDirectory)'
-
-    - task: CopyFiles@2
-      displayName: 'Copy bicep to artifact staging'
-      inputs:
-        contents: create-resource-group.bicep
+        contents: releasables/*
         TargetFolder: '$(Build.ArtifactStagingDirectory)'
 
     - publish: '$(Build.ArtifactStagingDirectory)'
@@ -129,7 +117,7 @@ stages:
               workingDirectory: '$(Pipeline.Workspace)/drop'
               scriptType: pscore
               arguments: '-EnvironmentName dev'
-              scriptPath: '$(Pipeline.Workspace)/drop/deploy-earth.ps1'
+              scriptPath: '$(Pipeline.Workspace)/drop/deployables/deploy-earth.ps1'
 
 - stage: 'Staging'
   displayName: 'Deploy to the Staging environment'
