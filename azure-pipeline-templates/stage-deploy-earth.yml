@@ -2,7 +2,7 @@ stages:
 - stage: ${{ parameters.stageName }}
   displayName: 'Deploy to ${{ parameters.environmentName }}'
   dependsOn: ${{ parameters.dependsOn }}
-  condition: and(succeeded(), eq(variables.isPR, 'true'))
+  condition: ${{ parameters.condition }}
   jobs:
   - deployment: Deploy
     pool:

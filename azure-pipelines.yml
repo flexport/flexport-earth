@@ -45,9 +45,19 @@ stages:
 
 - template: azure-pipeline-templates/stage-deploy-earth.yml
   parameters:
+    condition: and(succeeded(), eq(variables.isPR, 'true'))
     stageName: PullRequest
     environmentName: Development
     dependsOn: Build
+    azureSubscriptionName: Development
+    releasablesWorkingDirectory: $(releasablesWorkingDirectory)
+
+- template: azure-pipeline-templates/stage-deploy-earth.yml
+  parameters:
+    condition: and(succeeded(), eq(variables.isMain, 'true'))
+    stageName: Development
+    environmentName: Development
+    dependsOn: PullRequest
     azureSubscriptionName: Development
     releasablesWorkingDirectory: $(releasablesWorkingDirectory)
     
