@@ -117,7 +117,7 @@ stages:
               workingDirectory: '$(Pipeline.Workspace)/drop'
               scriptType: pscore
               arguments: '-EnvironmentName dev'
-              scriptPath: '$(Pipeline.Workspace)/drop/deploy-earth.ps1'
+              scriptPath: '$(Pipeline.Workspace)/drop/deployables/deploy-earth.ps1'
 
 - stage: 'Staging'
   displayName: 'Deploy to the Staging environment'
