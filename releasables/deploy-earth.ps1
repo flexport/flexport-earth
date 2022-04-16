@@ -1,29 +1,20 @@
-# This file tested with azure-cli 2.33.1
 [CmdletBinding()]
 param (
     [Parameter(Mandatory=$true)]
     [String]
     $EnvironmentName
-#     [Parameter(Mandatory=$true)]
-#     [String]
-#     $ServicePrincipalUsername,
-#     [Parameter(Mandatory=$true)]
-#     [String]
-#     $ServicePrincipalPassword,
-#     [Parameter(Mandatory=$true)]
-#     [String]
-#     $ServicePrincipalTenant
 )
 
 $ErrorActionPreference = "Stop"
 $InformationPreference = "Continue"
 
-# az login --service-principal -u $ServicePrincipalUsername -p $ServicePrincipalPassword --tenant $ServicePrincipalTenant
+# Load common configuration values
+. ./earth-config.ps1
 
-$Parameters = '{\"environmentName\":{\"value\":\"' + $EnvironmentName + '\"}, \"resourceGroupLocation\":{\"value\":\"WestUS\"}}'
+$Parameters = '{\"earthFrontendResourceGroupName\":{\"value\":\"' + $EarthFrontendResourceGroupName + '\"}, \"resourceGroupLocation\":{\"value\":\"' + $EarthFrontendResourceGroupLocation + '\"}}'
 
 az `
     deployment sub create `
-    --location WestUS `
-    --template-file create-resource-group.bicep `
+    --location $EarthFrontendResourceGroupLocation `
+    --template-file earth-frontend.bicep `
     --parameters $Parameters
