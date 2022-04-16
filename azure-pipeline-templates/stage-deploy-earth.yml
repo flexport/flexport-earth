@@ -8,8 +8,6 @@ stages:
     pool:
       vmImage: $(vmImage)
     environment: ${{ parameters.environmentNameFull }}
-    variables:
-    - group: Release
     strategy:
       runOnce:
         deploy:
@@ -17,7 +15,7 @@ stages:
           - download: current
             artifact: $(artifactName)
           - task: AzureCLI@2
-            displayName: 'Deploy'
+            displayName: 'Deploy to ${{ parameters.environmentNameFull }}'
             inputs:
               azureSubscription: ${{ parameters.azureSubscriptionName }}
               workingDirectory: $(releasablesWorkingDirectory)
@@ -31,8 +29,6 @@ stages:
     pool:
       vmImage: $(vmImage)
     environment: ${{ parameters.environmentNameFull }}
-    variables:
-    - group: Release
     strategy:
       runOnce:
         deploy:
@@ -40,7 +36,7 @@ stages:
           - download: current
             artifact: $(artifactName)
           - task: AzureCLI@2
-            displayName: 'Destroy'
+            displayName: 'Destroy ${{ parameters.environmentNameShort }}'
             condition: succeeded()
             inputs:
               azureSubscription: ${{ parameters.azureSubscriptionName }}

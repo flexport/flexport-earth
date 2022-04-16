@@ -2,33 +2,28 @@ trigger:
 - '*'
 
 variables:
-  buildConfiguration: 'Release'
-  releaseBranchName: 'release'
   artifactName: 'drop'
   releasablesWorkingDirectory: '$(Pipeline.Workspace)/$(artifactName)/releasables'
-  deployEarthScriptPath: '$(releasablesWorkingDirectory)/deploy-earth.ps1'
   isMain: $[eq(variables['Build.SourceBranch'], 'refs/heads/main')]
   isPR: $[startsWith(variables['Build.SourceBranch'], 'refs/pull/')]
   vmImage: 'ubuntu-20.04'
 
 stages:
 - stage: 'Build'
-  displayName: 'Build the web application'
+  displayName: 'Build Earth Release'
   jobs: 
   - job: 'Build'
-    displayName: 'Build job'
+    displayName: 'Build Earth Release'
     pool:
       vmImage: $(vmImage)
-      demands:
-      - npm
 
     steps:
     - script: 'echo "$(Build.DefinitionName), $(Build.BuildId), $(Build.BuildNumber)" > buildinfo.txt'
-      displayName: 'Write build info'
+      displayName: 'Write build info to build artifacts'
       workingDirectory: '$(Build.ArtifactStagingDirectory)'
 
     - task: CopyFiles@2
-      displayName: 'Copy releasables to artifacts'
+      displayName: 'Copy releasables to build artifacts'
       inputs:
         contents: releasables/**
         TargetFolder: '$(Build.ArtifactStagingDirectory)'
