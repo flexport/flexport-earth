@@ -9,6 +9,8 @@ trigger:
 variables:
   buildConfiguration: 'Release'
   releaseBranchName: 'release'
+  artifactName: 'drop'
+  releasablesWorkingDirectory: '$(Pipeline.Workspace)/$(artifactName)/releasables'
   isMain: $[eq(variables['Build.SourceBranch'], 'refs/heads/main')]
   isPR: $[startsWith(variables['Build.SourceBranch'], 'refs/pull/')]
 
@@ -43,7 +45,7 @@ stages:
         TargetFolder: '$(Build.ArtifactStagingDirectory)'
 
     - publish: '$(Build.ArtifactStagingDirectory)'
-      artifact: drop
+      artifact: $(artifactName)
 
 - stage: 'PullRequest'
   displayName: 'Deploy to a PR Environment'
@@ -61,15 +63,15 @@ stages:
         deploy:
           steps:
           - download: current
-            artifact: drop
+            artifact: $(artifactName)
           - task: AzureCLI@2
             displayName: 'Deploy'
             inputs:
               azureSubscription: 'Development'
-              workingDirectory: '$(Pipeline.Workspace)/drop/releasables'
+              workingDirectory: '$(releasablesWorkingDirectory)'
               scriptType: pscore
               arguments: '-EnvironmentName pr$(System.PullRequest.PullRequestNumber)'
-              scriptPath: '$(Pipeline.Workspace)/drop/releasables/deploy-earth.ps1'
+              scriptPath: '$(releasablesWorkingDirectory)/deploy-earth.ps1'
   - deployment: Destroy
     dependsOn: Deploy
     pool:
@@ -82,16 +84,16 @@ stages:
         deploy:
           steps:
           - download: current
-            artifact: drop
+            artifact: $(artifactName)
           - task: AzureCLI@2
             displayName: 'Destroy'
             condition: succeeded()
             inputs:
               azureSubscription: 'Development'
-              workingDirectory: '$(Pipeline.Workspace)/drop'
+              workingDirectory: '$(releasablesWorkingDirectory)'
               scriptType: pscore
               arguments: '-EnvironmentName pr$(System.PullRequest.PullRequestNumber)'
-              scriptPath: '$(Pipeline.Workspace)/drop/destroy-earth.ps1'
+              scriptPath: '$(releasablesWorkingDirectory)/destroy-earth.ps1'
 
 - stage: 'Development'
   displayName: 'Deploy to the Development environment'
@@ -109,15 +111,15 @@ stages:
         deploy:
           steps:
           - download: current
-            artifact: drop
+            artifact: $(artifactName)
           - task: AzureCLI@2
             displayName: 'Deploy'
             inputs:
               azureSubscription: 'Development'
-              workingDirectory: '$(Pipeline.Workspace)/drop'
+              workingDirectory: '$(releasablesWorkingDirectory)'
               scriptType: pscore
               arguments: '-EnvironmentName dev'
-              scriptPath: '$(Pipeline.Workspace)/drop/deploy-earth.ps1'
+              scriptPath: '$(releasablesWorkingDirectory)/deploy-earth.ps1'
 
 - stage: 'Staging'
   displayName: 'Deploy to the Staging environment'
@@ -137,15 +139,15 @@ stages:
         deploy:
           steps:
           - download: current
-            artifact: drop
+            artifact: $(artifactName)
           - task: AzureCLI@2
             displayName: 'Deploy'
             inputs:
               azureSubscription: 'Staging'
-              workingDirectory: '$(Pipeline.Workspace)/drop'
+              workingDirectory: '$(releasablesWorkingDirectory)'
               scriptType: pscore
               arguments: '-EnvironmentName stg'
-              scriptPath: '$(Pipeline.Workspace)/drop/deploy-earth.ps1'
+              scriptPath: '$(releasablesWorkingDirectory)/deploy-earth.ps1'
 
 - stage: 'Production'
   displayName: 'Deploy to the Production environment'
@@ -165,12 +167,12 @@ stages:
         deploy:
           steps:
           - download: current
-            artifact: drop
+            artifact: $(artifactName)
           - task: AzureCLI@2
             displayName: 'Deploy'
             inputs:
               azureSubscription: 'Production'
-              workingDirectory: '$(Pipeline.Workspace)/drop'
+              workingDirectory: '$(releasablesWorkingDirectory)'
               scriptType: pscore
               arguments: '-EnvironmentName prod'
-              scriptPath: '$(Pipeline.Workspace)/drop/deploy-earth.ps1'
+              scriptPath: '$(releasablesWorkingDirectory)/deploy-earth.ps1'
