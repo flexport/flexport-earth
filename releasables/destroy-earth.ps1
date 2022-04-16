@@ -5,6 +5,12 @@ param (
     $EnvironmentName
 )
 
-$InformationPreference = 'Continue' # Enable 'Write-Information' output to show in the console.
+$ErrorActionPreference = "Stop"
+$InformationPreference = "Continue"
 
-az group delete --name "$EnvironmentName-earth-frontend" -y
+# Load common configuration values
+. ./earth-config.ps1
+
+az `
+    group delete --name $EarthFrontendResourceGroupName `
+    -y

@@ -1,9 +1,9 @@
 targetScope='subscription'
 
-param environmentName string
+param earthFrontendResourceGroupName string
 param resourceGroupLocation string
 
 resource newRG 'Microsoft.Resources/resourceGroups@2021-01-01' = {
-  name: '${environmentName}-earth-frontend'
+  name: earthFrontendResourceGroupName
   location: resourceGroupLocation
 }
