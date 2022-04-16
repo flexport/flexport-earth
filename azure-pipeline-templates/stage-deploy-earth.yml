@@ -1,13 +1,13 @@
 stages:
 - stage: ${{ parameters.stageName }}
-  displayName: 'Deploy to ${{ parameters.environmentName }}'
+  displayName: 'Deploy to ${{ parameters.environmentNameFull }}'
   dependsOn: ${{ parameters.dependsOn }}
   condition: ${{ parameters.condition }}
   jobs:
   - deployment: Deploy
     pool:
       vmImage: 'ubuntu-20.04'
-    environment: ${{ parameters.environmentName }}
+    environment: ${{ parameters.environmentNameFull }}
     variables:
     - group: Release
     strategy:
@@ -22,5 +22,5 @@ stages:
               azureSubscription: ${{ parameters.azureSubscriptionName }}
               workingDirectory: ${{ parameters.releasablesWorkingDirectory }}
               scriptType: pscore
-              arguments: '-EnvironmentName ${{ parameters.environmentName }}'
+              arguments: '-EnvironmentName ${{ parameters.environmentNameShort }}'
               scriptPath: '${{ parameters.releasablesWorkingDirectory }}/deploy-earth.ps1'
