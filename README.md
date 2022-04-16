@@ -20,10 +20,16 @@ You'll need an Azure subscription to deploy to. Once you have one, you can follo
 
     az login
 
+If you work with multiple subscriptions, be sure to set the correct default subscription that the Earth scripts should use:
+
+    az account set --subscription <subscription name here>
+
 ### Deploy your local changes
 
+    cd releaseables
     ./deploy-earth.ps1
 
 ### Clean up your Azure deployment
 
+    cd releaseables
     ./destroy-earth.ps1
