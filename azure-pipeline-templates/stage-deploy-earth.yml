@@ -2,7 +2,7 @@ stages:
 - stage: ${{ parameters.stageName }}
   displayName: 'Deploy to ${{ parameters.environmentNameFull }}'
   dependsOn: ${{ parameters.dependsOn }}
-  condition: ${{ parameters.condition }}
+  condition: ${{ parameters.deployCondition }}
   jobs:
   - deployment: Deploy
     pool:
@@ -24,3 +24,27 @@ stages:
               scriptType: pscore
               arguments: '-EnvironmentName ${{ parameters.environmentNameShort }}'
               scriptPath: '$(releasablesWorkingDirectory)/deploy-earth.ps1'
+
+  - deployment: Destroy
+    dependsOn: Deploy
+    condition: ${{ parameters.destroyCondition }}
+    pool:
+      vmImage: 'ubuntu-20.04'
+    environment: ${{ parameters.environmentNameFull }}
+    variables:
+    - group: Release
+    strategy:
+      runOnce:
+        deploy:
+          steps:
+          - download: current
+            artifact: $(artifactName)
+          - task: AzureCLI@2
+            displayName: 'Destroy'
+            condition: succeeded()
+            inputs:
+              azureSubscription: ${{ parameters.azureSubscriptionName }}
+              workingDirectory: '$(releasablesWorkingDirectory)'
+              scriptType: pscore
+              arguments: '-EnvironmentName ${{ parameters.environmentNameShort }}'
+              scriptPath: '$(releasablesWorkingDirectory)/destroy-earth.ps1'

@@ -45,7 +45,8 @@ stages:
 
 - template: azure-pipeline-templates/stage-deploy-earth.yml
   parameters:
-    condition: and(succeeded(), eq(variables.isPR, 'true'))
+    deployCondition: and(succeeded(), eq(variables.isPR, 'true'))
+    destroyCondition: and(succeeded(), true)
     stageName: PullRequest
     environmentNameFull: Development
     environmentNameShort: 'pr$(System.PullRequest.PullRequestNumber)'
@@ -54,7 +55,8 @@ stages:
 
 - template: azure-pipeline-templates/stage-deploy-earth.yml
   parameters:
-    condition: and(succeeded(), eq(variables.isMain, 'true'))
+    deployCondition: and(succeeded(), eq(variables.isMain, 'true'))
+    destroyCondition: false
     stageName: Development
     environmentNameFull: Development
     environmentNameShort: dev
@@ -63,7 +65,8 @@ stages:
 
 - template: azure-pipeline-templates/stage-deploy-earth.yml
   parameters:
-    condition: succeeded()
+    deployCondition: succeeded()
+    destroyCondition: false
     stageName: Staging
     environmentNameFull: Staging
     environmentNameShort: stg
@@ -72,7 +75,8 @@ stages:
 
 - template: azure-pipeline-templates/stage-deploy-earth.yml
   parameters:
-    condition: succeeded()
+    deployCondition: succeeded()
+    destroyCondition: false
     stageName: Production
     environmentNameFull: Production
     environmentNameShort: prod
