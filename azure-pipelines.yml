@@ -1,8 +1,3 @@
-# Starter pipeline
-# Start with a minimal pipeline that you can customize to build and deploy your code.
-# Add steps that build, run tests, deploy, and more:
-# https://aka.ms/yaml
-
 trigger:
 - '*'
 
@@ -11,6 +6,7 @@ variables:
   releaseBranchName: 'release'
   artifactName: 'drop'
   releasablesWorkingDirectory: '$(Pipeline.Workspace)/$(artifactName)/releasables'
+  deployEarthScriptPath: '$(releasablesWorkingDirectory)/deploy-earth.ps1'
   isMain: $[eq(variables['Build.SourceBranch'], 'refs/heads/main')]
   isPR: $[startsWith(variables['Build.SourceBranch'], 'refs/pull/')]
 
@@ -71,7 +67,7 @@ stages:
               workingDirectory: '$(releasablesWorkingDirectory)'
               scriptType: pscore
               arguments: '-EnvironmentName pr$(System.PullRequest.PullRequestNumber)'
-              scriptPath: '$(releasablesWorkingDirectory)/deploy-earth.ps1'
+              scriptPath: '$(deployEarthScriptPath)'
   - deployment: Destroy
     dependsOn: Deploy
     pool:
@@ -93,7 +89,7 @@ stages:
               workingDirectory: '$(releasablesWorkingDirectory)'
               scriptType: pscore
               arguments: '-EnvironmentName pr$(System.PullRequest.PullRequestNumber)'
-              scriptPath: '$(releasablesWorkingDirectory)/destroy-earth.ps1'
+              scriptPath: '$(deployEarthScriptPath)'
 
 - stage: 'Development'
   displayName: 'Deploy to the Development environment'
@@ -119,7 +115,7 @@ stages:
               workingDirectory: '$(releasablesWorkingDirectory)'
               scriptType: pscore
               arguments: '-EnvironmentName dev'
-              scriptPath: '$(releasablesWorkingDirectory)/deploy-earth.ps1'
+              scriptPath: '$(deployEarthScriptPath)'
 
 - stage: 'Staging'
   displayName: 'Deploy to the Staging environment'
@@ -147,7 +143,7 @@ stages:
               workingDirectory: '$(releasablesWorkingDirectory)'
               scriptType: pscore
               arguments: '-EnvironmentName stg'
-              scriptPath: '$(releasablesWorkingDirectory)/deploy-earth.ps1'
+              scriptPath: '$(deployEarthScriptPath)'
 
 - stage: 'Production'
   displayName: 'Deploy to the Production environment'
@@ -175,4 +171,4 @@ stages:
               workingDirectory: '$(releasablesWorkingDirectory)'
               scriptType: pscore
               arguments: '-EnvironmentName prod'
-              scriptPath: '$(releasablesWorkingDirectory)/deploy-earth.ps1'
+              scriptPath: '$(deployEarthScriptPath)'
