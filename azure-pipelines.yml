@@ -1,14 +1,12 @@
-# Starter pipeline
-# Start with a minimal pipeline that you can customize to build and deploy your code.
-# Add steps that build, run tests, deploy, and more:
-# https://aka.ms/yaml
-
 trigger:
 - '*'
 
 variables:
   buildConfiguration: 'Release'
   releaseBranchName: 'release'
+  artifactName: 'drop'
+  releasablesWorkingDirectory: '$(Pipeline.Workspace)/$(artifactName)/releasables'
+  deployEarthScriptPath: '$(releasablesWorkingDirectory)/deploy-earth.ps1'
   isMain: $[eq(variables['Build.SourceBranch'], 'refs/heads/main')]
   isPR: $[startsWith(variables['Build.SourceBranch'], 'refs/pull/')]
 
@@ -39,11 +37,11 @@ stages:
     - task: CopyFiles@2
       displayName: 'Copy releasables to artifacts'
       inputs:
-        contents: releasables/*
+        contents: releasables/**
         TargetFolder: '$(Build.ArtifactStagingDirectory)'
 
     - publish: '$(Build.ArtifactStagingDirectory)'
-      artifact: drop
+      artifact: $(artifactName)
 
 - stage: 'PullRequest'
   displayName: 'Deploy to a PR Environment'
@@ -61,15 +59,15 @@ stages:
         deploy:
           steps:
           - download: current
-            artifact: drop
+            artifact: $(artifactName)
           - task: AzureCLI@2
             displayName: 'Deploy'
             inputs:
               azureSubscription: 'Development'
-              workingDirectory: '$(Pipeline.Workspace)/drop'
+              workingDirectory: '$(releasablesWorkingDirectory)'
               scriptType: pscore
               arguments: '-EnvironmentName pr$(System.PullRequest.PullRequestNumber)'
-              scriptPath: '$(Pipeline.Workspace)/drop/deploy-earth.ps1'
+              scriptPath: '$(deployEarthScriptPath)'
   - deployment: Destroy
     dependsOn: Deploy
     pool:
@@ -82,16 +80,16 @@ stages:
         deploy:
           steps:
           - download: current
-            artifact: drop
+            artifact: $(artifactName)
           - task: AzureCLI@2
             displayName: 'Destroy'
             condition: succeeded()
             inputs:
               azureSubscription: 'Development'
-              workingDirectory: '$(Pipeline.Workspace)/drop'
+              workingDirectory: '$(releasablesWorkingDirectory)'
               scriptType: pscore
               arguments: '-EnvironmentName pr$(System.PullRequest.PullRequestNumber)'
-              scriptPath: '$(Pipeline.Workspace)/drop/destroy-earth.ps1'
+              scriptPath: '$(deployEarthScriptPath)'
 
 - stage: 'Development'
   displayName: 'Deploy to the Development environment'
@@ -109,15 +107,15 @@ stages:
         deploy:
           steps:
           - download: current
-            artifact: drop
+            artifact: $(artifactName)
           - task: AzureCLI@2
             displayName: 'Deploy'
             inputs:
               azureSubscription: 'Development'
-              workingDirectory: '$(Pipeline.Workspace)/drop'
+              workingDirectory: '$(releasablesWorkingDirectory)'
               scriptType: pscore
               arguments: '-EnvironmentName dev'
-              scriptPath: '$(Pipeline.Workspace)/drop/deploy-earth.ps1'
+              scriptPath: '$(deployEarthScriptPath)'
 
 - stage: 'Staging'
   displayName: 'Deploy to the Staging environment'
@@ -137,15 +135,15 @@ stages:
         deploy:
           steps:
           - download: current
-            artifact: drop
+            artifact: $(artifactName)
           - task: AzureCLI@2
             displayName: 'Deploy'
             inputs:
               azureSubscription: 'Staging'
-              workingDirectory: '$(Pipeline.Workspace)/drop'
+              workingDirectory: '$(releasablesWorkingDirectory)'
               scriptType: pscore
               arguments: '-EnvironmentName stg'
-              scriptPath: '$(Pipeline.Workspace)/drop/deploy-earth.ps1'
+              scriptPath: '$(deployEarthScriptPath)'
 
 - stage: 'Production'
   displayName: 'Deploy to the Production environment'
@@ -165,12 +163,12 @@ stages:
         deploy:
           steps:
           - download: current
-            artifact: drop
+            artifact: $(artifactName)
           - task: AzureCLI@2
             displayName: 'Deploy'
             inputs:
               azureSubscription: 'Production'
-              workingDirectory: '$(Pipeline.Workspace)/drop'
+              workingDirectory: '$(releasablesWorkingDirectory)'
               scriptType: pscore
               arguments: '-EnvironmentName prod'
-              scriptPath: '$(Pipeline.Workspace)/drop/deploy-earth.ps1'
+              scriptPath: '$(deployEarthScriptPath)'
