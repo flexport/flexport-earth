@@ -51,7 +51,6 @@ stages:
     environmentNameShort: 'pr$(System.PullRequest.PullRequestNumber)'
     dependsOn: Build
     azureSubscriptionName: Development
-    releasablesWorkingDirectory: $(releasablesWorkingDirectory)
 
 - template: azure-pipeline-templates/stage-deploy-earth.yml
   parameters:
@@ -61,8 +60,24 @@ stages:
     environmentNameShort: dev
     dependsOn: Build
     azureSubscriptionName: Development
-    releasablesWorkingDirectory: $(releasablesWorkingDirectory)
-    
+
+- template: azure-pipeline-templates/stage-deploy-earth.yml
+  parameters:
+    condition: succeeded()
+    stageName: Staging
+    environmentNameFull: Staging
+    environmentNameShort: stg
+    dependsOn: Development
+    azureSubscriptionName: Staging
+
+- template: azure-pipeline-templates/stage-deploy-earth.yml
+  parameters:
+    condition: succeeded()
+    stageName: Production
+    environmentNameFull: Production
+    environmentNameShort: prod
+    dependsOn: Staging
+    azureSubscriptionName: Production
   # - deployment: Destroy
   #   dependsOn: Deploy
   #   pool:

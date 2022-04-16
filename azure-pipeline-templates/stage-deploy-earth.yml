@@ -20,7 +20,7 @@ stages:
             displayName: 'Deploy'
             inputs:
               azureSubscription: ${{ parameters.azureSubscriptionName }}
-              workingDirectory: ${{ parameters.releasablesWorkingDirectory }}
+              workingDirectory: $(releasablesWorkingDirectory)
               scriptType: pscore
               arguments: '-EnvironmentName ${{ parameters.environmentNameShort }}'
-              scriptPath: '${{ parameters.releasablesWorkingDirectory }}/deploy-earth.ps1'
+              scriptPath: '$(releasablesWorkingDirectory)/deploy-earth.ps1'
