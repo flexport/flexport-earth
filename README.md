@@ -6,20 +6,24 @@ All instructions below are tested to work for:
 
 # Getting started for development
 
-1. Clone this repo locally
-2. Fork this repo
+1. Clone this repo locally.
+2. Fork this repo.
 3. Update your remotes:
 
-    `git remote add fork https://github.com/<your-username-here>/flexport-earth.git`
+    `git remote set-url --push https://github.com/<your-username-here>/flexport-earth.git`
 
-# Set up a new Azure subscription
-Provision an Azure subscription for Earth deployments. This only needs to be executed once against a subscription.
+## Azure
 
-1. az account set --subscription "target-subscription-name-here"
-2. .\provision-azure-subscription.ps1 -AzureSubscriptionName "target-subscription-name-here"
-3. Save the output information as secrets in CD automation.
+You'll need an Azure subscription to deploy to. Once you have one, you can follow the steps below.
 
-# Destroy an environment
+### Login
 
-1. az account set --subscription "target-subscription-name-here"
-2. \deprovision-azure-subscription.ps1
+    az login
+
+### Deploy your local changes
+
+    ./deploy-earth.ps1
+
+### Clean up your Azure deployment
+
+    ./destroy-earth.ps1
