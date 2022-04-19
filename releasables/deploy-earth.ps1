@@ -18,3 +18,9 @@ az `
     --location $EarthFrontendResourceGroupLocation `
     --template-file earth-frontend.bicep `
     --parameters $Parameters
+
+az `
+    deployment sub create `
+    --location $EarthFrontendResourceGroupLocation `
+    --template-file subscription-budget.bicep `
+    --parameters @subscription-budget.parameters.json
