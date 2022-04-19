@@ -1,0 +1,48 @@
+#!/bin/bash
+
+set -e
+
+commit_msg_file=$1
+commit_source=$2
+
+branch=$(git rev-parse --abbrev-ref HEAD)
+
+#########################################
+# Automatically add ticket numbers to
+# commit messages based on branch names.
+#########################################
+
+jira_ticket_regex='([a-zA-Z0-9]+-[0-9]+)'
+
+if [[ $branch =~ $jira_ticket_regex ]]; then
+    ticket="${BASH_REMATCH[1]}"
+
+    if [[ -z "${commit_source}" ]]; then
+        # If no source message was provided,
+        # then the commit msg editor will be opened.
+
+        # Prefix the commit message template with the ticket.
+        echo "${ticket}: " > "${commit_msg_file}"
+    else
+        # Commit message has been provided, check if
+        # branch ticket number has been applied to it
+        # already, and apply it if not.
+        source_message=$(cat "${commit_msg_file}")
+
+        if [[ ! "${source_message}" =~ ${jira_ticket_regex} ]]; then
+            echo "${ticket}: ${source_message}" > "${commit_msg_file}"
+        fi
+    fi
+else
+    echo "ERROR: Cannot add ticket to commit message because branch name doesn't contain a ticket number."
+    echo
+    echo "TODO: Create a new branch for these changes named following this format:"
+    echo
+    echo "  earth-000_change-summary"
+    echo
+    exit 1
+fi
+
+#########################################
+# End auto add ticket to commit section.
+#########################################
