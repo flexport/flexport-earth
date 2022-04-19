@@ -12,6 +12,14 @@ All instructions below are tested to work for:
 
     `git remote set-url --push https://github.com/<your-username-here>/flexport-earth.git`
 
+Note:
+
+Your commits must be be [verified](https://docs.github.com/en/authentication/managing-commit-signature-verification) in ordered to be merged.
+
+## Install Development Tools
+
+    ./install-development-tools.ps1
+
 ## Azure
 
 You'll need an Azure subscription to deploy to. Once you have one, you can follow the steps below.
