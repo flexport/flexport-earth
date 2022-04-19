@@ -1,0 +1,40 @@
+{
+    "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentParameters.json#",
+    "contentVersion": "1.0.0.0",
+    "parameters": {
+      "budgetName": {
+        "value": "subscription-budget"
+      },
+      "amount": {
+        "value": 10
+      },
+      "timeGrain": {
+        "value": "Monthly"
+      },
+      "startDate": {
+        "value": "2022-04-01"
+      },
+      "endDate": {
+        "value": "2026-04-01"
+      },
+      "firstThreshold": {
+        "value": 50
+      },
+      "secondThreshold": {
+        "value": 80
+      },
+      "contactEmails": {
+        "value": [
+          "matthewthomas@flexport.com"
+        ]
+      },
+      "contactRoles": {
+        "value": [
+          "Owner"
+        ]
+      },
+      "contactGroups": {
+        "value": []
+      }
+    }
+  }
