@@ -20,6 +20,11 @@ az `
     --parameters $Parameters
 
 az `
+    deployment group create `
+    --resource-group $EarthFrontendResourceGroupName `
+    --template-file ./frontend/cdn/main.bicep
+
+az `
     deployment sub create `
     --location $EarthFrontendResourceGroupLocation `
     --template-file subscription-budget.bicep `
