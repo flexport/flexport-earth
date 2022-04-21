@@ -32,6 +32,10 @@ If you work with multiple subscriptions, be sure to set the correct default subs
 
     az account set --subscription <subscription name here>
 
+### Provision a new Azure Subscription
+
+    ./provision-azure-subscription.ps1
+
 ### Deploy your local changes
 
     cd releaseables
