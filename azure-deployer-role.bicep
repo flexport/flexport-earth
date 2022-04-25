@@ -1,4 +1,6 @@
-targetScope = 'subscription'
+targetScope = 'managementGroup'
+
+param azureTenantId string
 
 var actions = [
   '*'
@@ -13,7 +15,7 @@ var notActions = [
 
 var roleName = 'Deployer'
 var roleDescription = 'Used by Continuous Delivery systems to deploy infrastructure and applications. Grants full access to manage all resources, but does not allow you to manage assignments in Azure Blueprints, or share image galleries.'
-var roleDefName = '964a8f32-c94f-41f7-9a01-f9d31fd51139'
+var roleDefName = '3f2e82ea-79ee-4cf7-aa80-15313d5c2baf'
 
 resource roleDef 'Microsoft.Authorization/roleDefinitions@2018-07-01' = {
   name: roleDefName
@@ -28,7 +30,7 @@ resource roleDef 'Microsoft.Authorization/roleDefinitions@2018-07-01' = {
       }
     ]
     assignableScopes: [
-      subscription().id
+      '/providers/Microsoft.Management/managementGroups/${azureTenantId}'
     ]
   }
 }

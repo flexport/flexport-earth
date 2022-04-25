@@ -32,16 +32,20 @@ If you work with multiple subscriptions, be sure to set the correct default subs
 
     az account set --subscription <subscription name here>
 
+### Provision a new Azure Tenant
+
+    ./provision-azure-tenant.ps1
+
 ### Provision a new Azure Subscription
 
-    ./provision-azure-subscription.ps1
+    ./provision-azure-subscription.ps1 -AzureSubscriptionName <subscription name here>
 
 ### Deploy your local changes
 
     cd releaseables
-    ./deploy-earth.ps1
+    ./deploy-earth.ps1 -EnvironmentName <environment name here>
 
 ### Clean up your Azure deployment
 
     cd releaseables
-    ./destroy-earth.ps1
+    ./destroy-earth.ps1 -EnvironmentName <environment name here>
