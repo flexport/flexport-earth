@@ -1,14 +1,24 @@
+[CmdletBinding()]
+param (
+    [Parameter(Mandatory=$true)]
+    [String]
+    $AzureSubscriptionName
+)
+
 $ErrorActionPreference = "Stop"
 $InformationPreference = "Continue"
 
-$CredsPath = "./.cache/azure-service-principal-creds.json"
+$SubscriptionDeploymentServicePricipalName = "earth-deployer"
+
+$CredFileName = "${AzureSubscriptionName}_${SubscriptionDeploymentServicePricipalName}"
+$CredsPath = "./.cache/azure/creds/$CredFileName.json"
 
 if (-Not (Test-Path $CredsPath)) {
     Write-Error "Service Principal cached credentials not found at $.CredsPath."
     Write-Error "Please run ./provision-azure-subscription.ps1 to create a Service Principal, which will cache the credentials for use."
 }
 
-$ServicePrincipalCredentials = Get-Content -Path ./.cache/azure-service-principal-creds.json | ConvertFrom-Json
+$ServicePrincipalCredentials = Get-Content -Path $CredsPath | ConvertFrom-Json
 
 az login `
     --service-principal `

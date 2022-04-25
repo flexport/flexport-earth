@@ -40,6 +40,10 @@ If you work with multiple subscriptions, be sure to set the correct default subs
 
     ./provision-azure-subscription.ps1 -AzureSubscriptionName <subscription name here>
 
+### Sign In as your Service Principal
+
+    ./sign-in-as-service-principal.ps1 -AzureSubscriptionName <subscription name here>
+
 ### Deploy your local changes
 
     cd releaseables

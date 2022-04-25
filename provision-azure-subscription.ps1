@@ -13,20 +13,22 @@ $SubscriptionDeploymentServicePricipalName = "earth-deployer"
 $SubscriptionId = (az account show --subscription $AzureSubscriptionName | ConvertFrom-Json).id
 
 Write-Information "Provisioning subscription $AzureSubscriptionName (id: $SubscriptionId) ..."
-
 Write-Information "- Provisioning $SubscriptionDeploymentServicePricipalName service principle..."
+
 $ServicePrincipalCredentials = az ad sp create-for-rbac `
     --name $SubscriptionDeploymentServicePricipalName `
     --role "Deployer" `
     --scopes "/subscriptions/$SubscriptionId"
 
-$LocalCacheFolder = "./.cache"
+$LocalCacheFolder = "./.cache/azure/creds"
 
 if (-Not (Test-Path $LocalCacheFolder)) {
     New-Item -ItemType Directory -Path $LocalCacheFolder
 }
 
-$CredsPath = "$LocalCacheFolder/azure-service-principal-creds.json"
+$CredFileName = "${AzureSubscriptionName}_${SubscriptionDeploymentServicePricipalName}"
+
+$CredsPath = "$LocalCacheFolder/$CredFileName.json"
 $ServicePrincipalCredentials | Out-File -FilePath $CredsPath
 
 Write-Information ""
