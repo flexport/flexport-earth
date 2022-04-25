@@ -7,6 +7,11 @@ commit_source=$2
 
 branch=$(git rev-parse --abbrev-ref HEAD)
 
+# Exit if the branch is HEAD, which occurs during operations such as git rebase.
+if [[ ${branch} == HEAD* ]]; then
+    exit
+fi
+
 #########################################
 # Automatically add ticket numbers to
 # commit messages based on branch names.
