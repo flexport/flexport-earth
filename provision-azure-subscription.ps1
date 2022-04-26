@@ -8,7 +8,7 @@ param (
 $ErrorActionPreference = "Stop"
 $InformationPreference = "Continue"
 
-$SubscriptionDeploymentServicePricipalName = "earth-deployer"
+$SubscriptionDeploymentServicePricipalName = "${AzureSubscriptionName}-earth-deployer".ToLower()
 
 $SubscriptionId = (az account show --subscription $AzureSubscriptionName | ConvertFrom-Json).id
 
@@ -26,9 +26,7 @@ if (-Not (Test-Path $LocalCacheFolder)) {
     New-Item -ItemType Directory -Path $LocalCacheFolder
 }
 
-$CredFileName = "${AzureSubscriptionName}_${SubscriptionDeploymentServicePricipalName}"
-
-$CredsPath = "$LocalCacheFolder/$CredFileName.json"
+$CredsPath = "$LocalCacheFolder/${SubscriptionDeploymentServicePricipalName}.json"
 $ServicePrincipalCredentials | Out-File -FilePath $CredsPath
 
 Write-Information ""

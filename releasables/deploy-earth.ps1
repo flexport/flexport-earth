@@ -20,6 +20,16 @@ az `
     --parameters $Parameters
 
 az `
+    deployment group create `
+    --resource-group $EarthFrontendResourceGroupName `
+    --template-file ./frontend/cdn/main.bicep
+
+if (!$?) {
+    Write-Error "CDN deployment failed."
+    Exit 1
+}
+
+az `
     deployment sub create `
     --location $EarthFrontendResourceGroupLocation `
     --template-file subscription-budget.bicep `

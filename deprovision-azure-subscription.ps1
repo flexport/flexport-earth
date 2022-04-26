@@ -13,7 +13,7 @@ $SubscriptionId = (az account show --subscription $AzureSubscriptionName | Conve
 Write-Information "Deprovisioning subscription $AzureSubscriptionName (id: $SubscriptionId) ..."
 
 function Remove-DeployerServicePrincipal {
-    $SubscriptionDeploymentServicePricipalName = "earth-deployer"
+    $SubscriptionDeploymentServicePricipalName = "$AzureSubscriptionName-earth-deployer".ToLower()
     
     $ServicePrincipalId = (
         az ad sp list `
