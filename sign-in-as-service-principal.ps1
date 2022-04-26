@@ -8,10 +8,9 @@ param (
 $ErrorActionPreference = "Stop"
 $InformationPreference = "Continue"
 
-$SubscriptionDeploymentServicePricipalName = "earth-deployer"
+$SubscriptionDeploymentServicePricipalName = "$AzureSubscriptionName-earth-deployer".ToLower()
 
-$CredFileName = "${AzureSubscriptionName}_${SubscriptionDeploymentServicePricipalName}"
-$CredsPath = "./.cache/azure/creds/$CredFileName.json"
+$CredsPath = "./.cache/azure/creds/${SubscriptionDeploymentServicePricipalName}.json"
 
 if (-Not (Test-Path $CredsPath)) {
     Write-Error "Service Principal cached credentials not found at $.CredsPath."
