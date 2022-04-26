@@ -8,6 +8,9 @@ param (
 $ErrorActionPreference = "Stop"
 $InformationPreference = "Continue"
 
+# Run dependency management
+. ../releasables/dependencies/dependency-manager.ps1
+
 $SubscriptionDeploymentServicePricipalName = "${AzureSubscriptionName}-earth-deployer".ToLower()
 
 $SubscriptionId = (az account show --subscription $AzureSubscriptionName | ConvertFrom-Json).id

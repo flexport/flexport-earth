@@ -5,8 +5,11 @@ param (
     $AzureSubscriptionName
 )
 
-# Enable 'Write-Information' calls to show in the console.
-$InformationPreference = 'Continue' 
+$ErrorActionPreference = "Stop"
+$InformationPreference = "Continue"
+
+# Run dependency management
+. ../releasables/dependencies/dependency-manager.ps1
 
 $SubscriptionId = (az account show --subscription $AzureSubscriptionName | ConvertFrom-Json).id
 

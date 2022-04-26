@@ -1,5 +1,8 @@
 $ErrorActionPreference = "Stop"
-$InformationPreference = 'Continue' 
+$InformationPreference = "Continue"
+
+# Run dependency management
+. ../releasables/dependencies/dependency-manager.ps1
 
 $AzureTenantId = (az account show | ConvertFrom-Json).HomeTenantId
 
