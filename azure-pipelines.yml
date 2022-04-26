@@ -7,7 +7,6 @@ variables:
   isMain: $[eq(variables['Build.SourceBranch'], 'refs/heads/main')]
   isPR: $[startsWith(variables['Build.SourceBranch'], 'refs/pull/')]
   vmImage: 'ubuntu-20.04'
-  deployStageTemplatePath: 'azure/pipeline-templates/stage-deploy-earth.yml'
 
 stages:
 - stage: 'Build'
@@ -32,7 +31,7 @@ stages:
     - publish: '$(Build.ArtifactStagingDirectory)'
       artifact: $(artifactName)
 
-- template: '$(deployStageTemplatePath)'
+- template: 'azure/pipeline-templates/stage-deploy-earth.yml'
   parameters:
     deployCondition: and(succeeded(), eq(variables.isPR, 'true'))
     destroyCondition: and(succeeded(), true)
@@ -42,7 +41,7 @@ stages:
     dependsOn: Build
     azureSubscriptionName: Development
 
-- template: '$(deployStageTemplatePath)'
+- template: 'azure/pipeline-templates/stage-deploy-earth.yml'
   parameters:
     deployCondition: and(succeeded(), eq(variables.isMain, 'true'))
     destroyCondition: false
@@ -52,7 +51,7 @@ stages:
     dependsOn: Build
     azureSubscriptionName: Development
 
-- template: '$(deployStageTemplatePath)'
+- template: 'azure/pipeline-templates/stage-deploy-earth.yml'
   parameters:
     deployCondition: succeeded()
     destroyCondition: false
@@ -62,7 +61,7 @@ stages:
     dependsOn: Development
     azureSubscriptionName: Staging
 
-- template: '$(deployStageTemplatePath)'
+- template: 'azure/pipeline-templates/stage-deploy-earth.yml'
   parameters:
     deployCondition: succeeded()
     destroyCondition: false
