@@ -32,7 +32,7 @@ stages:
     - publish: '$(Build.ArtifactStagingDirectory)'
       artifact: $(artifactName)
 
-- template: $(deployStageTemplatePath)
+- template: '$(deployStageTemplatePath)'
   parameters:
     deployCondition: and(succeeded(), eq(variables.isPR, 'true'))
     destroyCondition: and(succeeded(), true)
@@ -42,7 +42,7 @@ stages:
     dependsOn: Build
     azureSubscriptionName: Development
 
-- template: $(deployStageTemplatePath)
+- template: '$(deployStageTemplatePath)'
   parameters:
     deployCondition: and(succeeded(), eq(variables.isMain, 'true'))
     destroyCondition: false
@@ -52,7 +52,7 @@ stages:
     dependsOn: Build
     azureSubscriptionName: Development
 
-- template: $(deployStageTemplatePath)
+- template: '$(deployStageTemplatePath)'
   parameters:
     deployCondition: succeeded()
     destroyCondition: false
@@ -62,7 +62,7 @@ stages:
     dependsOn: Development
     azureSubscriptionName: Staging
 
-- template: $(deployStageTemplatePath)
+- template: '$(deployStageTemplatePath)'
   parameters:
     deployCondition: succeeded()
     destroyCondition: false
