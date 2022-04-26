@@ -8,7 +8,7 @@ param (
 $ErrorActionPreference = "Stop"
 $InformationPreference = "Continue"
 
-$SubscriptionDeploymentServicePricipalName = "earth-deployer"
+$SubscriptionDeploymentServicePricipalName = "${AzureSubscriptionName}-earth-deployer".ToLower()
 
 $SubscriptionId = (az account show --subscription $AzureSubscriptionName | ConvertFrom-Json).id
 
