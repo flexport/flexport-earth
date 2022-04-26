@@ -8,6 +8,9 @@ param (
 $ErrorActionPreference = "Stop"
 $InformationPreference = "Continue"
 
+# Run dependency management
+. ./dependencies/dependency-manager.ps1
+
 # Load common configuration values
 . ./earth-config.ps1
 

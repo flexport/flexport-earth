@@ -20,7 +20,7 @@ $ServicePrincipalCredentials = az ad sp create-for-rbac `
     --role "Deployer" `
     --scopes "/subscriptions/$SubscriptionId"
 
-$LocalCacheFolder = "./.cache/azure/creds"
+$LocalCacheFolder = "../.cache/azure/creds"
 
 if (-Not (Test-Path $LocalCacheFolder)) {
     New-Item -ItemType Directory -Path $LocalCacheFolder

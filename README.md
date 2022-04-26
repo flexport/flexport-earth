@@ -4,7 +4,7 @@ All instructions below are tested to work for:
 - MacOS
 - Windows
 
-# Getting started for development
+# Getting started for local development
 
 1. Clone this repo locally.
 2. Fork this repo.
@@ -16,32 +16,25 @@ Note:
 
 Your commits must be be [verified](https://docs.github.com/en/authentication/managing-commit-signature-verification) in ordered to be merged.
 
+## System Dependencies
+
+1. [PowerShell Core (7.2)](https://docs.microsoft.com/en-us/powershell/scripting/install/installing-powershell)
+2. [Azure CLI (2.36.0)](https://docs.microsoft.com/en-us/cli/azure/install-azure-cli)
+
 ## Install Development Tools
 
+    cd development-tools
     ./install-development-tools.ps1
 
 ## Azure
 
 You'll need an Azure subscription to deploy to. Once you have one, you can follow the steps below.
 
-### Login
-
-    az login
-
-If you work with multiple subscriptions, be sure to set the correct default subscription that the Earth scripts should use:
-
-    az account set --subscription <subscription name here>
-
-### Provision a new Azure Tenant
-
-    ./provision-azure-tenant.ps1
-
-### Provision a new Azure Subscription
-
-    ./provision-azure-subscription.ps1 -AzureSubscriptionName <subscription name here>
+For provisioning new Azure Accounts, Tenants, and Subscriptions, continue [here](azure/README.md).
 
 ### Sign In as your Service Principal
 
+    cd azure
     ./sign-in-as-service-principal.ps1 -AzureSubscriptionName <subscription name here>
 
 ### Deploy your local changes

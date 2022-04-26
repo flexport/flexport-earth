@@ -8,6 +8,9 @@ param (
 $ErrorActionPreference = "Stop"
 $InformationPreference = "Continue"
 
+# Run dependency management
+. ./dependencies/dependency-manager.ps1
+
 # Load common configuration values
 . ./earth-config.ps1
 
@@ -16,8 +19,13 @@ $Parameters = '{\"earthFrontendResourceGroupName\":{\"value\":\"' + $EarthFronte
 az `
     deployment sub create `
     --location $EarthFrontendResourceGroupLocation `
-    --template-file earth-frontend.bicep `
+    --template-file ./frontend/earth-frontend.bicep `
     --parameters $Parameters
+
+if (!$?) {
+    Write-Error "Resource group deployment failed."
+    Exit 1
+}
 
 az `
     deployment group create `
@@ -32,5 +40,10 @@ if (!$?) {
 az `
     deployment sub create `
     --location $EarthFrontendResourceGroupLocation `
-    --template-file subscription-budget.bicep `
-    --parameters @subscription-budget.parameters.json
+    --template-file azure-subscription/subscription-budget.bicep `
+    --parameters @azure-subscription/subscription-budget.parameters.json
+
+if (!$?) {
+    Write-Error "Budget deployment failed."
+    Exit 1
+}
