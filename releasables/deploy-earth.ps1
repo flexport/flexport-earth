@@ -29,6 +29,7 @@ if (!$?) {
 
 az `
     deployment group create `
+    --mode Complete `
     --resource-group $EarthFrontendResourceGroupName `
     --template-file ./frontend/cdn/main.bicep
 
