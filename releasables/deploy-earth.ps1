@@ -18,7 +18,6 @@ $Parameters = '{\"earthFrontendResourceGroupName\":{\"value\":\"' + $EarthFronte
 
 az `
     deployment sub create `
-    --mode Complete `
     --location $EarthFrontendResourceGroupLocation `
     --template-file ./frontend/earth-frontend.bicep `
     --parameters $Parameters
@@ -41,7 +40,6 @@ if (!$?) {
 
 az `
     deployment sub create `
-    --mode Complete `
     --location $EarthFrontendResourceGroupLocation `
     --template-file azure-subscription/subscription-budget.bicep `
     --parameters @azure-subscription/subscription-budget.parameters.json
