@@ -11,6 +11,7 @@ Write-Information "Provisioning Deployer role in Tetant $AzureTenantId..."
 $Parameters = '{\"azureTenantId\":{\"value\":\"' + $AzureTenantId + '\"}}'
 
 az deployment mg create `
+    --mode Complete `
     --location WestUS `
     --management-group-id $AzureTenantId `
     --template-file azure-deployer-role.bicep `
