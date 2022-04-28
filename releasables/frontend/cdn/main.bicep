@@ -30,6 +30,8 @@ param frontDoorEndpointName string = 'afd-${uniqueString(resourceGroup().id)}'
 ])
 param frontDoorSkuName string = 'Standard_AzureFrontDoor'
 
+param customDomainName string
+
 module storage 'modules/storage-static-website.bicep' = {
   name: 'storage'
   params: {
@@ -47,7 +49,7 @@ module frontDoor 'modules/front-door.bicep' = {
     skuName: frontDoorSkuName
     endpointName: frontDoorEndpointName
     originHostName: storage.outputs.staticWebsiteHostName
-    dnsZoneName: 'flexport-earth.com'
+    dnsZoneName: customDomainName
     cnameRecordName: 'www'
   }
 }

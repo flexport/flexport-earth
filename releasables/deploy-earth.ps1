@@ -27,11 +27,20 @@ if (!$?) {
     Exit 1
 }
 
+$CustomDomainName = "flexport-earth.com"
+
+if ($EnvironmentName.ToLower() -ne "prod") {
+    $CustomDomainName = "${EnvironmentName}-${CustomDomainName}"
+}
+
+$CDNParameters = '{\"customDomainName\":{\"value\":\"' + $CustomDomainName.ToLower() + '\"}}'
+
 az `
     deployment group create `
     --mode Complete `
     --resource-group $EarthFrontendResourceGroupName `
-    --template-file ./frontend/cdn/main.bicep
+    --template-file ./frontend/cdn/main.bicep `
+    --parameters $CDNParameters
 
 if (!$?) {
     Write-Error "CDN deployment failed."
