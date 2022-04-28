@@ -47,6 +47,8 @@ module frontDoor 'modules/front-door.bicep' = {
     skuName: frontDoorSkuName
     endpointName: frontDoorEndpointName
     originHostName: storage.outputs.staticWebsiteHostName
+    dnsZoneName: 'flexport-earth.com'
+    cnameRecordName: 'www'
   }
 }
 
