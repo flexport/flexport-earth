@@ -35,7 +35,7 @@ if ($EnvironmentName.ToLower() -ne "prod") {
 
 $CDNParameters = '{\"customDomainName\":{\"value\":\"' + $CustomDomainName.ToLower() + '\"}}'
 
-az `
+$CreateResponseJson = az `
     deployment group create `
     --mode Complete `
     --resource-group $EarthFrontendResourceGroupName `
@@ -46,6 +46,28 @@ if (!$?) {
     Write-Error "CDN deployment failed."
     Exit 1
 }
+
+Write-Output $CreateResponseJson
+$CreateResponseJson | ConvertFrom-Json
+$CreateResponse = $CreateResponseJson | ConvertFrom-Json
+
+$CDNHostname = $CreateResponse.properties.outputs.frontDoorEndpointHostName.value
+$URLToTest = "https://$CDNHostname"
+
+Write-Information "CDN Hostname:    $CDNHostname"
+Write-Information "Custom Homename: ${CustomDomainName}"
+
+$Response = Invoke-WebRequest $URLToTest
+$ResponseContent = $Response.Content
+
+if (-Not ($ResponseContent.Contains("Welcome to Flexport Earth"))) {
+    Write-Error "Did not receive expected response from $URLToTest, instead got: $ResponseContent"
+
+    Exit 1
+}
+
+Write-Information "Received expected response from $URLToTest, test passed!"
+Write-Information ""
 
 az `
     deployment sub create `
