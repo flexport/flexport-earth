@@ -76,7 +76,7 @@ resource deploymentScript 'Microsoft.Resources/deploymentScripts@2020-10-01' = {
   properties: {
     azPowerShellVersion: '5.4'
     scriptContent: loadTextContent('../scripts/enable-storage-static-website.ps1')
-    cleanupPreference: 'OnSuccess'
+    //cleanupPreference: 'OnSuccess'
     retentionInterval: 'PT4H'
     arguments: '-ResourceGroupName ${resourceGroup().name} -StorageAccountName ${accountName} -IndexDocument ${indexDocument} -ErrorDocument404Path ${errorDocument404Path}'
   }
