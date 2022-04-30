@@ -12,7 +12,7 @@ $ctx = $storageAccount.Context
 Enable-AzStorageStaticWebsite -Context $ctx -IndexDocument $IndexDocument -ErrorDocument404Path $ErrorDocument404Path
 
 New-Item $IndexDocument -Force
-Set-Content $IndexDocument '<h1>Welcome to Flexport Earth</h1>'
+Set-Content $IndexDocument '<h1>Welcome to Flexport Earth!</h1>'
 Set-AzStorageBlobContent -Context $ctx -Container '$web' -File $IndexDocument -Blob $IndexDocument -Properties @{'ContentType' = 'text/html'} -Force
 
 New-Item $ErrorDocument404Path -Force
