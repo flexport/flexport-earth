@@ -13,8 +13,8 @@ Enable-AzStorageStaticWebsite -Context $ctx -IndexDocument $IndexDocument -Error
 
 New-Item $IndexDocument -Force
 Set-Content $IndexDocument '<h1>Welcome to Flexport Earth</h1>'
-Set-AzStorageBlobContent -Context $ctx -Container '$web' -File $IndexDocument -Blob $IndexDocument -Properties @{'ContentType' = 'text/html'}
+Set-AzStorageBlobContent -Context $ctx -Container '$web' -File $IndexDocument -Blob $IndexDocument -Properties @{'ContentType' = 'text/html'} -Force
 
 New-Item $ErrorDocument404Path -Force
 Set-Content $ErrorDocument404Path '<h1>Error: 404 Not Found</h1>'
-Set-AzStorageBlobContent -Context $ctx -Container '$web' -File $ErrorDocument404Path -Blob $ErrorDocument404Path -Properties @{'ContentType' = 'text/html'}
+Set-AzStorageBlobContent -Context $ctx -Container '$web' -File $ErrorDocument404Path -Blob $ErrorDocument404Path -Properties @{'ContentType' = 'text/html'} -Force
