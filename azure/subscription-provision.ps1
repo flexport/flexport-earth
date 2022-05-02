@@ -5,11 +5,13 @@ param (
     $AzureSubscriptionName
 )
 
+Set-StrictMode –Version latest
+
 $ErrorActionPreference = "Stop"
 $InformationPreference = "Continue"
 
 # Run dependency management
-. ../releasables/dependencies/dependency-manager.ps1
+. ./releasables/dependencies/dependency-manager.ps1
 
 $SubscriptionDeploymentServicePricipalName = "${AzureSubscriptionName}-earth-deployer".ToLower()
 
@@ -23,7 +25,11 @@ $ServicePrincipalCredentials = az ad sp create-for-rbac `
     --role "Deployer" `
     --scopes "/subscriptions/$SubscriptionId"
 
-$LocalCacheFolder = "../.cache/azure/creds"
+# Load Global Development Settings
+$GlobalDevelopmentSettings = Get-Content 'development-config.json' | ConvertFrom-Json
+$CacheDirectory = $GlobalDevelopmentSettings.CacheDirectory
+
+$LocalCacheFolder = "$CacheDirectory/azure/creds"
 
 if (-Not (Test-Path $LocalCacheFolder)) {
     New-Item -ItemType Directory -Path $LocalCacheFolder

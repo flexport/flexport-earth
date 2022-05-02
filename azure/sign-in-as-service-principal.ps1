@@ -22,8 +22,7 @@ $SubscriptionDeploymentServicePricipalName = "$AzureSubscriptionName-earth-deplo
 $CredsPath = "$CacheDirectory/azure/creds/${SubscriptionDeploymentServicePricipalName}.json"
 
 if (-Not (Test-Path $CredsPath)) {
-    Write-Error "Service Principal cached credentials not found at $.CredsPath."
-    Write-Error "Please run ./provision-azure-subscription.ps1 to create a Service Principal, which will cache the credentials for use."
+    Write-Error "Service Principal cached credentials not found at $.CredsPath. Please run ./azure/subscription-provision.ps1 to create a Service Principal, which will cache the credentials for use."
 }
 
 $ServicePrincipalCredentials = Get-Content -Path $CredsPath | ConvertFrom-Json

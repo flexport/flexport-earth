@@ -30,8 +30,12 @@ if (-Not (Test-Path $LocalSettingsPath)) {
 
     $LocalSettings = [PSCustomObject]@{
         AzureSubscriptionName  = $AzureSubscriptionName
-        EnvironmentName        = $EnvironmentName.ToLower()
+        EnvironmentName        = $EnvironmentName
         EarthWebsiteDomainName = $EarthWebsiteDomainName
+    }
+
+    if (-Not (Test-Path $CacheDirectory)) {
+        New-Item -ItemType Directory -Path $CacheDirectory
     }
 
     $LocalSettings | ConvertTo-Json | Set-Content -Path $LocalSettingsPath 
