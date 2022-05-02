@@ -18,7 +18,7 @@ Your commits must be be [verified](https://docs.github.com/en/authentication/man
 
 ## System Dependencies
 
-1. [PowerShell Core (7.2)](https://docs.microsoft.com/en-us/powershell/scripting/install/installing-powershell)
+1. [PowerShell Core (7.2.3)](https://docs.microsoft.com/en-us/powershell/scripting/install/installing-powershell)
 2. [Azure CLI (2.36.0)](https://docs.microsoft.com/en-us/cli/azure/install-azure-cli)
 
 ## Install Development Tools

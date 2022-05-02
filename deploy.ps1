@@ -8,6 +8,9 @@ $InformationPreference = "Continue"
 
 . ./development-tools/local-config-manager.ps1
 
+Write-Information ""
+Write-Information "Deploying to $($LocalSettings.EnvironmentName)..."
+
 Set-Location $ReleasablesPath
 ./deploy-earth.ps1 `
     -EnvironmentName $LocalSettings.EnvironmentName `

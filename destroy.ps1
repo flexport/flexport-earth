@@ -8,6 +8,9 @@ $InformationPreference = "Continue"
 
 . ./development-tools/local-config-manager.ps1
 
+Write-Information ""
+Write-Information "Destroying $($LocalSettings.EnvironmentName)..."
+
 Set-Location $ReleasablesPath
 ./destroy-earth.ps1 `
     -EnvironmentName $LocalSettings.EnvironmentName
