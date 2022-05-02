@@ -1,7 +1,7 @@
 $ErrorActionPreference = "Stop"
 $InformationPreference = "Continue"
 
-$ExpectedPowerShellVersion = "7.2.2"
+$ExpectedPowerShellVersion = "7.2.3"
 $ExpectedAzureCliVersion = "2.36.0"
 
 $PowerShellVersion = $PSVersionTable.PSVersion
