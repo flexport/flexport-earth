@@ -9,7 +9,6 @@ $InformationPreference = "Continue"
 . ./development-tools/local-config-manager.ps1
 
 Set-Location $ReleasablesPath
-./deploy-earth.ps1 `
-    -EnvironmentName $LocalSettings.EnvironmentName `
-    -EarthWebsiteDomainName $LocalSettings.EarthWebsiteDomainName
+./destroy-earth.ps1 `
+    -EnvironmentName $LocalSettings.EnvironmentName
 Set-Location ".."

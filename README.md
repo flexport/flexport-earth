@@ -32,16 +32,10 @@ You'll need an Azure subscription to deploy to. Once you have one, you can follo
 
 For provisioning new Azure Accounts, Tenants, and Subscriptions, continue [here](azure/README.md).
 
-### Sign In as your Service Principal
-
-    cd azure
-    ./sign-in-as-service-principal.ps1 -AzureSubscriptionName <subscription name here>
-
 ### Deploy your local changes
 
     ./deploy.ps1
 
 ### Clean up your Azure deployment
 
-    cd releaseables
-    ./destroy-earth.ps1 -EnvironmentName <environment name here>
+    ./destroy.ps1
