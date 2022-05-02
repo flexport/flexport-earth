@@ -3,6 +3,8 @@ stages:
   displayName: 'Deploy to ${{ parameters.environmentNameFull }}'
   dependsOn: ${{ parameters.dependsOn }}
   condition: ${{ parameters.deployCondition }}
+  variables:
+  - group: Development
   jobs:
   - deployment: Deploy
     pool:
@@ -20,7 +22,7 @@ stages:
               azureSubscription: ${{ parameters.azureSubscriptionName }}
               workingDirectory: $(releasablesWorkingDirectory)
               scriptType: pscore
-              arguments: '-EnvironmentName ${{ parameters.environmentNameShort }}'
+              arguments: '-EnvironmentName ${{ variables.EnvironmentName }}'
               scriptPath: '$(releasablesWorkingDirectory)/deploy-earth.ps1'
 
   - deployment: Destroy
