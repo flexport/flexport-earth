@@ -9,7 +9,7 @@ $InformationPreference = "Continue"
 # Install required tools
 ./development-tools/install-development-tools.ps1
 
-$Results = Invoke-ScriptAnalyzer -Path ** 
+$Results = Invoke-ScriptAnalyzer -Path **
 
 if ($Results) {
     $Results
