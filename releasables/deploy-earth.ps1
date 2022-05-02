@@ -2,7 +2,11 @@
 param (
     [Parameter(Mandatory=$true)]
     [String]
-    $EnvironmentName
+    $EnvironmentName,
+
+    [Parameter(Mandatory=$true)]
+    [String]
+    $EarthWebsiteDomainName
 )
 
 $ErrorActionPreference = "Stop"
@@ -46,48 +50,49 @@ function Update-FrontendResourceGroup {
 
 # Performs Create if doesn't exist.
 function Update-Frontend {
-    $CustomDomainName = "flexport-earth.com"
+    [CmdletBinding()]
+    Param(
+        [string]$CustomDomainName
+    )
 
-    if ($EnvironmentName.ToLower() -ne "prod") {
-        $CustomDomainName = "${EnvironmentName}-${CustomDomainName}"
-    }
-    
-    $CDNParameters = '{\"customDomainName\":{\"value\":\"' + $CustomDomainName.ToLower() + '\"}}'
-    
-    $CreateResponseJson = az deployment group create `
-        --mode Complete `
-        --resource-group $EarthFrontendResourceGroupName `
-        --template-file ./frontend/cdn/main.bicep `
-        --parameters $CDNParameters
-    
-    if (!$?) {
-        Write-Error "CDN deployment failed."
-        Exit 1
-    }
-    
-    Write-Output $CreateResponseJson
-    $CreateResponseJson | ConvertFrom-Json
-    $CreateResponse = $CreateResponseJson | ConvertFrom-Json
-    
-    $CDNHostname = $CreateResponse.properties.outputs.frontDoorEndpointHostName.value
-    $URLToTest = "https://$CDNHostname"
-    
-    Write-Information "CDN Hostname:    $CDNHostname"
-    Write-Information "Custom Homename: ${CustomDomainName}"
-    
-    $Response = Invoke-WebRequest $URLToTest
-    $ResponseContent = $Response.Content
-    
-    if (-Not ($ResponseContent.Contains("Welcome to Flexport Earth"))) {
-        Write-Error "Did not receive expected response from $URLToTest, instead got: $ResponseContent"
-    
-        Exit 1
-    }
-    
-    Write-Information "Received expected response from $URLToTest, test passed!"
-    Write-Information ""    
+    process {
+        $CDNParameters = '{\"customDomainName\":{\"value\":\"' + $CustomDomainName.ToLower() + '\"}}'
+        
+        $CreateResponseJson = az deployment group create `
+            --mode Complete `
+            --resource-group $EarthFrontendResourceGroupName `
+            --template-file ./frontend/cdn/main.bicep `
+            --parameters $CDNParameters
+        
+        if (!$?) {
+            Write-Error "CDN deployment failed."
+            Exit 1
+        }
+        
+        Write-Output $CreateResponseJson
+        $CreateResponseJson | ConvertFrom-Json
+        $CreateResponse = $CreateResponseJson | ConvertFrom-Json
+        
+        $CDNHostname = $CreateResponse.properties.outputs.frontDoorEndpointHostName.value
+        $URLToTest = "https://$CDNHostname"
+        
+        Write-Information "CDN Hostname:    $CDNHostname"
+        Write-Information "Custom Homename: ${CustomDomainName}"
+        
+        $Response = Invoke-WebRequest $URLToTest
+        $ResponseContent = $Response.Content
+        
+        if (-Not ($ResponseContent.Contains("Welcome to Flexport Earth"))) {
+            Write-Error "Did not receive expected response from $URLToTest, instead got: $ResponseContent"
+        
+            Exit 1
+        }
+        
+        Write-Information "Received expected response from $URLToTest, test passed!"
+        Write-Information ""
+    } 
 }
 
 Update-SubscriptionBudget
 Update-FrontendResourceGroup
-Update-Frontend
+Update-Frontend -CustomDomainName $EarthWebsiteDomainName
