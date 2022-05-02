@@ -19,6 +19,7 @@ stages:
 
     steps:
     - pwsh: ./build.ps1
+      displayName: 'Build Script'
 
     - script: 'echo "$(Build.DefinitionName), $(Build.BuildId), $(Build.BuildNumber)" > buildinfo.txt'
       displayName: 'Write build info to build artifacts'
