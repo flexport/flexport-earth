@@ -5,15 +5,21 @@ param (
     $AzureSubscriptionName
 )
 
+Set-StrictMode –Version latest
+
 $ErrorActionPreference = "Stop"
 $InformationPreference = "Continue"
 
 # Run dependency management
-. ../releasables/dependencies/dependency-manager.ps1
+. ./releasables/dependencies/dependency-manager.ps1
+
+# Load Global Development Settings
+$GlobalDevelopmentSettings = Get-Content 'development-config.json' | ConvertFrom-Json
+$CacheDirectory = $GlobalDevelopmentSettings.CacheDirectory
 
 $SubscriptionDeploymentServicePricipalName = "$AzureSubscriptionName-earth-deployer".ToLower()
 
-$CredsPath = "../.cache/azure/creds/${SubscriptionDeploymentServicePricipalName}.json"
+$CredsPath = "$CacheDirectory/azure/creds/${SubscriptionDeploymentServicePricipalName}.json"
 
 if (-Not (Test-Path $CredsPath)) {
     Write-Error "Service Principal cached credentials not found at $.CredsPath."

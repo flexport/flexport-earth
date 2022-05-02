@@ -9,6 +9,8 @@ param (
     $EarthWebsiteDomainName
 )
 
+Set-StrictMode –Version latest
+
 $ErrorActionPreference = "Stop"
 $InformationPreference = "Continue"
 

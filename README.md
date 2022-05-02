@@ -39,8 +39,7 @@ For provisioning new Azure Accounts, Tenants, and Subscriptions, continue [here]
 
 ### Deploy your local changes
 
-    cd releaseables
-    ./deploy-earth.ps1 -EnvironmentName <environment name here>
+    ./deploy.ps1
 
 ### Clean up your Azure deployment
 
