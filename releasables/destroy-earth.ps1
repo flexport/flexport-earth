@@ -1,4 +1,4 @@
-[CmdletBinding()]
+﻿[CmdletBinding()]
 param (
     [Parameter(Mandatory=$true)]
     [String]
@@ -13,6 +13,8 @@ $InformationPreference = "Continue"
 
 # Load common configuration values
 . ./earth-config.ps1
+
+Write-Information "Destroying $EnvironmentName environment..."
 
 az `
     group delete --name $EarthFrontendResourceGroupName `

@@ -1,2 +1,2 @@
-$EarthFrontendResourceGroupName     = "$EnvironmentName-earth-frontend".ToLower()
+﻿$EarthFrontendResourceGroupName     = "$EnvironmentName-earth-frontend".ToLower()
 $EarthFrontendResourceGroupLocation = "WestUS"
