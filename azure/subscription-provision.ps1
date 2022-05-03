@@ -15,7 +15,13 @@ $InformationPreference = "Continue"
 
 $SubscriptionDeploymentServicePricipalName = "${AzureSubscriptionName}-earth-deployer".ToLower()
 
-$SubscriptionId = (az account show --subscription $AzureSubscriptionName | ConvertFrom-Json).id
+$Result = az account show --subscription $AzureSubscriptionName
+
+if (!$?) {
+    Write-Error "Failed to show the account. Run 'az login' and then try again."
+}
+
+$SubscriptionId = ($Result | ConvertFrom-Json).id
 
 Write-Information "Provisioning subscription $AzureSubscriptionName (id: $SubscriptionId) ..."
 Write-Information "- Provisioning $SubscriptionDeploymentServicePricipalName service principle..."
@@ -41,4 +47,4 @@ $ServicePrincipalCredentials | Out-File -FilePath $CredsPath
 Write-Information ""
 Write-Information "Service Principal created! Credentials have been stored in $CredsPath"
 Write-Information ""
-Write-Information "If $AzureSubscriptionName is an Azure DevOps managed environment, then save the above Service Principal details as a Service Connection here: https://matthew-thomas.visualstudio.com/Earth/_settings/adminservices"
+Write-Information "If $AzureSubscriptionName is an Azure DevOps managed environment, then save the above Service Principal details as a Service Connection here: https://dev.azure.com/flexport-earth/Earth/_settings/adminservices"

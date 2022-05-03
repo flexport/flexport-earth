@@ -21,10 +21,13 @@ Your commits must be be [verified](https://docs.github.com/en/authentication/man
 1. [PowerShell Core (7.2.3)](https://docs.microsoft.com/en-us/powershell/scripting/install/installing-powershell)
 2. [Azure CLI (2.36.0)](https://docs.microsoft.com/en-us/cli/azure/install-azure-cli)
 
+## Start a PowerShell Console
+
+    pwsh
+
 ## Install Development Tools
 
-    cd development-tools
-    ./install-development-tools.ps1
+    ./development-tools/install-development-tools.ps1
 
 ## Azure
 
