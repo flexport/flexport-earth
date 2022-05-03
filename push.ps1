@@ -6,13 +6,26 @@ $InformationPreference = "Continue"
 # Run dependency management
 . ./releasables/dependencies/dependency-manager.ps1
 
+# Make sure there's no pending changes.
+$GitStatus = git status
+
+if (-Not ($GitStatus -like "*nothing to commit*")) {
+    Write-Error "You have pending changes that need to be committed."
+}
+
+# Make sure we're testing with latest from origin/main.
 git fetch origin main
 
 $CurrentBranchName = git rev-parse --abbrev-ref HEAD
-$CommitsBehindOriginMain = git rev-list --count origin/main...$CurrentBranchName
+$DiffCounts = ((git rev-list --left-right --count origin/main...$CurrentBranchName) -split '\t')
+$CommitsBehindOriginMain = $DiffCounts[0]
 
 if ($CommitsBehindOriginMain -gt 0) {
     Write-Error "The current branch is behind origin/main by $CommitsBehindOriginMain, please update it before continuing."
 }
 
 ./build.ps1
+./deploy.ps1
+./destroy.ps1
+
+git push

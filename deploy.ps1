@@ -9,7 +9,7 @@ $InformationPreference = "Continue"
 . ./development-tools/local-config-manager.ps1
 
 try {
-    Set-Location $ReleasablesPath
+    Push-Location $ReleasablesPath
 
     ./deploy-earth.ps1 `
         -EnvironmentName        $LocalSettings.EnvironmentName `
