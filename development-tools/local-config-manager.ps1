@@ -1,4 +1,4 @@
-Set-StrictMode –Version latest
+﻿Set-StrictMode –Version latest
 
 $ErrorActionPreference = "Stop"
 $InformationPreference = "Continue"
@@ -38,13 +38,13 @@ if (-Not (Test-Path $LocalSettingsPath)) {
         New-Item -ItemType Directory -Path $CacheDirectory
     }
 
-    $LocalSettings | ConvertTo-Json | Set-Content -Path $LocalSettingsPath 
+    $LocalSettings | ConvertTo-Json | Set-Content -Path $LocalSettingsPath
 }
 
 $LocalSettingsJson = Get-Content $LocalSettingsPath
 
 Write-Information "Local Settings Loaded:"
-$LocalSettingsJson 
+$LocalSettingsJson
 
 $LocalSettings = $LocalSettingsJson | ConvertFrom-Json
 
@@ -56,7 +56,7 @@ $ConfiguredAzureSubscriptionName = $LocalSettings.AzureSubscriptionName
 
 if ($CurrentAzureSubscriptionName -ne $ConfiguredAzureSubscriptionName) {
     Write-Information "You're currently signed into $CurrentAzureSubscriptionName, but your configured Azure Subscription Name is $ConfiguredAzureSubscriptionName"
-    
+
     $Answer = Read-Host "Do you want to sign into $ConfiguredAzureSubscriptionName ?"
 
     if ($Answer.ToLower() -eq 'y') {

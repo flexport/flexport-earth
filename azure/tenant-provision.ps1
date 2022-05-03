@@ -1,4 +1,4 @@
-$ErrorActionPreference = "Stop"
+﻿$ErrorActionPreference = "Stop"
 $InformationPreference = "Continue"
 
 # Run dependency management
@@ -14,4 +14,4 @@ az deployment mg create `
     --location WestUS `
     --management-group-id $AzureTenantId `
     --template-file azure-deployer-role.bicep `
-    --parameters $Parameters 
+    --parameters $Parameters

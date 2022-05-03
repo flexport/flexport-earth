@@ -1,4 +1,4 @@
-[CmdletBinding()]
+﻿[CmdletBinding()]
 param (
     [Parameter(Mandatory=$true)]
     [String]
@@ -16,19 +16,26 @@ $SubscriptionId = (az account show --subscription $AzureSubscriptionName | Conve
 Write-Information "Deprovisioning subscription $AzureSubscriptionName (id: $SubscriptionId) ..."
 
 function Remove-DeployerServicePrincipal {
-    $SubscriptionDeploymentServicePricipalName = "$AzureSubscriptionName-earth-deployer".ToLower()
-    
-    $ServicePrincipalId = (
-        az ad sp list `
-            --filter "displayname eq '$SubscriptionDeploymentServicePricipalName'" | ConvertFrom-Json
-    ).appId
+    [CmdletBinding(SupportsShouldProcess)]
+    Param()
 
-    if ($ServicePrincipalId) {
-        Write-Information "Deprovisioning $SubscriptionDeploymentServicePricipalName Service Principal (id: $ServicePrincipalId) ..."
+    process {
+        if($PSCmdlet.ShouldProcess($AzureSubscriptionName)) {
+            $SubscriptionDeploymentServicePricipalName = "$AzureSubscriptionName-earth-deployer".ToLower()
 
-        az ad sp delete --id $ServicePrincipalId
-        
-        Write-Information "Service Principal $SubscriptionDeploymentServicePricipalName (id: $ServicePrincipalId) deleted."
+            $ServicePrincipalId = (
+                az ad sp list `
+                    --filter "displayname eq '$SubscriptionDeploymentServicePricipalName'" | ConvertFrom-Json
+            ).appId
+
+            if ($ServicePrincipalId) {
+                Write-Information "Deprovisioning $SubscriptionDeploymentServicePricipalName Service Principal (id: $ServicePrincipalId) ..."
+
+                az ad sp delete --id $ServicePrincipalId
+
+                Write-Information "Service Principal $SubscriptionDeploymentServicePricipalName (id: $ServicePrincipalId) deleted."
+            }
+        }
     }
 }
 
