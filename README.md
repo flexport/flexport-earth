@@ -10,7 +10,7 @@ All instructions below are tested to work for:
 2. Fork this repo.
 3. Update your remotes:
 
-    `git remote set-url --push https://github.com/<your-username-here>/flexport-earth.git`
+    `git remote set-url --push origin https://github.com/<your-username-here>/flexport-earth.git`
 
 Note:
 
@@ -42,3 +42,9 @@ For provisioning new Azure Accounts, Tenants, and Subscriptions, continue [here]
 ### Clean up your Azure deployment
 
     ./destroy.ps1
+
+### Pushing Changes
+
+Once you've made some changes and committed them, you can push them remotely using the push script:
+
+    ./push.ps1
