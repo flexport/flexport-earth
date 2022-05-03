@@ -5,6 +5,8 @@ param (
     $EnvironmentName
 )
 
+Set-StrictMode –Version latest
+
 $ErrorActionPreference = "Stop"
 $InformationPreference = "Continue"
 
