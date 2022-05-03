@@ -1,4 +1,6 @@
-﻿$EarthFrontendResourceGroupName     = "$EnvironmentName-earth-frontend".ToLower()
+﻿Set-StrictMode –Version latest
+
+$EarthFrontendResourceGroupName     = "$EnvironmentName-earth-frontend".ToLower()
 $EarthFrontendResourceGroupLocation = "WestUS"
 
 Write-Verbose "EarthFrontendResourceGroupLocation: $EarthFrontendResourceGroupLocation"
