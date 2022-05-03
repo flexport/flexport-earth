@@ -8,7 +8,12 @@ $InformationPreference = "Continue"
 
 . ./development-tools/local-config-manager.ps1
 
-Set-Location $ReleasablesPath
-./destroy-earth.ps1 `
-    -EnvironmentName $LocalSettings.EnvironmentName
-Set-Location ".."
+try {
+    Set-Location $ReleasablesPath
+
+    ./destroy-earth.ps1 `
+        -EnvironmentName $LocalSettings.EnvironmentName
+}
+finally {
+    Pop-Location
+}
