@@ -17,7 +17,7 @@ if (-Not ($GitStatus -like "*nothing to commit*")) {
 git fetch origin main
 
 $CurrentBranchName = git rev-parse --abbrev-ref HEAD
-$DiffCounts = (git rev-list --left-right --count origin/main...$CurrentBranchName).Split('\t')
+$DiffCounts = (git rev-list --left-right --count origin/main...$CurrentBranchName).Split('`t')
 $CommitsBehindOriginMain = $DiffCounts[0]
 
 if ($CommitsBehindOriginMain -gt 0) {
