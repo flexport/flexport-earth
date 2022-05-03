@@ -9,6 +9,8 @@ $InformationPreference = "Continue"
 # Make sure there's no pending changes.
 $GitStatus = git status
 
+$GitStatus
+
 if (-Not ($GitStatus.Contains("nothing to commit"))) {
     Write-Error "You have pending changes that need to be committed."
 }
