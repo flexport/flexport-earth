@@ -9,7 +9,7 @@ $ErrorActionPreference = "Stop"
 $InformationPreference = "Continue"
 
 # Run dependency management
-. ../releasables/dependencies/dependency-manager.ps1
+. ./releasables/dependencies/dependency-manager.ps1
 
 $SubscriptionId = (az account show --subscription $AzureSubscriptionName | ConvertFrom-Json).id
 
