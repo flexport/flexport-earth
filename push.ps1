@@ -9,8 +9,6 @@ $InformationPreference = "Continue"
 # Make sure there's no pending changes.
 $GitStatus = git status
 
-$GitStatus
-
 if (-Not ($GitStatus -like "*nothing to commit*")) {
     Write-Error "You have pending changes that need to be committed."
 }
@@ -19,7 +17,8 @@ if (-Not ($GitStatus -like "*nothing to commit*")) {
 git fetch origin main
 
 $CurrentBranchName = git rev-parse --abbrev-ref HEAD
-$CommitsBehindOriginMain = git rev-list --count origin/main...$CurrentBranchName
+$DiffCounts = (git rev-list --left-right --count origin/main...$CurrentBranchName).Split('\t')
+$CommitsBehindOriginMain = $DiffCounts[0]
 
 if ($CommitsBehindOriginMain -gt 0) {
     Write-Error "The current branch is behind origin/main by $CommitsBehindOriginMain, please update it before continuing."
