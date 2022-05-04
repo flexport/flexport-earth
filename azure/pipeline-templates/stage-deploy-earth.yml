@@ -24,13 +24,11 @@ stages:
               scriptType: pscore
               arguments: '-EnvironmentName ${{ parameters.environmentNameShort }} -EarthWebsiteDomainName $(EarthWebsiteDomainName)'
               scriptPath: '$(releasablesWorkingDirectory)/deploy-earth.ps1'
-          - task: PowerShell@2
+          - pwsh:
             displayName: 'Test ${{ parameters.environmentNameFull }}'
-            inputs:
-              workingDirectory: $(releasablesWorkingDirectory)
-              scriptType: pscore
-              arguments: '-EnvironmentName ${{ parameters.environmentNameShort }} -EarthWebsiteDomainName $(EarthWebsiteDomainName)'
-              scriptPath: '$(releasablesWorkingDirectory)/test-earth.ps1'
+            workingDirectory: $(releasablesWorkingDirectory)
+            arguments: '-EnvironmentName ${{ parameters.environmentNameShort }} -EarthWebsiteDomainName $(EarthWebsiteDomainName)'
+            filePath: '$(releasablesWorkingDirectory)/test-earth.ps1'
 
   - deployment: Destroy
     dependsOn: Deploy
