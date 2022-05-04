@@ -80,13 +80,13 @@ function Update-Frontend {
         [string]$CustomDomainName
     )
 
-    process {       
+    process {
         if($PSCmdlet.ShouldProcess($CustomDomainName)) {
             $URLToTest = $null
 
             if (-Not ($CustomDomainName)) {
                 # If no custom domain was specified to be used,
-                # generate a fake one for the sake of configuring the CDN in a way 
+                # generate a fake one for the sake of configuring the CDN in a way
                 # that is consistent with production.
 
                 # But fall back to using the CDNs domain name for actual testing.
