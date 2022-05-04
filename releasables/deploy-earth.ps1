@@ -4,9 +4,9 @@ param (
     [String]
     $EnvironmentName,
 
-    [Parameter(Mandatory=$true)]
+    [Parameter(Mandatory=$false)]
     [String]
-    $EarthWebsiteDomainName
+    $EarthWebsiteCustomDomainName
 )
 
 Set-StrictMode –Version latest
@@ -71,11 +71,30 @@ function Update-FrontendResourceGroup {
 function Update-Frontend {
     [CmdletBinding(SupportsShouldProcess)]
     Param(
+        [Parameter(Mandatory=$true)]
+        [String]
+        $EnvironmentName,
+
+        [Parameter(Mandatory=$false)]
+        [String]
         [string]$CustomDomainName
     )
 
-    process {
+    process {       
         if($PSCmdlet.ShouldProcess($CustomDomainName)) {
+            $URLToTest = $null
+
+            if (-Not ($CustomDomainName)) {
+                # If no custom domain was specified to be used,
+                # generate a fake one for the sake of configuring the CDN in a way 
+                # that is consistent with production.
+
+                # But fall back to using the CDNs domain name for actual testing.
+                $CustomDomainName = "$EnvironmentName-flexport-earth.com"
+            } else {
+                $URLToTest = "https://$CustomDomainName"
+            }
+
             $CDNParameters = '{\"customDomainName\":{\"value\":\"' + $CustomDomainName.ToLower() + '\"}}'
 
             $CreateResponseJson = az deployment group create `
@@ -86,15 +105,15 @@ function Update-Frontend {
 
             if (!$?) {
                 Write-Error "CDN deployment failed."
-                Exit 1
             }
 
-            Write-Output $CreateResponseJson
-            $CreateResponseJson | ConvertFrom-Json
             $CreateResponse = $CreateResponseJson | ConvertFrom-Json
 
             $CDNHostname = $CreateResponse.properties.outputs.frontDoorEndpointHostName.value
-            $URLToTest = "https://$CDNHostname"
+
+            if (-Not ($URLToTest)) {
+                $URLToTest = "https://$CDNHostname"
+            }
 
             Write-Information "CDN Hostname:    $CDNHostname"
             Write-Information "Custom Homename: ${CustomDomainName}"
@@ -104,16 +123,23 @@ function Update-Frontend {
 
             if (-Not ($ResponseContent.Contains("Welcome to Flexport Earth"))) {
                 Write-Error "Did not receive expected response from $URLToTest, instead got: $ResponseContent"
-
-                Exit 1
             }
 
-            Write-Information "Received expected response from $URLToTest, test passed!"
             Write-Information ""
+            Write-Information "Received 200 response from $URLToTest, website is alive!"
+            Write-Information ""
+
+            Return $URLToTest
         }
     }
 }
 
 Update-SubscriptionBudget
 Update-FrontendResourceGroup
-Update-Frontend -CustomDomainName $EarthWebsiteDomainName
+
+$EarthWebsiteUrl = Update-Frontend `
+    -EnvironmentName  $EnvironmentName `
+    -CustomDomainName $EarthWebsiteCustomDomainName
+
+./test-earth.ps1 `
+    -EarthWebsiteUrl $EarthWebsiteUrl
