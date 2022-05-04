@@ -22,15 +22,8 @@ stages:
               azureSubscription: ${{ parameters.azureSubscriptionName }}
               workingDirectory: $(releasablesWorkingDirectory)
               scriptType: pscore
-              arguments: '-EnvironmentName ${{ parameters.environmentNameShort }} -EarthWebsiteDomainName $(EarthWebsiteDomainName)'
+              arguments: '-EnvironmentName ${{ parameters.environmentNameShort }} -EarthWebsiteCustomDomainName $(EarthWebsiteDomainName)'
               scriptPath: '$(releasablesWorkingDirectory)/deploy-earth.ps1'
-          - task: PowerShell@2
-            displayName: 'Test ${{ parameters.environmentNameFull }}'
-            inputs:
-              workingDirectory: $(releasablesWorkingDirectory)
-              pwsh: true
-              arguments: '-EnvironmentName ${{ parameters.environmentNameShort }} -EarthWebsiteDomainName $(EarthWebsiteDomainName)'
-              filePath: '$(releasablesWorkingDirectory)/test-earth.ps1'
 
   - deployment: Destroy
     dependsOn: Deploy

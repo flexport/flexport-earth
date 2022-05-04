@@ -3,11 +3,7 @@
 param (
     [Parameter(Mandatory=$true)]
     [String]
-    $EnvironmentName,
-
-    [Parameter(Mandatory=$true)]
-    [String]
-    $EarthWebsiteDomainName
+    $EarthWebsiteUrl
 )
 
 Set-StrictMode –Version latest
@@ -18,11 +14,8 @@ $InformationPreference = "Continue"
 # Run dependency management
 . ./dependencies/dependency-manager.ps1
 
-# Load common configuration values
-. ./earth-config.ps1
-
 Write-Information ""
-Write-Information "Testing Earth in $EnvironmentName environment..."
+Write-Information "Testing Earth at $EarthWebsiteUrl"
 
 Write-Information ""
 Write-Information "Installing Cypress..."
@@ -31,4 +24,4 @@ Write-Information "Cypress installed!"
 Write-Information ""
 Write-Information "Running tests..."
 
-Invoke-Expression "$(npm bin)/cypress run --env EARTH_WEBSITE_URL=https://$EarthWebsiteDomainName"
+Invoke-Expression "$(npm bin)/cypress run --env EARTH_WEBSITE_URL=$EarthWebsiteUrl"

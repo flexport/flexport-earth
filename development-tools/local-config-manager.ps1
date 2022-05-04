@@ -20,18 +20,14 @@ if (-Not (Test-Path $LocalSettingsPath)) {
     Write-Information "Your local settings have not been configured yet at $LocalSettingsPath, let's configure them now..."
     Write-Information ""
 
-    $AzureSubscriptionName  = Read-Host "What is the name of the Azure Subscription you'll deploy to?"
-    $EnvironmentName        = (Read-Host "What is the name of the Environment to create within your Azure Subscription (short single words preferred)?").ToLower()
-    $EarthWebsiteDomainName = Read-Host "What domain name to use for the Earth Website? (enter for default: $EnvironmentName-flexport-earth.com)"
-
-    if (-Not ($EarthWebsiteDomainName)) {
-        $EarthWebsiteDomainName = "$EnvironmentName-flexport-earth.com"
-    }
+    $AzureSubscriptionName        = Read-Host "What is the name of the Azure Subscription you'll deploy to?"
+    $EnvironmentName              = (Read-Host "What is the name of the Environment to create within your Azure Subscription (short single words preferred)?").ToLower()
+    $EarthWebsiteCustomDomainName = Read-Host "What custom domain name to use for the Earth Website, if any? (enter for none)"
 
     $LocalSettings = [PSCustomObject]@{
-        AzureSubscriptionName  = $AzureSubscriptionName
-        EnvironmentName        = $EnvironmentName
-        EarthWebsiteDomainName = $EarthWebsiteDomainName
+        AzureSubscriptionName        = $AzureSubscriptionName
+        EnvironmentName              = $EnvironmentName
+        EarthWebsiteCustomDomainName = $EarthWebsiteCustomDomainName
     }
 
     if (-Not (Test-Path $CacheDirectory)) {

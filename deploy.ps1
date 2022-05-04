@@ -12,8 +12,8 @@ try {
     Push-Location $ReleasablesPath
 
     ./deploy-earth.ps1 `
-        -EnvironmentName        $LocalSettings.EnvironmentName `
-        -EarthWebsiteDomainName $LocalSettings.EarthWebsiteDomainName
+        -EnvironmentName              $LocalSettings.EnvironmentName `
+        -EarthWebsiteCustomDomainName $LocalSettings.EarthWebsiteCustomDomainName
 }
 finally {
     Pop-Location
