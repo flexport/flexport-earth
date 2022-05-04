@@ -26,9 +26,10 @@ stages:
               scriptPath: '$(releasablesWorkingDirectory)/deploy-earth.ps1'
           - pwsh:
             displayName: 'Test ${{ parameters.environmentNameFull }}'
-            workingDirectory: $(releasablesWorkingDirectory)
-            arguments: '-EnvironmentName ${{ parameters.environmentNameShort }} -EarthWebsiteDomainName $(EarthWebsiteDomainName)'
-            filePath: '$(releasablesWorkingDirectory)/test-earth.ps1'
+            inputs:
+              workingDirectory: $(releasablesWorkingDirectory)
+              arguments: '-EnvironmentName ${{ parameters.environmentNameShort }} -EarthWebsiteDomainName $(EarthWebsiteDomainName)'
+              filePath: '$(releasablesWorkingDirectory)/test-earth.ps1'
 
   - deployment: Destroy
     dependsOn: Deploy
