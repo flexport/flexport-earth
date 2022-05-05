@@ -25,3 +25,7 @@ Write-Information ""
 Write-Information "Running tests..."
 
 Invoke-Expression "$(npm bin)/cypress run --env EARTH_WEBSITE_URL=$EarthWebsiteUrl"
+
+if ($LastExitCode -ne 0) {
+    Write-Error "Testing failed!"
+}

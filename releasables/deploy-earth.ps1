@@ -92,7 +92,7 @@ function Update-Frontend {
                 # But fall back to using the CDNs domain name for actual testing.
                 $CustomDomainName = "$EnvironmentName-flexport-earth.com"
             } else {
-                $URLToTest = "https://$CustomDomainName"
+                $URLToTest = "https://www.$CustomDomainName"
             }
 
             $CDNParameters = '{\"customDomainName\":{\"value\":\"' + $CustomDomainName.ToLower() + '\"}}'
@@ -116,18 +116,45 @@ function Update-Frontend {
             }
 
             Write-Information "CDN Hostname:    $CDNHostname"
-            Write-Information "Custom Homename: ${CustomDomainName}"
+            Write-Information "Custom Homename: $CustomDomainName"
+            Write-Information "URL to Test:     $URLToTest"
 
-            $Response = Invoke-WebRequest $URLToTest
-            $ResponseContent = $Response.Content
+            # When the CDN infrastructure is first deployed, the content isn't immediately available
+            # and so the first few initial requests will fail. Perform the livliness test in a loop
+            # to give the CDN a chance to start up.
+            $WebsiteIsAlive = $false
 
-            if (-Not ($ResponseContent.Contains("Welcome to Flexport Earth"))) {
-                Write-Error "Did not receive expected response from $URLToTest, instead got: $ResponseContent"
+            for ($i = 0; $i -lt 10; $i++)
+            {
+                try {
+                    $Response = Invoke-WebRequest $URLToTest
+                    $StatusCode = $Response.StatusCode
+                    $Content = $Response.Content
+                    $ContentContainsPageNotFoundText = $Content.Contains("Page not found")
+
+                    Write-Information "$i : Received HTTP Status Code: $StatusCode, ContentContainsPageNotFoundText: $ContentContainsPageNotFoundText"
+
+                    if ($StatusCode -eq 200 -and $ContentContainsPageNotFoundText -eq $false) {
+                        Write-Information ""
+                        Write-Information "Received successful response from $URLToTest, website is alive!"
+                        Write-Information ""
+                        Write-Information "Response Content:"
+                        Write-Information $Content
+
+                        $WebsiteIsAlive = $true
+                        break
+                    }
+                } catch {
+                    Write-Information "Invoke-WebRequest failed:"
+                    Write-Information $_
+                }
+
+                Start-Sleep -Seconds 5
             }
 
-            Write-Information ""
-            Write-Information "Received 200 response from $URLToTest, website is alive!"
-            Write-Information ""
+            if ($WebsiteIsAlive -eq $false) {
+                Write-Error "$URLToTest failed to respond successfully after many attempts."
+            }
 
             Return $URLToTest
         }
