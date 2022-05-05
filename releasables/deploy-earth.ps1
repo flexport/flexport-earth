@@ -130,9 +130,11 @@ function Update-Frontend {
                     $Response = Invoke-WebRequest $URLToTest
                     $StatusCode = $Response.StatusCode
                     $Content = $Response.Content
-                    Write-Information "$i : Received HTTP Status Code: $StatusCode"
+                    $ContentContainsPageNotFoundText = $Content.Contains("Page not found")
 
-                    if ($StatusCode -eq 200) {
+                    Write-Information "$i : Received HTTP Status Code: $StatusCode, ContentContainsPageNotFoundText: $ContentContainsPageNotFoundText"
+
+                    if ($StatusCode -eq 200 -and $ContentContainsPageNotFoundText -eq $false) {
                         Write-Information ""
                         Write-Information "Received successful response from $URLToTest, website is alive!"
                         Write-Information ""
