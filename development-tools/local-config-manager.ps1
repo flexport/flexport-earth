@@ -47,8 +47,16 @@ $LocalSettings = $LocalSettingsJson | ConvertFrom-Json
 Write-Information ""
 Write-Information "Ensuring you're signed into the correct Azure Subscription..."
 
-$CurrentAzureSubscriptionName    = (az account show | ConvertFrom-Json).name
 $ConfiguredAzureSubscriptionName = $LocalSettings.AzureSubscriptionName
+
+$AzAccountShowResults = az account show
+
+if (-Not ($AzAccountShowResults)) {
+    Write-Information "Signing in as $ConfiguredAzureSubscriptionName..."
+    ./azure/sign-in-as-service-principal.ps1 -AzureSubscriptionName $ConfiguredAzureSubscriptionName
+}
+
+$CurrentAzureSubscriptionName    = (az account show | ConvertFrom-Json).name
 
 if ($CurrentAzureSubscriptionName -ne $ConfiguredAzureSubscriptionName) {
     Write-Information "You're currently signed into $CurrentAzureSubscriptionName, but your configured Azure Subscription Name is $ConfiguredAzureSubscriptionName"
