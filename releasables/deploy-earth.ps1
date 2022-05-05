@@ -126,17 +126,25 @@ function Update-Frontend {
 
             for ($i = 0; $i -lt 10; $i++)
             {
-                $Response = Invoke-WebRequest $URLToTest
-                $StatusCode = $Response.StatusCode
-                Write-Information "$i : Received HTTP Status Code: $StatusCode"
+                try {
+                    $Response = Invoke-WebRequest $URLToTest
+                    $StatusCode = $Response.StatusCode
+                    $Content = $Response.Content
+                    Write-Information "$i : Received HTTP Status Code: $StatusCode"
 
-                if ($StatusCode -eq 200) {
-                    Write-Information ""
-                    Write-Information "Received successful response from $URLToTest, website is alive!"
-                    Write-Information ""
+                    if ($StatusCode -eq 200) {
+                        Write-Information ""
+                        Write-Information "Received successful response from $URLToTest, website is alive!"
+                        Write-Information ""
+                        Write-Information "Response Content:"
+                        Write-Information $Content
 
-                    $WebsiteIsAlive = $true
-                    break
+                        $WebsiteIsAlive = $true
+                        break
+                    }
+                } catch {
+                    Write-Information "Invoke-WebRequest failed:"
+                    Write-Information $_
                 }
 
                 Start-Sleep -Seconds 5
