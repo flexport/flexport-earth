@@ -30,11 +30,24 @@ function Update-SubscriptionBudget {
 
     process {
         if($PSCmdlet.ShouldProcess($EarthFrontendResourceGroupLocation)) {
+            $StartDate = (Get-Date).ToString("yyyy-MM-01")
+            $EndDate   = (Get-Date).AddYears(2).ToString("yyyy-MM-dd")
+
+            $Parameters = [PSCustomObject]@{
+                budgetName = @{ value = "$EnvironmentName-subscription-budget" }
+                startDate  = @{ value = "$StartDate" }
+                endDate    = @{ value = "$EndDate" }
+            }
+
+            $ParametersJson = $Parameters | ConvertTo-Json
+            $ParametersJson = $ParametersJson.Replace('"', '\"')
+
             az `
                 deployment sub create `
                 --location $EarthFrontendResourceGroupLocation `
                 --template-file azure-subscription/subscription-budget.bicep `
-                --parameters @azure-subscription/subscription-budget.parameters.json
+                --parameters @azure-subscription/subscription-budget.parameters.json `
+                --parameters $ParametersJson
 
             if (!$?) {
                 Write-Error "Budget deployment failed."
