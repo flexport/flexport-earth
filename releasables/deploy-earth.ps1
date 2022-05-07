@@ -132,7 +132,7 @@ function Update-Frontend {
                 --container '$web' `
                 --delete-destination true
 
-            Write-Verbose $Output
+            Write-Verbose $Output.ToString()
 
             if (!$?) {
                 Write-Error "Website content upload failed."
