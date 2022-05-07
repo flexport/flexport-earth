@@ -13,5 +13,5 @@ $Results = Invoke-ScriptAnalyzer -Path **
 
 if ($Results) {
     $Results
-    Exit 1
+    Write-Error "PowerShell lint issues detected, please fix and try again."
 }
