@@ -14,12 +14,6 @@ param storageAccountName string = 'stor${uniqueString(resourceGroup().id)}'
 ])
 param storageSkuName string = 'Standard_LRS'
 
-@description('The name of the page to display when a user navigates to the root of your static website.')
-param storageStaticWebsiteIndexDocument string = 'index.html'
-
-@description('The name of the page to display when a user attempts to navigate to a page that does not exist in your static website.')
-param storageStaticWebsiteErrorDocument404Path string = 'error.html'
-
 @description('The name of the Front Door endpoint to create. This must be globally unique.')
 param frontDoorEndpointName string = 'afd-${uniqueString(resourceGroup().id)}'
 
@@ -38,8 +32,6 @@ module storage 'modules/storage-static-website.bicep' = {
     location: location
     accountName: storageAccountName
     skuName: storageSkuName
-    indexDocument: storageStaticWebsiteIndexDocument
-    errorDocument404Path: storageStaticWebsiteErrorDocument404Path
   }
 }
 
@@ -54,5 +46,6 @@ module frontDoor 'modules/front-door.bicep' = {
   }
 }
 
+output storageAccountName string = storage.outputs.storageAccountName
 output frontDoorEndpointHostName string = frontDoor.outputs.frontDoorEndpointHostName
 output storageStaticWebsiteHostName string = storage.outputs.staticWebsiteHostName
