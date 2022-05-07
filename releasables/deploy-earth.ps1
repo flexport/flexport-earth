@@ -132,6 +132,8 @@ function Update-Frontend {
                 --container '$web' `
                 --delete-destination true
 
+            Write-Verbose $Output
+
             if (!$?) {
                 Write-Error "Website content upload failed."
             }
