@@ -1,10 +1,10 @@
 ﻿[CmdletBinding()]
 param (
-    [Parameter(Mandatory=$true)]
+    [Parameter(Mandatory = $true)]
     [String]
     $EnvironmentName,
 
-    [Parameter(Mandatory=$false)]
+    [Parameter(Mandatory = $false)]
     [String]
     $EarthWebsiteCustomDomainName
 )
@@ -29,9 +29,9 @@ function Update-SubscriptionBudget {
     Param()
 
     process {
-        if($PSCmdlet.ShouldProcess($EarthFrontendResourceGroupLocation)) {
+        if ($PSCmdlet.ShouldProcess($EarthFrontendResourceGroupLocation)) {
             $StartDate = (Get-Date).ToString("yyyy-MM-01")
-            $EndDate   = (Get-Date).AddYears(2).ToString("yyyy-MM-dd")
+            $EndDate = (Get-Date).AddYears(2).ToString("yyyy-MM-dd")
 
             $Parameters = [PSCustomObject]@{
                 budgetName = @{ value = "$EnvironmentName-subscription-budget" }
@@ -63,7 +63,7 @@ function Update-FrontendResourceGroup {
     Param()
 
     process {
-        if($PSCmdlet.ShouldProcess($EarthFrontendResourceGroupName)) {
+        if ($PSCmdlet.ShouldProcess($EarthFrontendResourceGroupName)) {
             $Parameters = '{\"earthFrontendResourceGroupName\":{\"value\":\"' + $EarthFrontendResourceGroupName + '\"}, \"resourceGroupLocation\":{\"value\":\"' + $EarthFrontendResourceGroupLocation + '\"}}'
 
             az `
@@ -84,17 +84,17 @@ function Update-FrontendResourceGroup {
 function Update-Frontend {
     [CmdletBinding(SupportsShouldProcess)]
     Param(
-        [Parameter(Mandatory=$true)]
+        [Parameter(Mandatory = $true)]
         [String]
         $EnvironmentName,
 
-        [Parameter(Mandatory=$false)]
+        [Parameter(Mandatory = $false)]
         [String]
         [string]$CustomDomainName
     )
 
     process {
-        if($PSCmdlet.ShouldProcess($CustomDomainName)) {
+        if ($PSCmdlet.ShouldProcess($CustomDomainName)) {
             $URLToTest = $null
 
             if (-Not ($CustomDomainName)) {
@@ -104,7 +104,8 @@ function Update-Frontend {
 
                 # But fall back to using the CDNs domain name for actual testing.
                 $CustomDomainName = "$EnvironmentName-flexport-earth.com"
-            } else {
+            }
+            else {
                 $URLToTest = "https://www.$CustomDomainName"
             }
 
@@ -122,6 +123,21 @@ function Update-Frontend {
 
             $CreateResponse = $CreateResponseJson | ConvertFrom-Json
 
+            # Upload website content to the CDN storage account
+            $StorageAccountName = $CreateResponse.properties.outputs.storageAccountName.value
+
+            $Output = az storage blob sync `
+                --account-name $StorageAccountName `
+                --source ./frontend/cdn/website-content `
+                --container '$web' `
+                --delete-destination true
+
+            Write-Verbose $Output.ToString()
+
+            if (!$?) {
+                Write-Error "Website content upload failed."
+            }
+
             $CDNHostname = $CreateResponse.properties.outputs.frontDoorEndpointHostName.value
 
             if (-Not ($URLToTest)) {
@@ -137,8 +153,7 @@ function Update-Frontend {
             # to give the CDN a chance to start up.
             $WebsiteIsAlive = $false
 
-            for ($i = 0; $i -lt 10; $i++)
-            {
+            for ($i = 0; $i -lt 10; $i++) {
                 try {
                     $Response = Invoke-WebRequest $URLToTest
                     $StatusCode = $Response.StatusCode
@@ -157,7 +172,8 @@ function Update-Frontend {
                         $WebsiteIsAlive = $true
                         break
                     }
-                } catch {
+                }
+                catch {
                     Write-Information "Invoke-WebRequest failed:"
                     Write-Information $_
                 }
