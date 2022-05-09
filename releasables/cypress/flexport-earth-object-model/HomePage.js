@@ -3,5 +3,5 @@ export default class HomePage {
 }
 
 class Header {
-    FlexportLogo = cy.get('#flexport-logo-link');
+    FlexportLogo = cy.get('#flexport-logo');
 }

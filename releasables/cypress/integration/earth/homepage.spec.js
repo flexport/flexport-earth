@@ -8,7 +8,7 @@ describe('Earth Homepage', () => {
   })
 
   it('displays the Homepage', () => {
-    cy.get('h1').should('contain', "Welcome to Flexport Earth")
+    cy.get('h1').should('contain', "Welcome to Earth")
   })
 
   it('links to flexport.com', () => {
