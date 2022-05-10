@@ -48,10 +48,10 @@ var privateLinkOriginDetails = {
   requestMessage: 'Please approve this connection.'
 }
 
-var profileName = 'MyFrontDoor'
-var originGroupName = 'MyOriginGroup'
-var originName = 'MyOrigin'
-var routeName = 'MyRoute'
+var profileName     = 'EarthFrontDoor'
+var originGroupName = 'EarthOriginGroup'
+var originName      = 'EarthOrigin'
+var routeName       = 'EarthRoute'
 
 // Create a valid resource name for the custom domain. Resource names don't include periods.
 var customDomainResourceName = replace('${cnameRecordName}.${dnsZoneName}', '.', '-')

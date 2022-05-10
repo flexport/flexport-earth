@@ -109,32 +109,48 @@ function Update-Frontend {
                 $URLToTest = "https://www.$CustomDomainName"
             }
 
-            $CDNParameters = '{\"customDomainName\":{\"value\":\"' + $CustomDomainName.ToLower() + '\"}}'
+            $CDNParameters = [PSCustomObject]@{
+                customDomainName   = @{ value = $CustomDomainName.ToLower() }
+                storageAccountName = @{ value = "${EnvironmentName}earthcdnstorage" }
+            }
+
+            $CDNParametersJson = $CDNParameters | ConvertTo-Json
+            $CDNParametersJson = $CDNParametersJson.Replace('"', '\"')
 
             $CreateResponseJson = az deployment group create `
                 --mode Complete `
                 --resource-group $EarthFrontendResourceGroupName `
                 --template-file ./frontend/cdn/main.bicep `
-                --parameters $CDNParameters
+                --parameters $CDNParametersJson
 
             if (!$?) {
                 Write-Error "CDN deployment failed."
             }
 
             $CreateResponse = $CreateResponseJson | ConvertFrom-Json
-
-            # Upload website content to the CDN storage account
             $StorageAccountName = $CreateResponse.properties.outputs.storageAccountName.value
 
+            # Enable storage to service static website content
+            $Output = az storage blob service-properties update `
+                --static-website `
+                --account-name $StorageAccountName `
+                --404-document error.html `
+                --index-document index.html
+
+            if (!$?) {
+                $Output
+                Write-Error "Enabling storage for serving static content failed."
+            }
+
+            # Upload website content to the CDN storage account
             $Output = az storage blob sync `
                 --account-name $StorageAccountName `
                 --source ./frontend/cdn/website-content `
                 --container '$web' `
                 --delete-destination true
 
-            Write-Verbose $Output.ToString()
-
             if (!$?) {
+                $Output
                 Write-Error "Website content upload failed."
             }
 

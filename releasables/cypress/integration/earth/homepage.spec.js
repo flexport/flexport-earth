@@ -7,11 +7,11 @@ describe('Earth Homepage', () => {
     cy.visit(Cypress.env('EARTH_WEBSITE_URL'))
   })
 
-  it('displays the Homepage', () => {
+  it('Displays the Homepage', () => {
     cy.get('h1').should('contain', "Welcome to Earth")
   })
 
-  it('links to flexport.com', () => {
+  it('Links to flexport.com', () => {
     new HomePage().Header.FlexportLogo.click()
 
     cy
