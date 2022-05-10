@@ -149,8 +149,8 @@ function Update-Frontend {
             $WebsiteContentLocalPath = './frontend/cdn/website-content'
 
             # Generate the build number file.
-            $BuildVersionFilePath = "$WebsiteContentLocalPath/media/build-version.css"
-            "build-version-anchor::before { content: ""$BuildNumber""; }" | Out-File -FilePath $BuildVersionFilePath
+            $BuildNumberFilePath = "$WebsiteContentLocalPath/media/build-number.css"
+            "#build-number-anchor::before { content: ""$BuildNumber""; }" | Out-File -FilePath $BuildNumberFilePath
 
             # Upload website content to the CDN storage account
             $Output = az storage blob sync `
