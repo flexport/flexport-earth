@@ -2,6 +2,10 @@
 param (
     [Parameter(Mandatory = $true)]
     [String]
+    $BuildNumber,
+
+    [Parameter(Mandatory = $true)]
+    [String]
     $EnvironmentName,
 
     [Parameter(Mandatory = $false)]
@@ -21,7 +25,7 @@ $InformationPreference = "Continue"
 . ./earth-config.ps1
 
 Write-Information ""
-Write-Information "Deploying to $EnvironmentName environment..."
+Write-Information "Deploying Earth build $BuildNumber to $EnvironmentName environment..."
 
 # Performs Create if doesn't exist.
 function Update-SubscriptionBudget {
@@ -142,10 +146,16 @@ function Update-Frontend {
                 Write-Error "Enabling storage for serving static content failed."
             }
 
+            $WebsiteContentLocalPath = './frontend/cdn/website-content'
+
+            # Generate the build number file.
+            $BuildVersionFilePath = "$WebsiteContentLocalPath/media/build-version.css"
+            "build-version-anchor::before { content: ""$BuildNumber""; }" | Out-File -FilePath $BuildVersionFilePath
+
             # Upload website content to the CDN storage account
             $Output = az storage blob sync `
                 --account-name $StorageAccountName `
-                --source ./frontend/cdn/website-content `
+                --source $WebsiteContentLocalPath `
                 --container '$web' `
                 --delete-destination true
 

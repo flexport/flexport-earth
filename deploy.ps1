@@ -11,7 +11,11 @@ $InformationPreference = "Continue"
 try {
     Push-Location $ReleasablesPath
 
+    # Generate a random build number for local builds.
+    $BuildNumber = [guid]::NewGuid()
+
     ./deploy-earth.ps1 `
+        -BuildNumber                  $BuildNumber `
         -EnvironmentName              $LocalSettings.EnvironmentName `
         -EarthWebsiteCustomDomainName $LocalSettings.EarthWebsiteCustomDomainName
 }
