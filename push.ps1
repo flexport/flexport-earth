@@ -28,4 +28,4 @@ if ($CommitsBehindOriginMain -gt 0) {
 ./deploy.ps1
 ./destroy.ps1
 
-git push
+git push --set-upstream origin $CurrentBranchName
