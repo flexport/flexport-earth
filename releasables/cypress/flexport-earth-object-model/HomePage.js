@@ -1,4 +1,8 @@
 export default class HomePage {
+    getBody() {
+        return cy.get('body');
+    }
+    
     getHeader() {
         return new Header();
     }
