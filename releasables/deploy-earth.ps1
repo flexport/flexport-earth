@@ -29,7 +29,7 @@ $InformationPreference = "Continue"
 . ./earth-config.ps1
 
 Write-Information ""
-Write-Information "Deploying Earth build $BuildNumber to $EnvironmentName environment..."
+Write-Information "Deploying Earth build $BuildNumber (id: $BuildId) to $EnvironmentName environment..."
 
 # Performs Create if doesn't exist.
 function Update-SubscriptionBudget {
