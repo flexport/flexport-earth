@@ -159,9 +159,9 @@ function Update-Frontend {
             # Update BuildID if available.
             if ($BuildId) {
                 $IndexPath = "$WebsiteContentLocalPath/index.html"
-                $IndexContent = Get-Content -Path
+                $IndexContent = Get-Content -Path $IndexPath
                 $IndexContent = $IndexContent.Replace('{BUILDID}', $BuildId)
-                $IndexContent | Out-File $IndexPath
+                $IndexContent | Out-File -FilePath $IndexPath
             }
 
             # Upload website content to the CDN storage account
