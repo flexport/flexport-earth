@@ -191,7 +191,7 @@ function Update-Frontend {
             # to give the CDN a chance to start up.
             $WebsiteIsAlive = $false
 
-            for ($i = 0; $i -lt 10; $i++) {
+            for ($i = 0; $i -lt 20; $i++) {
                 try {
                     $Response = Invoke-WebRequest $URLToTest
                     $StatusCode = $Response.StatusCode
