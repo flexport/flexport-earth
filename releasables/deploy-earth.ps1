@@ -4,6 +4,10 @@ param (
     [String]
     $BuildNumber,
 
+    [Parameter(Mandatory = $false)]
+    [String]
+    $BuildId,
+
     [Parameter(Mandatory = $true)]
     [String]
     $EnvironmentName,
@@ -151,6 +155,14 @@ function Update-Frontend {
             # Generate the build number file.
             $BuildNumberFilePath = "$WebsiteContentLocalPath/media/build-number.css"
             "#build-number-anchor::before { content: ""$BuildNumber""; }" | Out-File -FilePath $BuildNumberFilePath
+
+            # Update BuildID if available.
+            if ($BuildId) {
+                $IndexPath = "$WebsiteContentLocalPath/index.html"
+                $IndexContent = Get-Content -Path 
+                $IndexContent = $IndexContent.Replace('{BUILDID}', $BuildId)
+                $IndexContent | Out-File $IndexPath 
+            }
 
             # Upload website content to the CDN storage account
             $Output = az storage blob sync `

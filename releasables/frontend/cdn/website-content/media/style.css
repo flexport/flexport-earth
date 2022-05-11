@@ -1,3 +1,11 @@
 #flexport-logo img {
     height: 28px;
 }
+
+#build-number {
+    position:           absolute;
+    bottom:             0;
+    right:              0;
+    color:              blue;
+    text-decoration:    none;
+}
