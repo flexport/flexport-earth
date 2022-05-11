@@ -1,7 +1,17 @@
 export default class HomePage {
-    Header = new Header();
+    getHeader() {
+        return new Header();
+    }
+
+    getFooter() {
+        return new Footer();
+    }
 }
 
 class Header {
-    FlexportLogo = cy.get('#flexport-logo');
+    FlexportLogo = cy.get('#flexport-logo')
+}
+
+class Footer {
+    BuildNumber = cy.get('#build-number-anchor');
 }

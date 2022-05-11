@@ -224,4 +224,5 @@ $EarthWebsiteUrl = Update-Frontend `
     -CustomDomainName $EarthWebsiteCustomDomainName
 
 ./test-earth.ps1 `
+    -BuildNumber $BuildNumber `
     -EarthWebsiteUrl $EarthWebsiteUrl
