@@ -22,7 +22,7 @@ stages:
               azureSubscription: ${{ parameters.azureSubscriptionName }}
               workingDirectory: $(releasablesWorkingDirectory)
               scriptType: pscore
-              arguments: '-BuildNumber $(Build.BuildNumber) -EnvironmentName ${{ parameters.environmentNameShort }} -EarthWebsiteCustomDomainName "$(EarthWebsiteDomainName)"'
+              arguments: '-BuildNumber $(Build.BuildNumber) -BuildId $(Build.BuildId) -EnvironmentName ${{ parameters.environmentNameShort }} -EarthWebsiteCustomDomainName "$(EarthWebsiteDomainName)"'
               scriptPath: '$(releasablesWorkingDirectory)/deploy-earth.ps1'
 
   - deployment: Destroy
