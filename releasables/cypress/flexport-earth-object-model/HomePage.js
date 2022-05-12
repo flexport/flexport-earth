@@ -7,6 +7,10 @@ export default class HomePage {
         return new Header();
     }
 
+    getCountriesLink() {
+        return cy.get('#countries');
+    }
+
     getFooter() {
         return new Footer();
     }
