@@ -1,6 +1,7 @@
 /// <reference types="cypress" />
 
-import HomePage from '../../flexport-earth-object-model/HomePage'
+import HomePage      from '../../flexport-earth-object-model/HomePage'
+import CountriesPage from '../../flexport-earth-object-model/facts/countries/index'
 
 describe('Earth Homepage', () => {
   let homePage;
@@ -42,5 +43,15 @@ describe('Earth Homepage', () => {
           // the returned value will have double quotes around it, but this is correct
           expect(contentValue).to.eq('"' + Cypress.env('BUILD_NUMBER') + '"')
         })
+  })
+
+  it('Links to Countries', () => {
+    homePage
+      .getCountriesLink()
+        .click();
+
+    cy
+      .url()
+      .should('contain', CountriesPage.path)
   })
 })

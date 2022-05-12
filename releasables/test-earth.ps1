@@ -28,7 +28,7 @@ Write-Information "Cypress installed!"
 Write-Information ""
 Write-Information "Running tests..."
 
-Invoke-Expression "$(npm bin)/cypress run --env BUILD_NUMBER=$BuildNumber,EARTH_WEBSITE_URL=$EarthWebsiteUrl"
+Invoke-Expression "$(npm bin)/cypress run --spec ""cypress/integration/**/*"" --env BUILD_NUMBER=$BuildNumber,EARTH_WEBSITE_URL=$EarthWebsiteUrl"
 
 if ($LastExitCode -ne 0) {
     Write-Error "Testing failed!"
