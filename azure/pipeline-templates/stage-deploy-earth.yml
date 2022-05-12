@@ -16,6 +16,11 @@ stages:
           steps:
           - download: current
             artifact: $(artifactName)
+          - task: Cache@2
+            inputs:
+              workingDirectory: $(releasablesWorkingDirectory)
+              key: package.json
+              path: node_modules
           - task: AzureCLI@2
             displayName: 'Deploy to ${{ parameters.environmentNameFull }}'
             inputs:
