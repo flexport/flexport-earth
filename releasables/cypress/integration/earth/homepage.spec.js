@@ -1,7 +1,7 @@
 /// <reference types="cypress" />
 
 import HomePage      from '../../flexport-earth-object-model/HomePage'
-import CountriesPage from '../../flexport-earth-object-model/facts/countries/index'
+import CountriesPage from '../../flexport-earth-object-model/facts/countries/CountriesPage'
 
 describe('Earth Homepage', () => {
   let homePage;
