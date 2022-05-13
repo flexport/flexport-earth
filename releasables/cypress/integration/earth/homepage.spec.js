@@ -16,7 +16,7 @@ describe('Earth Homepage', () => {
   it('Displays the Homepage', () => {
     homePage
       .getBody()
-        .contains("Welcome to Earth");
+        .contains("Discover the world of supply chain");
   })
 
   it('Links to flexport.com', () => {
