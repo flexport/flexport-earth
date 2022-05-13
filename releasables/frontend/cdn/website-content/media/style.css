@@ -1,17 +1,10 @@
 body { 
     margin:         0;
     padding:        0; 
+    height:         100vh;
+    flex-direction: column;
+    display:        flex;
     font-family:    gt-america, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen, Ubuntu, Cantarell, "Fira Sans", "Droid Sans", "Helvetica Neue", sans-serif;
-}
-
-header {
-    height:             256px;
-    color:              white;
-    background-color:   #39414D;
-    font-style:         normal;
-    font-weight:        700;
-    font-size:          16px;
-    line-height:        20px;
 }
 
 a:link {
@@ -22,28 +15,61 @@ header a:visited {
     color: white;
 }
 
-#wiki-title {
-    padding-top:    60px;
-    text-align:     center;
+#wiki-title-vertical-line {
+    border-left:    2px solid #8A99B1;
+    margin-left:    20px;
+    margin-right:   20px;
+    padding-top:    12px;
 }
 
 #flexport-logo img {
     height: 28px;
 }
 
+body #body-content {
+    width:  80%;
+    margin: auto;
+    flex:   1;
+}
+
 footer {
     width:              100%;
-    height:             256px;
+    
     color:              white;
     background-color:   #39414D;
-    position:           absolute;
     bottom:             0;
 }
 
+footer #content {
+    width:          80%; 
+    margin:         auto;
+    padding-top:    150px;
+    padding-bottom: 50px;
+}
+
+footer #content .flexport-logo {
+    float:  left;
+    height: 20px;
+}
+
+footer #content hr {
+    border: 1px solid #67768D;
+}
+
+footer #content #tag-line {
+    float:          left;
+    margin-left:    10px;
+    font-style:     normal;
+    font-weight:    400;
+    font-size:      14px;
+    line-height:    20px;
+}
+
 #build-number {
-    position:           absolute;
+    float:              right;
     bottom:             0;
     right:              0;
     color:              #67768D;
     text-decoration:    none;
+    font-size:          10px;
 }
