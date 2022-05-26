@@ -117,74 +117,64 @@ function Update-Frontend {
                 $URLToTest = "https://www.$CustomDomainName"
             }
 
-            $CDNParameters = [PSCustomObject]@{
-                customDomainName   = @{ value = $CustomDomainName.ToLower() }
-                storageAccountName = @{ value = "${EnvironmentName}earthcdnstorage" }
+            $FrontendParameters = [PSCustomObject]@{
+                environmentShortName = @{ value = $EnvironmentName.ToLower() }
+                #customDomainName     = @{ value = $CustomDomainName.ToLower() }
             }
 
-            $CDNParametersJson = $CDNParameters | ConvertTo-Json
-            $CDNParametersJson = $CDNParametersJson.Replace('"', '\"')
+            $FrontendParametersJson = $FrontendParameters | ConvertTo-Json
+            $FrontendParametersJson = $FrontendParametersJson.Replace('"', '\"')
 
             $CreateResponseJson = az deployment group create `
                 --mode Complete `
                 --resource-group $EarthFrontendResourceGroupName `
-                --template-file ./frontend/cdn/main.bicep `
-                --parameters $CDNParametersJson
+                --template-file ./frontend/infrastructure/main.bicep `
+                --parameters $FrontendParametersJson
 
             if (!$?) {
-                Write-Error "CDN deployment failed."
+                Write-Error "Frontend infra deployment failed."
             }
 
             $CreateResponse = $CreateResponseJson | ConvertFrom-Json
-            $StorageAccountName = $CreateResponse.properties.outputs.storageAccountName.value
-
-            # Enable storage to service static website content
-            $Output = az storage blob service-properties update `
-                --static-website `
-                --account-name $StorageAccountName `
-                --404-document error.html `
-                --index-document index.html
-
-            if (!$?) {
-                $Output
-                Write-Error "Enabling storage for serving static content failed."
-            }
-
-            $WebsiteContentLocalPath = './frontend/cdn/website-content'
-
-            # Generate the build number file.
-            $BuildNumberFilePath = "$WebsiteContentLocalPath/media/build-number.css"
-            "#build-number-anchor::before { content: ""$BuildNumber""; }" | Out-File -FilePath $BuildNumberFilePath
-
-            # Update BuildID if available.
-            if ($BuildId) {
-                $IndexPath = "$WebsiteContentLocalPath/index.html"
-                $IndexContent = Get-Content -Path $IndexPath
-                $IndexContent = $IndexContent.Replace('{BUILDID}', $BuildId)
-                $IndexContent | Out-File -FilePath $IndexPath
-            }
-
-            # Upload website content to the CDN storage account
-            $Output = az storage blob sync `
-                --account-name $StorageAccountName `
-                --source $WebsiteContentLocalPath `
-                --container '$web' `
-                --delete-destination true
-
-            if (!$?) {
-                $Output
-                Write-Error "Website content upload failed."
-            }
 
             $CDNHostname = $CreateResponse.properties.outputs.frontDoorEndpointHostName.value
+            $WebsiteName = $CreateResponse.properties.outputs.websiteName.value
 
+            Write-Information "Building website..."
+            Push-Location ./frontend/website-content/
+            npm install
+            npm run build
+            Write-Information "Compressing website content..."
+            zip -r website.zip ./
+            Write-Information "Compression complete!"
+            Write-Information ""
+            Write-Information "Confguring website..."
+            az webapp config appsettings set `
+                --resource-group $EarthFrontendResourceGroupName `
+                --name $WebsiteName `
+                --settings WEBSITE_RUN_FROM_PACKAGE="1"
+            Write-Information "Website configured!"
+            Write-Information ""
+            Write-Information "Deploying website content..."
+            az webapp deployment source config-zip `
+                --resource-group $EarthFrontendResourceGroupName `
+                --name $WebsiteName `
+                --src website.zip
+            Write-Information "Content deployed!"
+            Write-Information ""
+            Pop-Location
+            
             if (-Not ($URLToTest)) {
                 $URLToTest = "https://$CDNHostname"
             }
 
+            Write-Information ""
+            Write-Information "=================================================================="
             Write-Information "CDN Hostname:    $CDNHostname"
             Write-Information "Custom Homename: $CustomDomainName"
             Write-Information "URL to Test:     $URLToTest"
+            Write-Information "=================================================================="
+            Write-Information ""
 
             # When the CDN infrastructure is first deployed, the content isn't immediately available
             # and so the first few initial requests will fail. Perform the livliness test in a loop
@@ -228,7 +218,7 @@ function Update-Frontend {
     }
 }
 
-Update-SubscriptionBudget
+#Update-SubscriptionBudget
 Update-FrontendResourceGroup
 
 $EarthWebsiteUrl = Update-Frontend `
