@@ -119,7 +119,7 @@ function Update-Frontend {
 
             $FrontendParameters = [PSCustomObject]@{
                 environmentShortName = @{ value = $EnvironmentName.ToLower() }
-                #customDomainName     = @{ value = $CustomDomainName.ToLower() }
+                customDomainName     = @{ value = $CustomDomainName.ToLower() }
             }
 
             $FrontendParametersJson = $FrontendParameters | ConvertTo-Json
@@ -142,28 +142,38 @@ function Update-Frontend {
 
             Write-Information "Building website..."
             Push-Location ./frontend/website-content/
-            npm install
-            npm run build
+            $Output = npm install
+            $Output = npm run build
             Write-Information "Compressing website content..."
-            zip -r website.zip ./
+            $Output = zip -r website.zip ./ -x website.zip
             Write-Information "Compression complete!"
             Write-Information ""
             Write-Information "Confguring website..."
-            az webapp config appsettings set `
+            $Output = az webapp config appsettings set `
                 --resource-group $EarthFrontendResourceGroupName `
                 --name $WebsiteName `
                 --settings WEBSITE_RUN_FROM_PACKAGE="1"
+            if (!$?) {
+                Write-Information $Output
+                Write-Information ""
+                Write-Error "Frontend infra deployment failed."
+            }
             Write-Information "Website configured!"
             Write-Information ""
             Write-Information "Deploying website content..."
-            az webapp deployment source config-zip `
+            $Output = az webapp deployment source config-zip `
                 --resource-group $EarthFrontendResourceGroupName `
                 --name $WebsiteName `
                 --src website.zip
+            if (!$?) {
+                Write-Information $Output
+                Write-Information ""
+                Write-Error "Frontend infra deployment failed."
+            }
             Write-Information "Content deployed!"
             Write-Information ""
             Pop-Location
-            
+
             if (-Not ($URLToTest)) {
                 $URLToTest = "https://$CDNHostname"
             }

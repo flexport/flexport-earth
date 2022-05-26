@@ -122,7 +122,6 @@ resource validationTxtRecord 'Microsoft.Network/dnsZones/TXT@2018-05-01' = {
   }
 }
 
-
 resource customDomain 'Microsoft.Cdn/profiles/customDomains@2021-06-01' = {
   name: customDomainResourceName
   parent: profile
