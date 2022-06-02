@@ -13,14 +13,13 @@ const Home: NextPage = () => {
       </Head>
 
       <header className={styles.header}>
-            <div id="wiki-title">
-                <a id="flexport-logo" href="https://www.flexport.com"><Image src="/images/flexport-logo.svg" alt="Flexport Logo" height={28} width={150} /></a>
-                <span id="wiki-title-vertical-line"></span>
-                <span id="wiki-subtitle">Wiki</span><br/>
+            <div id="wiki-title" className={styles.wikiTitle}>
+                <a id="flexport-logo" href="https://www.flexport.com"><Image src="/images/flexport-logo.svg" alt="Flexport Logo" height={20} width={90} /></a>
+                <span id="wiki-title-vertical-line" className={styles.wikiTitleVerticalLine}></span>
+                <span id="wiki-subtitle" className={styles.wikiSubTitle}>Wiki</span><br/>
             </div>
-            <div id="wiki-search">
+            <div className={styles.wikiSearch}>
                 <span>Discover the world of supply chain</span><br/>
-                <br/>
                 <input type="text"  value="<Not implemented>"/>
             </div>            
         </header>

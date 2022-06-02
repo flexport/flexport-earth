@@ -1,9 +1,40 @@
-.container {
-  padding: 0 2rem;
+.header {
+  color:            white;
+  background-color: #39414D;
+  height:           256px;
 }
 
-.header {
-  background-color:   #39414D;
+.wikiTitle {
+  text-align:     center;
+  padding-top:    48px;
+}
+
+.wikiTitleVerticalLine {
+  border-left:    1px solid #8A99B1;
+  margin-left:    14px;
+  margin-right:   14px;
+  padding-top:    8px;
+}
+
+.wikiSearch {
+  padding-top:    18px;
+  padding-bottom: 50px;
+  text-align:     center;
+  font-size:      32px;
+  font-weight:    700;
+}
+
+.wikiSearch input {
+  margin-top: 30px;
+  width: 525px;
+  height: 44px;
+}
+
+.wikiSubTitle {
+  position:   relative;
+  bottom:     5px;
+  font-size:  18px;
+  font-weight: 500;
 }
 
 .main {
