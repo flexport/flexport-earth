@@ -25,14 +25,6 @@ const Home: NextPage = () => {
         </header>
 
       <main className={styles.main}>
-        <h1 className={styles.title}>
-          Welcome to Flexport Earth
-        </h1>
-
-        <p className={styles.description}>
-          Explore the facts of global trade by clicking into the links below.
-        </p>
-
         <div className={styles.grid}>
           <a href="facts/countries" id="countries" className={styles.card}>
             <h2>Countries</h2>
@@ -58,16 +50,25 @@ const Home: NextPage = () => {
           >
             <h2>Containers</h2>
             <p>
-              View data about containers.
+              View data about cargo containers.
             </p>
           </a>
         </div>
       </main>
 
       <footer className={styles.footer}>
-        <a href="https://dev.azure.com/flexport-earth/Earth/_build/results?buildId={BUILDID}" id="build-number">
-            <div id="build-number-anchor"></div>
-        </a>
+        <div className={styles.footerContent}>
+            <hr className={styles.footerContentHr}/>
+            
+            <div>
+                <Image className={styles.footerContentFlexportLogo} layout="raw" src="/images/flexport-logo.svg" alt="Flexport Logo" height={20} width={90}/>
+                <span className={styles.footerContentTagLine}>We&apos;re making global trade easy for everyone.</span>
+            </div>
+            
+            <a href="https://dev.azure.com/flexport-earth/Earth/_build/results?buildId={BUILDID}" className={styles.buildNumber}>
+                <div id="build-number-anchor"></div>
+            </a>
+        </div>
       </footer>
     </div>
   )
