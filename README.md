@@ -4,7 +4,7 @@ All instructions below are tested to work for:
 - MacOS
 - Windows
 
-# Getting started for local development
+# Getting started for development
 
 1. Clone this repo locally.
 2. Fork this repo.
@@ -32,13 +32,19 @@ If running on Windows, install the [Windows Linux System](https://docs.microsoft
 
     ./development-tools/install-development-tools.ps1
 
+## Viewing Website Content Locally
+
+    The NextJS frontend can be started by running:
+
+    ./start-website-locally.ps1
+
 ## Azure
 
 You'll need an Azure subscription to deploy to. Once you have one, you can follow the steps below.
 
 For provisioning new Azure Accounts, Tenants, and Subscriptions, continue [here](azure/README.md).
 
-### Deploy your local changes
+### Deploy your local changes to Azure
 
     ./deploy.ps1
 
@@ -46,7 +52,7 @@ For provisioning new Azure Accounts, Tenants, and Subscriptions, continue [here]
 
     ./destroy.ps1
 
-### Pushing Changes
+### Pushing Changes to GitHub
 
 Once you've made some changes and committed them, you can push them remotely using the push script:
 
