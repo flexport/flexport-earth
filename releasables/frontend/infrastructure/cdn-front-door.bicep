@@ -55,7 +55,7 @@ var routeName       = 'EarthRoute'
 
 // Create a valid resource name for the custom domain. Resource names don't include periods.
 var customDomainResourceName = replace('${cnameRecordName}.${dnsZoneName}', '.', '-')
-var dnsRecordTimeToLive = 3600
+var dnsRecordTimeToLive = 300
 
 resource profile 'Microsoft.Cdn/profiles@2021-06-01' = {
   name: profileName
