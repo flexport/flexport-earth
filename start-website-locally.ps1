@@ -1,4 +1,4 @@
-# This script is for local development purposes only to make it easier
+﻿# This script is for local development purposes only to make it easier
 # for developers to work with all the various scripts and their parameters.
 
 Set-StrictMode –Version latest
