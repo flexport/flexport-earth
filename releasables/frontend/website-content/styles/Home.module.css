@@ -2,6 +2,10 @@
   padding: 0 2rem;
 }
 
+.header {
+  background-color:   #39414D;
+}
+
 .main {
   min-height: 100vh;
   padding: 4rem 0;

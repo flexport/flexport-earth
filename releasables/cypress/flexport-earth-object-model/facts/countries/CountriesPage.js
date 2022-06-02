@@ -1,5 +1,5 @@
 export default class CountriesPage {
-    static path = 'facts/countries/index.html';
+    static path = 'facts/countries';
 
     getBody() {
         return cy.get('body');
