@@ -12,18 +12,13 @@ const Home: NextPage = () => {
         <link rel="icon" href="/favicon.ico" />
       </Head>
 
-      <header className={styles.header}>
-            <div id="wiki-title">
-                <a id="flexport-logo" href="https://www.flexport.com"><Image src="/images/flexport-logo.svg" alt="Flexport Logo" height={28} width={150} /></a>
-                <span id="wiki-title-vertical-line"></span>
-                <span id="wiki-subtitle">Wiki</span><br/>
-            </div>
-            <div id="wiki-search">
-                <span>Discover the world of supply chain</span><br/>
-                <br/>
-                <input type="text"  value="<Not implemented>"/>
-            </div>            
-        </header>
+      <header className={styles.pageHeader}>
+            <div className={styles.pageWikiTitle}>
+                <a id="flexport-logo" href="https://www.flexport.com"><Image src="/images/flexport-logo.svg" alt="Flexport Logo" height={20} width={90} /></a>
+                <span id="wiki-title-vertical-line" className={styles.wikiTitleVerticalLine}></span>
+                <span id="wiki-subtitle" className={styles.wikiSubTitle}>Wiki</span><br/>
+            </div>     
+      </header>
 
       <main className={styles.main}>
         <h1 className={styles.title}>
@@ -284,9 +279,18 @@ const Home: NextPage = () => {
       </main>
 
       <footer className={styles.footer}>
-        <a href="https://dev.azure.com/flexport-earth/Earth/_build/results?buildId={BUILDID}" id="build-number">
-            <div id="build-number-anchor"></div>
-        </a>
+        <div className={styles.footerContent}>
+            <hr className={styles.footerContentHr}/>
+            
+            <div>
+                <Image className={styles.footerContentFlexportLogo} layout="raw" src="/images/flexport-logo.svg" alt="Flexport Logo" height={20} width={90}/>
+                <span className={styles.footerContentTagLine}>We&apos;re making global trade easy for everyone.</span>
+            </div>
+            
+            <a href="https://dev.azure.com/flexport-earth/Earth/_build/results?buildId={BUILDID}" className={styles.buildNumber}>
+                <div id="build-number-anchor"></div>
+            </a>
+        </div>
       </footer>
     </div>
   )

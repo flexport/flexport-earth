@@ -1,9 +1,51 @@
-.container {
-  padding: 0 2rem;
+.header {
+  color:            white;
+  background-color: #39414D;
+  height:           256px;
 }
 
-.header {
-  background-color:   #39414D;
+.pageHeader {
+  color:            white;
+  background:       linear-gradient(to right, #272C34 , #324354);
+  height:           64px;
+}
+
+.pageWikiTitle {
+  padding-top:    23px;
+  padding-left:   30px;
+}
+
+.wikiTitle {
+  text-align:     center;
+  padding-top:    48px;
+}
+
+.wikiTitleVerticalLine {
+  border-left:    1px solid #8A99B1;
+  margin-left:    14px;
+  margin-right:   14px;
+  padding-top:    8px;
+}
+
+.wikiSearch {
+  padding-top:    18px;
+  padding-bottom: 50px;
+  text-align:     center;
+  font-size:      32px;
+  font-weight:    700;
+}
+
+.wikiSearch input {
+  margin-top: 30px;
+  width: 525px;
+  height: 44px;
+}
+
+.wikiSubTitle {
+  position:   relative;
+  bottom:     5px;
+  font-size:  18px;
+  font-weight: 500;
 }
 
 .main {
@@ -17,12 +59,48 @@
 }
 
 .footer {
-  display: flex;
-  flex: 1;
-  padding: 2rem 0;
-  border-top: 1px solid #eaeaea;
-  justify-content: center;
-  align-items: center;
+  display:            flex;
+  flex:               1;
+  padding:            2rem 0;
+  justify-content:    center;
+  color:            white;
+  background-color: #39414D;
+  align-items:        center;
+  height:             256px;
+}
+
+.footerContent {
+  width:          80%; 
+  margin:         auto;
+  padding-top:    150px;
+  padding-bottom: 10px;
+}
+
+.footerContentHr {
+  border: 1px solid #67768D;
+}
+
+.footerContentFlexportLogo {
+  float:  left;
+  height: 20px;
+}
+
+.footerContentTagLine {
+  float:          left;
+  margin-left:    10px;
+  font-style:     normal;
+  font-weight:    400;
+  font-size:      14px;
+  line-height:    20px;
+}
+
+.buildNumber {
+  float:              right;
+  bottom:             0;
+  right:              0;
+  color:              #67768D;
+  text-decoration:    none;
+  font-size:          10px;
 }
 
 .footer a {
