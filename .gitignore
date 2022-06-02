@@ -1,2 +1,4 @@
 .cache
 build-number.css
+.DS_Store
+*.zip
