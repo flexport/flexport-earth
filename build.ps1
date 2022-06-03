@@ -8,7 +8,7 @@ $InformationPreference = "Continue"
 
 $RunningNonInteractive = [Environment]::GetCommandLineArgs().Contains('-NonInteractive')
 
-if -Not ($RunningNonInteractive) {
+if (-Not $RunningNonInteractive) {
     . ./development-tools/local-config-manager.ps1
 }
 
