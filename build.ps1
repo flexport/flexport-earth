@@ -78,5 +78,13 @@ finally {
     Pop-Location
 }
 
+try {
+    Push-Location "$ReleasablesDirectory/testing/functional"
+    npm install cypress --save-dev
+}
+finally {
+    Pop-Location 
+}
+
 Write-Information "Earth website build completed!"
 Write-Information ""
