@@ -62,7 +62,9 @@ try {
     Write-Information "Website files compiled successfully!"
     Write-Information ""
 
-    $WebsiteContentZipOutputPath = "../$ReleasablesDirectory/frontend/website-content.zip"
+    $WebsiteContentOutputPath = "../$ReleasablesDirectory/frontend/content"
+    New-Item $WebsiteContentOutputPath -ItemType Directory -Force
+    $WebsiteContentZipOutputPath = "../$ReleasablesDirectory/frontend/content/website.zip"
 
     Write-Information "Compressing website content to $WebsiteContentZipOutputPath"
     zip -ru $WebsiteContentZipOutputPath ./
