@@ -11,7 +11,7 @@ $InformationPreference = "Continue"
 try {
     ./build.ps1
 
-    Push-Location $ReleasablesPath/frontend/website-content
+    Push-Location website-content
 
     npm run dev
 }

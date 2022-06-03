@@ -6,7 +6,7 @@ param (
 
     [Parameter(Mandatory = $false)]
     [String]
-    $BuildId
+    $BuildUrl
 )
 
 Set-StrictMode –Version latest
@@ -36,7 +36,7 @@ if ($Results) {
 }
 
 Write-Information ""
-Write-Information "Building Earth Website (Build Number: $BuildNumber | Build ID: $BuildId)"
+Write-Information "Building Earth Website (Build Number: $BuildNumber | Build URL: $BuildUrl)"
 Write-Information ""
 
 try {
@@ -46,13 +46,13 @@ try {
     "#build-number-anchor::before { content: ""$BuildNumber""; }" | Out-File -FilePath $BuildNumberFilePath
     Write-Information "Build number written to $BuildNumberFilePath"
 
-    # Update BuildID if available.
-    if ($BuildId) {
+    # Update BuildUrl if available.
+    if ($BuildUrl) {
         $IndexPath = "./pages/index.tsx"
         $IndexContent = Get-Content -Path $IndexPath
-        $IndexContent = $IndexContent.Replace('{BUILDID}', $BuildId)
+        $IndexContent = $IndexContent.Replace("javascript:alert('Build URL not specified.');", $BuildUrl)
         $IndexContent | Out-File -FilePath $IndexPath
-        Write-Information "Build ID written to $IndexPath"
+        Write-Information "Build URL written to $IndexPath"
     }
 
     Write-Information ""
