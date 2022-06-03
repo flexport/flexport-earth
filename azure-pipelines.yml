@@ -30,7 +30,7 @@ stages:
         key: ./releasables/testing/functional/package-lock.json
         path: ./releasables/testing/functional/node_modules
 
-    - pwsh: ./build.ps1 -BuildNumber $(Build.BuildNumber) -BuildId $(Build.BuildId) 
+    - pwsh: ./build.ps1 -BuildNumber $(Build.BuildNumber) -BuildUrl "https://dev.azure.com/flexport-earth/Earth/_build/results?buildId=$(Build.BuildId)" 
       displayName: 'Build Script'
 
     - script: 'echo "$(Build.DefinitionName), $(Build.BuildId), $(Build.BuildNumber)" > buildinfo.txt'

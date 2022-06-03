@@ -287,7 +287,7 @@ const Home: NextPage = () => {
                 <span className={styles.footerContentTagLine}>We&apos;re making global trade easy for everyone.</span>
             </div>
             
-            <a href="https://dev.azure.com/flexport-earth/Earth/_build/results?buildId={BUILDID}" className={styles.buildNumber}>
+            <a href="javascript:alert('Build URL not specified.');" className={styles.buildNumber}>
                 <div id="build-number-anchor"></div>
             </a>
         </div>
