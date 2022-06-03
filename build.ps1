@@ -80,7 +80,11 @@ finally {
 
 try {
     Push-Location "$ReleasablesDirectory/testing/functional"
+
+    Write-Information "Installing Cypress.io..."
     npm install cypress --save-dev
+    Write-Information "Cypress.io installed!"
+    Write-Information ""
 }
 finally {
     Pop-Location
