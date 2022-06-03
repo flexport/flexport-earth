@@ -6,10 +6,9 @@ $InformationPreference = "Continue"
 # Run dependency management
 . ./releasables/dependencies/dependency-manager.ps1
 
-Add-Type -AssemblyName System.Windows.Forms
-$RunningInteractive = [System.Windows.Forms.SystemInformation]::UserInteractive
+$RunningNonInteractive = [Environment]::GetCommandLineArgs().Contains('-NonInteractive')
 
-if ($RunningInteractive) {
+if -Not ($RunningNonInteractive) {
     . ./development-tools/local-config-manager.ps1
 }
 
