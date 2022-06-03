@@ -6,8 +6,12 @@ $InformationPreference = "Continue"
 # Run dependency management
 . ./releasables/dependencies/dependency-manager.ps1
 
-. ./development-tools/local-config-manager.ps1
+Add-Type -AssemblyName System.Windows.Forms
+$RunningInteractive = [System.Windows.Forms.SystemInformation]::UserInteractive
 
+if ($RunningInteractive) {
+    . ./development-tools/local-config-manager.ps1
+}
 
 # Install required tools
 ./development-tools/install-development-tools.ps1
