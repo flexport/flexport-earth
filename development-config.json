@@ -1,3 +1,6 @@
 {
-    "cacheDirectory" : ".cache"
+    "cacheDirectory"                : ".cache",
+    "releasablesDirectory"          : "releasables",
+    "developmentToolsDirectory"     : "development-tools",
+    "websiteContentSourceDirectory" : "website-content"
 }

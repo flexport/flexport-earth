@@ -9,12 +9,10 @@ $InformationPreference = "Continue"
 . ./development-tools/local-config-manager.ps1
 
 try {
+    ./build.ps1
+
     Push-Location $ReleasablesPath/frontend/website-content
 
-    # TODO: Dedup with acual build/deply scripts.
-
-    npm install
-    npm run build
     npm run dev
 }
 finally {

@@ -32,11 +32,17 @@ If running on Windows, install the [Windows Linux System](https://docs.microsoft
 
     ./development-tools/install-development-tools.ps1
 
+## Building a release
+
+    ./build.ps1
+
 ## Viewing Website Content Locally
 
     The NextJS frontend can be started by running:
 
     ./start-website-locally.ps1
+
+    Note: This script will run build.ps1 for you.
 
 ## Azure
 
@@ -44,7 +50,7 @@ You'll need an Azure subscription to deploy to. Once you have one, you can follo
 
 For provisioning new Azure Accounts, Tenants, and Subscriptions, continue [here](azure/README.md).
 
-### Deploy your local changes to Azure
+### Deploy your locally built changes to Azure
 
     ./deploy.ps1
 
