@@ -165,7 +165,6 @@ function Update-Frontend {
             }
             Write-Information "Content deployed!"
             Write-Information ""
-            Pop-Location
 
             if (-Not ($URLToTest)) {
                 $URLToTest = "https://$CDNHostname"
