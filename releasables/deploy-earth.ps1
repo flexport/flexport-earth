@@ -4,10 +4,6 @@ param (
     [String]
     $BuildNumber,
 
-    [Parameter(Mandatory = $false)]
-    [String]
-    $BuildId,
-
     [Parameter(Mandatory = $true)]
     [String]
     $EnvironmentName,
@@ -29,7 +25,7 @@ $InformationPreference = "Continue"
 . ./earth-config.ps1
 
 Write-Information ""
-Write-Information "Deploying Earth build $BuildNumber (id: $BuildId) to $EnvironmentName environment..."
+Write-Information "Deploying Earth build $BuildNumber to $EnvironmentName environment..."
 
 # Performs Create if doesn't exist.
 function Update-SubscriptionBudget {
@@ -157,7 +153,7 @@ function Update-Frontend {
             $Output = az webapp deployment source config-zip `
                 --resource-group $EarthFrontendResourceGroupName `
                 --name $WebsiteName `
-                --src ./frontend/website-content/website.zip
+                --src ./frontend/website-content.zip
             if (!$?) {
                 Write-Information $Output
                 Write-Information ""

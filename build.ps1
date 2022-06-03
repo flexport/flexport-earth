@@ -2,7 +2,7 @@
 param (
     [Parameter(Mandatory = $false)]
     [String]
-    $BuildNumber,
+    $BuildNumber = [guid]::NewGuid(),
 
     [Parameter(Mandatory = $false)]
     [String]
@@ -20,8 +20,9 @@ $InformationPreference = "Continue"
 # Load global development settings
 $GlobalDevelopmentSettings = Get-Content 'development-config.json' | ConvertFrom-Json
 
-$DevelopmentToolsDirectory = $GlobalDevelopmentSettings.DevelopmentToolsDirectory
-$ReleasablesDirectory      = $GlobalDevelopmentSettings.ReleasablesDirectory
+$DevelopmentToolsDirectory      = $GlobalDevelopmentSettings.DevelopmentToolsDirectory
+$ReleasablesDirectory           = $GlobalDevelopmentSettings.ReleasablesDirectory
+$WebsiteContentSourceDirectory  = $GlobalDevelopmentSettings.WebsiteContentSourceDirectory
 
 # Install required tools
 $("$DevelopmentToolsDirectory/install-development-tools.ps1")
@@ -34,21 +35,16 @@ if ($Results) {
     Write-Error "PowerShell lint issues detected, please fix and try again."
 }
 
+Write-Information ""
+Write-Information "Building Earth Website (Build Number: $BuildNumber | Build ID: $BuildId)"
+Write-Information ""
+
 try {
-    Push-Location $ReleasablesDirectory
-
-    # Generate a random build number for local builds.
-    $BuildNumber = [guid]::NewGuid()
-
-    Write-Information ""
-    Write-Information "Building Earth Website (Build Number: $BuildNumber | Build ID: $BuildId)"
-    Write-Information ""
-
-    Push-Location ./frontend/website-content/
+    Push-Location $WebsiteContentSourceDirectory
 
     $BuildNumberFilePath = "./styles/build-number.css"
     "#build-number-anchor::before { content: ""$BuildNumber""; }" | Out-File -FilePath $BuildNumberFilePath
-    Write-Information "Build Number written to $BuildNumberFilePath"
+    Write-Information "Build number written to $BuildNumberFilePath"
 
     # Update BuildID if available.
     if ($BuildId) {
@@ -66,16 +62,19 @@ try {
     Write-Information "Website files compiled successfully!"
     Write-Information ""
 
-    Write-Information "Compressing website content..."
-    zip -ru website.zip ./ -x "website.zip"
+    $WebsiteContentZipOutputPath = "../$ReleasablesDirectory/frontend/website-content.zip"
+
+    Write-Information "Compressing website content to $WebsiteContentZipOutputPath"
+    zip -ru $WebsiteContentZipOutputPath ./
+    if (!$?) {
+        Write-Error "Failed to compress the website, see previous log entries."
+    }
     Write-Information "Compression complete!"
     Write-Information ""
-
-    Write-Information "Earth website build completed!"
-    Write-Information ""
-
-    Pop-Location
 }
 finally {
     Pop-Location
 }
+
+Write-Information "Earth website build completed!"
+Write-Information ""
