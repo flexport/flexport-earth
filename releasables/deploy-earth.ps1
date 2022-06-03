@@ -157,7 +157,7 @@ function Update-Frontend {
             $Output = az webapp deployment source config-zip `
                 --resource-group $EarthFrontendResourceGroupName `
                 --name $WebsiteName `
-                --src website.zip
+                --src ./frontend/website-content/website.zip
             if (!$?) {
                 Write-Information $Output
                 Write-Information ""
