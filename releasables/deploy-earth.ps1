@@ -140,27 +140,6 @@ function Update-Frontend {
             $CDNHostname = $CreateResponse.properties.outputs.frontDoorEndpointHostName.value
             $WebsiteName = $CreateResponse.properties.outputs.websiteName.value
 
-            Write-Information "Building website..."
-            Write-Information ""
-            Push-Location ./frontend/website-content/
-
-            # Generate the build number file.
-            $BuildNumberFilePath = "./styles/build-number.css"
-            "#build-number-anchor::before { content: ""$BuildNumber""; }" | Out-File -FilePath $BuildNumberFilePath
-
-            # Update BuildID if available.
-            if ($BuildId) {
-                $IndexPath = "./pages/index.tsx"
-                $IndexContent = Get-Content -Path $IndexPath
-                $IndexContent = $IndexContent.Replace('{BUILDID}', $BuildId)
-                $IndexContent | Out-File -FilePath $IndexPath
-            }
-
-            $Output = npm install
-            $Output = npm run build
-            Write-Information "Compressing website content..."
-            $Output = zip -ru website.zip ./ -x "website.zip"
-            Write-Information "Compression complete!"
             Write-Information ""
             Write-Information "Confguring website..."
             $Output = az webapp config appsettings set `
