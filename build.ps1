@@ -83,7 +83,7 @@ try {
     npm install cypress --save-dev
 }
 finally {
-    Pop-Location 
+    Pop-Location
 }
 
 Write-Information "Earth website build completed!"
