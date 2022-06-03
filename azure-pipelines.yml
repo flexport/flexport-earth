@@ -20,8 +20,8 @@ stages:
     steps:
     - task: Cache@2
       inputs:
-        key: /website-content/package-lock.json
-        path: /releasables/fontend
+        key: ./website-content/package-lock.json
+        path: ./releasables/fontend
  
     - pwsh: ./build.ps1 -BuildNumber $(Build.BuildNumber) -BuildId $(Build.BuildId) 
       displayName: 'Build Script'
