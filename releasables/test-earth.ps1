@@ -32,6 +32,10 @@ try {
     if ($LastExitCode -ne 0) {
         Write-Error "Testing failed!"
     }
+
+    Write-Information ""
+    Write-Information "Testing completed!"
+    Write-Information ""
 }
 finally {
     Pop-Location
