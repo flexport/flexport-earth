@@ -31,7 +31,7 @@ try {
 
     Write-Information "CypressPath: $CypressPath"
 
-    $($CypressPath run --spec "cypress/integration/**/*" --env BUILD_NUMBER=$BuildNumber,EARTH_WEBSITE_URL=$EarthWebsiteUrl)
+    $(&$CypressPath run --spec "cypress/integration/**/*" --env BUILD_NUMBER=$BuildNumber,EARTH_WEBSITE_URL=$EarthWebsiteUrl)
 
     if ($LastExitCode -ne 0) {
         Write-Error "Testing failed!"
