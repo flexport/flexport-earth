@@ -15,6 +15,6 @@ describe('Countries Page', () => {
   it('Lists Countries', () => {
     countriesPage
       .getBody()
-        .contains('Blah');
+        .contains('United States');
   })
 })
