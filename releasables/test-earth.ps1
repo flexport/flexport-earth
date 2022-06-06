@@ -37,7 +37,7 @@ try {
 
     $NpmBinPath = $(npm bin)
 
-    Get-ChildItem $NpmBinPath
+    ls -la $NpmBinPath
 
     Invoke-Expression "$NpmBinPath/cypress run --spec ""cypress/integration/**/*"" --env BUILD_NUMBER=$BuildNumber,EARTH_WEBSITE_URL=$EarthWebsiteUrl --reporter junit --reporter-options ""mochaFile=results/cypress.xml"""
 
