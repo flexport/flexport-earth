@@ -31,11 +31,12 @@ try {
     Write-Information ""
     Write-Information "Running tests..."
 
-    $CypressPath = "$(npm bin)/cypress"
+    # $CypressPath = "$(npm bin)/cypress"
+    # & $CypressPath run `
+    #     --spec "cypress/integration/**/*" `
+    #     --env BUILD_NUMBER=$BuildNumber,EARTH_WEBSITE_URL=$EarthWebsiteUrl
 
-    & $CypressPath run `
-        --spec "cypress/integration/**/*" `
-        --env BUILD_NUMBER=$BuildNumber,EARTH_WEBSITE_URL=$EarthWebsiteUrl
+    Invoke-Expression "$(npm bin)/cypress run --spec ""cypress/integration/**/*"" --env BUILD_NUMBER=$BuildNumber,EARTH_WEBSITE_URL=$EarthWebsiteUrl"
 
     if ($LastExitCode -ne 0) {
         Write-Error "Testing failed!"
