@@ -85,6 +85,18 @@ try {
     npm install cypress
     Write-Information "Cypress.io installed!"
     Write-Information ""
+
+    $NpmBinPath = $(npm bin)
+
+    ls -la $NpmBinPath
+
+    Write-Information "Showing cypress:"
+    cat $NpmBinPath/cypress
+    Write-Information "End showing cypress"
+
+    Write-Information "Getting cypress version"
+    & $NpmBinPath/cypress --version
+    Write-Information "Done!"
 }
 finally {
     Pop-Location
