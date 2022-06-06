@@ -39,6 +39,10 @@ try {
 
     ls -la $NpmBinPath
 
+    Write-Information "Getting cypress version"
+    & $NpmBinPath/cypress --version
+    Write-Information "Done!"
+
     Invoke-Expression "$NpmBinPath/cypress run --spec ""cypress/integration/**/*"" --env BUILD_NUMBER=$BuildNumber,EARTH_WEBSITE_URL=$EarthWebsiteUrl --reporter junit --reporter-options ""mochaFile=results/cypress.xml"""
 
     if ($LastExitCode -ne 0) {
