@@ -27,7 +27,7 @@ try {
     Push-Location $TestRootPath
 
     Write-Information ""
-    Write-Information "pwd: $(pwd)"
+    Write-Information "pwd: $(Get-Location)"
     Write-Information ""
 
     $TestResultsDirectory = "results"

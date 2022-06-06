@@ -82,7 +82,7 @@ try {
     Push-Location "$ReleasablesDirectory/testing/functional"
 
     Write-Information ""
-    Write-Information "pwd: $(pwd)"
+    Write-Information "pwd: $(Get-Location)"
     Write-Information ""
 
     Write-Information "Installing Cypress.io..."
