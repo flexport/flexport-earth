@@ -26,6 +26,10 @@ $TestRootPath = "testing/functional"
 try {
     Push-Location $TestRootPath
 
+    Write-Information ""
+    Write-Information "pwd: $(pwd)"
+    Write-Information ""
+
     $TestResultsDirectory = "results"
 
     Write-Information ""
