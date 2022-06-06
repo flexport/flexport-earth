@@ -35,7 +35,11 @@ try {
         Remove-Item $TestResultsDirectory -Force -Recurse
     }
 
-    Invoke-Expression "$(npm bin)/cypress run --spec ""cypress/integration/**/*"" --env BUILD_NUMBER=$BuildNumber,EARTH_WEBSITE_URL=$EarthWebsiteUrl --reporter junit --reporter-options ""mochaFile=results/cypress.xml"""
+    $NpmBinPath = $(npm bin)
+
+    Get-ChildItem $NpmBinPath
+
+    Invoke-Expression "$NpmBinPath/cypress run --spec ""cypress/integration/**/*"" --env BUILD_NUMBER=$BuildNumber,EARTH_WEBSITE_URL=$EarthWebsiteUrl --reporter junit --reporter-options ""mochaFile=results/cypress.xml"""
 
     if ($LastExitCode -ne 0) {
         Write-Error "Testing failed!"
