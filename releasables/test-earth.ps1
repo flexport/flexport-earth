@@ -39,6 +39,23 @@ try {
 
     ls -la $NpmBinPath
 
+    Write-Information "Showing cypress:"
+    cat $NpmBinPath/cypress
+    Write-Information "End showing cypress"
+
+    Write-Information "Getting cypress version"
+    & $NpmBinPath/cypress --version
+    Write-Information "Done!"
+
+    Write-Information "Installing Cypress.io..."
+    npm install cypress
+    Write-Information "Cypress.io installed!"
+    Write-Information ""
+
+    Write-Information "Showing cypress:"
+    cat $NpmBinPath/cypress
+    Write-Information "End showing cypress"
+
     Write-Information "Getting cypress version"
     & $NpmBinPath/cypress --version
     Write-Information "Done!"
