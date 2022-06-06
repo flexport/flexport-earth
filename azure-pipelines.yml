@@ -11,7 +11,7 @@ variables:
 stages:
 - stage: 'Build'
   displayName: 'Build Earth Release'
-  jobs: 
+  jobs:
   - job: 'Build'
     displayName: 'Build Earth Release'
     pool:
@@ -23,14 +23,8 @@ stages:
       inputs:
         key: ./website-content/package-lock.json
         path: ./releasables/frontend/content
- 
-    - task: Cache@2
-      displayName: 'Cypress.io node_modules Cache'
-      inputs:
-        key: ./releasables/testing/functional/package-lock.json
-        path: ./releasables/testing/functional/node_modules
 
-    - pwsh: ./build.ps1 -BuildNumber $(Build.BuildNumber) -BuildUrl "https://dev.azure.com/flexport-earth/Earth/_build/results?buildId=$(Build.BuildId)" 
+    - pwsh: ./build.ps1 -BuildNumber $(Build.BuildNumber) -BuildUrl "https://dev.azure.com/flexport-earth/Earth/_build/results?buildId=$(Build.BuildId)"
       displayName: 'Build Script'
 
     - script: 'echo "$(Build.DefinitionName), $(Build.BuildId), $(Build.BuildNumber)" > buildinfo.txt'
@@ -85,4 +79,3 @@ stages:
     environmentNameShort: prod
     dependsOn: Staging
     azureSubscriptionName: Production
- 
