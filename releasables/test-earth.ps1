@@ -46,7 +46,7 @@ try {
     Write-Information "Restoring Symlinks..."
     Write-Information "First, remove broken links from $NpmBinPath"
     Push-Location $NpmBinPath
-    rm *.*
+    rm *
     Write-Information "Done!"
     Write-Information "Recreate symlinks..."
     ln -s ../cypress/bin/cypress cypress
