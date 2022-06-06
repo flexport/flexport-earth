@@ -1,4 +1,5 @@
 ﻿[CmdletBinding()]
+[Diagnostics.CodeAnalysis.SuppressMessageAttribute("PSAvoidUsingInvokeExpression", "")]
 param (
     [Parameter(Mandatory=$true)]
     [String]
