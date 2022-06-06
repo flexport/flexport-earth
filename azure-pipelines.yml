@@ -24,11 +24,11 @@ stages:
         key: ./website-content/package-lock.json
         path: ./releasables/frontend/content
  
-    - task: Cache@2
-      displayName: 'Cypress.io node_modules Cache'
-      inputs:
-        key: ./releasables/testing/functional/package-lock.json
-        path: ./releasables/testing/functional/node_modules
+    # - task: Cache@2
+    #   displayName: 'Cypress.io node_modules Cache'
+    #   inputs:
+    #     key: ./releasables/testing/functional/package-lock.json
+    #     path: ./releasables/testing/functional/node_modules
 
     - pwsh: ./build.ps1 -BuildNumber $(Build.BuildNumber) -BuildUrl "https://dev.azure.com/flexport-earth/Earth/_build/results?buildId=$(Build.BuildId)" 
       displayName: 'Build Script'
