@@ -21,26 +21,28 @@ $InformationPreference = "Continue"
 Write-Information ""
 Write-Information "Testing Earth at $EarthWebsiteUrl"
 
-try {
-    Push-Location "testing/functional"
+$TestRootPath = "testing/functional"
 
-    # Write-Information ""
-    # Write-Information "Installing Cypress..."
-    # npm install cypress --save-dev
-    # Write-Information "Cypress installed!"
+try {
+    Push-Location $TestRootPath
+
+    $TestResultsDirectory = "results"
 
     Write-Information ""
     Write-Information "Running tests..."
 
-    # $CypressPath = "$(npm bin)/cypress"
-    # & $CypressPath run `
-    #     --spec "cypress/integration/**/*" `
-    #     --env BUILD_NUMBER=$BuildNumber,EARTH_WEBSITE_URL=$EarthWebsiteUrl
+    if (Test-Path $TestResultsDirectory) {
+        Remove-Item $TestResultsDirectory -Force
+    }
 
-    Invoke-Expression "$(npm bin)/cypress run --spec ""cypress/integration/**/*"" --env BUILD_NUMBER=$BuildNumber,EARTH_WEBSITE_URL=$EarthWebsiteUrl"
+    Invoke-Expression "$(npm bin)/cypress run --spec ""cypress/integration/**/*"" --env BUILD_NUMBER=$BuildNumber,EARTH_WEBSITE_URL=$EarthWebsiteUrl --reporter junit --reporter-options ""mochaFile=results/cypress.xml"""
 
     if ($LastExitCode -ne 0) {
         Write-Error "Testing failed!"
+    }
+
+    if (-Not (Test-Path $TestResultsDirectory)) {
+        Write-Error "No test results found in $TestRootPath/$TestResultsDirectory. Something went wrong!"
     }
 
     Write-Information ""

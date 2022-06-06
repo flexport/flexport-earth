@@ -3,3 +3,4 @@ build-number.css
 .DS_Store
 *.zip
 node_modules
+/releasables/testing/functional/results
