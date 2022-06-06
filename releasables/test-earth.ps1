@@ -32,7 +32,7 @@ try {
     Write-Information "Running tests..."
 
     if (Test-Path $TestResultsDirectory) {
-        Remove-Item $TestResultsDirectory -Force
+        Remove-Item $TestResultsDirectory -Force -Recurse
     }
 
     Invoke-Expression "$(npm bin)/cypress run --spec ""cypress/integration/**/*"" --env BUILD_NUMBER=$BuildNumber,EARTH_WEBSITE_URL=$EarthWebsiteUrl --reporter junit --reporter-options ""mochaFile=results/cypress.xml"""
