@@ -61,7 +61,7 @@ try {
     ln -s ../uuid/dist/bin/uuid uuid
     Pop-Location
     Write-Information "Done!"
-    
+
     Write-Information ""
     ls -la $NpmBinPath
     Write-Information ""
@@ -69,7 +69,7 @@ try {
     Write-Information "Node Version:    $(node --version)"
     Write-Information "npm Version:     $(npm --version)"
     Write-Information "cypress Version: $(& $NpmBinPath/cypress --version)"
-    
+
     Invoke-Expression "$NpmBinPath/cypress run --spec ""cypress/integration/**/*"" --env BUILD_NUMBER=$BuildNumber,EARTH_WEBSITE_URL=$EarthWebsiteUrl --reporter junit --reporter-options ""mochaFile=results/cypress.xml"""
 
     if ($LastExitCode -ne 0) {
