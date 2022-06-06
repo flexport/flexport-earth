@@ -24,10 +24,10 @@ Write-Information "Testing Earth at $EarthWebsiteUrl"
 try {
     Push-Location "testing/functional"
 
-    Write-Information ""
-    Write-Information "Installing Cypress..."
-    npm install cypress --save-dev
-    Write-Information "Cypress installed!"
+    # Write-Information ""
+    # Write-Information "Installing Cypress..."
+    # npm install cypress --save-dev
+    # Write-Information "Cypress installed!"
 
     Write-Information ""
     Write-Information "Running tests..."
