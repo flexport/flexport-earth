@@ -48,8 +48,10 @@ export async function getStaticProps(params: CountryCodeParams) {
 
     return {
       props: {
+        time: new Date().toISOString(),
         ...postData[0]
-      }
+      },
+      revalidate: 10
     }
 }
 
@@ -64,7 +66,8 @@ type Country = {
     name: {
         common: string
     },
-    cca2: string
+    cca2: string,
+    time: string
 }
 
 const CountryPage: NextPage<Country> = (country) => {
@@ -88,6 +91,7 @@ const CountryPage: NextPage<Country> = (country) => {
         <h1 className={styles.title}>
         {country.name.common}
         </h1>
+        {country.time}
       </main>
 
       <footer className={styles.footer}>
