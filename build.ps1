@@ -59,6 +59,9 @@ try {
     Write-Information "Compiling website files..."
     npm install
     npm run build
+    if (!$?) {
+        Write-Error "Failed to build the website, see previous log entries."
+    }
     Write-Information "Website files compiled successfully!"
     Write-Information ""
 
