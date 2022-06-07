@@ -1,33 +1,77 @@
 import type { NextPage } from 'next'
 import Head from 'next/head'
 import Image from 'next/image'
-import Link from 'next/link';
 import styles from '/styles/Home.module.css'
 
-export async function getStaticProps() {
-  const countries = await (await fetch('https://restcountries.com/v3.1/all')).json();
-
-  return {
-    props: {
-      countries,
-    },
-  };
+type CountryCodeParams = {
+    params: {
+        cca2: string
+    }
 }
 
-type Countries = {
-  countries: [{
+async function getAllCountryCodes() {
+    const responseData: Countries = await (
+        await fetch('https://restcountries.com/v3.1/all')
+    ).json();
+
+    return responseData.map(country => {
+        return {
+            params: {
+                cca2: country.cca2
+            }
+        }
+    });
+}
+
+async function getCountryData(cca2: string) {
+    const json = await (
+        await fetch('https://restcountries.com/v3.1/alpha/' + cca2)
+    ).json();
+
+    return json;
+}
+
+export async function getStaticPaths() {
+    const paths = await getAllCountryCodes()
+    return {
+        paths,
+        fallback: false
+    }
+}
+
+export async function getStaticProps(params: CountryCodeParams) {
+    console.log(params.params);
+
+    const postData = await getCountryData(params.params.cca2);
+
+    console.log(postData);
+
+    return {
+      props: {
+        ...postData[0]
+      }
+    }
+}
+
+type Countries = [{
     name: {
       common: string
     },
     cca2: string
-  }]
+}]
+
+type Country = {
+    name: {
+        common: string
+    },
+    cca2: string
 }
 
-const CountriesPage: NextPage<Countries> = ({countries}) => {
+const CountryPage: NextPage<Country> = (country) => {
   return (
     <div className={styles.container}>
       <Head>
-        <title>Flexport Earth: Countries</title>
+        <title>Flexport Earth: Country: {country.cca2}</title>
         <meta name="description" content="Facts of global trade" />
         <link rel="icon" href="/favicon.ico" />
       </Head>
@@ -42,16 +86,8 @@ const CountriesPage: NextPage<Countries> = ({countries}) => {
 
       <main className={styles.main}>
         <h1 className={styles.title}>
-          Countries
+        {country.name.common}
         </h1>
-
-        <ol>
-          {countries.sort((a, b) => a.name.common.localeCompare(b.name.common)).map(({ name, cca2 }) => (
-              <li key={name.common}>
-                <Link href={`/facts/countries/${cca2}`}>{name.common}</Link>
-              </li>
-            ))}
-        </ol>
       </main>
 
       <footer className={styles.footer}>
@@ -72,4 +108,4 @@ const CountriesPage: NextPage<Countries> = ({countries}) => {
   )
 }
 
-export default CountriesPage
+export default CountryPage
