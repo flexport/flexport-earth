@@ -6,8 +6,8 @@
     "node" : ">=16.0.0"
   },
   "scripts": {
-    "dev": "NODE_TLS_REJECT_UNAUTHORIZED=\"0\" next dev",
-    "build": "NODE_TLS_REJECT_UNAUTHORIZED=\"0\" next build",
+    "dev": "next dev",
+    "build": "next build",
     "start": "node_modules/next/dist/bin/next start --port ${PORT:-3000}",
     "lint": "next lint"
   },

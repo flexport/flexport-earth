@@ -4,3 +4,4 @@ build-number.css
 *.zip
 node_modules
 /releasables/testing/functional/results
+.env

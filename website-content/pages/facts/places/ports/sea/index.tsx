@@ -3,21 +3,11 @@ import Head from 'next/head'
 import Image from 'next/image'
 import Link from 'next/link';
 import styles from '/styles/Home.module.css'
+import FlexportApiClient from '../../../../../lib/data_sources/flexport/api'
 
 export async function getStaticProps() {
-  const ports = await (
-    await fetch(
-      'https://api.nonp-dev-6.use1.eng-nonprod.flexport.internal/places/ports?types=SEAPORT',
-      {
-        headers: new Headers({
-          'Authorization':    'Bearer eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCIsImtpZCI6IjFrUGo1ZTV0VUZaQ25OZmpJQzU0UCJ9.eyJpc3MiOiJodHRwczovL2FwaS1zdGFnaW5nLmlkZW50aXR5LWRldi5mbGV4cG9ydC5jb20vIiwic3ViIjoiSmtwZkdYOFJTVDhYbUpRMmIyQ2ptWmZHN0p6YjA4Q1JAY2xpZW50cyIsImF1ZCI6Imh0dHBzOi8vYXBpLmZsZXhwb3J0LmNvbSIsImlhdCI6MTY1NDYzMzQwMiwiZXhwIjoxNjU0NzE5ODAyLCJhenAiOiJKa3BmR1g4UlNUOFhtSlEyYjJDam1aZkc3SnpiMDhDUiIsImd0eSI6ImNsaWVudC1jcmVkZW50aWFscyJ9.sA5xkz-NW1nPdXuy3Nj5NuhPNrP-FD6t5N7RaghNpoZaCL72qB03YFFb6waK11wwFitLJfqCLytLAPjijRBxqqjYTMSpGYnNaESDovAmobLOH7cqTSC4Or4y8pEBkbjglzIA9xds_RFTdTxCkOEyLXrCeO-nJad6nQD24XqFc_qwtoPOpoZ0SnmZEdg70c_xZxMPFQLpIIYWIHzTCtOKEj76meyDtRqdrLgcuuiopDJZYg3qTjr6hGnwKvZblfaJnOCEzn6hpuglO2uwWJo9TKKAO1p8V38Tk74DIMVkrvdc3ZQWnthT95gQ3r7d7hXiLgzhMH59Esc1pevVrLQmyg',
-          'Flexport-Version': '1'
-        })
-      },
-    )
-  ).json();
-
-  //const ports = {ports: [{name: "test"}]}
+  const flexportApi = FlexportApiClient();
+  const ports = await flexportApi.places.getSeaports()
 
   console.log(ports);
 
@@ -28,17 +18,17 @@ export async function getStaticProps() {
   };
 }
 
-type Countries = {
+type Ports = {
   ports: [{
     name: string
   }]
 }
 
-const CountriesPage: NextPage<Countries> = ({ports}) => {
+const SeaportsPage: NextPage<Ports> = ({ports}) => {
   return (
     <div className={styles.container}>
       <Head>
-        <title>Flexport Earth: Countries</title>
+        <title>Flexport Earth: Seaports</title>
         <meta name="description" content="Facts of global trade" />
         <link rel="icon" href="/favicon.ico" />
       </Head>
@@ -53,7 +43,7 @@ const CountriesPage: NextPage<Countries> = ({ports}) => {
 
       <main className={styles.main}>
         <h1 className={styles.title}>
-          Countries
+          Seaports
         </h1>
 
         <ol>
@@ -83,4 +73,4 @@ const CountriesPage: NextPage<Countries> = ({ports}) => {
   )
 }
 
-export default CountriesPage
+export default SeaportsPage
