@@ -66,7 +66,6 @@ try {
     if (!$?) {
         Write-Error "Failed to build the website, see previous log entries."
     }
-    Remove-Item Env:\FLEXPORT_API_ACCESSTOKEN
     Write-Information "Website files compiled successfully!"
     Write-Information ""
 
