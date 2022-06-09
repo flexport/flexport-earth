@@ -18,12 +18,6 @@ Set-StrictMode –Version latest
 $ErrorActionPreference = "Stop"
 $InformationPreference = "Continue"
 
-if ($FlexportApiAccessToken) {
-    Write-Information "FlexportApiAccessToken received!"
-} else {
-    Write-Information "FlexportApiAccessToken not received!"
-}
-
 # Run dependency management
 . ./releasables/dependencies/dependency-manager.ps1
 

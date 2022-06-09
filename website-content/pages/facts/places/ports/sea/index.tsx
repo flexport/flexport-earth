@@ -13,18 +13,21 @@ export async function getStaticProps() {
 
   return {
     props: {
+      time: new Date().toISOString(),
       ...ports,
     },
+    revalidate: 60
   };
 }
 
 type Ports = {
+  time: string,
   ports: [{
     name: string
   }]
 }
 
-const SeaportsPage: NextPage<Ports> = ({ports}) => {
+const SeaportsPage: NextPage<Ports> = ({ports, time}) => {
   return (
     <div className={styles.container}>
       <Head>
@@ -45,6 +48,8 @@ const SeaportsPage: NextPage<Ports> = ({ports}) => {
         <h1 className={styles.title}>
           Seaports
         </h1>
+
+        { time }
 
         <ol>
           {ports.map(({ name }) => (
