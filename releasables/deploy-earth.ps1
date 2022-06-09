@@ -10,7 +10,11 @@ param (
 
     [Parameter(Mandatory = $false)]
     [String]
-    $EarthWebsiteCustomDomainName
+    $EarthWebsiteCustomDomainName,
+
+    [Parameter(Mandatory = $false)]
+    [String]
+    $FlexportApiAccessToken
 )
 
 Set-StrictMode –Version latest
@@ -94,7 +98,11 @@ function Update-Frontend {
 
         [Parameter(Mandatory = $false)]
         [String]
-        [string]$CustomDomainName
+        $CustomDomainName,
+
+        [Parameter(Mandatory = $true)]
+        [String]
+        $FlexportApiAccessToken
     )
 
     process {
@@ -145,7 +153,16 @@ function Update-Frontend {
             if (!$?) {
                 Write-Information $Output
                 Write-Information ""
-                Write-Error "Frontend infra deployment failed."
+                Write-Error "Configuring WEBSITE_RUN_FROM_PACKAGE failed."
+            }
+            $Output = az webapp config appsettings set `
+                --resource-group $EarthFrontendResourceGroupName `
+                --name $WebsiteName `
+                --settings FLEXPORT_API_ACCESSTOKEN="$FlexportApiAccessToken"
+            if (!$?) {
+                Write-Information $Output
+                Write-Information ""
+                Write-Error "Configuring FLEXPORT_API_ACCESSTOKEN failed."
             }
             Write-Information "Website configured!"
             Write-Information ""
@@ -220,9 +237,10 @@ function Update-Frontend {
 Update-FrontendResourceGroup
 
 $EarthWebsiteUrl = Update-Frontend `
-    -EnvironmentName  $EnvironmentName `
-    -CustomDomainName $EarthWebsiteCustomDomainName
+    -EnvironmentName        $EnvironmentName `
+    -CustomDomainName       $EarthWebsiteCustomDomainName `
+    -FlexportApiAccessToken $FlexportApiAccessToken
 
 ./test-earth.ps1 `
-    -BuildNumber $BuildNumber `
+    -BuildNumber     $BuildNumber `
     -EarthWebsiteUrl $EarthWebsiteUrl

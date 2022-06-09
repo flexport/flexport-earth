@@ -30,7 +30,8 @@ try {
     ./deploy-earth.ps1 `
         -BuildNumber                  $BuildNumber `
         -EnvironmentName              $LocalSettings.EnvironmentName `
-        -EarthWebsiteCustomDomainName $LocalSettings.EarthWebsiteCustomDomainName
+        -EarthWebsiteCustomDomainName $LocalSettings.EarthWebsiteCustomDomainName `
+        -FlexportApiAccessToken       $LocalSettings.FlexportApiAccessToken
 }
 finally {
     Pop-Location

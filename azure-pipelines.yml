@@ -2,11 +2,17 @@ trigger:
 - '*'
 
 variables:
-  artifactName: 'build-artifacts'
-  releasablesWorkingDirectory: '$(Pipeline.Workspace)/$(artifactName)/releasables'
-  isMain: $[eq(variables['Build.SourceBranch'], 'refs/heads/main')]
-  isPR: $[startsWith(variables['Build.SourceBranch'], 'refs/pull/')]
-  vmImage: 'ubuntu-20.04'
+  - group: Development
+  - name: artifactName
+    value: 'build-artifacts'
+  - name: releasablesWorkingDirectory
+    value: '$(Pipeline.Workspace)/$(artifactName)/releasables'
+  - name: isMain
+    value: $[eq(variables['Build.SourceBranch'], 'refs/heads/main')]
+  - name: isPR
+    value: $[startsWith(variables['Build.SourceBranch'], 'refs/pull/')]
+  - name: vmImage
+    value: 'ubuntu-20.04'
 
 stages:
 - stage: 'Build'
@@ -24,7 +30,7 @@ stages:
         key: ./website-content/package-lock.json
         path: ./releasables/frontend/content
 
-    - pwsh: ./build.ps1 -BuildNumber $(Build.BuildNumber) -BuildUrl "https://dev.azure.com/flexport-earth/Earth/_build/results?buildId=$(Build.BuildId)"
+    - pwsh: ./build.ps1 -BuildNumber $(Build.BuildNumber) -BuildUrl "https://dev.azure.com/flexport-earth/Earth/_build/results?buildId=$(Build.BuildId)" -FlexportApiAccessToken $(FlexportApiAccessToken)
       displayName: 'Build Script'
 
     - script: 'echo "$(Build.DefinitionName), $(Build.BuildId), $(Build.BuildNumber)" > buildinfo.txt'
