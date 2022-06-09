@@ -2,13 +2,12 @@ trigger:
 - '*'
 
 variables:
-  group: 'Development'
   artifactName: 'build-artifacts'
   releasablesWorkingDirectory: '$(Pipeline.Workspace)/$(artifactName)/releasables'
   isMain: $[eq(variables['Build.SourceBranch'], 'refs/heads/main')]
   isPR: $[startsWith(variables['Build.SourceBranch'], 'refs/pull/')]
   vmImage: 'ubuntu-20.04'
-
+  - group: 'Development'
 
 stages:
 - stage: 'Build'
