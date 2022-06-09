@@ -6,13 +6,23 @@ param (
 
     [Parameter(Mandatory = $false)]
     [String]
-    $BuildUrl
+    $BuildUrl,
+
+    [Parameter(Mandatory = $false)]
+    [String]
+    $FlexportApiAccessToken
 )
 
 Set-StrictMode –Version latest
 
 $ErrorActionPreference = "Stop"
 $InformationPreference = "Continue"
+
+if ($FlexportApiAccessToken) {
+    Write-Information "FlexportApiAccessToken received!"
+} else {
+    Write-Information "FlexportApiAccessToken not received!"
+}
 
 # Run dependency management
 . ./releasables/dependencies/dependency-manager.ps1
@@ -58,10 +68,11 @@ try {
     Write-Information ""
     Write-Information "Compiling website files..."
     npm install
-    npm run build
+    $env:FLEXPORT_API_ACCESSTOKEN="$FlexportApiAccessToken"; npm run build
     if (!$?) {
         Write-Error "Failed to build the website, see previous log entries."
     }
+    Remove-Item Env:\FLEXPORT_API_ACCESSTOKEN
     Write-Information "Website files compiled successfully!"
     Write-Information ""
 
