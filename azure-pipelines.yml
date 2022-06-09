@@ -2,14 +2,15 @@ trigger:
 - '*'
 
 variables:
+  - group: 'Development'
+  - name: FlexportApiAccessToken
+    value: $[variables.FlexportApiAccessToken]
   artifactName: 'build-artifacts'
   releasablesWorkingDirectory: '$(Pipeline.Workspace)/$(artifactName)/releasables'
   isMain: $[eq(variables['Build.SourceBranch'], 'refs/heads/main')]
   isPR: $[startsWith(variables['Build.SourceBranch'], 'refs/pull/')]
   vmImage: 'ubuntu-20.04'
-  - group: 'Development'
-  - name: FlexportApiAccessToken
-    value: $[variables.FlexportApiAccessToken]
+
 
 stages:
 - stage: 'Build'
