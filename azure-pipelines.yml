@@ -2,7 +2,7 @@ trigger:
 - '*'
 
 variables:
-  - group: 'Development'
+  group: 'Development'
   artifactName: 'build-artifacts'
   releasablesWorkingDirectory: '$(Pipeline.Workspace)/$(artifactName)/releasables'
   isMain: $[eq(variables['Build.SourceBranch'], 'refs/heads/main')]
