@@ -5,17 +5,7 @@ import Link from 'next/link';
 import styles from '/styles/Home.module.css'
 
 export async function getStaticProps() {
-  //const countries = await (await fetch('https://restcountries.com/v3.1/all')).json();
-
-  const countries =
-  [
-    {
-      name: {
-        common: "United States"
-      },
-      cca2: "US"
-    }
-  ];
+  const countries = await (await fetch('https://restcountries.com/v3.1/all')).json();
 
   return {
     props: {
