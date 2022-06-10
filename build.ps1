@@ -6,11 +6,7 @@ param (
 
     [Parameter(Mandatory = $false)]
     [String]
-    $BuildUrl,
-
-    [Parameter(Mandatory = $false)]
-    [String]
-    $FlexportApiAccessToken
+    $BuildUrl
 )
 
 Set-StrictMode –Version latest
@@ -62,7 +58,7 @@ try {
     Write-Information ""
     Write-Information "Compiling website files..."
     npm install
-    $env:FLEXPORT_API_ACCESSTOKEN="$FlexportApiAccessToken"; npm run build
+    npm run build
     if (!$?) {
         Write-Error "Failed to build the website, see previous log entries."
     }
@@ -74,7 +70,7 @@ try {
     $WebsiteContentZipOutputPath = "../$ReleasablesDirectory/frontend/content/website.zip"
 
     Write-Information "Compressing website content to $WebsiteContentZipOutputPath"
-    zip -ru $WebsiteContentZipOutputPath ./
+    zip -ru $WebsiteContentZipOutputPath ./ -x '.env'
     if (!$?) {
         Write-Error "Failed to compress the website, see previous log entries."
     }
