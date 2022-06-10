@@ -6,7 +6,15 @@ param (
 
     [Parameter(Mandatory = $false)]
     [String]
-    $BuildUrl
+    $BuildUrl,
+
+    [Parameter(Mandatory = $false)]
+    [String]
+    $FlexportApiClientId,
+
+    [Parameter(Mandatory = $false)]
+    [String]
+    $FlexportApiClientSecret
 )
 
 Set-StrictMode –Version latest
@@ -58,7 +66,7 @@ try {
     Write-Information ""
     Write-Information "Compiling website files..."
     npm install
-    npm run build
+    $env:FLEXPORT_API_CLIENT_ID="$FlexportApiClientId";$env:FLEXPORT_API_CLIENT_SECRET="$FlexportApiClientSecret";npm run build
     if (!$?) {
         Write-Error "Failed to build the website, see previous log entries."
     }
