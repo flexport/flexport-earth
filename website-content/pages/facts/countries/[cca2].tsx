@@ -10,9 +10,13 @@ type CountryCodeParams = {
 }
 
 async function getAllCountryCodes() {
-    const responseData: Countries = await (
-        await fetch('https://restcountries.com/v3.1/all')
-    ).json();
+    // const responseData: Countries = await (
+    //     await fetch('https://restcountries.com/v3.1/all')
+    // ).json();
+
+    const responseData = [{
+        cca2: "US"
+    }]
 
     return responseData.map(country => {
         return {
@@ -42,7 +46,14 @@ export async function getStaticPaths() {
 export async function getStaticProps(params: CountryCodeParams) {
     console.log(params.params);
 
-    const postData = await getCountryData(params.params.cca2);
+    //const postData = await getCountryData(params.params.cca2);
+
+    const postData = [{
+        name: {
+            common: "United States"
+        },
+        cca2: "US"
+    }];
 
     console.log(postData);
 
