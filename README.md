@@ -20,27 +20,23 @@ Your commits must be be [verified](https://docs.github.com/en/authentication/man
 
 If running on Windows, install the [Windows Linux System](https://docs.microsoft.com/en-us/windows/wsl/install) first.
 
-1. [PowerShell Core (7.2.3)](https://docs.microsoft.com/en-us/powershell/scripting/install/installing-powershell)
-2. [Azure CLI (2.36.0)](https://docs.microsoft.com/en-us/cli/azure/install-azure-cli)
+1. [PowerShell Core (7.2.4)](https://docs.microsoft.com/en-us/powershell/scripting/install/installing-powershell)
+2. [Azure CLI (2.37.0)](https://docs.microsoft.com/en-us/cli/azure/install-azure-cli)
 3. [NodeJS (16.15.0)](https://nodejs.org/en/download/)
 
 ## Start a PowerShell Console
 
     pwsh
 
-## Install Development Tools
+## Building a Release
 
-    ./development-tools/install-development-tools.ps1
-
-## Building a release
-
-    ./build.ps1
+    ./dev-build
 
 ## Viewing Website Content Locally
 
     The NextJS frontend can be started by running:
 
-    ./start-website-locally.ps1
+    ./dev-start-website-locally
 
     Note: This script will run build.ps1 for you.
 
@@ -52,14 +48,14 @@ For provisioning new Azure Accounts, Tenants, and Subscriptions, continue [here]
 
 ### Deploy your locally built changes to Azure
 
-    ./deploy.ps1
+    ./dev-deploy
 
 ### Clean up your Azure deployment
 
-    ./destroy.ps1
+    ./dev-destroy
 
 ### Pushing Changes to GitHub
 
 Once you've made some changes and committed them, you can push them remotely using the push script:
 
-    ./push.ps1
+    ./dev-push
