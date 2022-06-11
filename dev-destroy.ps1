@@ -9,15 +9,18 @@ $InformationPreference = "Continue"
 # Load global development settings
 $GlobalDevelopmentSettings = Get-Content 'development-config.json' | ConvertFrom-Json
 $DevelopmentToolsDirectory = $GlobalDevelopmentSettings.DevelopmentToolsDirectory
+$RelesablesDirectory       = $GlobalDevelopmentSettings.ReleasablesDirectory
 
 . "$DevelopmentToolsDirectory/local-config-manager.ps1"
 . "$DevelopmentToolsDirectory/sign-into-azure.ps1"
 
+$DeveloperEnvironmentSettings = Get-EnvironmentSettingsObject
+
 try {
-    Push-Location $ReleasablesPath
+    Push-Location $RelesablesDirectory
 
     ./destroy-earth.ps1 `
-        -EnvironmentName $LocalSettings.EnvironmentName
+        -EnvironmentName $DeveloperEnvironmentSettings.EnvironmentName
 }
 finally {
     Pop-Location
