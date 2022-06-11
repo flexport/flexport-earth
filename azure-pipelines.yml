@@ -30,8 +30,9 @@ stages:
         key: ./src/website-content/package-lock.json
         path: ./src/releasables/frontend/content
 
-    - pwsh: ./src/build.ps1 -BuildNumber $(Build.BuildNumber) -BuildUrl "https://dev.azure.com/flexport-earth/Earth/_build/results?buildId=$(Build.BuildId)" -FlexportApiClientId $(FlexportApiClientId) -FlexportApiClientSecret $(FlexportApiClientSecret)
+    - pwsh: ./build.ps1 -BuildNumber $(Build.BuildNumber) -BuildUrl "https://dev.azure.com/flexport-earth/Earth/_build/results?buildId=$(Build.BuildId)" -FlexportApiClientId $(FlexportApiClientId) -FlexportApiClientSecret $(FlexportApiClientSecret)
       displayName: 'Build Script'
+      workingDirectory: './src'
 
     - script: 'echo "$(Build.DefinitionName), $(Build.BuildId), $(Build.BuildNumber)" > buildinfo.txt'
       displayName: 'Write build info to build artifacts'
