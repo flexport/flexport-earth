@@ -11,7 +11,7 @@ $GlobalDevelopmentSettings = Get-Content 'development-config.json' | ConvertFrom
 $DevelopmentToolsDirectory = $GlobalDevelopmentSettings.DevelopmentToolsDirectory
 
 . "$DevelopmentToolsDirectory/local-config-manager.ps1"
-. "$DevelopmentToolsDirectory/sign-in-to-azure.ps1"
+. "$DevelopmentToolsDirectory/sign-into-azure.ps1"
 
 try {
     Push-Location $ReleasablesPath
