@@ -1,18 +1,18 @@
 ﻿[CmdletBinding()]
 param (
-    [Parameter(Mandatory = $false)]
+    [Parameter(Mandatory = $true)]
     [String]
-    $BuildNumber = [guid]::NewGuid(),
+    $BuildNumber,
 
     [Parameter(Mandatory = $false)]
     [String]
     $BuildUrl,
 
-    [Parameter(Mandatory = $false)]
+    [Parameter(Mandatory = $true)]
     [String]
     $FlexportApiClientId,
 
-    [Parameter(Mandatory = $false)]
+    [Parameter(Mandatory = $true)]
     [String]
     $FlexportApiClientSecret
 )
@@ -22,18 +22,11 @@ Set-StrictMode –Version latest
 $ErrorActionPreference = "Stop"
 $InformationPreference = "Continue"
 
+$ReleasablesDirectory           = "releasables"
+$WebsiteContentSourceDirectory  = "website-content"
+
 # Run dependency management
-. ./releasables/dependencies/dependency-manager.ps1
-
-# Load global development settings
-$GlobalDevelopmentSettings = Get-Content 'development-config.json' | ConvertFrom-Json
-
-$DevelopmentToolsDirectory      = $GlobalDevelopmentSettings.DevelopmentToolsDirectory
-$ReleasablesDirectory           = $GlobalDevelopmentSettings.ReleasablesDirectory
-$WebsiteContentSourceDirectory  = $GlobalDevelopmentSettings.WebsiteContentSourceDirectory
-
-# Install required tools
-$("$DevelopmentToolsDirectory/install-development-tools.ps1")
+. "$ReleasablesDirectory/dependencies/dependency-manager.ps1"
 
 # Validate all the PowerShell scripts
 $Results = Invoke-ScriptAnalyzer -Path **

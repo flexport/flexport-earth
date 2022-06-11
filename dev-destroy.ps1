@@ -6,7 +6,12 @@ Set-StrictMode –Version latest
 $ErrorActionPreference = "Stop"
 $InformationPreference = "Continue"
 
-. ./development-tools/local-config-manager.ps1
+# Load global development settings
+$GlobalDevelopmentSettings = Get-Content 'development-config.json' | ConvertFrom-Json
+$DevelopmentToolsDirectory = $GlobalDevelopmentSettings.DevelopmentToolsDirectory
+
+. "$DevelopmentToolsDirectory/local-config-manager.ps1"
+. "$DevelopmentToolsDirectory/sign-in-to-azure.ps1"
 
 try {
     Push-Location $ReleasablesPath
