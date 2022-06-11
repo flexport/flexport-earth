@@ -6,7 +6,7 @@ variables:
   - name: artifactName
     value: 'build-artifacts'
   - name: releasablesWorkingDirectory
-    value: '$(Pipeline.Workspace)/$(artifactName)/releasables'
+    value: '$(Pipeline.Workspace)/$(artifactName)/src/releasables'
   - name: isMain
     value: $[eq(variables['Build.SourceBranch'], 'refs/heads/main')]
   - name: isPR
@@ -27,10 +27,10 @@ stages:
     - task: Cache@2
       displayName: 'Website Content Cache'
       inputs:
-        key: ./website-content/package-lock.json
-        path: ./releasables/frontend/content
+        key: ./src/website-content/package-lock.json
+        path: ./src/releasables/frontend/content
 
-    - pwsh: ./build.ps1 -BuildNumber $(Build.BuildNumber) -BuildUrl "https://dev.azure.com/flexport-earth/Earth/_build/results?buildId=$(Build.BuildId)" -FlexportApiClientId $(FlexportApiClientId) -FlexportApiClientSecret $(FlexportApiClientSecret)
+    - pwsh: ./src/build.ps1 -BuildNumber $(Build.BuildNumber) -BuildUrl "https://dev.azure.com/flexport-earth/Earth/_build/results?buildId=$(Build.BuildId)" -FlexportApiClientId $(FlexportApiClientId) -FlexportApiClientSecret $(FlexportApiClientSecret)
       displayName: 'Build Script'
 
     - script: 'echo "$(Build.DefinitionName), $(Build.BuildId), $(Build.BuildNumber)" > buildinfo.txt'
@@ -40,13 +40,13 @@ stages:
     - task: CopyFiles@2
       displayName: 'Copy releasables to build artifacts'
       inputs:
-        contents: releasables/**
+        contents: src/releasables/**
         TargetFolder: '$(Build.ArtifactStagingDirectory)'
 
     - publish: '$(Build.ArtifactStagingDirectory)'
       artifact: $(artifactName)
 
-- template: 'azure/pipeline-templates/stage-deploy-earth.yml'
+- template: 'src/azure/pipeline-templates/stage-deploy-earth.yml'
   parameters:
     deployCondition: and(succeeded(), eq(variables.isPR, 'true'))
     destroyCondition: and(succeeded(), true)
@@ -56,7 +56,7 @@ stages:
     dependsOn: Build
     azureSubscriptionName: Development
 
-- template: 'azure/pipeline-templates/stage-deploy-earth.yml'
+- template: 'src/azure/pipeline-templates/stage-deploy-earth.yml'
   parameters:
     deployCondition: and(succeeded(), eq(variables.isMain, 'true'))
     destroyCondition: false
@@ -66,7 +66,7 @@ stages:
     dependsOn: Build
     azureSubscriptionName: Development
 
-- template: 'azure/pipeline-templates/stage-deploy-earth.yml'
+- template: 'src/azure/pipeline-templates/stage-deploy-earth.yml'
   parameters:
     deployCondition: succeeded()
     destroyCondition: false
@@ -76,7 +76,7 @@ stages:
     dependsOn: Development
     azureSubscriptionName: Staging
 
-- template: 'azure/pipeline-templates/stage-deploy-earth.yml'
+- template: 'src/azure/pipeline-templates/stage-deploy-earth.yml'
   parameters:
     deployCondition: succeeded()
     destroyCondition: false
