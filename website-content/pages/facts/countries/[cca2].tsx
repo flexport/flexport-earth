@@ -40,11 +40,7 @@ export async function getStaticPaths() {
 }
 
 export async function getStaticProps(params: CountryCodeParams) {
-    console.log(params.params);
-
     const postData = await getCountryData(params.params.cca2);
-
-    console.log(postData);
 
     return {
       props: {

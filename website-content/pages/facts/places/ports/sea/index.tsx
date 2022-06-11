@@ -3,13 +3,11 @@ import Head from 'next/head'
 import Image from 'next/image'
 import Link from 'next/link';
 import styles from '/styles/Home.module.css'
-import FlexportApiClient from '../../../../../lib/data_sources/flexport/api'
+import getApiClient from '../../../../../lib/data_sources/flexport/api'
 
 export async function getStaticProps() {
-  const flexportApi = FlexportApiClient();
+  const flexportApi = await getApiClient();
   const ports = await flexportApi.places.getSeaports()
-
-  console.log(ports);
 
   return {
     props: {

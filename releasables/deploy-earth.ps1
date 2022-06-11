@@ -12,9 +12,13 @@ param (
     [String]
     $EarthWebsiteCustomDomainName,
 
-    [Parameter(Mandatory = $false)]
+    [Parameter(Mandatory = $true)]
     [String]
-    $FlexportApiAccessToken
+    $FlexportApiClientId,
+
+    [Parameter(Mandatory = $true)]
+    [String]
+    $FlexportApiClientSecret
 )
 
 Set-StrictMode –Version latest
@@ -102,7 +106,11 @@ function Update-Frontend {
 
         [Parameter(Mandatory = $true)]
         [String]
-        $FlexportApiAccessToken
+        $FlexportApiClientId,
+
+        [Parameter(Mandatory = $true)]
+        [String]
+        $FlexportApiClientSecret
     )
 
     process {
@@ -158,11 +166,20 @@ function Update-Frontend {
             $Output = az webapp config appsettings set `
                 --resource-group $EarthFrontendResourceGroupName `
                 --name $WebsiteName `
-                --settings FLEXPORT_API_ACCESSTOKEN="$FlexportApiAccessToken"
+                --settings FLEXPORT_API_CLIENT_ID="$FlexportApiClientId"
             if (!$?) {
                 Write-Information $Output
                 Write-Information ""
-                Write-Error "Configuring FLEXPORT_API_ACCESSTOKEN failed."
+                Write-Error "Configuring FLEXPORT_API_CLIENT_ID failed."
+            }
+            $Output = az webapp config appsettings set `
+                --resource-group $EarthFrontendResourceGroupName `
+                --name $WebsiteName `
+                --settings FLEXPORT_API_CLIENT_SECRET="$FlexportApiClientSecret"
+            if (!$?) {
+                Write-Information $Output
+                Write-Information ""
+                Write-Error "Configuring FLEXPORT_API_CLIENT_SECRET failed."
             }
             Write-Information "Website configured!"
             Write-Information ""
@@ -237,9 +254,10 @@ function Update-Frontend {
 Update-FrontendResourceGroup
 
 $EarthWebsiteUrl = Update-Frontend `
-    -EnvironmentName        $EnvironmentName `
-    -CustomDomainName       $EarthWebsiteCustomDomainName `
-    -FlexportApiAccessToken $FlexportApiAccessToken
+    -EnvironmentName            $EnvironmentName `
+    -CustomDomainName           $EarthWebsiteCustomDomainName `
+    -FlexportApiClientId        $FlexportApiClientId `
+    -FlexportApiClientSecret    $FlexportApiClientSecret
 
 ./test-earth.ps1 `
     -BuildNumber     $BuildNumber `
