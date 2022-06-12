@@ -26,6 +26,8 @@ Set-StrictMode –Version latest
 $ErrorActionPreference = "Stop"
 $InformationPreference = "Continue"
 
+$ScriptStartTime = Get-Date
+
 # Run dependency management
 . ./dependencies/dependency-manager.ps1
 
@@ -264,3 +266,6 @@ $EarthWebsiteUrl = Update-Frontend `
 ./test-earth.ps1 `
     -BuildNumber     $BuildNumber `
     -EarthWebsiteUrl $EarthWebsiteUrl
+
+$Duration = New-TimeSpan -Start $ScriptStartTime -End $(Get-Date)
+Write-Information "Script completed in $Duration"

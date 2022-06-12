@@ -22,6 +22,8 @@ Set-StrictMode –Version latest
 $ErrorActionPreference = "Stop"
 $InformationPreference = "Continue"
 
+$ScriptStartTime = Get-Date
+
 $ReleasablesDirectory = "releasables"
 $WebsiteContentSourceDirectory = "website-content"
 
@@ -84,3 +86,6 @@ finally {
 
 Write-Information "Earth website build completed!"
 Write-Information ""
+
+$Duration = New-TimeSpan -Start $ScriptStartTime -End $(Get-Date)
+Write-Information "Script completed in $Duration"
