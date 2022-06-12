@@ -26,6 +26,8 @@ Set-StrictMode –Version latest
 $ErrorActionPreference = "Stop"
 $InformationPreference = "Continue"
 
+$ScriptStartTime = Get-Date
+
 # Run dependency management
 . ./dependencies/dependency-manager.ps1
 
@@ -203,7 +205,7 @@ function Update-Frontend {
             Write-Information ""
             Write-Information "=================================================================="
             Write-Information "CDN Hostname:    $CDNHostname"
-            Write-Information "Custom Homename: $CustomDomainName"
+            Write-Information "Custom Hostname: $CustomDomainName"
             Write-Information "URL to Test:     $URLToTest"
             Write-Information "=================================================================="
             Write-Information ""
@@ -213,18 +215,20 @@ function Update-Frontend {
             # to give the CDN a chance to start up.
             $WebsiteIsAlive = $false
 
+            $BuildNumberUrl = "$URLToTest/build-number.css"
+
             for ($i = 0; $i -lt 20; $i++) {
                 try {
-                    $Response = Invoke-WebRequest $URLToTest
-                    $StatusCode = $Response.StatusCode
-                    $Content = $Response.Content
-                    $ContentContainsPageNotFoundText = $Content.Contains("Page not found")
+                    $Response            = Invoke-WebRequest $BuildNumberUrl
+                    $StatusCode          = $Response.StatusCode
+                    $Content             = $Response.Content
+                    $ContainsBuildNumber = $Content.Contains($BuildNumber)
 
-                    Write-Information "$i : Received HTTP Status Code: $StatusCode, ContentContainsPageNotFoundText: $ContentContainsPageNotFoundText"
+                    Write-Information "$i : Received HTTP Status Code: $StatusCode, ContainsBuildNumber: $ContainsBuildNumber"
 
-                    if ($StatusCode -eq 200 -and $ContentContainsPageNotFoundText -eq $false) {
+                    if ($StatusCode -eq 200 -and $ContainsBuildNumber -eq $true) {
                         Write-Information ""
-                        Write-Information "Received successful response from $URLToTest, website is alive!"
+                        Write-Information "Received successful response from $BuildNumberUrl, build $BuildNumber is live!"
                         Write-Information ""
                         Write-Information "Response Content:"
                         Write-Information $Content
@@ -242,7 +246,7 @@ function Update-Frontend {
             }
 
             if ($WebsiteIsAlive -eq $false) {
-                Write-Error "$URLToTest failed to respond successfully after many attempts."
+                Write-Error "$BuildNumberUrl failed to respond successfully after many attempts."
             }
 
             Return $URLToTest
@@ -262,3 +266,6 @@ $EarthWebsiteUrl = Update-Frontend `
 ./test-earth.ps1 `
     -BuildNumber     $BuildNumber `
     -EarthWebsiteUrl $EarthWebsiteUrl
+
+$Duration = New-TimeSpan -Start $ScriptStartTime -End $(Get-Date)
+Write-Information "Script completed in $Duration"
