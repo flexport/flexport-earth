@@ -17,7 +17,7 @@ $ReleasablesPath               = $GlobalDevelopmentSettings.ReleasablesDirectory
 . "$DevelopmentToolsDirectory/sign-into-azure.ps1"
 
 # Read the build number that we're deploying
-$BuildNumberFilePath = "$WebsiteContentSourceDirectory/styles/build-number.css"
+$BuildNumberFilePath = "$WebsiteContentSourceDirectory/public/build-number.css"
 $BuildNumberCSS      = Get-Content -Path $BuildNumberFilePath
 $MatchFound          = $BuildNumberCSS -match 'content:\s"(.+)"'
 

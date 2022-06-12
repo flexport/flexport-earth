@@ -22,8 +22,8 @@ Set-StrictMode –Version latest
 $ErrorActionPreference = "Stop"
 $InformationPreference = "Continue"
 
-$ReleasablesDirectory           = "releasables"
-$WebsiteContentSourceDirectory  = "website-content"
+$ReleasablesDirectory = "releasables"
+$WebsiteContentSourceDirectory = "website-content"
 
 # Run dependency management
 . "$ReleasablesDirectory/dependencies/dependency-manager.ps1"
@@ -43,7 +43,7 @@ Write-Information ""
 try {
     Push-Location $WebsiteContentSourceDirectory
 
-    $BuildNumberFilePath = "./styles/build-number.css"
+    $BuildNumberFilePath = "./public/build-number.css"
     "#build-number-anchor::before { content: ""$BuildNumber""; }" | Out-File -FilePath $BuildNumberFilePath
     Write-Information "Build number written to $BuildNumberFilePath"
 
@@ -59,7 +59,7 @@ try {
     Write-Information ""
     Write-Information "Compiling website files..."
     npm install
-    $env:FLEXPORT_API_CLIENT_ID="$FlexportApiClientId";$env:FLEXPORT_API_CLIENT_SECRET="$FlexportApiClientSecret";npm run build
+    $env:FLEXPORT_API_CLIENT_ID = "$FlexportApiClientId"; $env:FLEXPORT_API_CLIENT_SECRET = "$FlexportApiClientSecret"; npm run build
     if (!$?) {
         Write-Error "Failed to build the website, see previous log entries."
     }
