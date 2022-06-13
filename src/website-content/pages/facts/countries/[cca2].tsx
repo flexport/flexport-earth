@@ -1,16 +1,20 @@
 import type { NextPage } from 'next'
 import Layout from '../../../components/layout'
+import Country from '../../../lib/data_sources/restcountries.com/country'
+import getApiClient from '../../../lib/data_sources/restcountries.com/api'
 
 type CountryCodeParams = {
     params: {
         cca2: string
     }
-}
+};
+
+type Countries = Country[];
+
+const countriesApi = getApiClient();
 
 async function getAllCountryCodes() {
-    const responseData: Countries = await (
-        await fetch('https://restcountries.com/v3.1/all')
-    ).json();
+    const responseData: Countries = await countriesApi.countries.getAllCountries();
 
     return responseData.map(country => {
         return {
@@ -19,14 +23,6 @@ async function getAllCountryCodes() {
             }
         }
     });
-}
-
-async function getCountryData(cca2: string) {
-    const json = await (
-        await fetch('https://restcountries.com/v3.1/alpha/' + cca2)
-    ).json();
-
-    return json;
 }
 
 export async function getStaticPaths() {
@@ -38,38 +34,22 @@ export async function getStaticPaths() {
 }
 
 export async function getStaticProps(params: CountryCodeParams) {
-    const postData = await getCountryData(params.params.cca2);
+    const countries = await countriesApi.countries.getCountryByCountryCode(params.params.cca2);
 
     return {
       props: {
-        time: new Date().toISOString(),
-        ...postData[0]
+        ...countries[0]
       },
       revalidate: 10
     }
 }
 
-type Countries = [{
-    name: {
-      common: string
-    },
-    cca2: string
-}]
-
-type Country = {
-    name: {
-        common: string
-    },
-    cca2: string,
-    time: string
-}
-
 const CountryPage: NextPage<Country> = (country) => {
   return (
     <Layout title={country.name.common} h1={country.name.common}>
-        {country.time}
+        {new Date().toISOString()}
     </Layout>
   )
 }
 
-export default CountryPage
+export default CountryPage;

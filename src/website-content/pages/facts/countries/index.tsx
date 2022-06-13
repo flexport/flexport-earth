@@ -1,9 +1,12 @@
 import type { NextPage } from 'next'
 import Link from 'next/link';
 import Layout from '../../../components/layout'
+import Country from '../../../lib/data_sources/restcountries.com/country'
+import getApiClient from '../../../lib/data_sources/restcountries.com/api'
 
 export async function getStaticProps() {
-  const countries = await (await fetch('https://restcountries.com/v3.1/all')).json();
+  const countriesApi = getApiClient();
+  const countries = await countriesApi.countries.getAllCountries();
 
   return {
     props: {
@@ -13,12 +16,7 @@ export async function getStaticProps() {
 }
 
 type Countries = {
-  countries: [{
-    name: {
-      common: string
-    },
-    cca2: string
-  }]
+  countries: Country[]
 }
 
 const CountriesPage: NextPage<Countries> = ({countries}) => {
@@ -35,4 +33,4 @@ const CountriesPage: NextPage<Countries> = ({countries}) => {
   )
 }
 
-export default CountriesPage
+export default CountriesPage;
