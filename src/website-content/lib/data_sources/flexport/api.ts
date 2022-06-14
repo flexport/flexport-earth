@@ -92,7 +92,7 @@ class places {
         this.headers = headers;
     }
 
-    async getSeaports() {
+    async getSeaports(): Promise<Ports> {
         return await (
             await fetch(
                 `${this.baseUrl}?types=SEAPORT`,
@@ -100,6 +100,14 @@ class places {
             )
         ).json();
     }
+}
+
+export type Ports = {
+    ports: Port[]
+}
+
+export type Port = {
+    name: string
 }
 
 export default getApiClient;

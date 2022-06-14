@@ -10,7 +10,10 @@ export async function getStaticProps() {
 
   return {
     props: {
-      countries,
+      countries: countries.map(country => ({
+        name: ({ common: country.name.common }),
+        cca2: country.cca2
+      }))
     },
   };
 }
