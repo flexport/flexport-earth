@@ -4,17 +4,6 @@
   height:           256px;
 }
 
-.pageHeader {
-  color:            white;
-  background:       linear-gradient(to right, #272C34 , #324354);
-  height:           64px;
-}
-
-.pageWikiTitle {
-  padding-top:    23px;
-  padding-left:   30px;
-}
-
 .wikiTitle {
   text-align:     center;
   padding-top:    48px;
@@ -56,58 +45,6 @@
   flex-direction: column;
   justify-content: center;
   align-items: center;
-}
-
-.footer {
-  display:            flex;
-  flex:               1;
-  padding:            2rem 0;
-  justify-content:    center;
-  color:            white;
-  background-color: #39414D;
-  align-items:        center;
-  height:             256px;
-}
-
-.footerContent {
-  width:          80%; 
-  margin:         auto;
-  padding-top:    150px;
-  padding-bottom: 10px;
-}
-
-.footerContentHr {
-  border: 1px solid #67768D;
-}
-
-.footerContentFlexportLogo {
-  float:  left;
-  height: 20px;
-}
-
-.footerContentTagLine {
-  float:          left;
-  margin-left:    10px;
-  font-style:     normal;
-  font-weight:    400;
-  font-size:      14px;
-  line-height:    20px;
-}
-
-.buildNumber {
-  float:              right;
-  bottom:             0;
-  right:              0;
-  color:              #67768D;
-  text-decoration:    none;
-  font-size:          10px;
-}
-
-.footer a {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  flex-grow: 1;
 }
 
 .title a {
