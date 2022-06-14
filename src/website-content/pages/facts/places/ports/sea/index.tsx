@@ -1,15 +1,15 @@
 import type { NextPage } from 'next'
-import getApiClient from '../../../../../lib/data_sources/flexport/api'
+import { getApiClient, Port } from '../../../../../lib/data_sources/flexport/api'
 import Layout from '../../../../../components/layout'
 
 export async function getStaticProps() {
   const flexportApi = await getApiClient();
-  const ports = await flexportApi.places.getSeaports()
+  const seaports    = await flexportApi.places.getSeaports()
 
   return {
     props: {
       time: new Date().toISOString(),
-      ...ports,
+      ports: seaports.ports.map(port => ({ name: port.name }))
     },
     revalidate: 60
   };

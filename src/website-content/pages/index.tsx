@@ -32,8 +32,8 @@ const Home: NextPage = () => {
             <p>View data for country legal entities.</p>
           </a>
 
-          <a href="" className={styles.card}>
-            <h2>Sea Ports</h2>
+          <a href="facts/places/ports/sea" className={styles.card}>
+            <h2>Seaports</h2>
             <p>View data about ocean ports.</p>
           </a>
 
