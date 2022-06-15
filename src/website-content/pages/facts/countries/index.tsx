@@ -15,6 +15,7 @@ export async function getStaticProps() {
         cca2: country.cca2
       }))
     },
+    revalidate: 3600
   };
 }
 

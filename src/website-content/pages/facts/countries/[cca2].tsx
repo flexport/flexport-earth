@@ -52,7 +52,7 @@ export async function getStaticProps(params: CountryCodeParams) {
         country:      country,
         seaportCount: countrySeaports.ports.length
       },
-      revalidate: 900
+      revalidate: 3600
     }
 }
 

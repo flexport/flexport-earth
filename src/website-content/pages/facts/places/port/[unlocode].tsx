@@ -27,13 +27,11 @@ export async function getStaticProps(params: UNLoCodeParams) {
     const responseData  = await flexportApi.places.getPortByUnlocode(params.params.unlocode);
     const port          = responseData.ports[0];
 
-    console.log(port);
-
     return {
       props: {
         port: port
       },
-      revalidate: 900
+      revalidate: 3600
     }
 }
 

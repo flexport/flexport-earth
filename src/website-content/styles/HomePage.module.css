@@ -1,21 +1,21 @@
 .header {
-  color:            white;
-  background-color: #39414D;
-  height:           232px;
+  color:                white;
+  background-color:     #39414D;
+  height:                 232px;
 }
 
 .wikiTitle {
-  text-align:     center;
-  padding-top:    60px;
+  text-align:             center;
+  padding-top:            60px;
 }
 
 .wikiTitleVerticalLine {
-  border-left:    1px solid #8A99B1;
-  margin-left:    14px;
-  margin-right:   14px;
-  padding-top:    4px;
-  bottom:         3px;
-  position: relative;
+  border-left:            1px solid #8A99B1;
+  margin-left:            14px;
+  margin-right:           14px;
+  padding-top:            4px;
+  bottom:                 3px;
+  position:               relative;
 }
 
 .wikiSubTitle {
@@ -42,11 +42,11 @@
 }
 
 .main {
-  width:          63.10%;
-  margin:         auto;
-  padding-top:    3em;
-  padding-bottom: 3em;
-  display:        flex;
+  width:                  63.10%;
+  margin:                 auto;
+  padding-top:            3em;
+  padding-bottom:         3em;
+  display:                flex;
 }
 
 .sectionHeading {
@@ -59,22 +59,22 @@
 }
 
 .grid {
-  display: grid;
-  grid-template-columns: repeat( auto-fill, minmax(220px, 1fr) );
+  display:                grid;
+  grid-template-columns:  repeat( auto-fill, minmax(220px, 1fr) );
 }
 
 .portsSection {
-  width: 100%;
+  width:                  100%;
 }
 
 .portsLarge {
-  float: left;
-  width: 75%;
+  float:                  left;
+  width:                  75%;
 }
 
 .portsSmall {
-  float: left;
-  width: 25%;
+  float:                  left;
+  width:                  25%;
 }
 
 .portsCardMajor {
@@ -95,7 +95,7 @@
   align-content:          center;
 }
 
-.portsCardMinor div {
+.portsCardMinor {
   width:                  244px;
   height:                 32px;
   background:           #E8E6E6;
@@ -111,7 +111,7 @@
   color:                #000000;
 }
 
-.allPorts div {
+.allPorts {
   font-style:             normal;
   font-weight:            700;
   font-size:              14px;
@@ -119,4 +119,5 @@
   text-align:             center;
   letter-spacing:         0.01em;
   font-feature-settings:  'tnum' on, 'lnum' on;
+  cursor:                 pointer;
 }

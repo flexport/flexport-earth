@@ -7,14 +7,12 @@ export async function getStaticProps() {
   const flexportApi = await getFlexportApiClient();
   const seaports    = await flexportApi.places.getSeaports()
 
-  console.log(seaports);
-
   return {
     props: {
       time: new Date().toISOString(),
       ports: seaports.ports.map(port => ({ name: port.name, unlocode: port.unlocode }))
     },
-    revalidate: 60
+    revalidate: 3600
   };
 }
 
@@ -32,11 +30,11 @@ const PortsPage: NextPage<Ports> = ({ports, time}) => {
         <ol>
           {ports.map(({ name, unlocode }) => (
               <li key={name}>
-                <Link prefetch={false} href={`/facts/places/ports/${unlocode}`}>{name}</Link>
+                <Link prefetch={false} href={`/facts/places/port/${unlocode}`}>{name}</Link>
               </li>
             ))}
         </ol>
-
+        <br/>
         Data refreshed @ { time }
     </Layout>
   )
