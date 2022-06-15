@@ -19,7 +19,7 @@ $InformationPreference = "Continue"
 . ./dependencies/dependency-manager.ps1
 
 Write-Information ""
-Write-Information "Testing Earth at $EarthWebsiteUrl"
+Write-Information "Testing Earth (build $BuildNumber) at $EarthWebsiteUrl"
 Write-Information ""
 
 $TestRootPath = "testing/functional"

@@ -9,20 +9,10 @@ $InformationPreference = "Continue"
 $GlobalDevelopmentSettings      = Get-Content 'development-config.json' | ConvertFrom-Json
 $DevelopmentToolsDirectory      = $GlobalDevelopmentSettings.DevelopmentToolsDirectory
 $RelesablesDirectory            = $GlobalDevelopmentSettings.ReleasablesDirectory
-$WebsiteContentSourceDirectory  = $GlobalDevelopmentSettings.WebsiteContentSourceDirectory
 
-. "$DevelopmentToolsDirectory/local-config-manager.ps1"
+. "$DevelopmentToolsDirectory/build-number.ps1"
 
-# Read the build number that we're deploying
-$BuildNumberFilePath = "$WebsiteContentSourceDirectory/public/build-number.css"
-$BuildNumberCSS      = Get-Content -Path $BuildNumberFilePath
-$MatchFound          = $BuildNumberCSS -match 'content:\s"(.+)"'
-
-if (-Not $MatchFound) {
-    Write-Error "Build number not found."
-}
-
-$BuildNumber = $Matches[1]
+$BuildNumber = Get-BuildNumber
 
 try {
     Push-Location "$RelesablesDirectory"
