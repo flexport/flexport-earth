@@ -28,7 +28,7 @@ const CountriesPage: NextPage<Countries> = ({countries}) => {
         <ol>
           {countries.sort((a, b) => a.name.common.localeCompare(b.name.common)).map(({ name, cca2 }) => (
               <li key={name.common}>
-                <Link href={`/facts/countries/${cca2}`}>{name.common}</Link>
+                <Link prefetch={false} href={`/facts/countries/${cca2}`}>{name.common}</Link>
               </li>
             ))}
         </ol>

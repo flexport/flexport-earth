@@ -32,7 +32,7 @@ const PortsPage: NextPage<Ports> = ({ports, time}) => {
         <ol>
           {ports.map(({ name, unlocode }) => (
               <li key={name}>
-                <Link href={`/facts/places/ports/${unlocode}`}>{name}</Link>
+                <Link prefetch={false} href={`/facts/places/ports/${unlocode}`}>{name}</Link>
               </li>
             ))}
         </ol>
