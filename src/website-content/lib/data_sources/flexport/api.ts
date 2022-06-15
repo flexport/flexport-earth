@@ -48,7 +48,7 @@ async function getAccessToken(
     return response.json();
 }
 
-export async function getApiClient() {
+export async function getFlexportApiClient() {
     const baseUrl = 'https://api.flexport.com';
 
     // TODO: Store access tokens for reuse.
@@ -100,6 +100,25 @@ class places {
             )
         ).json();
     }
+
+    async getSeaportsByCca2(cca2: string): Promise<Ports> {
+        return await (
+            await fetch(
+                `${this.baseUrl}?types=SEAPORT&country_code=${cca2}`,
+                { headers: this.headers },
+            )
+        ).json();
+    }
+
+    async getPortByUnlocode(unlocode: string): Promise<Ports> {
+        return await (
+            await fetch(
+                `${this.baseUrl}?unlocode=${unlocode}`,
+                { headers: this.headers },
+            )
+        ).json();
+    }
+
 }
 
 export type Ports = {
@@ -107,7 +126,8 @@ export type Ports = {
 }
 
 export type Port = {
-    name: string
+    name:       string,
+    unlocode:   string
 }
 
-export default getApiClient;
+export default getFlexportApiClient;

@@ -2,11 +2,11 @@ import type { NextPage } from 'next'
 import Link from 'next/link';
 import Layout from '../../../components/layout'
 import Country from '../../../lib/data_sources/restcountries.com/country'
-import getApiClient from '../../../lib/data_sources/restcountries.com/api'
+import getRestCountriesApiClient from '../../../lib/data_sources/restcountries.com/api'
 
 export async function getStaticProps() {
-  const countriesApi = getApiClient();
-  const countries = await countriesApi.countries.getAllCountries();
+  const countriesApi = getRestCountriesApiClient();
+  const countries    = await countriesApi.countries.getAllCountries();
 
   return {
     props: {
@@ -15,6 +15,7 @@ export async function getStaticProps() {
         cca2: country.cca2
       }))
     },
+    revalidate: 3600
   };
 }
 
@@ -28,7 +29,7 @@ const CountriesPage: NextPage<Countries> = ({countries}) => {
         <ol>
           {countries.sort((a, b) => a.name.common.localeCompare(b.name.common)).map(({ name, cca2 }) => (
               <li key={name.common}>
-                <Link href={`/facts/countries/${cca2}`}>{name.common}</Link>
+                <Link prefetch={false} href={`/facts/countries/${cca2}`}>{name.common}</Link>
               </li>
             ))}
         </ol>

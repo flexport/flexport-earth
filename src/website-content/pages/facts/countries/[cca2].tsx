@@ -1,7 +1,9 @@
 import type { NextPage } from 'next'
 import Layout from '../../../components/layout'
 import Country from '../../../lib/data_sources/restcountries.com/country'
-import getApiClient from '../../../lib/data_sources/restcountries.com/api'
+import getRestCountriesApiClient from '../../../lib/data_sources/restcountries.com/api'
+import getFlexportApiClient from '../../../lib/data_sources/flexport/api'
+import { useRouter } from 'next/router'
 
 type CountryCodeParams = {
     params: {
@@ -11,7 +13,12 @@ type CountryCodeParams = {
 
 type Countries = Country[];
 
-const countriesApi = getApiClient();
+type CountryPageParams = {
+    country:      Country,
+    seaportCount: number
+}
+
+const countriesApi = getRestCountriesApiClient();
 
 async function getAllCountryCodes() {
     const responseData: Countries = await countriesApi.countries.getAllCountries();
@@ -26,30 +33,43 @@ async function getAllCountryCodes() {
 }
 
 export async function getStaticPaths() {
-    const paths = await getAllCountryCodes()
+    const paths = [{params: {cca2: 'US'}}];
+    //const paths = await getAllCountryCodes();
     return {
         paths,
-        fallback: false
+        fallback: true
     }
 }
 
 export async function getStaticProps(params: CountryCodeParams) {
-    const countries = await countriesApi.countries.getCountryByCountryCode(params.params.cca2);
+    const flexportApi     = await getFlexportApiClient();
+    const countries       = await countriesApi.countries.getCountryByCountryCode(params.params.cca2);
+    const country         = countries[0];
+    const countrySeaports = await flexportApi.places.getSeaportsByCca2(params.params.cca2);
 
     return {
       props: {
-        ...countries[0]
+        country:      country,
+        seaportCount: countrySeaports.ports.length
       },
-      revalidate: 10
+      revalidate: 3600
     }
 }
 
-const CountryPage: NextPage<Country> = (country) => {
-  return (
-    <Layout title={country.name.common} h1={country.name.common}>
-        {new Date().toISOString()}
-    </Layout>
-  )
+const CountryPage: NextPage<CountryPageParams> = (params) => {
+    const router = useRouter();
+
+    if (router.isFallback) {
+        return (
+            <Layout>Loading...</Layout>
+        )
+    }
+
+    return (
+        <Layout title={params.country.name.common} h1={params.country.name.common}>
+            Number of Seaports: {params.seaportCount}<br/>
+        </Layout>
+    )
 }
 
 export default CountryPage;
