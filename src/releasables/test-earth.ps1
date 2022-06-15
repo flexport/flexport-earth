@@ -20,6 +20,7 @@ $InformationPreference = "Continue"
 
 Write-Information ""
 Write-Information "Testing Earth at $EarthWebsiteUrl"
+Write-Information ""
 
 $TestRootPath = "testing/functional"
 
