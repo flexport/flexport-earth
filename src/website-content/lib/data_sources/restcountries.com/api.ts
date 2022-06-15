@@ -1,6 +1,6 @@
 import Country from './country'
 
-export function getApiClient() {
+export function getRestCountriesApiClient() {
     const baseUrl = 'https://restcountries.com/v3.1';
 
     return new ApiClient(
@@ -38,4 +38,4 @@ class countries {
     }
 }
 
-export default getApiClient;
+export default getRestCountriesApiClient;

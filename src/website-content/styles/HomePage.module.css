@@ -1,135 +1,122 @@
 .header {
   color:            white;
   background-color: #39414D;
-  height:           256px;
+  height:           232px;
 }
 
 .wikiTitle {
   text-align:     center;
-  padding-top:    48px;
+  padding-top:    60px;
 }
 
 .wikiTitleVerticalLine {
   border-left:    1px solid #8A99B1;
   margin-left:    14px;
   margin-right:   14px;
-  padding-top:    8px;
-}
-
-.wikiSearch {
-  padding-top:    18px;
-  padding-bottom: 50px;
-  text-align:     center;
-  font-size:      32px;
-  font-weight:    700;
-}
-
-.wikiSearch input {
-  margin-top: 30px;
-  width: 525px;
-  height: 44px;
+  padding-top:    4px;
+  bottom:         3px;
+  position: relative;
 }
 
 .wikiSubTitle {
-  position:   relative;
-  bottom:     5px;
-  font-size:  18px;
-  font-weight: 500;
+  position:               relative;
+  bottom:                 6px;
+  font-size:              18px;
+  font-style:             normal;
+  font-weight:            700;
+  font-size:              20px;
+  line-height:            20px;
+  letter-spacing:         -0.02em;
+  font-feature-settings:  'tnum' on, 'lnum' on;
+}
+
+.tagLine {
+  margin-top:             24px;
+  font-style:             normal;
+  font-weight:            700;
+  font-size:              32px;
+  line-height:            48px;
+  text-align:             center;
+  letter-spacing:         -0.02em;
+  font-feature-settings:  'tnum' on, 'lnum' on;
 }
 
 .main {
-  min-height: 100vh;
-  padding: 4rem 0;
-  flex: 1;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
+  width:          63.10%;
+  margin:         auto;
+  padding-top:    3em;
+  padding-bottom: 3em;
+  display:        flex;
 }
 
-.title a {
-  color: #0070f3;
-  text-decoration: none;
-}
-
-.title a:hover,
-.title a:focus,
-.title a:active {
-  text-decoration: underline;
-}
-
-.title {
-  margin: 0;
-  line-height: 1.15;
-  font-size: 4rem;
-}
-
-.title,
-.description {
-  text-align: center;
-}
-
-.description {
-  margin: 4rem 0;
-  line-height: 1.5;
-  font-size: 1.5rem;
-}
-
-.code {
-  background: #fafafa;
-  border-radius: 5px;
-  padding: 0.75rem;
-  font-size: 1.1rem;
-  font-family: Menlo, Monaco, Lucida Console, Liberation Mono, DejaVu Sans Mono,
-    Bitstream Vera Sans Mono, Courier New, monospace;
+.sectionHeading {
+  font-style:             normal;
+  font-weight:            700;
+  font-size:              24px;
+  line-height:            32px;
+  font-feature-settings:  'tnum' on, 'lnum' on;
+  color:                #000000;
 }
 
 .grid {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  flex-wrap: wrap;
-  max-width: 800px;
+  display: grid;
+  grid-template-columns: repeat( auto-fill, minmax(220px, 1fr) );
 }
 
-.card {
-  margin: 1rem;
-  padding: 1.5rem;
-  text-align: left;
-  color: inherit;
-  text-decoration: none;
-  border: 1px solid #eaeaea;
-  border-radius: 10px;
-  transition: color 0.15s ease, border-color 0.15s ease;
-  max-width: 300px;
+.portsSection {
+  width: 100%;
 }
 
-.card:hover,
-.card:focus,
-.card:active {
-  color: #0070f3;
-  border-color: #0070f3;
+.portsLarge {
+  float: left;
+  width: 75%;
 }
 
-.card h2 {
-  margin: 0 0 1rem 0;
-  font-size: 1.5rem;
+.portsSmall {
+  float: left;
+  width: 25%;
 }
 
-.card p {
-  margin: 0;
-  font-size: 1.25rem;
-  line-height: 1.5;
+.portsCardMajor {
+  margin-bottom:          15px;
+  padding-left:           1em;
+  padding-top:            3.5em;
+  text-align:             left;
+  text-decoration:        none;
+  width:                  243px;
+  height:                 98px;
+  font-style:             normal;
+  font-weight:            700;
+  font-size:              16px;
+  line-height:            20px;
+  font-feature-settings:  'tnum' on, 'lnum' on;
+  color:                #272C34;
+  background:           #C4C4C4;
+  align-content:          center;
 }
 
-.logo {
-  height: 1em;
-  margin-left: 0.5rem;
+.portsCardMinor div {
+  width:                  244px;
+  height:                 32px;
+  background:           #E8E6E6;
+  margin-bottom:          13px;
+  padding-top:            8px;
+  padding-left:           10px;
+  font-style:             normal;
+  font-weight:            400;
+  font-size:              12px;
+  line-height:            16px;
+  letter-spacing:         0.01em;
+  font-feature-settings:  'tnum' on, 'lnum' on;
+  color:                #000000;
 }
 
-@media (max-width: 600px) {
-  .grid {
-    width: 100%;
-    flex-direction: column;
-  }
+.allPorts div {
+  font-style:             normal;
+  font-weight:            700;
+  font-size:              14px;
+  line-height:            20px;
+  text-align:             center;
+  letter-spacing:         0.01em;
+  font-feature-settings:  'tnum' on, 'lnum' on;
 }

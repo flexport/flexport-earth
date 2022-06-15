@@ -45,13 +45,13 @@ describe('Earth Homepage', () => {
         })
   })
 
-  it('Links to Countries', () => {
-    homePage
-      .getCountriesLink()
-        .click();
+  // it('Links to Countries', () => {
+  //   homePage
+  //     .getCountriesLink()
+  //       .click();
 
-    cy
-      .url()
-      .should('contain', CountriesPage.path)
-  })
+  //   cy
+  //     .url()
+  //     .should('contain', CountriesPage.path)
+  // })
 })

@@ -2,11 +2,11 @@ import type { NextPage } from 'next'
 import Link from 'next/link';
 import Layout from '../../../components/layout'
 import Country from '../../../lib/data_sources/restcountries.com/country'
-import getApiClient from '../../../lib/data_sources/restcountries.com/api'
+import getRestCountriesApiClient from '../../../lib/data_sources/restcountries.com/api'
 
 export async function getStaticProps() {
-  const countriesApi = getApiClient();
-  const countries = await countriesApi.countries.getAllCountries();
+  const countriesApi = getRestCountriesApiClient();
+  const countries    = await countriesApi.countries.getAllCountries();
 
   return {
     props: {

@@ -1,6 +1,7 @@
 import type { NextPage } from 'next'
 import Head from 'next/head'
 import Image from 'next/image'
+import Link from 'next/link'
 import styles from '../styles/HomePage.module.css'
 import Footer from '../components/footer'
 
@@ -14,18 +15,74 @@ const Home: NextPage = () => {
       </Head>
 
       <header className={styles.header}>
-            <div id="wiki-title" className={styles.wikiTitle}>
-                <a id="flexport-logo" href="https://www.flexport.com"><Image src="/images/flexport-logo.svg" alt="Flexport Logo" height={20} width={90} /></a>
-                <span id="wiki-title-vertical-line" className={styles.wikiTitleVerticalLine}></span>
-                <span id="wiki-subtitle" className={styles.wikiSubTitle}>Wiki</span><br/>
-            </div>
-            <div className={styles.wikiSearch}>
-                <span>Discover the world of supply chain</span><br/>
-                <input type="text" defaultValue={'<Not implemented>'}/>
-            </div>
-        </header>
+        <div id="wiki-title" className={styles.wikiTitle}>
+          <a id="flexport-logo" href="https://www.flexport.com">
+            <Image src="/images/flexport-logo.svg" alt="Flexport Logo" height={30} width={110} />
+          </a>
+          <span id="wiki-title-vertical-line" className={styles.wikiTitleVerticalLine}></span>
+          <span id="wiki-subtitle" className={styles.wikiSubTitle}>Wiki</span>
+          <div className={styles.tagLine}>Discover the world of supply chain</div>
+        </div>
+      </header>
 
       <main className={styles.main}>
+        <div className={styles.portsSection}>
+          <h2 className={styles.sectionHeading}>Ports &gt;</h2>
+
+          <div className={styles.portsList}>
+            <div className={styles.portsLarge}>
+              <div className={styles.grid}>
+                <a href="facts/countries/CN" className={styles.portsCardMajor}>
+                    <div>China ports (87)</div>
+                </a>
+
+                <a href="facts/countries/US" className={styles.portsCardMajor}>
+                    <div>United States ports (87)</div>
+                </a>
+
+                <a href="facts/countries/US" className={styles.portsCardMajor}>
+                    <div>Singapore ports (87)</div>
+                </a>
+
+                <a href="facts/countries/US" className={styles.portsCardMajor}>
+                    <div>South Korea ports (87)</div>
+                </a>
+
+                <a href="facts/countries/US" className={styles.portsCardMajor}>
+                    <div>Malaysia ports (87)</div>
+                </a>
+
+                <a href="facts/countries/US" className={styles.portsCardMajor}>
+                    <div>Japan ports (87)</div>
+                </a>
+              </div>
+            </div>
+          </div>
+
+          <div className={styles.portsSmall}>
+            <a href="" className={styles.portsCardMinor}>
+                <div>Country name ports (123)</div>
+            </a>
+
+            <a href="" className={styles.portsCardMinor}>
+              <div>Country name ports (123)</div>
+            </a>
+
+            <a href="" className={styles.portsCardMinor}>
+              <div>Country name ports (123)</div>
+            </a>
+
+            <a href="" className={styles.portsCardMinor}>
+              <div>Country name ports (123)</div>
+            </a>
+
+            <Link href="/facts/places/ports" className={`${styles.portsCardMinor} ${styles.allPorts}`}>
+              <div>All ports &gt;</div>
+            </Link>
+          </div>
+        </div>
+
+{/*
         <div className={styles.grid}>
           <a href="facts/countries" id="countries" className={styles.card}>
             <h2>Countries</h2>
@@ -54,7 +111,7 @@ const Home: NextPage = () => {
               View data about cargo containers.
             </p>
           </a>
-        </div>
+        </div> */}
       </main>
 
       <Footer/>
