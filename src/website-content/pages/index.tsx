@@ -32,29 +32,29 @@ const Home: NextPage = () => {
           <div className={Styles.portsList}>
             <div className={Styles.portsLarge}>
               <div className={Styles.grid}>
-                <a href="facts/places/ports/CN" className={Styles.portsCardMajor}>
-                    <div>China ports (260)</div>
-                </a>
+                <Link href="facts/places/ports/CN">
+                    <div className={Styles.portsCardMajor}>China ports (260)</div>
+                </Link>
 
-                <a href="facts/places/ports/US" className={Styles.portsCardMajor}>
-                    <div>United States ports (64)</div>
-                </a>
+                <Link href="facts/places/ports/US">
+                    <div className={Styles.portsCardMajor}>United States ports (64)</div>
+                </Link>
 
-                <a href="facts/places/ports/SG" className={Styles.portsCardMajor}>
-                    <div>Singapore ports (2)</div>
-                </a>
+                <Link href="facts/places/ports/SG">
+                    <div className={Styles.portsCardMajor}>Singapore ports (2)</div>
+                </Link>
 
-                <a href="facts/places/ports/KR" className={Styles.portsCardMajor}>
-                    <div>South Korea ports (43)</div>
-                </a>
+                <Link href="facts/places/ports/KR">
+                    <div className={Styles.portsCardMajor}>South Korea ports (43)</div>
+                </Link>
 
-                <a href="facts/places/ports/MY" className={Styles.portsCardMajor}>
-                    <div>Malaysia ports (13)</div>
-                </a>
+                <Link href="facts/places/ports/MY">
+                    <div className={Styles.portsCardMajor}>Malaysia ports (13)</div>
+                </Link>
 
-                <a href="facts/places/ports/JP" className={Styles.portsCardMajor}>
-                    <div>Japan ports (383)</div>
-                </a>
+                <Link href="facts/places/ports/JP">
+                    <div className={Styles.portsCardMajor}>Japan ports (383)</div>
+                </Link>
               </div>
             </div>
           </div>

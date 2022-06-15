@@ -93,6 +93,7 @@
   color:                #272C34;
   background:           #C4C4C4;
   align-content:          center;
+  cursor:                 pointer;
 }
 
 .portsCardMinor {
