@@ -37,7 +37,7 @@ export async function getStaticProps(params: Cca2Params) {
     }
 }
 
-const CountryPage: NextPage<PortsByCountryPageParams> = (params) => {
+const PortsByCountryPage: NextPage<PortsByCountryPageParams> = (params) => {
     const router = useRouter();
 
     if (router.isFallback) {
@@ -59,4 +59,4 @@ const CountryPage: NextPage<PortsByCountryPageParams> = (params) => {
     )
 }
 
-export default CountryPage;
+export default PortsByCountryPage;
