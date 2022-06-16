@@ -11,7 +11,7 @@ export async function getStaticProps() {
   return {
     props: {
       time: new Date().toISOString(),
-      vessels: responseData.vessels.map(vessel => ({ name: vessel.name }))
+      vessels: responseData.vessels.map(vessel => ({ name: vessel.name, mmsi: vessel.mmsi }))
     },
     revalidate: 3600
   };
@@ -20,7 +20,8 @@ export async function getStaticProps() {
 type Vessels = {
   time: string,
   vessels: [{
-    name: string
+    name: string,
+    mmsi: number
   }]
 }
 
@@ -28,9 +29,9 @@ const VesselsPage: NextPage<Vessels> = ({vessels, time}) => {
   return (
     <Layout title='Vessels' h1='Vessels'>
         <ol>
-          {vessels.map(({ name }) => (
+          {vessels.map(({ name, mmsi }) => (
               <li key={name} className={Styles.vessel}>
-                {name}
+                <Link prefetch={false} href={`/facts/vehicles/vessel/${mmsi}`}><div id={`port-${mmsi}`}>{name}</div></Link>
               </li>
             ))}
         </ol>

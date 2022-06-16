@@ -171,6 +171,19 @@ class vehicles {
             )
         ).json();
     }
+
+    async getVesselByMmsi(mmsi: number): Promise<Vessels> {
+        const json = await (
+            await fetch(
+                `${this.baseUrl}?mmsi=${mmsi}`,
+                { headers: this.headers },
+            )
+        ).json();
+
+        console.log(json);
+
+        return json;
+    }
 }
 
 export type Vessels = {
@@ -178,7 +191,13 @@ export type Vessels = {
 }
 
 export type Vessel = {
-    name: string
+    name:                       string,
+    mmsi:                       number,
+    imo:                        number,
+    registration_country_code:  string,
+    carrier: {
+        carrier_name: string,
+    }
 }
 
 export default getFlexportApiClient;
