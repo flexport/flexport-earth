@@ -8,8 +8,6 @@ export async function getStaticProps() {
   const flexportApi   = await getFlexportApiClient();
   const responseData  = await flexportApi.vehicles.getVessels()
 
-  console.log(responseData);
-
   return {
     props: {
       time: new Date().toISOString(),
