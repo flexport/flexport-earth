@@ -2,6 +2,7 @@ import type { NextPage } from 'next'
 import { getFlexportApiClient, Port } from '../../../../lib/data_sources/flexport/api'
 import Layout from '../../../../components/layout'
 import Link from 'next/link';
+import Styles from '../../../../styles/facts/places/ports/index.module.css'
 
 export async function getStaticProps() {
   const flexportApi = await getFlexportApiClient();
@@ -29,8 +30,8 @@ const PortsPage: NextPage<Ports> = ({ports, time}) => {
     <Layout title='Ports' h1='Ports'>
         <ol>
           {ports.map(({ name, unlocode }) => (
-              <li key={name}>
-                <Link prefetch={false} href={`/facts/places/port/${unlocode}`}>{name}</Link>
+              <li key={name} className={Styles.port}>
+                <Link prefetch={false} href={`/facts/places/port/${unlocode}`}><div id={`port-${unlocode}`}>{name}</div></Link>
               </li>
             ))}
         </ol>
