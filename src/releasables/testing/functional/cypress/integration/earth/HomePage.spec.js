@@ -1,7 +1,8 @@
 /// <reference types="cypress" />
 
 import HomePage      from '../../flexport-earth-object-model/HomePage'
-import CountriesPage from '../../flexport-earth-object-model/facts/countries/CountriesPage'
+import AllPortsPage from '../../flexport-earth-object-model/facts/places/ports/AllPortsPage'
+import PortPage from '../../flexport-earth-object-model/facts/places/port/PortPage'
 
 describe('Earth Homepage', () => {
   let homePage;
@@ -45,13 +46,23 @@ describe('Earth Homepage', () => {
         })
   })
 
-  // it('Links to Countries', () => {
-  //   homePage
-  //     .getCountriesLink()
-  //       .click();
+  it('Can navigate to a port', () => {
+    homePage
+      .getAllPortsLink()
+        .click();
 
-  //   cy
-  //     .url()
-  //     .should('contain', CountriesPage.path)
-  // })
+    cy
+      .url()
+      .should('contain', AllPortsPage.path)
+
+    let allPortsPage = new AllPortsPage();
+
+    allPortsPage
+      .getPortLink('USSAN')
+        .click();
+
+    cy
+      .url()
+      .should('contain', PortPage.path)
+  })
 })

@@ -77,7 +77,7 @@ const Home: NextPage = () => {
             </a>
 
             <Link href="/facts/places/ports">
-              <div className={`${Styles.portsCardMinor} ${Styles.allPorts}`}>All ports &gt;</div>
+              <div id="all-ports-link" className={`${Styles.portsCardMinor} ${Styles.allPorts}`}>All ports &gt;</div>
             </Link>
           </div>
         </div>

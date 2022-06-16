@@ -34,11 +34,17 @@ If running on Windows, install the [Windows Linux System](https://docs.microsoft
 
 ## Viewing Website Content Locally
 
-    The NextJS frontend can be started by running:
+The NextJS frontend can be started by running:
 
     ./dev-start-website-locally
 
-    Note: This script will run build.ps1 for you.
+Note: This script will run build.ps1 for you.
+
+## Testing Website Content Locally
+
+    ./dev-test-website-locally
+
+Note: Will need to open a new terminal window for this after starting the website locally.
 
 ## Azure
 

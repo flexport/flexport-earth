@@ -8,24 +8,15 @@ $InformationPreference = "Continue"
 
 # Load global development settings
 $GlobalDevelopmentSettings = Get-Content 'development-config.json' | ConvertFrom-Json
-
-$WebsiteContentSourceDirectory = $GlobalDevelopmentSettings.WebsiteContentSourceDirectory
-$DevelopmentToolsDirectory     = $GlobalDevelopmentSettings.DevelopmentToolsDirectory
-$ReleasablesPath               = $GlobalDevelopmentSettings.ReleasablesDirectory
+$DevelopmentToolsDirectory = $GlobalDevelopmentSettings.DevelopmentToolsDirectory
+$ReleasablesPath           = $GlobalDevelopmentSettings.ReleasablesDirectory
 
 . "$DevelopmentToolsDirectory/local-config-manager.ps1"
 . "$DevelopmentToolsDirectory/sign-into-azure.ps1"
+. "$DevelopmentToolsDirectory/build-number.ps1"
 
 # Read the build number that we're deploying
-$BuildNumberFilePath = "$WebsiteContentSourceDirectory/public/build-number.css"
-$BuildNumberCSS      = Get-Content -Path $BuildNumberFilePath
-$MatchFound          = $BuildNumberCSS -match 'content:\s"(.+)"'
-
-if (-Not $MatchFound) {
-    Write-Error "Build number not found."
-}
-
-$BuildNumber                  = $Matches[1]
+$BuildNumber                  = Get-BuildNumber
 $DeveloperEnvironmentSettings = Get-EnvironmentSettingsObject
 
 try {

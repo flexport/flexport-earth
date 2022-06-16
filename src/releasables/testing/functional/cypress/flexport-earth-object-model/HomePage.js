@@ -2,13 +2,13 @@ export default class HomePage {
     getBody() {
         return cy.get('body');
     }
-    
+
     getHeader() {
         return new Header();
     }
 
-    getCountriesLink() {
-        return cy.get('#countries');
+    getAllPortsLink() {
+        return cy.get('#all-ports-link');
     }
 
     getFooter() {
