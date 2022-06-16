@@ -83,6 +83,14 @@ const Home: NextPage = () => {
         </div>
       </main>
 
+      <div className={Styles.vesselsSection}>
+        <h2 className={Styles.sectionHeading}>Vessels &gt;</h2>
+
+          <Link href="/facts/vehicles/vessels">
+            <div id="all-vessels-link" className={`${Styles.vesselsCardMinor} ${Styles.allVessels}`}>All Vessels &gt;</div>
+          </Link>
+      </div>
+
       <Footer/>
     </div>
   )

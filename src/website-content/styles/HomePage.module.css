@@ -122,3 +122,35 @@
   font-feature-settings:  'tnum' on, 'lnum' on;
   cursor:                 pointer;
 }
+
+.vesselsSection {
+  width:                  63.10%;
+  margin:                 auto;
+}
+
+.vesselsCardMinor {
+  width:                  244px;
+  height:                 32px;
+  background:           #E8E6E6;
+  margin-bottom:          13px;
+  padding-top:            8px;
+  padding-left:           10px;
+  font-style:             normal;
+  font-weight:            400;
+  font-size:              12px;
+  line-height:            16px;
+  letter-spacing:         0.01em;
+  font-feature-settings:  'tnum' on, 'lnum' on;
+  color:                #000000;
+}
+
+.allVessels {
+  font-style:             normal;
+  font-weight:            700;
+  font-size:              14px;
+  line-height:            20px;
+  text-align:             center;
+  letter-spacing:         0.01em;
+  font-feature-settings:  'tnum' on, 'lnum' on;
+  cursor:                 pointer;
+}

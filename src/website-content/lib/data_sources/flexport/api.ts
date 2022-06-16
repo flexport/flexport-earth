@@ -68,7 +68,8 @@ export async function getFlexportApiClient() {
 }
 
 export class ApiClient {
-    places: places
+    places:   places
+    vehicles: vehicles
 
     constructor(baseUrl: string, accessToken: string) {
         const headers = new Headers({
@@ -77,6 +78,11 @@ export class ApiClient {
         });
 
         this.places = new places(
+            baseUrl,
+            headers
+        );
+
+        this.vehicles = new vehicles(
             baseUrl,
             headers
         );
@@ -146,6 +152,33 @@ export type Port = {
         postal_code:        string,
         localized_address:  string
     }
+}
+
+class vehicles {
+    private baseUrl: string;
+    private headers: Headers;
+
+    constructor(baseUrl: string, headers: Headers) {
+        this.baseUrl = `${baseUrl}/vehicles/vessels`;
+        this.headers = headers;
+    }
+
+    async getVessels(): Promise<Vessels> {
+        return await (
+            await fetch(
+                this.baseUrl,
+                { headers: this.headers },
+            )
+        ).json();
+    }
+}
+
+export type Vessels = {
+    vessels: Vessel[]
+}
+
+export type Vessel = {
+    name: string
 }
 
 export default getFlexportApiClient;
