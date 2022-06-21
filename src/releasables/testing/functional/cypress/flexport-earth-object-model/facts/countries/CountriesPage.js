@@ -1,4 +1,13 @@
-export default class CountriesPage {
+import {getBaseUrl} from '../../Base'
+
+export function gotoCountriesPage() {
+    cy
+      .visit(getBaseUrl() + '/' + CountriesPage.path);
+
+    return new CountriesPage();
+}
+
+class CountriesPage {
     static path = 'facts/countries';
 
     getBody() {

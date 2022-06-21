@@ -173,16 +173,12 @@ class vehicles {
     }
 
     async getVesselByMmsi(mmsi: number): Promise<Vessels> {
-        const json = await (
+        return await (
             await fetch(
                 `${this.baseUrl}?mmsi=${mmsi}`,
                 { headers: this.headers },
             )
         ).json();
-
-        console.log(json);
-
-        return json;
     }
 }
 
