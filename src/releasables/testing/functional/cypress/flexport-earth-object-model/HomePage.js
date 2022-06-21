@@ -11,6 +11,10 @@ export default class HomePage {
         return cy.get('#all-ports-link');
     }
 
+    getAllVesselsLink() {
+        return cy.get('#all-vessels-link');
+    }
+
     getFooter() {
         return new Footer();
     }
