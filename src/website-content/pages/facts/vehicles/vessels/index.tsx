@@ -31,7 +31,7 @@ const VesselsPage: NextPage<Vessels> = ({vessels, time}) => {
         <ol>
           {vessels.map(({ name, mmsi }) => (
               <li key={name} className={Styles.vessel}>
-                <Link prefetch={false} href={`/facts/vehicles/vessel/${mmsi}`}><div id={`port-${mmsi}`}>{name}</div></Link>
+                <Link prefetch={false} href={`/facts/vehicles/vessel/${mmsi}`}><div id={`vessel-${mmsi}`}>{name}</div></Link>
               </li>
             ))}
         </ol>
