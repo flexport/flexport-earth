@@ -1,8 +1,6 @@
 /// <reference types="cypress" />
 
 import {gotoHomePage} from '../../flexport-earth-object-model/HomePage'
-import AllPortsPage from '../../flexport-earth-object-model/facts/places/ports/AllPortsPage'
-import PortPage from '../../flexport-earth-object-model/facts/places/port/PortPage'
 
 describe('Earth Homepage', () => {
   let homePage;
@@ -41,25 +39,5 @@ describe('Earth Homepage', () => {
           // the returned value will have double quotes around it, but this is correct
           expect(contentValue).to.eq('"' + Cypress.env('BUILD_NUMBER') + '"')
         })
-  })
-
-  it('Can navigate to a port', () => {
-    homePage
-      .getAllPortsLink()
-        .click();
-
-    cy
-      .url()
-      .should('contain', AllPortsPage.path)
-
-    let allPortsPage = new AllPortsPage();
-
-    allPortsPage
-      .getPortLink('USSAN')
-        .click();
-
-    cy
-      .url()
-      .should('contain', PortPage.path)
   })
 })
