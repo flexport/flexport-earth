@@ -1,15 +1,12 @@
 /// <reference types="cypress" />
 
-import CountriesPage from '../../../../../flexport-earth-object-model/facts/countries/CountriesPage'
+import { gotoCountriesPage } from '../../../../flexport-earth-object-model/facts/countries/CountriesPage'
 
 describe('Countries Page', () => {
   let countriesPage;
 
   beforeEach(() => {
-    cy
-      .visit(Cypress.env('EARTH_WEBSITE_URL') + '/' + CountriesPage.path)
-
-    countriesPage = new CountriesPage();
+    countriesPage = gotoCountriesPage();
   })
 
   it('Lists Countries', () => {
