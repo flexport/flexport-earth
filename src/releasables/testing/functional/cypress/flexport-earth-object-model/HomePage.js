@@ -1,4 +1,12 @@
-export default class HomePage {
+import {getBaseUrl} from './Base'
+
+export function gotoHomePage() {
+    cy.visit(getBaseUrl());
+
+    return new HomePage();
+}
+
+class HomePage {
     getBody() {
         return cy.get('body');
     }

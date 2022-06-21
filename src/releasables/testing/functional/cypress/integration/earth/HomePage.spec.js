@@ -1,6 +1,6 @@
 /// <reference types="cypress" />
 
-import HomePage      from '../../flexport-earth-object-model/HomePage'
+import {gotoHomePage} from '../../flexport-earth-object-model/HomePage'
 import AllPortsPage from '../../flexport-earth-object-model/facts/places/ports/AllPortsPage'
 import PortPage from '../../flexport-earth-object-model/facts/places/port/PortPage'
 
@@ -8,10 +8,7 @@ describe('Earth Homepage', () => {
   let homePage;
 
   beforeEach(() => {
-    cy
-      .visit(Cypress.env('EARTH_WEBSITE_URL'))
-
-    homePage = new HomePage();
+    homePage = gotoHomePage();
   })
 
   it('Displays the Homepage', () => {
