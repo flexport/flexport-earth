@@ -12,10 +12,6 @@ describe('Port', () => {
       .getAllPortsLink()
         .click();
 
-      cy
-        .url()
-        .should('contain', AllPortsPage.path)
-
       let allPortsPage = new AllPortsPage();
 
       const sanDiegoPortUnLoCode = 'USSAN';
@@ -24,8 +20,9 @@ describe('Port', () => {
         .getPortLink(sanDiegoPortUnLoCode)
           .click();
 
-      cy
-        .url()
-        .should('contain', PortPage.path)
+      const portPage = new PortPage();
+
+      portPage.getBody()
+        .contains('San Diego');
   })
 })

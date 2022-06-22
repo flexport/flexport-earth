@@ -24,8 +24,8 @@ describe('Vessel', () => {
       .getVesselLink(everGivenVesselMmsi)
         .click();
 
-    cy
-      .url()
-      .should('contain', VesselPage.path)
+    const vesselPage = new VesselPage();
+
+    vesselPage.getBody().contains('EVER GIVEN');
   })
 })

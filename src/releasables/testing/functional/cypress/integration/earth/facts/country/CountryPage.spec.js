@@ -6,7 +6,7 @@ describe('Country Page', () => {
   let countryPage;
 
   beforeEach(() => {
-    countryPage = gotoCountryPage();
+    countryPage = gotoCountryPage('US');
   })
 
   it('Shows number of Seaports', () => {
