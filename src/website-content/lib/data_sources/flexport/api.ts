@@ -34,36 +34,34 @@ async function getAccessToken(
 
     const body = JSON.stringify(new AccessTokenRequestBody(clientId, clientSecret));
 
-    const response = await (
-        await fetch(
-            oauthUrl,
-            {
-                method:  'POST',
-                headers: headers,
-                body:    body
-            },
-        )
+    const response = await fetch(
+        oauthUrl,
+        {
+            method:  'POST',
+            headers: headers,
+            body:    body
+        },
     );
 
     return response.json();
 }
 
 export async function getFlexportApiClient() {
-    const baseUrl = 'https://fpos-data-authority.dev-fpos-data-authority.nonp-dev-3.use1.eng-nonprod.flexport.internal';
+    const baseUrl = 'https://api.flexport.com';
 
     // TODO: Store access tokens for reuse.
     //       Only get new token if no existing token,
     //       or current token has expired.
 
-    // const accessTokenResponse = await getAccessToken(
-    //     baseUrl,
-    //     process.env.FLEXPORT_API_CLIENT_ID,
-    //     process.env.FLEXPORT_API_CLIENT_SECRET,
-    // );
+    const accessTokenResponse = await getAccessToken(
+        baseUrl,
+        process.env.FLEXPORT_API_CLIENT_ID,
+        process.env.FLEXPORT_API_CLIENT_SECRET,
+    );
 
     return new ApiClient(
         baseUrl,
-        ""  //accessTokenResponse.access_token
+        accessTokenResponse.access_token
     );
 }
 
@@ -89,67 +87,84 @@ export class ApiClient {
     }
 }
 
-class places {
-    private baseUrl:        string;
-    private portsBaseUrl:   string;
-    private headers:        Headers;
-
-    constructor(baseUrl: string, headers: Headers) {
-        this.baseUrl        = baseUrl;
-        this.portsBaseUrl   = `${this.baseUrl}/v1/places/ports`;
-        this.headers        = headers;
-    }
-
-    async getAllPortsPagedData(queryStringParameters: string): Promise<Ports> {
-        let page:     PortsDataPage;
-        let allPorts: Ports = { ports: [] };
-        let url:      string = `${this.portsBaseUrl}?per=100&${queryStringParameters}`;
-
-        // TODO: REMOVE THIS:
-        process.env.NODE_TLS_REJECT_UNAUTHORIZED = "0";
+class DataPaging {
+    static async getAllPagedData<DataType>(
+        headers:                Headers,
+        baseUrl:                string,
+        relativeUrl:            string,
+        queryStringParameters:  string = ""
+    ): Promise<DataType[]> {
+        let page:     DataPage<DataType>;
+        let allData:  DataType[]    = [];
+        let url:      string        = `${baseUrl}${relativeUrl}?${queryStringParameters}&per=100`;
 
         do {
-            //console.log('REQUESTING: ' + url);
-            page = await (
+            const rawText = await (
                 await fetch(
                     url,
-                    { headers: this.headers },
+                    { headers: headers },
                 )
-            ).json();
+            ).text();
 
-            //console.log('RECEIVED COUNT: ' + page.data.length)
-            //console.log(page.data);
-            allPorts.ports = allPorts.ports.concat(page.data);
-            //console.log('TOTAL COUNT: ' + allPorts.ports.length)
-            //console.log('NEXT PAGE: ' + page.next);
+            page    = JSON.parse(rawText);
+            allData = allData.concat(page.data);
 
-            url = `${this.baseUrl}${page.next}`
+            url = `${baseUrl}${page.next}`
         } while (page.next);
 
-        return allPorts;
-    }
-
-    async getSeaports(): Promise<Ports> {
-        //console.log('GETTING ALL SEAPORTS');
-        return await (this.getAllPortsPagedData(`types=SEAPORT`));
-    }
-
-    async getSeaportsByCca2(cca2: string): Promise<Ports> {
-        //console.log('GETTING SEAPORT BY CCA2: ' + cca2);
-        return await (this.getAllPortsPagedData(`types=SEAPORT&country_code=${cca2}`));
-    }
-
-    async getPortByUnlocode(unlocode: string): Promise<Ports> {
-        //console.log('GETTING PORT BY UNLOCODE: ' + unlocode);
-        return await (this.getAllPortsPagedData(`unlocode=${unlocode}`));
+        return allData;
     }
 }
 
-export type PortsDataPage = {
-    prev:  string,
-    next:  string,
-    total: number,
-    data:  Port[]
+class places {
+    private baseUrl:                string;
+    private portsRelativeBaseUrl:   string;
+    private headers:                Headers;
+
+    constructor(baseUrl: string, headers: Headers) {
+        this.baseUrl                = baseUrl;
+        this.portsRelativeBaseUrl   = '/v1/places/ports';
+        this.headers                = headers;
+    }
+
+    async getSeaports(): Promise<Ports> {
+        const ports = {
+            ports:  await DataPaging.getAllPagedData<Port>(
+                        this.headers,
+                        this.baseUrl,
+                        this.portsRelativeBaseUrl,
+                        `types=SEAPORT`
+                    )
+        };
+
+        return ports;
+    }
+
+    async getSeaportsByCca2(cca2: string): Promise<Ports> {
+        const ports = {
+            ports:  await DataPaging.getAllPagedData<Port>(
+                        this.headers,
+                        this.baseUrl,
+                        this.portsRelativeBaseUrl,
+                        `types=SEAPORT&country_code=${cca2}`
+                    )
+        };
+
+        return ports;
+    }
+
+    async getPortByUnlocode(unlocode: string): Promise<Ports> {
+        const ports = {
+            ports:  await DataPaging.getAllPagedData<Port>(
+                        this.headers,
+                        this.baseUrl,
+                        this.portsRelativeBaseUrl,
+                        `unlocode=${unlocode}`
+                    )
+        };
+
+        return ports;
+    }
 }
 
 export type Ports = {
@@ -180,65 +195,47 @@ export type Port = {
 }
 
 class vehicles {
-    private baseUrl:        string;
-    private vesselsBaseUrl: string;
-    private headers:        Headers;
+    private baseUrl:                string;
+    private vesselsRelativeBaseUrl: string;
+    private headers:                Headers;
 
     constructor(baseUrl: string, headers: Headers) {
-        this.baseUrl        = baseUrl;
-        this.vesselsBaseUrl = `${this.baseUrl}/v1/vehicles/vessels`;
-        this.headers        = headers;
-    }
-
-    async getAllVesselsPagedData(queryStringParameters: string = ""): Promise<Vessels> {
-        let page:       VesselsDataPage;
-        let allVessels: Vessels = { vessels: [] };
-        let url:        string  = `${this.vesselsBaseUrl}?per=100&${queryStringParameters}`;
-
-        // TODO: REMOVE THIS:
-        process.env.NODE_TLS_REJECT_UNAUTHORIZED = "0";
-
-        do {
-            console.log('REQUESTING: ' + url);
-            page = await (
-                await fetch(
-                    url,
-                    { headers: this.headers },
-                )
-            ).json();
-
-            console.log('RECEIVED COUNT: ' + page.data.length)
-            console.log(page.data);
-            allVessels.vessels = allVessels.vessels.concat(page.data);
-            console.log('TOTAL COUNT: ' + allVessels.vessels.length)
-            console.log('NEXT PAGE: ' + page.next);
-
-            url = `${this.baseUrl}${page.next}`
-        } while (page.next);
-
-        return allVessels;
+        this.baseUrl                = baseUrl;
+        this.vesselsRelativeBaseUrl = `/v1/vehicles/vessels`;
+        this.headers                = headers;
     }
 
     async getVessels(): Promise<Vessels> {
-        // TODO: REMOVE THIS:
-        process.env.NODE_TLS_REJECT_UNAUTHORIZED = "0";
+        const vessels = {
+            vessels:  await DataPaging.getAllPagedData<Vessel>(
+                        this.headers,
+                        this.baseUrl,
+                        this.vesselsRelativeBaseUrl
+                    )
+        };
 
-        return await this.getAllVesselsPagedData();
+        return vessels;
     }
 
     async getVesselByMmsi(mmsi: number): Promise<Vessels> {
-        // TODO: REMOVE THIS:
-        process.env.NODE_TLS_REJECT_UNAUTHORIZED = "0";
+        const vessels = {
+            vessels:  await DataPaging.getAllPagedData<Vessel>(
+                        this.headers,
+                        this.baseUrl,
+                        this.vesselsRelativeBaseUrl,
+                        `mmsi=${mmsi}`
+                    )
+        };
 
-        return await this.getAllVesselsPagedData(`mmsi=${mmsi}`);
+        return vessels;
     }
 }
 
-export type VesselsDataPage = {
+export type DataPage<DataType> = {
     prev:  string,
     next:  string,
     total: number,
-    data:  Vessel[]
+    data:  DataType[]
 }
 
 export type Vessels = {
