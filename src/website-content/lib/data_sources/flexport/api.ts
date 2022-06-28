@@ -123,7 +123,7 @@ class places {
 
     constructor(baseUrl: string, headers: Headers) {
         this.baseUrl                = baseUrl;
-        this.portsRelativeBaseUrl   = '/v1/places/ports';
+        this.portsRelativeBaseUrl   = '/places/ports';
         this.headers                = headers;
     }
 
@@ -201,7 +201,7 @@ class vehicles {
 
     constructor(baseUrl: string, headers: Headers) {
         this.baseUrl                = baseUrl;
-        this.vesselsRelativeBaseUrl = `/v1/vehicles/vessels`;
+        this.vesselsRelativeBaseUrl = `/vehicles/vessels`;
         this.headers                = headers;
     }
 
