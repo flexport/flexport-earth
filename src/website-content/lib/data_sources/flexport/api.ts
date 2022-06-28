@@ -49,21 +49,21 @@ async function getAccessToken(
 }
 
 export async function getFlexportApiClient() {
-    const baseUrl = 'https://api.flexport.com';
+    const baseUrl = 'https://fpos-data-authority.dev-fpos-data-authority.nonp-dev-3.use1.eng-nonprod.flexport.internal';
 
     // TODO: Store access tokens for reuse.
     //       Only get new token if no existing token,
     //       or current token has expired.
 
-    const accessTokenResponse = await getAccessToken(
-        baseUrl,
-        process.env.FLEXPORT_API_CLIENT_ID,
-        process.env.FLEXPORT_API_CLIENT_SECRET,
-    );
+    // const accessTokenResponse = await getAccessToken(
+    //     baseUrl,
+    //     process.env.FLEXPORT_API_CLIENT_ID,
+    //     process.env.FLEXPORT_API_CLIENT_SECRET,
+    // );
 
     return new ApiClient(
         baseUrl,
-        accessTokenResponse.access_token
+        ""  //accessTokenResponse.access_token
     );
 }
 
@@ -90,41 +90,66 @@ export class ApiClient {
 }
 
 class places {
-    private baseUrl: string;
-    private headers: Headers;
+    private baseUrl:        string;
+    private portsBaseUrl:   string;
+    private headers:        Headers;
 
     constructor(baseUrl: string, headers: Headers) {
-        this.baseUrl = `${baseUrl}/places/ports`;
-        this.headers = headers;
+        this.baseUrl        = baseUrl;
+        this.portsBaseUrl   = `${this.baseUrl}/v1/places/ports`;
+        this.headers        = headers;
+    }
+
+    async getAllPortsPagedData(queryStringParameters: string): Promise<Ports> {
+        let page:     PortsDataPage;
+        let allPorts: Ports = { ports: [] };
+        let url:      string = `${this.portsBaseUrl}?per=100&${queryStringParameters}`;
+
+        // TODO: REMOVE THIS:
+        process.env.NODE_TLS_REJECT_UNAUTHORIZED = "0";
+
+        do {
+            //console.log('REQUESTING: ' + url);
+            page = await (
+                await fetch(
+                    url,
+                    { headers: this.headers },
+                )
+            ).json();
+
+            //console.log('RECEIVED COUNT: ' + page.data.length)
+            //console.log(page.data);
+            allPorts.ports = allPorts.ports.concat(page.data);
+            //console.log('TOTAL COUNT: ' + allPorts.ports.length)
+            //console.log('NEXT PAGE: ' + page.next);
+
+            url = `${this.baseUrl}${page.next}`
+        } while (page.next);
+
+        return allPorts;
     }
 
     async getSeaports(): Promise<Ports> {
-        return await (
-            await fetch(
-                `${this.baseUrl}?types=SEAPORT`,
-                { headers: this.headers },
-            )
-        ).json();
+        //console.log('GETTING ALL SEAPORTS');
+        return await (this.getAllPortsPagedData(`types=SEAPORT`));
     }
 
     async getSeaportsByCca2(cca2: string): Promise<Ports> {
-        return await (
-            await fetch(
-                `${this.baseUrl}?types=SEAPORT&country_code=${cca2}`,
-                { headers: this.headers },
-            )
-        ).json();
+        //console.log('GETTING SEAPORT BY CCA2: ' + cca2);
+        return await (this.getAllPortsPagedData(`types=SEAPORT&country_code=${cca2}`));
     }
 
     async getPortByUnlocode(unlocode: string): Promise<Ports> {
-        return await (
-            await fetch(
-                `${this.baseUrl}?unlocode=${unlocode}`,
-                { headers: this.headers },
-            )
-        ).json();
+        //console.log('GETTING PORT BY UNLOCODE: ' + unlocode);
+        return await (this.getAllPortsPagedData(`unlocode=${unlocode}`));
     }
+}
 
+export type PortsDataPage = {
+    prev:  string,
+    next:  string,
+    total: number,
+    data:  Port[]
 }
 
 export type Ports = {
@@ -136,7 +161,7 @@ export type Port = {
     iata_code:      string,
     icao_code:      string,
     unlocode:       string,
-    cbp_port_code:  string
+    cbp_port_code:  string,
     address: {
         street_address:         string,
         street_address2:        string,
@@ -155,31 +180,65 @@ export type Port = {
 }
 
 class vehicles {
-    private baseUrl: string;
-    private headers: Headers;
+    private baseUrl:        string;
+    private vesselsBaseUrl: string;
+    private headers:        Headers;
 
     constructor(baseUrl: string, headers: Headers) {
-        this.baseUrl = `${baseUrl}/vehicles/vessels`;
-        this.headers = headers;
+        this.baseUrl        = baseUrl;
+        this.vesselsBaseUrl = `${this.baseUrl}/v1/vehicles/vessels`;
+        this.headers        = headers;
+    }
+
+    async getAllVesselsPagedData(queryStringParameters: string = ""): Promise<Vessels> {
+        let page:       VesselsDataPage;
+        let allVessels: Vessels = { vessels: [] };
+        let url:        string  = `${this.vesselsBaseUrl}?per=100&${queryStringParameters}`;
+
+        // TODO: REMOVE THIS:
+        process.env.NODE_TLS_REJECT_UNAUTHORIZED = "0";
+
+        do {
+            console.log('REQUESTING: ' + url);
+            page = await (
+                await fetch(
+                    url,
+                    { headers: this.headers },
+                )
+            ).json();
+
+            console.log('RECEIVED COUNT: ' + page.data.length)
+            console.log(page.data);
+            allVessels.vessels = allVessels.vessels.concat(page.data);
+            console.log('TOTAL COUNT: ' + allVessels.vessels.length)
+            console.log('NEXT PAGE: ' + page.next);
+
+            url = `${this.baseUrl}${page.next}`
+        } while (page.next);
+
+        return allVessels;
     }
 
     async getVessels(): Promise<Vessels> {
-        return await (
-            await fetch(
-                this.baseUrl,
-                { headers: this.headers },
-            )
-        ).json();
+        // TODO: REMOVE THIS:
+        process.env.NODE_TLS_REJECT_UNAUTHORIZED = "0";
+
+        return await this.getAllVesselsPagedData();
     }
 
     async getVesselByMmsi(mmsi: number): Promise<Vessels> {
-        return await (
-            await fetch(
-                `${this.baseUrl}?mmsi=${mmsi}`,
-                { headers: this.headers },
-            )
-        ).json();
+        // TODO: REMOVE THIS:
+        process.env.NODE_TLS_REJECT_UNAUTHORIZED = "0";
+
+        return await this.getAllVesselsPagedData(`mmsi=${mmsi}`);
     }
+}
+
+export type VesselsDataPage = {
+    prev:  string,
+    next:  string,
+    total: number,
+    data:  Vessel[]
 }
 
 export type Vessels = {

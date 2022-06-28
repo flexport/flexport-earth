@@ -11,7 +11,7 @@ export async function getStaticProps() {
   return {
     props: {
       time: new Date().toISOString(),
-      ports: seaports.ports.map(port => ({ name: port.name, unlocode: port.unlocode }))
+      ports: seaports.ports.map(port => ({ name: port.name, unlocode: port.unlocode ?? null }))
     },
     revalidate: 3600
   };
