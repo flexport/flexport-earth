@@ -24,14 +24,14 @@ const Footer = () => (
                 <div className={Styles.topVessels}>
                     <div className={Styles.footerTopTitle}>TOP VESSELS</div>
                     <ol className={Styles.footerTopList}>
-                        <li>Ever Given</li>
-                        <li>Ever Ace</li>
-                        <li>Ever Goods</li>
-                        <li>Ever Glory</li>
-                        <li>HMM Algeciras</li>
-                        <li>Madrid Maersk</li>
-                        <li>MSC Gülsün</li>
-                        <li>OOCL Hong Kong</li>
+                        <li><Link href='facts/vehicles/vessel/353136000'>Ever Given</Link></li>
+                        <li><Link href='facts/vehicles/vessel/352986146'>Ever Ace</Link></li>
+                        <li><Link href='facts/vehicles/vessel/371308000'>Ever Goods</Link></li>
+                        <li><Link href='facts/vehicles/vessel/636019234'>Ever Glory</Link></li>
+                        <li><Link href='facts/vehicles/vessel/351297000'>HMM Algeciras</Link></li>
+                        <li><Link href='facts/vehicles/vessel/219836000'>Madrid Maersk</Link></li>
+                        <li><Link href='facts/vehicles/vessel/372003000'>MSC Gülsün</Link></li>
+                        <li><Link href='facts/vehicles/vessel/477333500'>OOCL Hong Kong</Link></li>
                     </ol>
                 </div>
                 <div className={Styles.glossaryAndInfo}>
