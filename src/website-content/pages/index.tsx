@@ -136,23 +136,25 @@ const Home: NextPage = () => {
           </div>
 
           <div className={Styles.vesselsAndContainersSection}>
-            <div className={Styles.vesselsSection}>
-              <Image
-                src="/images/icon-vessel.svg"
-                alt="Vessel Icon"
-                height={26}
-                width={26}
-              />
+            <Link href='facts/vehicles/vessels'>
+              <div className={Styles.vesselsSection}>
+                <Image
+                  src="/images/icon-vessel.svg"
+                  alt="Vessel Icon"
+                  height={26}
+                  width={26}
+                />
 
-              &nbsp;&nbsp;&nbsp;Vessels&nbsp;&nbsp;&nbsp;
+                &nbsp;&nbsp;&nbsp;Vessels&nbsp;&nbsp;&nbsp;
 
-              <Image
-                src="/images/right-chevron.svg"
-                alt="Right Chevron"
-                height={14}
-                width={14}
-              />
-            </div>
+                <Image
+                  src="/images/right-chevron.svg"
+                  alt="Right Chevron"
+                  height={14}
+                  width={14}
+                />
+              </div>
+            </Link>
 
             <div className={Styles.containersSection}>
               <Image

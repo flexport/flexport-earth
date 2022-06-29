@@ -111,6 +111,7 @@
   display:              flex;
   align-items:          center;
   padding-left:         23px;
+  cursor:               pointer;
 }
 
 .containersSection {

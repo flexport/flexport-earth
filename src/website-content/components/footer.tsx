@@ -1,6 +1,7 @@
 import React, { ReactNode } from 'react';
 import Styles from '../styles/Footer.module.css'
 import Image from 'next/image'
+import Link from 'next/link'
 
 const Footer = () => (
       <footer className={Styles.footer}>
@@ -9,48 +10,48 @@ const Footer = () => (
                 <div className={Styles.topPorts}>
                     <div className={Styles.footerTopTitle}>TOP PORTS</div>
                     <ol className={Styles.footerTopList}>
-                        <li>Ports name here</li>
-                        <li>Ports name here</li>
-                        <li>Ports name here</li>
-                        <li>Ports name here</li>
-                        <li>Ports name here</li>
-                        <li>Ports name here</li>
-                        <li>Ports name here</li>
-                        <li>Ports name here</li>
-                        <li>Ports name here</li>
-                        <li>Ports name here</li>
+                        <li>Port Canaveral</li>
+                        <li><Link href='facts/places/port/USPEF'>Port Everglades</Link></li>
+                        <li>Port Fourchon</li>
+                        <li><Link href='facts/places/port/USHOU'>Port of Houston</Link></li>
+                        <li><Link href='facts/places/port/USLGB'>Port of Long Beach</Link></li>
+                        <li><Link href='facts/places/port/USLAX'>Port of Los Angeles</Link></li>
+                        <li><Link href='facts/places/port/USMIA'>Port of Miami</Link></li>
+                        <li><Link href='facts/places/port/USSEA'>Port of Seattle</Link></li>
+                        <li><Link href='facts/places/port/USSCK'>Port of Stockton</Link></li>
                     </ol>
                 </div>
                 <div className={Styles.topVessels}>
                     <div className={Styles.footerTopTitle}>TOP VESSELS</div>
                     <ol className={Styles.footerTopList}>
-                        <li>Vessel name here</li>
-                        <li>Vessel name here</li>
-                        <li>Vessel name here</li>
-                        <li>Vessel name here</li>
-                        <li>Vessel name here</li>
-                        <li>Vessel name here</li>
-                        <li>Vessel name here</li>
-                        <li>Vessel name here</li>
-                        <li>Vessel name here</li>
-                        <li>Vessel name here</li>
+                        <li>Ever Given</li>
+                        <li>Ever Ace</li>
+                        <li>Ever Goods</li>
+                        <li>Ever Glory</li>
+                        <li>HMM Algeciras</li>
+                        <li>Madrid Maersk</li>
+                        <li>MSC Gülsün</li>
+                        <li>OOCL Hong Kong</li>
                     </ol>
                 </div>
                 <div className={Styles.glossaryAndInfo}>
-                    <div className={Styles.footerGlossary}>
-                        <div className={Styles.footerGlossaryLeft}>
-                            <div className={Styles.footerGlossaryTitle}>Glossary &gt;</div>
-                            <div className={Styles.footerGlossaryDescription}>Boost Your Supply Chain Terminology</div>
+                    <a className={Styles.footerGlossaryLink} href='https://www.flexport.com/glossary' target="_blank" rel="noreferrer">
+                        <div className={Styles.footerGlossary}>
+                            <div className={Styles.footerGlossaryLeft}>
+                                <div className={Styles.footerGlossaryTitle}>Glossary &gt;</div>
+                                <div className={Styles.footerGlossaryDescription}>Boost Your Supply Chain Terminology</div>
+                            </div>
+                            <div className={Styles.footerGlossaryRight}>
+                                <Image
+                                    src="/images/icon-supply-chain-book.png"
+                                    alt="Supply Chain Book"
+                                    height={170}
+                                    width={199}
+                                />
+                            </div>
                         </div>
-                        <div className={Styles.footerGlossaryRight}>
-                            <Image
-                                src="/images/icon-supply-chain-book.png"
-                                alt="Supply Chain Book"
-                                height={170}
-                                width={199}
-                            />
-                        </div>
-                    </div>
+                    </a>
+
                     <div className={Styles.footerInfo}>
                         <div className={Styles.footerInfoTitle}>Interested in tech stack behind this website?</div>
                         <div className={Styles.footerInfoDescription}>Read our public API documentation , or check out Github repository</div>

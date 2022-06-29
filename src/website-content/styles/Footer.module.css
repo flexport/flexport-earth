@@ -1,8 +1,6 @@
 
 .footer a {
   display:            flex;
-  justify-content:    center;
-  align-items:        center;
 }
 
 .footer {
@@ -10,7 +8,6 @@
   justify-content:    center;
   color:            white;
   background-color: #39414D;
-  align-items:        center;
   height:             100%;
   width:              1645px;
   margin:             auto;
@@ -44,6 +41,15 @@
   margin-bottom:    25px;
 }
 
+.footerTopList a {
+  text-decoration:  none;
+  color:          white;
+}
+
+.footerTopList a:visited {
+  color:          white;
+}
+
 .footerTopList li {
   padding-bottom:   16px;
   font-weight:      400;
@@ -73,6 +79,10 @@
   border-radius:      8px;
   padding:            20px;
   margin-bottom:      40px;
+}
+
+.footerGlossaryLink {
+  color:            white;
 }
 
 .footerGlossaryLeft {
@@ -124,7 +134,6 @@
 }
 
 .footerContentFlexportLogo {
-
   height: 20px;
 }
 
