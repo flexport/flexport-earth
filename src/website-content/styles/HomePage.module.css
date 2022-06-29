@@ -27,6 +27,7 @@
   line-height:            20px;
   position:               relative;
   top:                    -7px;
+  color:                white;
 }
 
 .tagLine {
@@ -35,6 +36,7 @@
   line-height:            48px;
   letter-spacing:         -0.02em;
   margin-top:             9px;
+  color:                white;
 }
 
 .portsSection {
@@ -46,6 +48,10 @@
   margin-top:           56px;
   padding-left:         23px;
   padding-top:          23px;
+}
+
+.portsLink {
+  cursor:               pointer;
 }
 
 .portsSectionTitle {
@@ -84,6 +90,7 @@
   display:              flex;
   align-items:          center;
   letter-spacing:       0.01em;
+  cursor:               pointer;
 }
 
 .vesselsAndContainersSection {

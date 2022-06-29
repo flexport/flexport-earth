@@ -32,85 +32,106 @@ const Home: NextPage = () => {
           </div>
 
           <div className={Styles.portsSection}>
-            <Image
-              src="/images/icon-port.svg"
-              alt="Port Icon"
-              height={26}
-              width={26}
-            />
+            <Link href='facts/places/ports'>
+              <div className={Styles.portsLink}>
+                <Image
+                  src="/images/icon-port.svg"
+                  alt="Port Icon"
+                  height={26}
+                  width={26}
+                />
 
-            <span className={Styles.portsSectionTitle}>Ports</span>
+                <span className={Styles.portsSectionTitle}>Ports</span>
 
-            <span className={Styles.rightChevron}>
-              <Image
-                src="/images/right-chevron.svg"
-                alt="Right Chevron"
-                height={14}
-                width={14}
-              />
-            </span>
+                <span className={Styles.rightChevron}>
+                  <Image
+                    src="/images/right-chevron.svg"
+                    alt="Right Chevron"
+                    height={14}
+                    width={14}
+                  />
+                </span>
+              </div>
+            </Link>
 
             <div className={Styles.portCountries}>
-              <div className={Styles.portCountry}>
-                <Image
-                  src="/images/flag-china.png"
-                  alt="China flag"
-                  height={16}
-                  width={16}
-                />
+              <Link href='facts/places/ports/CN'>
+                <div className={Styles.portCountry}>
+                  <Image
+                    src="/images/flag-china.png"
+                    alt="China flag"
+                    height={16}
+                    width={16}
+                  />
 
-                &nbsp;&nbsp;China ports ( 260 )
-              </div>
-              <div className={Styles.portCountry}>
-                <Image
-                  src="/images/flag-usa.png"
-                  alt="United States flag"
-                  height={16}
-                  width={16}
-                />
+                  &nbsp;&nbsp;China ports ( 260 )
+                </div>
+              </Link>
 
-                &nbsp;&nbsp;United States ports ( 64 )
-              </div>
-              <div className={Styles.portCountry}>
-                <Image
-                  src="/images/flag-singapore.png"
-                  alt="Singapore flag"
-                  height={16}
-                  width={16}
-                />
+              <Link href='facts/places/ports/US'>
+                <div className={Styles.portCountry}>
+                  <Image
+                    src="/images/flag-usa.png"
+                    alt="United States flag"
+                    height={16}
+                    width={16}
+                  />
 
-                &nbsp;&nbsp;Singapore ports ( 2 )
-              </div>
-              <div className={Styles.portCountry}>
-                <Image
-                  src="/images/flag-south-korea.png"
-                  alt="South Korea flag"
-                  height={16}
-                  width={16}
-                />
+                  &nbsp;&nbsp;United States ports ( 64 )
+                </div>
+              </Link>
 
-                &nbsp;&nbsp;South Korea ports ( 43 )
-              </div>
-              <div className={Styles.portCountry}>
-                <Image
-                  src="/images/flag-malaysia.png"
-                  alt="Malaysia flag"
-                  height={16}
-                  width={16}
-                />
+              <Link href='facts/places/ports/SG'>
+                <div className={Styles.portCountry}>
+                  <Image
+                    src="/images/flag-singapore.png"
+                    alt="Singapore flag"
+                    height={16}
+                    width={16}
+                  />
 
-                &nbsp;&nbsp;Malaysia ports ( 13 )
-              </div>
-              <div className={Styles.portCountry}>
-                <Image
-                  src="/images/flag-japan.png"
-                  alt="Japan flag"
-                  height={16}
-                  width={16}
-                />
+                  &nbsp;&nbsp;Singapore ports ( 2 )
+                </div>
+              </Link>
 
-                &nbsp;&nbsp;Japan ports ( 383 )
-              </div>
+              <Link href='facts/places/ports/KR'>
+                <div className={Styles.portCountry}>
+                  <Image
+                    src="/images/flag-south-korea.png"
+                    alt="South Korea flag"
+                    height={16}
+                    width={16}
+                  />
+
+                  &nbsp;&nbsp;South Korea ports ( 43 )
+                </div>
+              </Link>
+
+              <Link href='facts/places/ports/MY'>
+                <div className={Styles.portCountry}>
+                  <Image
+                    src="/images/flag-malaysia.png"
+                    alt="Malaysia flag"
+                    height={16}
+                    width={16}
+                  />
+
+                  &nbsp;&nbsp;Malaysia ports ( 13 )
+                </div>
+              </Link>
+
+              <Link href='facts/places/ports/JP'>
+                <div className={Styles.portCountry}>
+                  <Image
+                    src="/images/flag-japan.png"
+                    alt="Japan flag"
+                    height={16}
+                    width={16}
+                  />
+
+                  &nbsp;&nbsp;Japan ports ( 383 )
+                </div>
+              </Link>
             </div>
           </div>
 
