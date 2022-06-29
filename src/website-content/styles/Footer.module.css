@@ -1,52 +1,161 @@
 
 .footer a {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    flex-grow: 1;
-  }
+  display:            flex;
+  justify-content:    center;
+  align-items:        center;
+}
 
-  .footer {
-    display:            flex;
-    flex:               1;
-    padding:            2rem 0;
-    justify-content:    center;
-    color:            white;
-    background-color: #39414D;
-    align-items:        center;
-    height:             256px;
-  }
+.footer {
+  padding:            2rem 0;
+  justify-content:    center;
+  color:            white;
+  background-color: #39414D;
+  align-items:        center;
+  height:             100%;
+  width:              1645px;
+  margin:             auto;
+  padding-bottom:     60px;
+}
 
-  .footerContent {
-    width:          80%;
-    margin:         auto;
-    padding-top:    150px;
-    padding-bottom: 10px;
-  }
+.footerContent {
+  margin:         auto;
+  width:          1049px;
+  padding-top:    35px;
+  padding-bottom: 10px;
+}
 
-  .footerContentHr {
-    border: 1px solid #67768D;
-  }
+.footerTopTitle {
+  font-weight:      700;
+  font-size:        14px;
+  line-height:      20px;
+  letter-spacing:   0.01em;
+  text-transform:   uppercase;
+  color:            #F7F9FD;
+  border-bottom:    1px solid #C5D2E7;
+  width:            fit-content;
+  margin-bottom:    32px;
+  padding-bottom:   4px;
+}
 
-  .footerContentFlexportLogo {
-    float:  left;
-    height: 20px;
-  }
+.footerTopList {
+  list-style-type:  none;
+  margin:           0px;
+  padding:          0px;
+  margin-bottom:    25px;
+}
 
-  .footerContentTagLine {
-    float:          left;
-    margin-left:    10px;
-    font-style:     normal;
-    font-weight:    400;
-    font-size:      14px;
-    line-height:    20px;
-  }
+.footerTopList li {
+  padding-bottom:   16px;
+  font-weight:      400;
+  font-size:        14px;
+  line-height:      20px;
+  letter-spacing:   0.01em;
+}
 
-  .buildNumber {
-    float:              right;
-    bottom:             0;
-    right:              0;
-    color:              #67768D;
-    text-decoration:    none;
-    font-size:          10px;
-  }
+.topPorts {
+  float:              left;
+  width:              268px;
+}
+
+.topVessels {
+  float:              left;
+  width:              268px;
+}
+
+.glossaryAndInfo {
+  float:              left;
+}
+
+.footerGlossary {
+  width:              511px;
+  height:             199px;
+  background:       #25303F;
+  border-radius:      8px;
+  padding:            20px;
+  margin-bottom:      40px;
+}
+
+.footerGlossaryLeft {
+  float:              left;
+  width:              204px;
+  margin-right:       68px;
+}
+
+.footerGlossaryRight {
+  float:              left;
+}
+
+.footerGlossaryTitle {
+  font-weight:        700;
+  font-size:          16px;
+  line-height:        20px;
+  margin-bottom:      10px;
+}
+
+.footerGlossaryDescription {
+  font-weight:        400;
+  font-size:          14px;
+  line-height:        20px;
+  letter-spacing:     0.01em;
+  color:            #F7F9FD;
+}
+
+.footerInfo {
+  padding-top:        8px;
+}
+
+.footerInfoTitle {
+  font-weight:        700;
+  font-size:          16px;
+  line-height:        20px;
+}
+
+.footerInfoDescription {
+  font-weight:        400;
+  font-size:          14px;
+  line-height:        20px;
+  padding-top:        10px;
+}
+
+.footerContentHr {
+  border:             1px solid #4B5564;;
+  clear:              left;
+  margin-bottom:      23px;
+}
+
+.footerContentFlexportLogo {
+
+  height: 20px;
+}
+
+.footerContentTagLine {
+  font-style:     normal;
+  font-weight:    400;
+  font-size:      12px;
+  line-height:    16px;
+  margin-top:     9px;
+}
+
+.footerLowerLeftSection {
+  float: left;
+}
+
+.footerLowerRightSection {
+  float:          right;
+}
+
+.buildNumber {
+  float:              right;
+  bottom:             0;
+  right:              0;
+  color:              #67768D;
+  text-decoration:    none;
+  font-size:          10px;
+}
+
+.footerCopyright {
+  font-size:          12px;
+  line-height:        16px;
+  margin-top:         34px;
+  text-align:         right;
+}
