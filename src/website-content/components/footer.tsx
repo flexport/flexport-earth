@@ -53,8 +53,12 @@ const Footer = () => (
                     </a>
 
                     <div className={Styles.footerInfo}>
-                        <div className={Styles.footerInfoTitle}>Interested in tech stack behind this website?</div>
-                        <div className={Styles.footerInfoDescription}>Read our public API documentation , or check out Github repository</div>
+                        <div className={Styles.footerInfoTitle}>
+                            Interested in tech stack behind this website?
+                        </div>
+                        <div className={Styles.footerInfoDescription}>
+                            <span>Read our public</span><a href="https://apidocs.flexport.com" target="_blank" rel="noreferrer">API documentation</a><span>, or check our</span><a href="https://github.com/flexport/flexport-earth" target="_blank" rel="noreferrer">Github repository</a>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -62,10 +66,12 @@ const Footer = () => (
             <hr className={Styles.footerContentHr}/>
 
             <div className={Styles.footerLowerSection}>
-                <span className={Styles.footerLowerLeftSection}>
-                    <Image className={Styles.footerContentFlexportLogo} layout="raw" src="/images/flexport-logo.svg" alt="Flexport Logo" height={20} width={90}/>
-                    <div className={Styles.footerContentTagLine}>We&apos;re making global trade easy for everyone.</div>
-                </span>
+                <a className={Styles.footerLowerLeftSection} href="https://www.flexport.com" target="_blank" rel="noreferrer">
+                    <span>
+                        <Image className={Styles.footerContentFlexportLogo} layout="raw" src="/images/flexport-logo.svg" alt="Flexport Logo" height={20} width={90}/>
+                        <div className={Styles.footerContentTagLine}>We&apos;re making global trade easy for everyone.</div>
+                    </span>
+                </a>
                 <div className={Styles.footerLowerRightSection}>
                     <a href="javascript:alert('Build URL not specified.');" className={Styles.buildNumber}>
                         <div id="build-number-anchor"></div>

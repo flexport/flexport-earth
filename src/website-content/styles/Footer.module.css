@@ -127,6 +127,17 @@
   padding-top:        10px;
 }
 
+.footerInfoDescription a {
+  color:            white;
+  float:              left;
+  margin-left:        4px;
+}
+
+.footerInfoDescription span {
+  color:            white;
+  float:              left;
+}
+
 .footerContentHr {
   border:             1px solid #4B5564;;
   clear:              left;
@@ -146,11 +157,13 @@
 }
 
 .footerLowerLeftSection {
-  float: left;
+  float:              left;
+  color:            white;
+  text-decoration:    none;
 }
 
 .footerLowerRightSection {
-  float:          right;
+  float:              right;
 }
 
 .buildNumber {
