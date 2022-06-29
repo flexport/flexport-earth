@@ -10,7 +10,7 @@ describe('Vessel', () => {
 
     homePage
       .getAllVesselsLink()
-        .click();
+        .click({force: true});
 
     cy
       .url()
