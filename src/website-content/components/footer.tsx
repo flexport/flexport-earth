@@ -66,7 +66,7 @@ const Footer = () => (
             <hr className={Styles.footerContentHr}/>
 
             <div className={Styles.footerLowerSection}>
-                <a className={Styles.footerLowerLeftSection} href="https://www.flexport.com" target="_blank" rel="noreferrer">
+                <a className={Styles.footerLowerLeftSection} id="flexport-logo" href="https://www.flexport.com">
                     <span>
                         <Image className={Styles.footerContentFlexportLogo} layout="raw" src="/images/flexport-logo.svg" alt="Flexport Logo" height={20} width={90}/>
                         <div className={Styles.footerContentTagLine}>We&apos;re making global trade easy for everyone.</div>

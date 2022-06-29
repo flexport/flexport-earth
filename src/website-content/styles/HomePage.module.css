@@ -50,6 +50,10 @@
   padding-top:          23px;
 }
 
+.portsSection a {
+  text-decoration:      none;
+}
+
 .portsLink {
   cursor:               pointer;
 }

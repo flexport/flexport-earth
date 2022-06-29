@@ -29,7 +29,9 @@ class HomePage {
 }
 
 class Header {
-    FlexportLogo = cy.get('#flexport-logo')
+    getFlexportLogo() {
+        return cy.get('#flexport-logo');
+    }
 }
 
 class Footer {

@@ -32,7 +32,7 @@ const Home: NextPage = () => {
           </div>
 
           <div className={Styles.portsSection}>
-            <Link href='facts/places/ports'>
+            <a id="all-ports-link" href='facts/places/ports'>
               <div className={Styles.portsLink}>
                 <Image
                   src="/images/icon-port.svg"
@@ -52,7 +52,7 @@ const Home: NextPage = () => {
                   />
                 </span>
               </div>
-            </Link>
+            </a>
 
             <div className={Styles.portCountries}>
               <Link href='facts/places/ports/CN'>
@@ -136,7 +136,7 @@ const Home: NextPage = () => {
           </div>
 
           <div className={Styles.vesselsAndContainersSection}>
-            <Link href='facts/vehicles/vessels'>
+            <a id="all-vessels-link" href='facts/vehicles/vessels'>
               <div className={Styles.vesselsSection}>
                 <Image
                   src="/images/icon-vessel.svg"
@@ -154,7 +154,7 @@ const Home: NextPage = () => {
                   width={14}
                 />
               </div>
-            </Link>
+            </a>
 
             <div className={Styles.containersSection}>
               <Image
