@@ -18,7 +18,7 @@ describe('Earth Homepage', () => {
   it('Links to flexport.com', () => {
     homePage
       .getHeader()
-        .FlexportLogo
+        .getFlexportLogo()
           .click();
 
     cy

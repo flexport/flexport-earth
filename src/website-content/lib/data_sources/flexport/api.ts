@@ -159,7 +159,7 @@ class places {
                         this.headers,
                         this.baseUrl,
                         this.portsRelativeBaseUrl,
-                        `unlocode=${unlocode}`
+                        `types=SEAPORT&unlocode=${unlocode}`
                     )
         };
 

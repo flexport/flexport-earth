@@ -14,7 +14,7 @@ type PortPageParams = {
 }
 
 export async function getStaticPaths() {
-    const paths = [{params: {unlocode: 'ARAFA'}}];
+    const paths = [{params: {unlocode: 'USLAX'}}];
 
     return {
         paths,
