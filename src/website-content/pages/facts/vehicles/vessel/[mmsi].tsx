@@ -45,7 +45,9 @@ const VesselPage: NextPage<VesselPageParams> = (params) => {
     }
 
     return (
-        <Layout title={params.vessel.name} h1={params.vessel.name}>
+        <Layout title={params.vessel.name}>
+            <h1>{params.vessel.name}</h1>
+
             <ul>
                 <li>MMSI: {params.vessel.mmsi}</li>
                 <li>IMO: {params.vessel.imo}</li>

@@ -3,40 +3,119 @@ import { getFlexportApiClient, Port } from '../../../../lib/data_sources/flexpor
 import Layout from '../../../../components/layout'
 import Link from 'next/link';
 import Styles from '../../../../styles/facts/places/ports/index.module.css'
+import Image from 'next/image'
+import getRestCountriesApiClient from '../../../../lib/data_sources/restcountries.com/api'
+
+type CountryInfo = {
+  countryName:      string,
+  cca2CountryCode:  string,
+  portCount:        number
+}
 
 export async function getStaticProps() {
-  const flexportApi = await getFlexportApiClient();
-  const seaports    = await flexportApi.places.getSeaports()
+  const countriesApi = getRestCountriesApiClient();
+  const countries    = await countriesApi.countries.getAllCountriesAsMap();
+  const flexportApi  = await getFlexportApiClient();
+  const seaports     = await flexportApi.places.getSeaports()
+
+  let countryMap = new Map<string, CountryInfo>();
+
+  for (let i = 0; i < seaports.ports.length; i++) {
+    let port          = seaports.ports[i];
+    let countryPorts  = countryMap.get(port.address.country_code);
+
+    if (!countryPorts) {
+      const cca2CountryCode = port.address.country_code;
+      let country           = countries.get(cca2CountryCode)
+
+      if (!country) {
+        throw `Country not found for country code '${cca2CountryCode}'.`
+      }
+
+      countryPorts = {
+        countryName:      country.name.common,
+        cca2CountryCode:  cca2CountryCode,
+        portCount:        0
+      };
+
+      countryMap.set(
+        cca2CountryCode,
+        countryPorts
+      );
+    }
+
+    countryPorts.portCount++;
+  }
+
+  const countriesSortedByPortCount = Array.from(
+    countryMap.values()).sort((a, b) => b.portCount - a.portCount
+  );
 
   return {
     props: {
-      time: new Date().toISOString(),
-      ports: seaports.ports.map(port => ({ name: port.name, unlocode: port.unlocode ?? null }))
+      time:  new Date().toISOString(),
+      ports: countriesSortedByPortCount
     },
     revalidate: 3600
   };
 }
 
 type Ports = {
-  time: string,
-  ports: [{
-    name:     string,
-    unlocode: string
-  }]
+  time:  string,
+  ports: CountryInfo[]
 }
 
 const PortsPage: NextPage<Ports> = ({ports, time}) => {
   return (
-    <Layout title='Ports' h1='Ports'>
-        <ol>
-          {ports.map(({ name, unlocode }) => (
-              <li key={name} className={Styles.port}>
-                <Link prefetch={false} href={`/facts/places/port/${unlocode}`}><div id={`port-${unlocode}`}>{name}</div></Link>
+    <Layout title='Ports'>
+        <div className={Styles.breadcrumbs}>
+          Wiki&nbsp;&nbsp;&nbsp;
+          <Image
+            src="/images/right-chevron.svg"
+            alt="Right Chevron"
+            height={10}
+            width={10}
+          />
+          &nbsp;&nbsp;&nbsp;Ports&nbsp;&nbsp;&nbsp;
+          <Image
+            src="/images/right-chevron.svg"
+            alt="Right Chevron"
+            height={10}
+            width={10}
+          />
+        </div>
+
+        <h1 className={Styles.title}>Ports</h1>
+
+        <div className={Styles.pageTabs}>
+          <span className={Styles.selectedPageTab}>
+            By quantity
+          </span>
+          <span className={Styles.pageTab}>
+            By country
+          </span>
+        </div>
+
+        <ol className={Styles.countriesList}>
+          {ports.map(({ countryName, cca2CountryCode, portCount }) => (
+            <Link prefetch={false} key={cca2CountryCode} href={`/facts/places/ports/${cca2CountryCode}`}>
+              <li className={Styles.port}>
+                <Image
+                  src="/images/flag-usa.png"
+                  alt="Flag"
+                  height={32}
+                  width={32}
+                />
+                <div id={`country-${cca2CountryCode}`}>
+                  {countryName} ports ( {portCount} )
+                </div>
               </li>
-            ))}
+            </Link>
+          ))}
         </ol>
         <br/>
-        Data refreshed @ { time }
+        Data last refreshed @ { time }
+        <br/><br/>
     </Layout>
   )
 }

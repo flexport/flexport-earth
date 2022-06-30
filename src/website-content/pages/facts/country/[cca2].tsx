@@ -66,7 +66,9 @@ const CountryPage: NextPage<CountryPageParams> = (params) => {
     }
 
     return (
-        <Layout title={params.country.name.common} h1={params.country.name.common}>
+        <Layout title={params.country.name.common}>
+            <h1>{params.country.name.common}</h1>
+
             <div>Number of Seaports: <span id="number-of-seaports">{params.seaportCount}</span></div>
         </Layout>
     )

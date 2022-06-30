@@ -45,7 +45,9 @@ const CountryPage: NextPage<PortPageParams> = (params) => {
     }
 
     return (
-        <Layout title={params.port.name} h1={params.port.name}>
+        <Layout title={params.port.name}>
+            <h1>{params.port.name}</h1>
+
             <ul>
                 <li>
                     Address:

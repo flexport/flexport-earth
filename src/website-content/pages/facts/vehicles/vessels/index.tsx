@@ -28,15 +28,17 @@ type Vessels = {
 const VesselsPage: NextPage<Vessels> = ({vessels, time}) => {
   return (
     <Layout title='Vessels' h1='Vessels'>
-        <ol>
-          {vessels.map(({ name, mmsi }) => (
-              <li key={name} className={Styles.vessel}>
-                <Link prefetch={false} href={`/facts/vehicles/vessel/${mmsi}`}><div id={`vessel-${mmsi}`}>{name}</div></Link>
-              </li>
-            ))}
-        </ol>
-        <br/>
-        Data refreshed @ { time }
+      <h1>Vessels</h1>
+
+      <ol>
+        {vessels.map(({ name, mmsi }) => (
+            <li key={name} className={Styles.vessel}>
+              <Link prefetch={false} href={`/facts/vehicles/vessel/${mmsi}`}><div id={`vessel-${mmsi}`}>{name}</div></Link>
+            </li>
+          ))}
+      </ol>
+      <br/>
+      Data refreshed @ { time }
     </Layout>
   )
 }
