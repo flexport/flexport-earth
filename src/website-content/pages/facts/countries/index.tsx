@@ -25,14 +25,16 @@ type Countries = {
 
 const CountriesPage: NextPage<Countries> = ({countries}) => {
   return (
-    <Layout title='Countries' h1='Countries'>
-        <ol>
-          {countries.sort((a, b) => a.name.common.localeCompare(b.name.common)).map(({ name, cca2 }) => (
-              <li key={name.common}>
-                <Link prefetch={false} href={`/facts/country/${cca2}`}>{name.common}</Link>
-              </li>
-            ))}
-        </ol>
+    <Layout title='Countries'>
+      <h1>Countries</h1>
+
+      <ol>
+        {countries.sort((a, b) => a.name.common.localeCompare(b.name.common)).map(({ name, cca2 }) => (
+            <li key={name.common}>
+              <Link prefetch={false} href={`/facts/country/${cca2}`}>{name.common}</Link>
+            </li>
+          ))}
+      </ol>
     </Layout>
   )
 }

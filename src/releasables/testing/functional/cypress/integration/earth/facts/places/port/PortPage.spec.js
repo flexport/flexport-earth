@@ -1,28 +1,28 @@
 /// <reference types="cypress" />
 
-import { gotoHomePage } from '../../../../../flexport-earth-object-model/HomePage'
-import AllPortsPage from     '../../../../../flexport-earth-object-model/facts/places/ports/AllPortsPage'
-import PortPage from         '../../../../../flexport-earth-object-model/facts/places/port/PortPage'
+import { gotoHomePage }               from '../../../../../flexport-earth-object-model/HomePage'
+import ListCountriesAndPortCountsPage from  '../../../../../flexport-earth-object-model/facts/places/ports/ListCountriesAndPortCountsPage'
+import PortsByCountryPage             from  '../../../../../flexport-earth-object-model/facts/places/ports/PortsByCountryPage'
+import PortPage                       from  '../../../../../flexport-earth-object-model/facts/places/port/PortPage'
 
 describe('Port', () => {
   it('Can navigate to a port from the Homepage', () => {
-    let homePage = gotoHomePage();
-
-    homePage
+    gotoHomePage()
       .getAllPortsLink()
         .click();
 
-      let allPortsPage = new AllPortsPage();
+      new ListCountriesAndPortCountsPage()
+        .getCountryPortsLink('US')
+          .click();
 
       const sanDiegoPortUnLoCode = 'USSAN';
 
-      allPortsPage
+      new PortsByCountryPage()
         .getPortLink(sanDiegoPortUnLoCode)
           .click();
 
-      const portPage = new PortPage();
-
-      portPage.getBody()
-        .contains('San Diego');
+      new PortPage()
+        .getBody()
+          .contains('San Diego');
   })
 })

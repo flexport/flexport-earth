@@ -31,6 +31,16 @@ class countries {
         ).json();
     }
 
+    async getAllCountriesAsMap(): Promise<Map<string, Country>> {
+        const countries = await this.getAllCountries();
+
+        return new Map(
+            countries.map(
+                country => [country.cca2, country]
+            )
+        );
+    }
+
     async getCountryByCountryCode(countryCode: string): Promise<Country[]> {
         return await (
             await fetch(`${this.baseUrl}/alpha/${countryCode}`)
