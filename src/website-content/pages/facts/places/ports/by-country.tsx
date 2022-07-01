@@ -102,9 +102,9 @@ const PortsPage: NextPage<Ports> = ({ports, time}) => {
           {ports.map(({ countryName, cca2CountryCode, portCount }) => (
             <Link prefetch={false} key={cca2CountryCode} href={`/facts/places/ports/${cca2CountryCode}`}>
               <li className={Styles.port}>
-                <Image
-                  src="/images/flag-usa.png"
-                  alt="Flag"
+              <Image
+                  src={`https://assets.flexport.com/flags/svg/1/${cca2CountryCode}.svg`}
+                  alt={`${cca2CountryCode} Flag`}
                   height={32}
                   width={32}
                 />
