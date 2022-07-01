@@ -99,7 +99,7 @@ const PortsPage: NextPage<Ports> = ({ports, time}) => {
         <ol className={Styles.countriesList}>
           {ports.map(({ countryName, cca2CountryCode, portCount }) => (
             <Link prefetch={false} key={cca2CountryCode} href={`/facts/places/ports/${cca2CountryCode}`}>
-              <li className={Styles.port}>
+              <li id={`country-${cca2CountryCode}`} className={Styles.port}>
                 <Image
                   src="/images/flag-usa.png"
                   alt="Flag"
