@@ -59,7 +59,8 @@
 }
 
 .portsLink:hover {
-  text-decoration:      underline;
+  text-decoration:          underline;
+  text-decoration-color:  #000000;
 }
 
 .portsSectionTitle {
