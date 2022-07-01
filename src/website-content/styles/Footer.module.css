@@ -46,6 +46,10 @@
   color:          white;
 }
 
+.footerTopList a:hover {
+  text-decoration:  underline;
+}
+
 .footerTopList a:visited {
   color:          white;
 }

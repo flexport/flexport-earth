@@ -64,7 +64,7 @@ const Home: NextPage = () => {
                     width={16}
                   />
 
-                  &nbsp;&nbsp;China ports ( 260 )
+                  <span className={Styles.portCountryText}>China ports ( 260 )</span>
                 </div>
               </Link>
 
@@ -77,7 +77,7 @@ const Home: NextPage = () => {
                     width={16}
                   />
 
-                  &nbsp;&nbsp;United States ports ( 64 )
+                  <span className={Styles.portCountryText}>United States ports ( 64 )</span>
                 </div>
               </Link>
 
@@ -90,7 +90,7 @@ const Home: NextPage = () => {
                     width={16}
                   />
 
-                  &nbsp;&nbsp;Singapore ports ( 2 )
+                  <span className={Styles.portCountryText}>Singapore ports ( 2 )</span>
                 </div>
               </Link>
 
@@ -103,7 +103,7 @@ const Home: NextPage = () => {
                     width={16}
                   />
 
-                  &nbsp;&nbsp;South Korea ports ( 43 )
+                  <span className={Styles.portCountryText}>South Korea ports ( 43 )</span>
                 </div>
               </Link>
 
@@ -116,7 +116,7 @@ const Home: NextPage = () => {
                     width={16}
                   />
 
-                  &nbsp;&nbsp;Malaysia ports ( 13 )
+                  <span className={Styles.portCountryText}>Malaysia ports ( 13 )</span>
                 </div>
               </Link>
 
@@ -129,7 +129,7 @@ const Home: NextPage = () => {
                     width={16}
                   />
 
-                  &nbsp;&nbsp;Japan ports ( 383 )
+                  Japan ports ( 383 )
                 </div>
               </Link>
             </div>
@@ -145,7 +145,7 @@ const Home: NextPage = () => {
                   width={26}
                 />
 
-                &nbsp;&nbsp;&nbsp;Vessels&nbsp;&nbsp;&nbsp;
+                <span className={Styles.vesselsSectionTitle}>Vessels</span>
 
                 <Image
                   src="/images/right-chevron.svg"
@@ -164,7 +164,7 @@ const Home: NextPage = () => {
                 width={26}
               />
 
-              &nbsp;&nbsp;&nbsp;Containers&nbsp;&nbsp;&nbsp;
+            <span className={Styles.containersSectionTitle}>Containers</span>
 
               <Image
                 src="/images/right-chevron.svg"

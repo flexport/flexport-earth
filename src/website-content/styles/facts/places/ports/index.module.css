@@ -34,6 +34,10 @@
     padding-right:      25px;
 }
 
+.quantityPageTab:hover {
+    text-decoration:    underline;
+}
+
 .countryPageTab {
     font-weight:        400;
     font-size:          14px;
@@ -41,6 +45,10 @@
     color:            #67768D;
     padding-left:       20px;
     padding-right:      9px;
+}
+
+.countryPageTab:hover {
+    text-decoration:    underline;
 }
 
 .quantityPageTab a {
@@ -101,4 +109,8 @@
 
 .port div {
     cursor:             pointer;
+}
+
+.port:hover {
+    text-decoration:    underline;
 }

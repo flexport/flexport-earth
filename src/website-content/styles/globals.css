@@ -6,6 +6,10 @@ body {
   color:      black;
 }
 
+a:hover {
+  text-decoration: underline;
+}
+
 * {
   box-sizing: border-box
 }
