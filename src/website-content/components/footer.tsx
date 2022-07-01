@@ -10,9 +10,9 @@ const Footer = () => (
                 <div className={Styles.topPorts}>
                     <div className={Styles.footerTopTitle}>TOP PORTS</div>
                     <ol className={Styles.footerTopList}>
-                        <li>Port Canaveral</li>
+                        <li><Link href='facts/places/port/USPCV'>Port Canaveral</Link></li>
                         <li><Link href='facts/places/port/USPEF'>Port Everglades</Link></li>
-                        <li>Port Fourchon</li>
+                        <li><Link href='facts/places/port/USFOC'>Port Fourchon</Link></li>
                         <li><Link href='facts/places/port/USHOU'>Port of Houston</Link></li>
                         <li><Link href='facts/places/port/USLGB'>Port of Long Beach</Link></li>
                         <li><Link href='facts/places/port/USLAX'>Port of Los Angeles</Link></li>
