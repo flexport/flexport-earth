@@ -58,7 +58,7 @@ const Home: NextPage = () => {
               <Link href='facts/places/ports/CN'>
                 <div className={Styles.portCountry}>
                   <Image
-                    src="/images/flag-china.png"
+                    src="https://assets.flexport.com/flags/svg/1/CN.svg"
                     alt="China flag"
                     height={16}
                     width={16}
@@ -71,7 +71,7 @@ const Home: NextPage = () => {
               <Link href='facts/places/ports/US'>
                 <div className={Styles.portCountry}>
                   <Image
-                    src="/images/flag-usa.png"
+                    src="https://assets.flexport.com/flags/svg/1/US.svg"
                     alt="United States flag"
                     height={16}
                     width={16}
@@ -84,7 +84,7 @@ const Home: NextPage = () => {
               <Link href='facts/places/ports/SG'>
                 <div className={Styles.portCountry}>
                   <Image
-                    src="/images/flag-singapore.png"
+                    src="https://assets.flexport.com/flags/svg/1/SG.svg"
                     alt="Singapore flag"
                     height={16}
                     width={16}
@@ -97,7 +97,7 @@ const Home: NextPage = () => {
               <Link href='facts/places/ports/KR'>
                 <div className={Styles.portCountry}>
                   <Image
-                    src="/images/flag-south-korea.png"
+                    src="https://assets.flexport.com/flags/svg/1/KR.svg"
                     alt="South Korea flag"
                     height={16}
                     width={16}
@@ -110,7 +110,7 @@ const Home: NextPage = () => {
               <Link href='facts/places/ports/MY'>
                 <div className={Styles.portCountry}>
                   <Image
-                    src="/images/flag-malaysia.png"
+                    src="https://assets.flexport.com/flags/svg/1/MY.svg"
                     alt="Malaysia flag"
                     height={16}
                     width={16}
@@ -123,7 +123,7 @@ const Home: NextPage = () => {
               <Link href='facts/places/ports/JP'>
                 <div className={Styles.portCountry}>
                   <Image
-                    src="/images/flag-japan.png"
+                    src="https://assets.flexport.com/flags/svg/1/JP.svg"
                     alt="Japan flag"
                     height={16}
                     width={16}

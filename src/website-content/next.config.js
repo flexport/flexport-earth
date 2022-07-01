@@ -5,6 +5,9 @@ const nextConfig = {
     locales: ["en"],
     defaultLocale: "en",
   },
+  images: {
+    domains: ['assets.flexport.com'],
+  },
   experimental: {
     images: {
       layoutRaw: true
