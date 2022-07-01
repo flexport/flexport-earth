@@ -17,7 +17,6 @@
 }
 
 .majorLinks {
-    padding-top:        23px;
     display:            inline-block;
 }
 
@@ -26,11 +25,24 @@
     text-decoration:    none;
     font-weight:        400;
     font-size:          14px;
-    line-height:        20px;
-    letter-spacing:     0.01em;
+}
+
+.majorLinks div:hover {
+    text-decoration:    underline;
+    cursor:             pointer;
+}
+
+.majorLinks div {
+    float:              left;
     margin-right:       42px;
     position:           relative;
-    top:                -15px;
+    top:                -10px;
+    font-size:          14px;
+}
+
+.selectedMajorLink {
+    font-weight:        700;
+    text-decoration:    underline;
 }
 
 .wikiTitleVerticalLine {

@@ -6,14 +6,15 @@ import Footer from './footer'
 import Link from 'next/link';
 
 type Props = {
-  children: ReactNode;
-  title?:   string;
-  h1?:      string;
+  children:         ReactNode;
+  title?:           string;
+  selectMajorLink?: string;
 };
 
 const Layout = ({
     children,
-    title
+    title,
+    selectMajorLink
   }: Props) => (
     <>
     <div className={styles.container}>
@@ -38,9 +39,21 @@ const Layout = ({
               <span id="wiki-subtitle" className={styles.wikiSubTitle}>Wiki</span>
           </div>
           <div className={styles.majorLinks}>
-            <Link href='/facts/places/ports'>Ports</Link>
-            <Link href='/facts/vehicles/vessels'>Vessels</Link>
-            <Link href=''>Containers</Link>
+            <Link href='/facts/places/ports'>
+              <div className={selectMajorLink == 'ports' ? styles.selectedMajorLink : ""}>
+                Ports
+              </div>
+            </Link>
+            <Link href='/facts/vehicles/vessels'>
+              <div className={selectMajorLink == 'vessels' ? styles.selectedMajorLink : ""}>
+                Vessels
+              </div>
+            </Link>
+            <Link href=''>
+              <div className={selectMajorLink == 'containers' ? styles.selectedMajorLink : ""}>
+                Containers
+              </div>
+            </Link>
           </div>
         </div>
       </header>

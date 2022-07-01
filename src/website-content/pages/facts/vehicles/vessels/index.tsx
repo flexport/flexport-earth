@@ -27,7 +27,7 @@ type Vessels = {
 
 const VesselsPage: NextPage<Vessels> = ({vessels, time}) => {
   return (
-    <Layout title='Vessels' h1='Vessels'>
+    <Layout title='Vessels' selectMajorLink='vessels'>
       <h1>Vessels</h1>
 
       <ol>

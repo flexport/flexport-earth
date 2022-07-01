@@ -48,7 +48,7 @@ export async function getStaticProps() {
   }
 
   const countriesSortedByPortCount = Array.from(
-    countryMap.values()).sort((a, b) => b.portCount - a.portCount
+    countryMap.values()).sort((a, b) => a.countryName.localeCompare(b.countryName)
   );
 
   return {
@@ -88,11 +88,13 @@ const PortsPage: NextPage<Ports> = ({ports, time}) => {
         <h1 className={Styles.title}>Ports</h1>
 
         <div className={Styles.pageTabs}>
-          <span className={Styles.selectedQuantityPageTab}>
-            By quantity
+          <span className={Styles.quantityPageTab}>
+            <Link href='/facts/places/ports'>
+              By quantity
+            </Link>
           </span>
-          <span className={Styles.countryPageTab}>
-            <Link href='/facts/places/ports/by-country'>By country</Link>
+          <span className={Styles.selectedCountryPageTab}>
+            By country
           </span>
         </div>
 
