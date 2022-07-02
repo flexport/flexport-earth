@@ -84,6 +84,18 @@
     color:            #39414D;
 }
 
+.selectedRegionStatePageTab {
+    border-bottom:      4px solid #39414D;
+    padding-left:       10px;
+    padding-right:      9px;
+    padding-bottom:     8px;
+    font-weight:        700;
+    font-size:          14px;
+    line-height:        20px;
+    letter-spacing:     0.01em;
+    color:            #39414D;
+}
+
 .countriesList {
     list-style-type:    none;
     padding:            0px;

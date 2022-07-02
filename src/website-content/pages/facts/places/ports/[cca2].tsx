@@ -34,10 +34,6 @@ export async function getStaticProps(params: Cca2Params) {
     const portsResponseData     = await flexportApi.places.getSeaportsByCca2(params.params.cca2);
     const countryResponseData   = await countriesApi.countries.getCountryByCountryCode(params.params.cca2);
 
-    console.log('portsResponseData:');
-    console.log(portsResponseData);
-    console.log('');
-
     // Sort by administrative area, port name.
     const sortedPorts = portsResponseData.ports.sort(
         function (a, b) {
@@ -45,10 +41,6 @@ export async function getStaticProps(params: Cca2Params) {
                 a.name.localeCompare(b.name);
         }
     );
-
-    console.log('sortedPorts:');
-    console.log(sortedPorts);
-    console.log('');
 
     return {
       props: {
