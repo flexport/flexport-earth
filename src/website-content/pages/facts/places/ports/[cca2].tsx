@@ -3,6 +3,9 @@ import Layout from '../../../../components/layout'
 import { getFlexportApiClient, Port, Ports } from '../../../../lib/data_sources/flexport/api'
 import { useRouter } from 'next/router'
 import Link from 'next/link'
+import Image from 'next/image'
+import Styles from '../../../../styles/facts/places/ports/index.module.css'
+import getRestCountriesApiClient from '../../../../lib/data_sources/restcountries.com/api'
 
 type Cca2Params = {
     params: {
@@ -11,8 +14,9 @@ type Cca2Params = {
 };
 
 type PortsByCountryPageParams = {
-    cca2:  string,
-    ports: Ports,
+    cca2:           string,
+    countryName:    string,
+    ports:          Port[],
 }
 
 export async function getStaticPaths() {
@@ -25,13 +29,32 @@ export async function getStaticPaths() {
 }
 
 export async function getStaticProps(params: Cca2Params) {
-    const flexportApi   = await getFlexportApiClient();
-    const responseData  = await flexportApi.places.getSeaportsByCca2(params.params.cca2);
+    const countriesApi          = getRestCountriesApiClient();
+    const flexportApi           = await getFlexportApiClient();
+    const portsResponseData     = await flexportApi.places.getSeaportsByCca2(params.params.cca2);
+    const countryResponseData   = await countriesApi.countries.getCountryByCountryCode(params.params.cca2);
+
+    console.log('portsResponseData:');
+    console.log(portsResponseData);
+    console.log('');
+
+    // Sort by administrative area, port name.
+    const sortedPorts = portsResponseData.ports.sort(
+        function (a, b) {
+            return a.address.administrative_area.localeCompare(b.address.administrative_area) ||
+                a.name.localeCompare(b.name);
+        }
+    );
+
+    console.log('sortedPorts:');
+    console.log(sortedPorts);
+    console.log('');
 
     return {
       props: {
-        cca2:   params.params.cca2,
-        ports:  responseData
+        cca2:           params.params.cca2,
+        countryName:    countryResponseData[0].name.common,
+        ports:          sortedPorts
       },
       revalidate: 3600
     }
@@ -47,19 +70,54 @@ const PortsByCountryPage: NextPage<PortsByCountryPageParams> = (params) => {
     }
 
     return (
-        <Layout title={`${params.cca2} Ports`}>
-            <h1>{params.cca2} Ports</h1>
+        <Layout title='Ports' selectMajorLink='ports'>
+        <div className={Styles.breadcrumbs}>
+          <Link href='/'>Wiki</Link>&nbsp;&nbsp;&nbsp;
+          <Image
+            src="/images/right-chevron.svg"
+            alt="Right Chevron"
+            height={10}
+            width={10}
+          />
+          &nbsp;&nbsp;&nbsp;<Link href='/facts/places/ports'>Ports</Link>&nbsp;&nbsp;&nbsp;
+          <Image
+            src="/images/right-chevron.svg"
+            alt="Right Chevron"
+            height={10}
+            width={10}
+          />
+          &nbsp;&nbsp;&nbsp;{params.cca2} Ports
+        </div>
 
-            <ol>
-                {params.ports.ports.map(({ name, unlocode }) => (
-                <li key={name}>
-                    <Link prefetch={false} href={`/facts/places/port/${unlocode}`}>
-                        <a id={`port-${unlocode}`}>{name}</a>
-                    </Link>
-                </li>
-                ))}
-            </ol>
-        </Layout>
+        <h1 className={Styles.title}>{params.countryName} ports</h1>
+
+        <div className={Styles.pageTabs}>
+          <span className={Styles.selectedRegionStatePageTab}>
+            By Region/State
+          </span>
+        </div>
+
+        <ol className={Styles.countriesList}>
+          {params.ports.map(({ name, unlocode }) => (
+            <Link prefetch={false} key={unlocode} href={`/facts/places/port/${unlocode}`}>
+              <li id={`port-${unlocode}`} className={Styles.port}>
+                <Image
+                  src={`https://assets.flexport.com/flags/svg/1/${params.cca2}.svg`}
+                  alt={`${params.cca2} Flag`}
+                  height={32}
+                  width={32}
+                />
+                <div>
+                  {name} port
+                </div>
+              </li>
+            </Link>
+          ))}
+        </ol>
+        <div className={Styles.clear}></div>
+        Data last refreshed @ { new Date().toISOString() }
+        <br/><br/>
+    </Layout>
     )
 }
 

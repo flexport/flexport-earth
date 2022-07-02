@@ -76,13 +76,7 @@ const PortsPage: NextPage<Ports> = ({ports, time}) => {
             height={10}
             width={10}
           />
-          &nbsp;&nbsp;&nbsp;Ports&nbsp;&nbsp;&nbsp;
-          <Image
-            src="/images/right-chevron.svg"
-            alt="Right Chevron"
-            height={10}
-            width={10}
-          />
+          &nbsp;&nbsp;&nbsp;Ports
         </div>
 
         <h1 className={Styles.title}>Ports</h1>

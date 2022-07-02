@@ -90,6 +90,12 @@
     width: 1100px;
 }
 
+.countriesList  {
+    list-style-type:    none;
+    padding:            0px;
+    width: 1100px;
+}
+
 .port {
     width:              511px;
     height:             160px;
@@ -113,4 +119,8 @@
 
 .port:hover {
     text-decoration:    underline;
+}
+
+.clear {
+    clear:both;
 }
