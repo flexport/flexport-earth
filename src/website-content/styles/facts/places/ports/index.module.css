@@ -22,7 +22,7 @@
 .pageTabs {
     border-bottom:      1px solid #39414D;
     padding-bottom:     10px;
-    margin-bottom:      40px;
+    margin-bottom:      32px;
 }
 
 .quantityPageTab {
@@ -134,5 +134,13 @@
 }
 
 .clear {
-    clear:both;
+    clear:              both;
+}
+
+.administrativeAreaTitle {
+    clear:              both;
+    font-weight:        700;
+    font-size:          16px;
+    line-height:        20px;
+    color:            #000000;
 }
