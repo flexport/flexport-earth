@@ -197,7 +197,7 @@ const PortDetailPage: NextPage<PortPageParams> = (params) => {
                                 <a
                                     target='_blank'
                                     rel='noreferrer'
-                                    href='https://www.google.com/maps/search/?api=1&query=33.757314,-118.225765'>
+                                    href={`https://www.google.com/maps/search/?api=1&query=${params.port.address.geo_location.latitude},${params.port.address.geo_location.longitude}`}>
                                         View on map
                                 </a>
                             </span>
