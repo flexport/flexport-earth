@@ -2,6 +2,9 @@ import type { NextPage } from 'next'
 import Layout from '../../../../components/layout'
 import { getFlexportApiClient, Vessel } from '../../../../lib/data_sources/flexport/api'
 import { useRouter } from 'next/router'
+import Link from 'next/link';
+import Styles from '../../../../styles/facts/vehicles/vessels/index.module.css'
+import Image from 'next/image'
 
 type MMSIParams = {
     params: {
@@ -45,15 +48,111 @@ const VesselPage: NextPage<VesselPageParams> = (params) => {
     }
 
     return (
-        <Layout title={params.vessel.name}>
-            <h1>{params.vessel.name}</h1>
+        <Layout title={params.vessel.name} selectMajorLink='vessels'>
+            <div className={Styles.breadcrumbs}>
+                <Link href='/'>Wiki</Link>&nbsp;&nbsp;&nbsp;
+                <Image
+                    src="/images/right-chevron.svg"
+                    alt="Right Chevron"
+                    height={10}
+                    width={10}
+                />
+                &nbsp;&nbsp;&nbsp;<Link href='/facts/vehicles/vessels'>Vessels</Link>&nbsp;&nbsp;&nbsp;
+                <Image
+                    src="/images/right-chevron.svg"
+                    alt="Right Chevron"
+                    height={10}
+                    width={10}
+                />
+                &nbsp;&nbsp;&nbsp;{params.vessel.name}&nbsp;&nbsp;&nbsp;
+            </div>
 
-            <ul>
-                <li>MMSI: {params.vessel.mmsi}</li>
-                <li>IMO: {params.vessel.imo}</li>
-                <li>Registration Country Code: {params.vessel.registration_country_code}</li>
-                <li>Carrier: {params.vessel.carrier.carrier_name}</li>
-            </ul>
+            <div className={Styles.vesselDetailHeader}>
+                <div className={Styles.vesselDetailTitle}>
+                    <Image
+                        src={`https://assets.flexport.com/flags/svg/1/${params.vessel.registration_country_code}.svg`}
+                        alt={`${params.vessel.registration_country_code} Flag`}
+                        height={32}
+                        width={32}
+                    />
+
+                    <h1>{params.vessel.name}</h1>
+                </div>
+            </div>
+
+            <div className={Styles.vesselDetail}>
+                <div className={Styles.vesselDetailLeft}>
+                    <div className={Styles.vesselDetailSubTitle}>About this vessel</div>
+
+                    <div className={Styles.vesselDetailSectionTitle}>
+                        General
+                    </div>
+
+                    <div className={Styles.vesselDetailField}>
+                        <div className={Styles.vesselDetailFieldName}>
+                            Vessel name
+                        </div>
+                        <div className={Styles.vesselDetailFieldValue}>
+                            {params.vessel.name}
+                        </div>
+                    </div>
+
+                    <div className={Styles.vesselDetailField}>
+                        <span className={Styles.vesselDetailFieldName}>
+                            Flag state
+                        </span>
+                        <span className={Styles.vesselDetailFieldValue}>
+                            {params.vessel.registration_country_code}
+                        </span>
+                    </div>
+
+                    <div className={Styles.vesselDetailField}>
+                        <span className={Styles.vesselDetailFieldName}>
+                            Carrier
+                        </span>
+                        <span className={Styles.vesselDetailFieldValue}>
+                            {params.vessel.carrier.carrier_name}
+                        </span>
+                    </div>
+
+                    <div className={Styles.vesselDetailField}>
+                        <span className={Styles.vesselDetailFieldName}>
+                            IMO number
+                        </span>
+                        <span className={Styles.vesselDetailFieldValue}>
+                            {params.vessel.imo}
+                        </span>
+                    </div>
+
+                    <div className={Styles.vesselDetailField}>
+                        <span className={Styles.vesselDetailFieldName}>
+                            MMSI number
+                        </span>
+                        <span className={Styles.vesselDetailFieldValue}>
+                            {params.vessel.mmsi}
+                        </span>
+                    </div>
+
+                </div>
+
+                <div className={Styles.vesselDetailRight}>
+                    <div className={Styles.pageDetailLearnMore}>
+                        <div className={Styles.vesselDetailSectionTitle}>
+                            Learn more about Flexport
+                        </div>
+                        <div className={Styles.vesselDetailField}>
+                            <span className={Styles.vesselDetailFieldName}>
+                                <a
+                                    target='_blank'
+                                    rel='noreferrer'
+                                    href='https://www.flexport.com'>
+                                        Visit website
+                                </a>
+                            </span>
+                        </div>
+                    </div>
+                </div>
+            </div>
         </Layout>
     )
 }

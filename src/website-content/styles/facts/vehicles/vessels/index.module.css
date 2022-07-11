@@ -75,22 +75,89 @@
     margin-right:       10px;
 }
 
-.vesselDetailField {
+.vesselListField {
     float:              left;
     width:              120px;
 }
 
-.vesselDetailFieldName {
+.vesselListFieldName {
     font-weight:        400;
     font-size:          12px;
     line-height:        16px;
     color:            #67768D;
 }
 
-.vesselDetailFieldValue {
+.vesselListFieldValue {
     font-weight:        400;
     font-size:          14px;
     line-height:        20px;
     letter-spacing:     0.01em;
     color:            #39414D;
+}
+
+.vesselDetailHeader {
+    width:              1045px;
+    height:             339px;
+    background:       #4B5564;
+    background-image:   url(/images/vessel-detail-header-background.png);
+    display:            flex;
+    justify-content:    flex-end;
+    flex-direction:     column;
+    margin-bottom:      40px;
+}
+
+.vesselDetailTitle {
+    width:              1045px;
+    height:             140px;
+    color:            white;
+    background-image:   linear-gradient(to bottom, rgba(0,0,0,0), rgba(0,0,0,.6));
+    padding-top:        36px;
+    padding-left:       19px;
+}
+
+.vesselDetailTitle h1 {
+    margin:             0;
+}
+
+.vesselDetailSubTitle {
+    font-weight:        700;
+    font-size:          22px;
+    line-height:        32px;
+    color:            #000000;
+    margin-bottom:      24px;
+}
+
+.vesselDetailLeft {
+    float:              left;
+}
+
+.vesselDetailRight {
+    float:              right;
+}
+
+.vesselDetailSectionTitle {
+    font-weight:        700;
+    font-size:          16px;
+    line-height:        20px;
+    color:            #000000;
+    margin-bottom:      16px;
+}
+
+.vesselDetailFieldName {
+    font-weight:        400;
+    font-size:          14px;
+    line-height:        20px;
+    color:            #67768D;
+    width:              180px;
+    float:              left;
+    margin-bottom:      16px;
+}
+
+.vesselDetailFieldValue {
+    font-weight:        400;
+    font-size:          14px;
+    line-height:        20px;
+    color:            #39414D;
+    float:              left;
+    margin-bottom:      16px;
 }

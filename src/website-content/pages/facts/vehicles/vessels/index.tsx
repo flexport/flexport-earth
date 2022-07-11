@@ -86,29 +86,29 @@ const VesselsPage: NextPage<Vessels> = ({vessels, time}) => {
                         {name}
                       </div>
                       <div className={Styles.vesselDetail}>
-                        <div className={Styles.vesselDetailField}>
-                          <div className={Styles.vesselDetailFieldName}>
+                        <div className={Styles.vesselListField}>
+                          <div className={Styles.vesselListFieldName}>
                             Carrier
                           </div>
-                          <div className={Styles.vesselDetailFieldValue}>
+                          <div className={Styles.vesselListFieldValue}>
                             {carrierName}
                           </div>
                         </div>
 
-                        <div className={Styles.vesselDetailField}>
-                          <div className={Styles.vesselDetailFieldName}>
+                        <div className={Styles.vesselListField}>
+                          <div className={Styles.vesselListFieldName}>
                             Country
                           </div>
-                          <div className={Styles.vesselDetailFieldValue}>
+                          <div className={Styles.vesselListFieldValue}>
                             {cca2}
                           </div>
                         </div>
 
-                        <div className={Styles.vesselDetailField}>
-                          <div className={Styles.vesselDetailFieldName}>
+                        <div className={Styles.vesselListField}>
+                          <div className={Styles.vesselListFieldName}>
                             MMSI
                           </div>
-                          <div className={Styles.vesselDetailFieldValue}>
+                          <div className={Styles.vesselListFieldValue}>
                             {mmsi}
                           </div>
                         </div>
