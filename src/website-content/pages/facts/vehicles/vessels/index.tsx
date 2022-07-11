@@ -3,6 +3,19 @@ import { getFlexportApiClient, Vessel } from '../../../../lib/data_sources/flexp
 import Layout from '../../../../components/layout'
 import Link from 'next/link';
 import Styles from '../../../../styles/facts/vehicles/vessels/index.module.css'
+import Image from 'next/image'
+
+function truncate(
+  stringToTruncate: string,
+  maxLength:        number)
+{
+  if (stringToTruncate.length > maxLength) {
+    stringToTruncate = stringToTruncate.substring(0, maxLength - 3);
+    stringToTruncate += '...';
+  }
+
+  return stringToTruncate;
+}
 
 export async function getStaticProps() {
   const flexportApi   = await getFlexportApiClient();
@@ -10,8 +23,13 @@ export async function getStaticProps() {
 
   return {
     props: {
-      time: new Date().toISOString(),
-      vessels: responseData.vessels.map(vessel => ({ name: vessel.name, mmsi: vessel.mmsi }))
+      time:     new Date().toISOString(),
+      vessels:  responseData.vessels.map(vessel => ({
+                  name:         vessel.name,
+                  mmsi:         vessel.mmsi,
+                  cca2:         vessel.registration_country_code,
+                  carrierName:  truncate(vessel.carrier.carrier_name, 15)
+                }))
     },
     revalidate: 3600
   };
@@ -20,25 +38,94 @@ export async function getStaticProps() {
 type Vessels = {
   time: string,
   vessels: [{
-    name: string,
-    mmsi: number
+    name:         string,
+    mmsi:         number,
+    cca2:         string,
+    carrierName:  string
   }]
 }
 
 const VesselsPage: NextPage<Vessels> = ({vessels, time}) => {
   return (
     <Layout title='Vessels' selectMajorLink='vessels'>
-      <h1>Vessels</h1>
+      <div className={Styles.breadcrumbs}>
+        <Link href='/'>Wiki</Link>&nbsp;&nbsp;&nbsp;
+        <Image
+          src="/images/right-chevron.svg"
+          alt="Right Chevron"
+          height={10}
+          width={10}
+        />
+        &nbsp;&nbsp;&nbsp;Vessels
+      </div>
 
-      <ol>
-        {vessels.map(({ name, mmsi }) => (
+      <h1 className={Styles.allVesselsTitle}>All Vessels</h1>
+
+      <ol className={Styles.vesselsList}>
+        {vessels.map(({ name, mmsi, cca2, carrierName }) => (
             <li key={name} className={Styles.vessel}>
-              <Link prefetch={false} href={`/facts/vehicles/vessel/${mmsi}`}><div id={`vessel-${mmsi}`}>{name}</div></Link>
+                <Link prefetch={false} href={`/facts/vehicles/vessel/${mmsi}`}>
+                  <div id={`vessel-${mmsi}`} className={Styles.vesselLink}>
+                    <div className={Styles.vesselThumbnail}>
+                      <Image
+                        src={'/images/thumbnail-container-ship.png'}
+                        alt="Container Ship Thumbnail"
+                        width={132}
+                        height={92}
+                      />
+                    </div>
+                    <div className={Styles.vesselInfo}>
+                      <div className={Styles.vesselTitle}>
+                        <Image
+                          src={`https://assets.flexport.com/flags/svg/1/${cca2}.svg`}
+                          alt={`${cca2} Flag`}
+                          height={24}
+                          width={24}
+                        />
+                        &nbsp;&nbsp;&nbsp;
+                        {name}
+                      </div>
+                      <div className={Styles.vesselDetail}>
+                        <div className={Styles.vesselDetailField}>
+                          <div className={Styles.vesselDetailFieldName}>
+                            Carrier
+                          </div>
+                          <div className={Styles.vesselDetailFieldValue}>
+                            {carrierName}
+                          </div>
+                        </div>
+
+                        <div className={Styles.vesselDetailField}>
+                          <div className={Styles.vesselDetailFieldName}>
+                            Country
+                          </div>
+                          <div className={Styles.vesselDetailFieldValue}>
+                            {cca2}
+                          </div>
+                        </div>
+
+                        <div className={Styles.vesselDetailField}>
+                          <div className={Styles.vesselDetailFieldName}>
+                            MMSI
+                          </div>
+                          <div className={Styles.vesselDetailFieldValue}>
+                            {mmsi}
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </Link>
             </li>
           ))}
       </ol>
-      <br/>
+
+      <div className={Styles.clear} />
+
       Data refreshed @ { time }
+
+      <br/><br/>
+
     </Layout>
   )
 }
