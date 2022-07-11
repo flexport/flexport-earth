@@ -10,28 +10,28 @@ const Footer = () => (
                 <div className={Styles.topPorts}>
                     <div className={Styles.footerTopTitle}>TOP PORTS</div>
                     <ol className={Styles.footerTopList}>
-                        <li><Link href='facts/places/port/USPCV'>Port Canaveral</Link></li>
-                        <li><Link href='facts/places/port/USPEF'>Port Everglades</Link></li>
-                        <li><Link href='facts/places/port/USFOC'>Port Fourchon</Link></li>
-                        <li><Link href='facts/places/port/USHOU'>Port of Houston</Link></li>
-                        <li><Link href='facts/places/port/USLGB'>Port of Long Beach</Link></li>
-                        <li><Link href='facts/places/port/USLAX'>Port of Los Angeles</Link></li>
-                        <li><Link href='facts/places/port/USMIA'>Port of Miami</Link></li>
-                        <li><Link href='facts/places/port/USSEA'>Port of Seattle</Link></li>
-                        <li><Link href='facts/places/port/USSCK'>Port of Stockton</Link></li>
+                        <li><Link href='/facts/places/port/USPCV'>Port Canaveral</Link></li>
+                        <li><Link href='/facts/places/port/USPEF'>Port Everglades</Link></li>
+                        <li><Link href='/facts/places/port/USFOC'>Port Fourchon</Link></li>
+                        <li><Link href='/facts/places/port/USHOU'>Port of Houston</Link></li>
+                        <li><Link href='/facts/places/port/USLGB'>Port of Long Beach</Link></li>
+                        <li><Link href='/facts/places/port/USLAX'>Port of Los Angeles</Link></li>
+                        <li><Link href='/facts/places/port/USMIA'>Port of Miami</Link></li>
+                        <li><Link href='/facts/places/port/USSEA'>Port of Seattle</Link></li>
+                        <li><Link href='/facts/places/port/USSCK'>Port of Stockton</Link></li>
                     </ol>
                 </div>
                 <div className={Styles.topVessels}>
                     <div className={Styles.footerTopTitle}>TOP VESSELS</div>
                     <ol className={Styles.footerTopList}>
-                        <li><Link href='facts/vehicles/vessel/353136000'>Ever Given</Link></li>
-                        <li><Link href='facts/vehicles/vessel/352986146'>Ever Ace</Link></li>
-                        <li><Link href='facts/vehicles/vessel/371308000'>Ever Goods</Link></li>
-                        <li><Link href='facts/vehicles/vessel/636019234'>Ever Glory</Link></li>
-                        <li><Link href='facts/vehicles/vessel/351297000'>HMM Algeciras</Link></li>
-                        <li><Link href='facts/vehicles/vessel/219836000'>Madrid Maersk</Link></li>
-                        <li><Link href='facts/vehicles/vessel/372003000'>MSC Gülsün</Link></li>
-                        <li><Link href='facts/vehicles/vessel/477333500'>OOCL Hong Kong</Link></li>
+                        <li><Link href='/facts/vehicles/vessel/353136000'>Ever Given</Link></li>
+                        <li><Link href='/facts/vehicles/vessel/352986146'>Ever Ace</Link></li>
+                        <li><Link href='/facts/vehicles/vessel/371308000'>Ever Goods</Link></li>
+                        <li><Link href='/facts/vehicles/vessel/636019234'>Ever Glory</Link></li>
+                        <li><Link href='/facts/vehicles/vessel/351297000'>HMM Algeciras</Link></li>
+                        <li><Link href='/facts/vehicles/vessel/219836000'>Madrid Maersk</Link></li>
+                        <li><Link href='/facts/vehicles/vessel/372003000'>MSC Gülsün</Link></li>
+                        <li><Link href='/facts/vehicles/vessel/477333500'>OOCL Hong Kong</Link></li>
                     </ol>
                 </div>
                 <div className={Styles.glossaryAndInfo}>
