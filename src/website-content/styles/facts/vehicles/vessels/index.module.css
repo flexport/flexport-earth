@@ -2,6 +2,11 @@
     list-style-type:    none;
 }
 
+.vesselLink {
+    width: 511px;
+    height: 92px;
+}
+
 .vesselsList {
     width:              1100px;
     padding:            0;

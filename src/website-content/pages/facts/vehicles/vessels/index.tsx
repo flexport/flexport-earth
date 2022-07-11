@@ -65,7 +65,7 @@ const VesselsPage: NextPage<Vessels> = ({vessels, time}) => {
         {vessels.map(({ name, mmsi, cca2, carrierName }) => (
             <li key={name} className={Styles.vessel}>
                 <Link prefetch={false} href={`/facts/vehicles/vessel/${mmsi}`}>
-                  <div id={`vessel-${mmsi}`}>
+                  <div id={`vessel-${mmsi}`} className={Styles.vesselLink}>
                     <div className={Styles.vesselThumbnail}>
                       <Image
                         src={'/images/thumbnail-container-ship.png'}
