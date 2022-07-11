@@ -1,3 +1,91 @@
-.vessel div {
-    cursor: pointer;
+.vessel {
+    list-style-type:    none;
+}
+
+.vesselsList {
+    width:              1100px;
+    padding:            0;
+    margin:             0;
+    padding-top:        9px;
+}
+
+.clear {
+    clear: both;
+}
+
+.vessel {
+    cursor:             pointer;
+    height:             92px;
+    width:              511px;
+    background:       #F7F9FD;
+    box-shadow:         0px 0px 2px rgba(0, 0, 0, 0.12), 0px 2px 2px rgba(0, 0, 0, 0.12);
+    border-radius:      3px;
+    float:              left;
+    margin-right:       25px;
+    margin-bottom:      32px;
+}
+
+.breadcrumbs {
+    font-weight:        400;
+    font-size:          14px;
+    line-height:        16px;
+    color:            #39414D;
+    margin-bottom:      24px;
+}
+
+.breadcrumbs a {
+    color:            #39414D;
+    text-decoration:    none;
+}
+
+.breadcrumbs a:hover {
+    color:            #39414D;
+    text-decoration:    underline;
+}
+
+.breadcrumbs a:visited {
+    color:            #39414D;
+}
+
+.vesselThumbnail {
+    float:              left;
+}
+
+.vesselInfo {
+    float:              left;
+    padding-top:        13px;
+    padding-left:       15px;
+}
+
+.vesselTitle {
+    font-weight:        700;
+    font-size:          14px;
+    line-height:        20px;
+    display:            flex;
+    align-items:        center;
+    margin-bottom:      10px;
+}
+
+.vesselTitle img {
+    margin-right:       10px;
+}
+
+.vesselDetailField {
+    float:              left;
+    width:              120px;
+}
+
+.vesselDetailFieldName {
+    font-weight:        400;
+    font-size:          12px;
+    line-height:        16px;
+    color:            #67768D;
+}
+
+.vesselDetailFieldValue {
+    font-weight:        400;
+    font-size:          14px;
+    line-height:        20px;
+    letter-spacing:     0.01em;
+    color:            #39414D;
 }
