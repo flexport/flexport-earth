@@ -1,25 +1,3 @@
-.breadcrumbs {
-    font-weight:        400;
-    font-size:          14px;
-    line-height:        16px;
-    color:            #39414D;
-    margin-bottom:      24px;
-}
-
-.breadcrumbs a {
-    color:            #39414D;
-    text-decoration:    none;
-}
-
-.breadcrumbs a:hover {
-    color:            #39414D;
-    text-decoration:    underline;
-}
-
-.breadcrumbs a:visited {
-    color:            #39414D;
-}
-
 .pageTabs {
     border-bottom:      1px solid #39414D;
     padding-bottom:     10px;

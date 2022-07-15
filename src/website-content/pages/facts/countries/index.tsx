@@ -3,6 +3,7 @@ import Link from 'next/link';
 import Layout from '../../../components/layout'
 import Country from '../../../lib/data_sources/restcountries.com/country'
 import getRestCountriesApiClient from '../../../lib/data_sources/restcountries.com/api'
+import Breadcrumbs from '../../../components/breadcrumbs'
 
 export async function getStaticProps() {
   const countriesApi = getRestCountriesApiClient();
@@ -26,6 +27,8 @@ type Countries = {
 const CountriesPage: NextPage<Countries> = ({countries}) => {
   return (
     <Layout title='Countries'>
+      <Breadcrumbs />
+
       <h1>Countries</h1>
 
       <ol>

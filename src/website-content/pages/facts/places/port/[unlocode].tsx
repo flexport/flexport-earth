@@ -5,6 +5,7 @@ import { useRouter } from 'next/router'
 import Link from 'next/link'
 import Image from 'next/image'
 import Styles from '../../../../styles/facts/places/ports/index.module.css'
+import Breadcrumbs from '../../../../components/breadcrumbs'
 
 type UNLoCodeParams = {
     params: {
@@ -49,30 +50,7 @@ const PortDetailPage: NextPage<PortPageParams> = (params) => {
 
     return (
         <Layout title={params.port.name} selectMajorLink='ports'>
-            <div className={Styles.breadcrumbs}>
-                <Link href='/'>Wiki</Link>&nbsp;&nbsp;&nbsp;
-                <Image
-                    src="/images/right-chevron.svg"
-                    alt="Right Chevron"
-                    height={10}
-                    width={10}
-                />
-                &nbsp;&nbsp;&nbsp;<Link href='/facts/places/ports'>Ports</Link>&nbsp;&nbsp;&nbsp;
-                <Image
-                    src="/images/right-chevron.svg"
-                    alt="Right Chevron"
-                    height={10}
-                    width={10}
-                />
-                &nbsp;&nbsp;&nbsp;<Link href={`/facts/places/ports/${params.port.address.country_code}`}>{params.port.address.country_code}</Link>&nbsp;&nbsp;&nbsp;
-                <Image
-                    src="/images/right-chevron.svg"
-                    alt="Right Chevron"
-                    height={10}
-                    width={10}
-                />
-                &nbsp;&nbsp;&nbsp;{params.port.name}&nbsp;&nbsp;&nbsp;
-            </div>
+            <Breadcrumbs />
 
             <div className={Styles.portDetailHeader}>
                 <div className={Styles.portDetailTitle}>

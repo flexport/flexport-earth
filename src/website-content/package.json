@@ -3,7 +3,7 @@
   "version": "0.1.0",
   "private": true,
   "engines": {
-    "node" : ">=16.0.0"
+    "node": ">=16.0.0"
   },
   "scripts": {
     "dev": "next dev",
@@ -12,6 +12,8 @@
     "lint": "next lint"
   },
   "dependencies": {
+    "@emotion/styled": "^11.9.3",
+    "@mui/material": "^5.9.0",
     "next": "12.1.6",
     "react": "18.1.0",
     "react-dom": "18.1.0"

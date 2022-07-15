@@ -4,6 +4,7 @@ import Country from '../../../lib/data_sources/restcountries.com/country'
 import getRestCountriesApiClient from '../../../lib/data_sources/restcountries.com/api'
 import getFlexportApiClient from '../../../lib/data_sources/flexport/api'
 import { useRouter } from 'next/router'
+import Breadcrumbs from '../../../components/breadcrumbs'
 
 type CountryCodeParams = {
     params: {
@@ -67,6 +68,8 @@ const CountryPage: NextPage<CountryPageParams> = (params) => {
 
     return (
         <Layout title={params.country.name.common}>
+            <Breadcrumbs />
+
             <h1>{params.country.name.common}</h1>
 
             <div>Number of Seaports: <span id="number-of-seaports">{params.seaportCount}</span></div>

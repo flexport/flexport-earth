@@ -5,6 +5,7 @@ import Link from 'next/link';
 import Styles from '../../../../styles/facts/places/ports/index.module.css'
 import Image from 'next/image'
 import getRestCountriesApiClient from '../../../../lib/data_sources/restcountries.com/api'
+import Breadcrumbs from '../../../../components/breadcrumbs'
 
 type CountryInfo = {
   countryName:      string,
@@ -68,16 +69,7 @@ type Ports = {
 const PortsPage: NextPage<Ports> = ({ports, time}) => {
   return (
     <Layout title='Ports' selectMajorLink='ports'>
-        <div className={Styles.breadcrumbs}>
-          <Link href='/'>Wiki</Link>&nbsp;&nbsp;&nbsp;
-          <Image
-            src="/images/right-chevron.svg"
-            alt="Right Chevron"
-            height={10}
-            width={10}
-          />
-          &nbsp;&nbsp;&nbsp;Ports
-        </div>
+        <Breadcrumbs />
 
         <h1 className={Styles.title}>Ports</h1>
 
