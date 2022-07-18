@@ -4,6 +4,7 @@ import Layout from '../../../../components/layout'
 import Link from 'next/link';
 import Styles from '../../../../styles/facts/vehicles/vessels/index.module.css'
 import Image from 'next/image'
+import Breadcrumbs from '../../../../components/breadcrumbs'
 
 function truncate(
   stringToTruncate: string,
@@ -48,16 +49,7 @@ type Vessels = {
 const VesselsPage: NextPage<Vessels> = ({vessels, time}) => {
   return (
     <Layout title='Vessels' selectMajorLink='vessels'>
-      <div className={Styles.breadcrumbs}>
-        <Link href='/'>Wiki</Link>&nbsp;&nbsp;&nbsp;
-        <Image
-          src="/images/right-chevron.svg"
-          alt="Right Chevron"
-          height={10}
-          width={10}
-        />
-        &nbsp;&nbsp;&nbsp;Vessels
-      </div>
+      <Breadcrumbs />
 
       <h1 className={Styles.allVesselsTitle}>All Vessels</h1>
 

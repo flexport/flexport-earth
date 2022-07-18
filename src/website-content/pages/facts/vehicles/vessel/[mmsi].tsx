@@ -2,9 +2,9 @@ import type { NextPage } from 'next'
 import Layout from '../../../../components/layout'
 import { getFlexportApiClient, Vessel } from '../../../../lib/data_sources/flexport/api'
 import { useRouter } from 'next/router'
-import Link from 'next/link';
-import Styles from '../../../../styles/facts/vehicles/vessels/index.module.css'
+import Styles from '../../../../styles/facts/vehicles/vessel/mmsi.module.css'
 import Image from 'next/image'
+import Breadcrumbs from '../../../../components/breadcrumbs'
 
 type MMSIParams = {
     params: {
@@ -49,23 +49,7 @@ const VesselPage: NextPage<VesselPageParams> = (params) => {
 
     return (
         <Layout title={params.vessel.name} selectMajorLink='vessels'>
-            <div className={Styles.breadcrumbs}>
-                <Link href='/'>Wiki</Link>&nbsp;&nbsp;&nbsp;
-                <Image
-                    src="/images/right-chevron.svg"
-                    alt="Right Chevron"
-                    height={10}
-                    width={10}
-                />
-                &nbsp;&nbsp;&nbsp;<Link href='/facts/vehicles/vessels'>Vessels</Link>&nbsp;&nbsp;&nbsp;
-                <Image
-                    src="/images/right-chevron.svg"
-                    alt="Right Chevron"
-                    height={10}
-                    width={10}
-                />
-                &nbsp;&nbsp;&nbsp;{params.vessel.name}&nbsp;&nbsp;&nbsp;
-            </div>
+            <Breadcrumbs />
 
             <div className={Styles.vesselDetailHeader}>
                 <div className={Styles.vesselDetailTitle}>
