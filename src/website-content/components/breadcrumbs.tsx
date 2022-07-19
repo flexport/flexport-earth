@@ -97,7 +97,7 @@ function Crumb(ct: CrumbType) {
   );
 
   if (ct.last) {
-    return <span className={Styles.breadcrumbs}>{ct.text}</span>
+    return <span>{ct.text}</span>
   }
 
   return (
