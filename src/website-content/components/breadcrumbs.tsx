@@ -49,7 +49,11 @@ export default function NextBreadcrumbs({
 
             let allCrumbs = [{ href: "/", text: "Wiki" }, ...crumblist];
 
-            return allCrumbs.filter(v => v.text != 'Facts' && v.text != 'Places');
+            return allCrumbs.filter(v =>
+              v.text != 'Facts' &&
+              v.text != 'Places' &&
+              v.text != 'Vehicles'
+            );
         },
         [router.asPath, router.pathname, router.query, getTextGenerator, getDefaultTextGenerator]
     );
