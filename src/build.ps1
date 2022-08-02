@@ -68,6 +68,15 @@ try {
     Write-Information "Website files compiled successfully!"
     Write-Information ""
 
+    Write-Information ""
+    Write-Information "Running unit tests..."
+    npm test
+    if (!$?) {
+        Write-Error "Unit tests failed to run successfully, see previous log entries."
+    }
+    Write-Information "Unit tests ran successfully!"
+    Write-Information ""
+
     $WebsiteContentOutputPath = "../$ReleasablesDirectory/frontend/content"
     New-Item $WebsiteContentOutputPath -ItemType Directory -Force
     $WebsiteContentZipOutputPath = "../$ReleasablesDirectory/frontend/content/website.zip"
