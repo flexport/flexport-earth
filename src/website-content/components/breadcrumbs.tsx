@@ -1,7 +1,7 @@
 import Breadcrumbs              from '@mui/material/Breadcrumbs';
 import Link                     from '@mui/material/Link';
 import Image                    from 'next/image'
-import { useRouter }            from 'next/router';
+import { NextRouter, useRouter }            from 'next/router';
 import React, { useEffect }     from 'react'
 import type { ParsedUrlQuery }  from 'querystring'
 import Styles                   from '../styles/components/breadcrumbs.module.css'
@@ -28,8 +28,13 @@ function titleize(string: string) {
 export default function NextBreadcrumbs({
   getTextGenerator=_defaultGetTextGenerator,
   getDefaultTextGenerator=_defaultGetDefaultTextGenerator,
+  router=({} as NextRouter)
 }) {
-    const router = useRouter();
+    const nextRouter = useRouter();
+
+    if (router.asPath == undefined) {
+      router = nextRouter;
+    }
 
     const breadcrumbs = React.useMemo(
         function generateBreadcrumbs() {
@@ -59,7 +64,7 @@ export default function NextBreadcrumbs({
     );
 
   return (
-    <Breadcrumbs aria-label="breadcrumb" className={Styles.breadcrumbs} separator={
+    <Breadcrumbs aria-label="breadcrumb" id="breadcrumbs" className={Styles.breadcrumbs} separator={
         <Image
             src="/images/right-chevron.svg"
             alt="Right Chevron"

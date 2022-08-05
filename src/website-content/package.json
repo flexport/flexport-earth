@@ -9,7 +9,8 @@
     "dev": "next dev",
     "build": "next build",
     "start": "node_modules/next/dist/bin/next start --port ${PORT:-3000}",
-    "lint": "next lint"
+    "lint": "next lint",
+    "test": "node_modules/cypress/bin/cypress run --component"
   },
   "dependencies": {
     "@emotion/styled": "^11.9.3",
@@ -22,6 +23,7 @@
     "@types/node": "17.0.35",
     "@types/react": "18.0.9",
     "@types/react-dom": "18.0.4",
+    "cypress": "10.3.1",
     "eslint": "8.16.0",
     "eslint-config-next": "12.1.6",
     "typescript": "4.6.4"
