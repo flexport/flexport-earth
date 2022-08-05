@@ -22,6 +22,20 @@ Set-StrictMode –Version latest
 $ErrorActionPreference = "Stop"
 $InformationPreference = "Continue"
 
+function Test-UnitAndComponentFunctionality {
+    Write-Information ""
+    Write-Information "Running unit tests..."
+
+    npm test
+
+    if (!$?) {
+        Write-Error "Unit tests failed to run successfully, see previous log entries."
+    }
+
+    Write-Information "Unit tests ran successfully!"
+    Write-Information ""
+}
+
 $ScriptStartTime = Get-Date
 
 $ReleasablesDirectory = "releasables"
@@ -68,14 +82,7 @@ try {
     Write-Information "Website files compiled successfully!"
     Write-Information ""
 
-    Write-Information ""
-    Write-Information "Running unit tests..."
-    npm test
-    if (!$?) {
-        Write-Error "Unit tests failed to run successfully, see previous log entries."
-    }
-    Write-Information "Unit tests ran successfully!"
-    Write-Information ""
+    Test-UnitAndComponentFunctionality
 
     $WebsiteContentOutputPath = "../$ReleasablesDirectory/frontend/content"
     New-Item $WebsiteContentOutputPath -ItemType Directory -Force
