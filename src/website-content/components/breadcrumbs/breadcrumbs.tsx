@@ -8,8 +8,8 @@ import Styles                     from './breadcrumbs.module.css'
 
 // NOTE: This code adapted from https://dev.to/dan_starner/building-dynamic-breadcrumbs-in-nextjs-17oa
 
-const _defaultGetTextGenerator          = (param: string, query: ParsedUrlQuery) => null;
-const _defaultGetDefaultTextGenerator   = (path: string, href: string) => path;
+const _defaultGetTextGenerator          = (param: string, query: ParsedUrlQuery)  => null;
+const _defaultGetDefaultTextGenerator   = (path:  string, href:  string)          => path;
 
 // Pulled out the path part breakdown because its
 // going to be used by both `asPath` and `pathname`
@@ -19,7 +19,7 @@ const generatePathParts = (pathStr: string) => {
                          .filter(v => v.length > 0);
 }
 
-function titleize(string: string) {
+export function titleize(string: string) {
     return string.split('-').map((word) => {
         return word[0].toUpperCase() + word.substring(1);
     }).join(" ");
