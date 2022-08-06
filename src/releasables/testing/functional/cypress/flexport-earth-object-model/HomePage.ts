@@ -6,7 +6,7 @@ export function gotoHomePage() {
     return new HomePage();
 }
 
-class HomePage {
+export class HomePage {
     getBody() {
         return cy.get('body');
     }

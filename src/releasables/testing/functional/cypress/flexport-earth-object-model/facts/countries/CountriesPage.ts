@@ -7,7 +7,7 @@ export function gotoCountriesPage() {
     return new CountriesPage();
 }
 
-class CountriesPage {
+export class CountriesPage {
     static path = 'facts/countries';
 
     getBody() {

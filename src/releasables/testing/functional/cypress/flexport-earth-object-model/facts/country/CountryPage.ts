@@ -1,13 +1,13 @@
 import {getBaseUrl} from '../../Base'
 
-export function gotoCountryPage(cca2) {
+export function gotoCountryPage(cca2: string) {
     cy
         .visit(getBaseUrl() + '/' + CountryPage.path + '/' + cca2);
 
     return new CountryPage();
 }
 
-class CountryPage {
+export class CountryPage {
     static path = 'facts/country';
 
     getNumberOfSeaports() {

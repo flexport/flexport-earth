@@ -1,9 +1,9 @@
 /// <reference types="cypress" />
 
-import {gotoHomePage} from '../../flexport-earth-object-model/HomePage'
+import {gotoHomePage, HomePage} from '../../flexport-earth-object-model/HomePage'
 
 describe('Earth Homepage', () => {
-  let homePage;
+  let homePage: HomePage;
 
   beforeEach(() => {
     homePage = gotoHomePage();
