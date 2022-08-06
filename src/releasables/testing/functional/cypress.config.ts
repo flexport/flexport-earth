@@ -5,7 +5,7 @@ module.exports = defineConfig({
     setupNodeEvents() {
       // implement node event listeners here
     },
-    specPattern: "**/*.spec.js"
+    specPattern: "**/*.spec.ts"
   },
   chromeWebSecurity: false
 });

@@ -7,7 +7,7 @@ export function gotoCountryPage(cca2: string) {
     return new CountryPage();
 }
 
-class CountryPage {
+export class CountryPage {
     static path = 'facts/country';
 
     getNumberOfSeaports() {

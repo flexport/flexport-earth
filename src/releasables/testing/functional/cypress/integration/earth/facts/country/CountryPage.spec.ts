@@ -1,9 +1,9 @@
 /// <reference types="cypress" />
 
-import { gotoCountryPage } from '../../../../flexport-earth-object-model/facts/country/CountryPage'
+import { gotoCountryPage, CountryPage } from '../../../../flexport-earth-object-model/facts/country/CountryPage'
 
 describe('Country Page', () => {
-  let countryPage;
+  let countryPage: CountryPage;
 
   beforeEach(() => {
     countryPage = gotoCountryPage('US');
