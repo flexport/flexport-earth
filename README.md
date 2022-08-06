@@ -32,6 +32,8 @@ If running on Windows, install the [Windows Linux System](https://docs.microsoft
 
     ./dev-build
 
+Note: This will also execute the unit and component tests.
+
 ## Viewing Website Content Locally
 
 The NextJS frontend can be started by running:
@@ -65,3 +67,7 @@ For provisioning new Azure Accounts, Tenants, and Subscriptions, continue [here]
 Once you've made some changes and committed them, you can push them remotely using the push script:
 
     ./dev-push
+
+## Developing for Earth
+
+Continue reading [here](./development-docs) on how to develop for Flexport Earth.
