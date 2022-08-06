@@ -4,7 +4,7 @@ import Country from '../../../lib/data_sources/restcountries.com/country'
 import getRestCountriesApiClient from '../../../lib/data_sources/restcountries.com/api'
 import getFlexportApiClient from '../../../lib/data_sources/flexport/api'
 import { useRouter } from 'next/router'
-import Breadcrumbs from '../../../components/breadcrumbs'
+import Breadcrumbs from '../../../components/breadcrumbs/breadcrumbs'
 
 type CountryCodeParams = {
     params: {

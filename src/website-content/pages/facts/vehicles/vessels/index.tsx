@@ -4,7 +4,7 @@ import Layout from '../../../../components/layout'
 import Link from 'next/link';
 import Styles from '../../../../styles/facts/vehicles/vessels/index.module.css'
 import Image from 'next/image'
-import Breadcrumbs from '../../../../components/breadcrumbs'
+import Breadcrumbs from '../../../../components/breadcrumbs/breadcrumbs'
 
 function truncate(
   stringToTruncate: string,

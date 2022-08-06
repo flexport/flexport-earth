@@ -6,7 +6,7 @@ import Link from 'next/link'
 import Image from 'next/image'
 import Styles from '../../../../styles/facts/places/ports/index.module.css'
 import getRestCountriesApiClient from '../../../../lib/data_sources/restcountries.com/api'
-import Breadcrumbs from '../../../../components/breadcrumbs'
+import Breadcrumbs from '../../../../components/breadcrumbs/breadcrumbs'
 
 type Cca2Params = {
     params: {
