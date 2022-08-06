@@ -4,7 +4,7 @@ import { getFlexportApiClient, Vessel } from '../../../../lib/data_sources/flexp
 import { useRouter } from 'next/router'
 import Styles from '../../../../styles/facts/vehicles/vessel/mmsi.module.css'
 import Image from 'next/image'
-import Breadcrumbs from '../../../../components/breadcrumbs'
+import Breadcrumbs from '../../../../components/breadcrumbs/breadcrumbs'
 
 type MMSIParams = {
     params: {

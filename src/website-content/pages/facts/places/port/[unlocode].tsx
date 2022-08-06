@@ -4,7 +4,7 @@ import { getFlexportApiClient, Port } from '../../../../lib/data_sources/flexpor
 import { useRouter } from 'next/router'
 import Image from 'next/image'
 import Styles from '../../../../styles/facts/places/port/unlocode.module.css'
-import Breadcrumbs from '../../../../components/breadcrumbs'
+import Breadcrumbs from '../../../../components/breadcrumbs/breadcrumbs'
 
 type UNLoCodeParams = {
     params: {

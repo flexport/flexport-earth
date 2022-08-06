@@ -1,10 +1,10 @@
-import Breadcrumbs              from '@mui/material/Breadcrumbs';
-import Link                     from '@mui/material/Link';
-import Image                    from 'next/image'
-import { NextRouter, useRouter }            from 'next/router';
-import React, { useEffect }     from 'react'
-import type { ParsedUrlQuery }  from 'querystring'
-import Styles                   from '../styles/components/breadcrumbs.module.css'
+import Breadcrumbs                from '@mui/material/Breadcrumbs';
+import Link                       from '@mui/material/Link';
+import Image                      from 'next/image'
+import { NextRouter, useRouter }  from 'next/router';
+import React, { useEffect }       from 'react'
+import type { ParsedUrlQuery }    from 'querystring'
+import Styles                     from './breadcrumbs.module.css'
 
 // NOTE: This code adapted from https://dev.to/dan_starner/building-dynamic-breadcrumbs-in-nextjs-17oa
 
@@ -28,7 +28,7 @@ function titleize(string: string) {
 export default function NextBreadcrumbs({
   getTextGenerator=_defaultGetTextGenerator,
   getDefaultTextGenerator=_defaultGetDefaultTextGenerator,
-  router=({} as NextRouter)
+  router=({} as NextRouter) // This parameter is primarily for unit tests to inject a mock.
 }) {
     const nextRouter = useRouter();
 

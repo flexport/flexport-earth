@@ -5,7 +5,7 @@ import Link from 'next/link';
 import Styles from '../../../../styles/facts/places/ports/index.module.css'
 import Image from 'next/image'
 import getRestCountriesApiClient from '../../../../lib/data_sources/restcountries.com/api'
-import Breadcrumbs from '../../../../components/breadcrumbs'
+import Breadcrumbs from '../../../../components/breadcrumbs/breadcrumbs'
 
 type CountryInfo = {
   countryName:      string,

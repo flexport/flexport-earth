@@ -1,9 +1,5 @@
-// cypress/integration/app.spec.js
-
-import NextBreadcrumbs from './breadcrumbs';
 import type { NextRouter } from 'next/router';
 
-// TODO: Refactor into separate reusable file.
 const createMockedRouter = (page: string): NextRouter => ({
   basePath: '',
   route: '/page/[page]',
@@ -29,12 +25,4 @@ const createMockedRouter = (page: string): NextRouter => ({
   isPreview: false
 })
 
-describe('Breadcrumbs', () => {
-    it('should render (example test)', () => {
-      cy.mount(<NextBreadcrumbs router={createMockedRouter('test')} />);
-      cy.get('body').contains('Wiki');
-    })
-  })
-
-const asModule = {}
-export default asModule
+export default createMockedRouter;
