@@ -84,13 +84,12 @@ function Test-UnitAndComponentFunctionality {
 }
 
 function Compress-Website {
-    $WebsiteContentOutputPath = "../$ReleasablesDirectory/frontend/content"
+    $WebsiteContentOutputPath    = "../$ReleasablesDirectory/frontend/content"
+    $WebsiteContentZipOutputPath = "$WebsiteContentOutputPath/website.zip"
 
     New-Item $WebsiteContentOutputPath `
         -ItemType Directory `
         -Force
-
-    $WebsiteContentZipOutputPath = "../$ReleasablesDirectory/frontend/content/website.zip"
 
     Write-Information "Compressing website content to $WebsiteContentZipOutputPath"
 
