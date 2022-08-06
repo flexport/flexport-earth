@@ -1,6 +1,6 @@
 import {getBaseUrl} from '../../Base'
 
-export function gotoCountryPage(cca2) {
+export function gotoCountryPage(cca2: string) {
     cy
         .visit(getBaseUrl() + '/' + CountryPage.path + '/' + cca2);
 
