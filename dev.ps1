@@ -4,7 +4,7 @@
 [CmdletBinding()]
 param (
     [Parameter(Mandatory = $true)]
-    [ValidateSet('Build','Deploy','Destroy')]
+    [ValidateSet('Build','Deploy','Destroy','Push')]
     [String]
     $Workflow
 )
@@ -18,6 +18,7 @@ enum DevWorkflows {
     build
     deploy
     destroy
+    push
 }
 
 function Invoke-Workflow {
@@ -53,6 +54,13 @@ function Invoke-Workflow {
         destroy
         {
             Invoke-Destroy `
+                -GlobalDevelopmentSettings      $GlobalDevelopmentSettings `
+                -DeveloperEnvironmentSettings   $DeveloperEnvironmentSettings
+        }
+
+        push
+        {
+            Invoke-Push `
                 -GlobalDevelopmentSettings      $GlobalDevelopmentSettings `
                 -DeveloperEnvironmentSettings   $DeveloperEnvironmentSettings
         }
@@ -147,6 +155,48 @@ function Invoke-Destroy {
     finally {
         Pop-Location
     }
+}
+
+function Invoke-Push {
+    [CmdletBinding()]
+    param (
+        [Parameter(Mandatory = $true)]
+        [Object]
+        $GlobalDevelopmentSettings,
+
+        [Parameter(Mandatory = $true)]
+        [Object]
+        $DeveloperEnvironmentSettings
+    )
+
+    $RelesablesDirectory = $GlobalDevelopmentSettings.ReleasablesDirectory
+
+    # Run dependency management
+    . "$RelesablesDirectory/dependencies/dependency-manager.ps1"
+
+    # Make sure there's no pending changes.
+    $GitStatus = git status
+
+    if (-Not ($GitStatus -like "*nothing to commit*")) {
+        Write-Error "You have pending changes that need to be committed."
+    }
+
+    # Make sure we're testing with latest from origin/main.
+    git fetch origin main
+
+    $CurrentBranchName       = git rev-parse --abbrev-ref HEAD
+    $DiffCounts              = ((git rev-list --left-right --count origin/main...$CurrentBranchName) -split '\t')
+    $CommitsBehindOriginMain = $DiffCounts[0]
+
+    if ($CommitsBehindOriginMain -gt 0) {
+        Write-Error "The current branch is behind origin/main by $CommitsBehindOriginMain, please update it before continuing."
+    }
+
+    Invoke-Build   -GlobalDevelopmentSettings $GlobalDevelopmentSettings -DeveloperEnvironmentSettings $DeveloperEnvironmentSettings
+    Invoke-Deploy  -GlobalDevelopmentSettings $GlobalDevelopmentSettings -DeveloperEnvironmentSettings $DeveloperEnvironmentSettings
+    Invoke-Destroy -GlobalDevelopmentSettings $GlobalDevelopmentSettings -DeveloperEnvironmentSettings $DeveloperEnvironmentSettings
+
+    git push --set-upstream origin $CurrentBranchName
 }
 
 Invoke-Workflow -Workflow $Workflow
