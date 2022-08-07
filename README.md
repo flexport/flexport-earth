@@ -12,4 +12,4 @@ Interested in learning about the internals of the Flexport Earth application? Co
 
 ## Development
 
-Interested in learnig about or contributing to the development of Flexport Earth? Great! Continue reading [here](./development-docs).
+Interested in learnig about or contributing to the development of Flexport Earth? Great! Continue reading [here](./dev/docs).
