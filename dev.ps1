@@ -42,6 +42,14 @@ function Invoke-Workflow {
                 -GlobalDevelopmentSettings      $GlobalDevelopmentSettings `
                 -DeveloperEnvironmentSettings   $DeveloperEnvironmentSettings
         }
+
+        deploy
+        {
+            Invoke-Deploy `
+                -GlobalDevelopmentSettings      $GlobalDevelopmentSettings `
+                -DeveloperEnvironmentSettings   $DeveloperEnvironmentSettings
+        }
+
         default { throw "The specified workflow '${Workflow}' is not implemented." }
     }
 }
@@ -65,6 +73,42 @@ function Invoke-Build {
             -BuildNumber             $([Guid]::NewGuid()) `
             -FlexportApiClientID     $DeveloperEnvironmentSettings.FlexportApiClientID `
             -FlexportApiClientSecret $DeveloperEnvironmentSettings.FlexportApiClientSecret
+    }
+    finally {
+        Pop-Location
+    }
+}
+
+function Invoke-Deploy {
+    [CmdletBinding()]
+    param (
+        [Parameter(Mandatory = $true)]
+        [Object]
+        $GlobalDevelopmentSettings,
+
+        [Parameter(Mandatory = $true)]
+        [Object]
+        $DeveloperEnvironmentSettings
+    )
+
+    $ReleasablesPath           = $GlobalDevelopmentSettings.ReleasablesDirectory
+    $DevelopmentToolsDirectory = $GlobalDevelopmentSettings.DevelopmentToolsDirectory
+
+    . "$DevelopmentToolsDirectory/sign-into-azure.ps1"
+    . "$DevelopmentToolsDirectory/build-number.ps1"
+
+    $BuildNumber                  = Get-BuildNumber
+    $DeveloperEnvironmentSettings = Get-EnvironmentSettingsObject
+
+    try {
+        Push-Location $ReleasablesPath
+
+        ./deploy-earth.ps1 `
+            -BuildNumber                  $BuildNumber `
+            -EnvironmentName              $DeveloperEnvironmentSettings.EnvironmentName `
+            -EarthWebsiteCustomDomainName $DeveloperEnvironmentSettings.EarthWebsiteCustomDomainName `
+            -FlexportApiClientId          $DeveloperEnvironmentSettings.FlexportApiClientId `
+            -FlexportApiClientSecret      $DeveloperEnvironmentSettings.FlexportApiClientSecret
     }
     finally {
         Pop-Location
