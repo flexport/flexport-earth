@@ -50,6 +50,13 @@ function Invoke-Workflow {
                 -DeveloperEnvironmentSettings   $DeveloperEnvironmentSettings
         }
 
+        destroy
+        {
+            Invoke-Destroy `
+                -GlobalDevelopmentSettings      $GlobalDevelopmentSettings `
+                -DeveloperEnvironmentSettings   $DeveloperEnvironmentSettings
+        }
+
         default { throw "The specified workflow '${Workflow}' is not implemented." }
     }
 }
@@ -97,8 +104,7 @@ function Invoke-Deploy {
     . "$DevelopmentToolsDirectory/sign-into-azure.ps1"
     . "$DevelopmentToolsDirectory/build-number.ps1"
 
-    $BuildNumber                  = Get-BuildNumber
-    $DeveloperEnvironmentSettings = Get-EnvironmentSettingsObject
+    $BuildNumber = Get-BuildNumber
 
     try {
         Push-Location $ReleasablesPath
@@ -109,6 +115,34 @@ function Invoke-Deploy {
             -EarthWebsiteCustomDomainName $DeveloperEnvironmentSettings.EarthWebsiteCustomDomainName `
             -FlexportApiClientId          $DeveloperEnvironmentSettings.FlexportApiClientId `
             -FlexportApiClientSecret      $DeveloperEnvironmentSettings.FlexportApiClientSecret
+    }
+    finally {
+        Pop-Location
+    }
+}
+
+function Invoke-Destroy {
+    [CmdletBinding()]
+    param (
+        [Parameter(Mandatory = $true)]
+        [Object]
+        $GlobalDevelopmentSettings,
+
+        [Parameter(Mandatory = $true)]
+        [Object]
+        $DeveloperEnvironmentSettings
+    )
+
+    $DevelopmentToolsDirectory = $GlobalDevelopmentSettings.DevelopmentToolsDirectory
+    $RelesablesDirectory       = $GlobalDevelopmentSettings.ReleasablesDirectory
+
+    . "$DevelopmentToolsDirectory/sign-into-azure.ps1"
+
+    try {
+        Push-Location $RelesablesDirectory
+
+        ./destroy-earth.ps1 `
+            -EnvironmentName $DeveloperEnvironmentSettings.EnvironmentName
     }
     finally {
         Pop-Location
