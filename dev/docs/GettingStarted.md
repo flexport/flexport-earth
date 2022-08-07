@@ -52,7 +52,7 @@ Note: Will need to open a new terminal window for this after starting the websit
 
 You'll need an Azure subscription to deploy to. Once you have one, you can follow the steps below.
 
-For provisioning new Azure Accounts, Tenants, and Subscriptions, continue [here](azure/README.md).
+For provisioning new Azure Accounts, Tenants, and Subscriptions, continue [here](/src/azure/README.md).
 
 ### Deploy your locally built changes to Azure
 
