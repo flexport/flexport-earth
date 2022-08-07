@@ -57,7 +57,7 @@ stages:
     dependsOn: Build
     azureSubscriptionName: Development
 
-- template: 'src/azure/pipelines/templates/stage-deploy-earth.yml'
+- template: 'templates/stage-deploy-earth.yml'
   parameters:
     deployCondition: and(succeeded(), eq(variables.isMain, 'true'))
     destroyCondition: false
