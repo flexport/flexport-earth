@@ -4,7 +4,14 @@
 [CmdletBinding()]
 param (
     [Parameter(Mandatory = $true)]
-    [ValidateSet('Build','Deploy','Destroy','Push')]
+    [ValidateSet(
+        'Build',
+        'Deploy',
+        'Destroy',
+        'Push',
+        'StartWebsite',
+        'RuntimeTests'
+    )]
     [String]
     $Workflow
 )
@@ -19,6 +26,8 @@ enum DevWorkflows {
     deploy
     destroy
     push
+    startWebsite
+    runtimeTests
 }
 
 function Invoke-Workflow {
@@ -61,6 +70,20 @@ function Invoke-Workflow {
         push
         {
             Invoke-Push `
+                -GlobalDevelopmentSettings      $GlobalDevelopmentSettings `
+                -DeveloperEnvironmentSettings   $DeveloperEnvironmentSettings
+        }
+
+        startWebsite
+        {
+            Start-Website `
+                -GlobalDevelopmentSettings      $GlobalDevelopmentSettings `
+                -DeveloperEnvironmentSettings   $DeveloperEnvironmentSettings
+        }
+
+        runtimeTests
+        {
+            Invoke-RuntimeTests `
                 -GlobalDevelopmentSettings      $GlobalDevelopmentSettings `
                 -DeveloperEnvironmentSettings   $DeveloperEnvironmentSettings
         }
@@ -197,6 +220,62 @@ function Invoke-Push {
     Invoke-Destroy -GlobalDevelopmentSettings $GlobalDevelopmentSettings -DeveloperEnvironmentSettings $DeveloperEnvironmentSettings
 
     git push --set-upstream origin $CurrentBranchName
+}
+
+function Start-Website {
+    [CmdletBinding()]
+    param (
+        [Parameter(Mandatory = $true)]
+        [Object]
+        $GlobalDevelopmentSettings,
+
+        [Parameter(Mandatory = $true)]
+        [Object]
+        $DeveloperEnvironmentSettings
+    )
+
+    $WebsiteContentDirectory = $GlobalDevelopmentSettings.WebsiteContentSourceDirectory
+
+    try {
+        Push-Location $WebsiteContentDirectory
+        npm run dev
+    }
+    finally {
+        Pop-Location
+    }
+
+}
+
+function Invoke-RuntimeTests {
+    [CmdletBinding()]
+    param (
+        [Parameter(Mandatory = $true)]
+        [Object]
+        $GlobalDevelopmentSettings,
+
+        [Parameter(Mandatory = $true)]
+        [Object]
+        $DeveloperEnvironmentSettings
+    )
+
+    $DevelopmentToolsDirectory  = $GlobalDevelopmentSettings.DevelopmentToolsDirectory
+    $RelesablesDirectory        = $GlobalDevelopmentSettings.ReleasablesDirectory
+
+    . "$DevelopmentToolsDirectory/build-number.ps1"
+
+    $BuildNumber = Get-BuildNumber
+
+    try {
+        Push-Location "$RelesablesDirectory"
+
+        ./test-earth.ps1 `
+            -EarthWebsiteUrl http://localhost:3000 `
+            -BuildNumber     $BuildNumber
+    }
+    finally {
+        Pop-Location
+    }
+
 }
 
 Invoke-Workflow -Workflow $Workflow

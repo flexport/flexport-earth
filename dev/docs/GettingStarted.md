@@ -40,8 +40,6 @@ The NextJS frontend can be started by running:
 
     ./dev-start-website-locally
 
-Note: This script will run build.ps1 for you.
-
 ## Testing Website Content Locally
 
     ./dev-test-website-locally
