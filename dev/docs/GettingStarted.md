@@ -70,4 +70,4 @@ Once you've made some changes and committed them, you can push them remotely usi
 
 ## Developing for Earth
 
-Continue reading [here](./development-docs) on how to develop for Flexport Earth.
+Continue reading [here](./dev/docs) on how to develop for Flexport Earth.
