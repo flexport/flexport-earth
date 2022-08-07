@@ -14,7 +14,7 @@ $InformationPreference = "Continue"
 . ./releasables/dependencies/dependency-manager.ps1
 
 # Load Global Development Settings
-$GlobalDevelopmentSettings = Get-Content 'development-config.json' | ConvertFrom-Json
+$GlobalDevelopmentSettings = Get-Content 'dev/development-config.json' | ConvertFrom-Json
 $CacheDirectory = $GlobalDevelopmentSettings.CacheDirectory
 
 $SubscriptionDeploymentServicePricipalName = "$AzureSubscriptionName-earth-deployer".ToLower()

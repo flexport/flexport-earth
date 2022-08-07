@@ -1,5 +1,5 @@
 function Get-BuildNumber {
-    $GlobalDevelopmentSettings      = Get-Content 'development-config.json' | ConvertFrom-Json
+    $GlobalDevelopmentSettings      = Get-Content 'dev/development-config.json' | ConvertFrom-Json
     $WebsiteContentSourceDirectory  = $GlobalDevelopmentSettings.WebsiteContentSourceDirectory
     $BuildNumberFilePath            = "$WebsiteContentSourceDirectory/public/build-number.css"
     $BuildNumberCSS                 = Get-Content -Path $BuildNumberFilePath

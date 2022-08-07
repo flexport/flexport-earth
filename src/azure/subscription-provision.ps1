@@ -32,7 +32,7 @@ $ServicePrincipalCredentials = az ad sp create-for-rbac `
     --scopes "/subscriptions/$SubscriptionId"
 
 # Load Global Development Settings
-$GlobalDevelopmentSettings = Get-Content 'development-config.json' | ConvertFrom-Json
+$GlobalDevelopmentSettings = Get-Content 'dev/development-config.json' | ConvertFrom-Json
 $CacheDirectory = $GlobalDevelopmentSettings.CacheDirectory
 
 $LocalCacheFolder = "$CacheDirectory/azure/creds"
