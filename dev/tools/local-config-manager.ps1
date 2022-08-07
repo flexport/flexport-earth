@@ -4,7 +4,7 @@ $ErrorActionPreference = "Stop"
 $InformationPreference = "Continue"
 
 # Load Global Development Settings
-$GlobalDevelopmentSettings = Get-Content 'development-config.json' | ConvertFrom-Json
+$GlobalDevelopmentSettings = Get-Content 'dev/development-config.json' | ConvertFrom-Json
 
 $ReleasablesDirectory = $GlobalDevelopmentSettings.ReleasablesDirectory
 $CacheDirectory       = $GlobalDevelopmentSettings.CacheDirectory

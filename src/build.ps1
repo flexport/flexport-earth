@@ -89,9 +89,10 @@ function Compress-Website {
 
     New-Item $WebsiteContentOutputPath `
         -ItemType Directory `
-        -Force
+        -Force | Out-Null
 
     Write-Information "Compressing website content to $WebsiteContentZipOutputPath"
+    Write-Information ""
 
     zip -ru $WebsiteContentZipOutputPath ./ -x '.env'
 

@@ -4,7 +4,7 @@ $ErrorActionPreference = "Stop"
 $InformationPreference = "Continue"
 
 # Load global development settings
-$GlobalDevelopmentSettings = Get-Content 'development-config.json' | ConvertFrom-Json
+$GlobalDevelopmentSettings = Get-Content 'dev/development-config.json' | ConvertFrom-Json
 $DevelopmentToolsDirectory = $GlobalDevelopmentSettings.DevelopmentToolsDirectory
 
 . "$DevelopmentToolsDirectory/local-config-manager.ps1"
