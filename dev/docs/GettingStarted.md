@@ -30,7 +30,7 @@ If running on Windows, install the [Windows Linux System](https://docs.microsoft
 
 ## Building a Release
 
-    ./dev-build
+    ./dev build
 
 Note: This will also execute the unit and component tests.
 
@@ -38,13 +38,11 @@ Note: This will also execute the unit and component tests.
 
 The NextJS frontend can be started by running:
 
-    ./dev-start-website-locally
+    ./dev StartWebsite
 
-Note: This script will run build.ps1 for you.
+## Testing Website Functionality Locally
 
-## Testing Website Content Locally
-
-    ./dev-test-website-locally
+    ./dev RuntimeTests
 
 Note: Will need to open a new terminal window for this after starting the website locally.
 
@@ -56,17 +54,17 @@ For provisioning new Azure Accounts, Tenants, and Subscriptions, continue [here]
 
 ### Deploy your locally built changes to Azure
 
-    ./dev-deploy
+    ./dev deploy
 
 ### Clean up your Azure deployment
 
-    ./dev-destroy
+    ./dev destroy
 
 ### Pushing Changes to GitHub
 
 Once you've made some changes and committed them, you can push them remotely using the push script:
 
-    ./dev-push
+    ./dev push
 
 ## Developing for Earth
 
