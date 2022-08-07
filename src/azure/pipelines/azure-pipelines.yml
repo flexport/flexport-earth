@@ -47,7 +47,7 @@ stages:
     - publish: '$(Build.ArtifactStagingDirectory)'
       artifact: $(artifactName)
 
-- template: 'src/azure/pipelines/templates/stage-deploy-earth.yml'
+- template: 'templates/stage-deploy-earth.yml'
   parameters:
     deployCondition: and(succeeded(), eq(variables.isPR, 'true'))
     destroyCondition: and(succeeded(), true)
@@ -67,7 +67,7 @@ stages:
     dependsOn: Build
     azureSubscriptionName: Development
 
-- template: 'src/azure/pipelines/templates/stage-deploy-earth.yml'
+- template: 'templates/stage-deploy-earth.yml'
   parameters:
     deployCondition: succeeded()
     destroyCondition: false
@@ -77,7 +77,7 @@ stages:
     dependsOn: Development
     azureSubscriptionName: Staging
 
-- template: 'src/azure/pipelines/templates/stage-deploy-earth.yml'
+- template: 'templates/stage-deploy-earth.yml'
   parameters:
     deployCondition: succeeded()
     destroyCondition: false
