@@ -1,10 +1,11 @@
 import type { NextPage } from 'next'
 import Layout from '../../../../components/layout'
-import { getFlexportApiClient, Port } from '../../../../lib/data_sources/flexport/api'
+import { getFlexportApiClient } from '../../../../lib/data_sources/flexport/api'
 import { useRouter } from 'next/router'
 import Image from 'next/image'
 import Styles from '../../../../styles/facts/places/port/unlocode.module.css'
 import Breadcrumbs from '../../../../components/breadcrumbs/breadcrumbs'
+import Port from '../../../../lib/data_sources/flexport/facts/places/ports/port'
 
 type UNLoCodeParams = {
     params: {
