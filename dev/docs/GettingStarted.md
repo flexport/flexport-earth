@@ -14,11 +14,11 @@ All instructions below are tested to work for:
 
 Note:
 
-Your commits must be be [verified](https://docs.github.com/en/authentication/managing-commit-signature-verification) in ordered to be merged.
+Your commits must be be [verified](https://docs.github.com/en/authentication/managing-commit-signature-verification) to be merged to the main branch.
 
 ## System Dependencies
 
-If running on Windows, install the [Windows Linux System](https://docs.microsoft.com/en-us/windows/wsl/install) first.
+If running on Windows, install the [Windows Subsystem for Linux](https://docs.microsoft.com/en-us/windows/wsl/install) first.
 
 1. [PowerShell Core (7.2.5)](https://docs.microsoft.com/en-us/powershell/scripting/install/installing-powershell)
 2. [Azure CLI (2.39.0)](https://docs.microsoft.com/en-us/cli/azure/install-azure-cli)
