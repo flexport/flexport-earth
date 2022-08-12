@@ -1,6 +1,6 @@
 import type { NextPage } from 'next'
 import Layout from '../../../../components/layout'
-import { getFlexportApiClient, Port, Ports } from '../../../../lib/data_sources/flexport/api'
+import { getFlexportApiClient } from '../../../../lib/data_sources/flexport/api'
 import { useRouter } from 'next/router'
 import Link from 'next/link'
 import Image from 'next/image'
