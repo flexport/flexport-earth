@@ -4,7 +4,7 @@ class HttpClient {
 
     constructor(
         baseUrl:    string,
-        headers?:   Headers)
+        headers:    Headers = new Headers())
     {
         this.baseUrl = baseUrl;
         this.headers = headers;
@@ -23,22 +23,21 @@ class HttpClient {
         relativeUrl:    string,
         postPayload:    object)
     {
-        const headers = new Headers({
-            'content-type': 'application/json'
-        });
+        this.headers.set(
+            'content-type',
+            'application/json'
+        );
 
         const body = JSON.stringify(postPayload);
 
-        const response = await fetch(
+        return fetch(
             `${this.baseUrl}${relativeUrl}`,
             {
                 method:  'POST',
-                headers: headers,
+                headers: this.headers,
                 body:    body
             },
         );
-
-        return response;
     }
 }
 
