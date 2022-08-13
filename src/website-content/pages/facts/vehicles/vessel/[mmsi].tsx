@@ -1,11 +1,11 @@
 import type { NextPage } from 'next'
 import Layout from '../../../../components/layout'
-import { getFlexportApiClient } from '../../../../lib/data_sources/flexport/api'
+import { getFlexportApiClient } from '../../../../lib/data-sources/flexport/api'
 import { useRouter } from 'next/router'
 import Styles from '../../../../styles/facts/vehicles/vessel/mmsi.module.css'
 import Image from 'next/image'
 import Breadcrumbs from '../../../../components/breadcrumbs/breadcrumbs'
-import Vessel from '../../../../lib/data_sources/flexport/facts/vehicles/vessels/vessel'
+import Vessel from '../../../../lib/data-sources/flexport/facts/vehicles/vessels/vessel'
 
 type MMSIParams = {
     params: {

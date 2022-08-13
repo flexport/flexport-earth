@@ -1,10 +1,10 @@
 import type { NextPage } from 'next'
-import { getFlexportApiClient } from '../../../../lib/data_sources/flexport/api'
+import { getFlexportApiClient } from '../../../../lib/data-sources/flexport/api'
 import Layout from '../../../../components/layout'
 import Link from 'next/link';
 import Styles from '../../../../styles/facts/places/ports/index.module.css'
 import Image from 'next/image'
-import getRestCountriesApiClient from '../../../../lib/data_sources/restcountries.com/api'
+import getRestCountriesApiClient from '../../../../lib/data-sources/restcountries.com/api'
 import Breadcrumbs from '../../../../components/breadcrumbs/breadcrumbs'
 
 type CountryInfo = {
