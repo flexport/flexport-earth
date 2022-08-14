@@ -1,5 +1,5 @@
 import type { NextPage } from 'next'
-import Layout from '../../../../components/layout'
+import Layout from '../../../../components/layout/layout'
 import { getFlexportApiClient } from '../../../../lib/data-sources/flexport/api'
 import { useRouter } from 'next/router'
 import Link from 'next/link'

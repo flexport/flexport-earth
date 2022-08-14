@@ -1,5 +1,5 @@
 import type { NextPage } from 'next'
-import Layout from '../../../components/layout'
+import Layout from '../../../components/layout/layout'
 import Country from '../../../lib/data-sources/restcountries.com/country'
 import getRestCountriesApiClient from '../../../lib/data-sources/restcountries.com/api'
 import getFlexportApiClient from '../../../lib/data-sources/flexport/api'

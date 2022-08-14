@@ -1,6 +1,6 @@
 import type { NextPage } from 'next'
 import { getFlexportApiClient } from '../../../../lib/data-sources/flexport/api'
-import Layout from '../../../../components/layout'
+import Layout from '../../../../components/layout/layout'
 import Link from 'next/link';
 import Styles from '../../../../styles/facts/vehicles/vessels/index.module.css'
 import Image from 'next/image'
