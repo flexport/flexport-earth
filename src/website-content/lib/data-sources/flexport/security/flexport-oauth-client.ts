@@ -1,6 +1,6 @@
-import HttpClient from '../../../http/HttpClient';
-import AccessTokenRequestBody   from './access-token-request-body'
-import AccessTokenResponse      from './access-token-response'
+import HttpClient           from '../../../http/HttpClient';
+import AccessTokenRequest   from './access-token-request'
+import AccessTokenResponse  from './access-token-response'
 
 class FlexportOAuthClient {
     httpClient:   HttpClient
@@ -21,7 +21,7 @@ class FlexportOAuthClient {
     {
         const oauthRelativePath = '/oauth/token';
 
-        const postPayload = new AccessTokenRequestBody(
+        const postPayload = new AccessTokenRequest(
             this.clientId,
             this.clientSecret
         );

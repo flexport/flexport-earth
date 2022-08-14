@@ -1,15 +1,13 @@
 import FlexportOAuthClient      from './security/flexport-oauth-client'
+import HttpClient               from '../../http/HttpClient'
 
 import places                   from './facts/places/places'
 import vehicles                 from './facts/vehicles/vehicles'
-import HttpClient               from '../../http/HttpClient'
 
 // This is the factory function that the rest of the codebase
 // should use to get an instance of the FlexportApiClient.
 export async function getFlexportApiClient() {
     const baseUrl = 'https://api.flexport.com';
-
-    // Step 1: Get an authenticated HttpClient that can be used for API calls.
 
     const oAuthClient = new FlexportOAuthClient(
         baseUrl,
@@ -33,7 +31,10 @@ export class FlexportApiV1Client {
     places:   places
     vehicles: vehicles
 
-    constructor(baseUrl: string, accessToken: string) {
+    constructor(
+        baseUrl:        string,
+        accessToken:    string)
+    {
         const headers = new Headers({
             'Authorization':    `Bearer ${accessToken}`,
             'Flexport-Version': '1'
@@ -44,13 +45,8 @@ export class FlexportApiV1Client {
             headers
         );
 
-        this.places = new places(
-            httpClient
-        );
-
-        this.vehicles = new vehicles(
-            httpClient
-        );
+        this.places   = new places(httpClient);
+        this.vehicles = new vehicles(httpClient);
     }
 }
 

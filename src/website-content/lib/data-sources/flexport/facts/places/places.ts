@@ -1,8 +1,8 @@
 import HttpClient from '../../../../http/HttpClient';
+import DataPaging from '../../paging/DataPaging';
+
 import Port  from './ports/port'
 import Ports from './ports/ports'
-
-import DataPaging from '../../paging/DataPaging';
 
 class places {
     private portsRelativeBaseUrl:   string;
@@ -27,7 +27,9 @@ class places {
         return ports;
     }
 
-    async getSeaportsByCca2(cca2: string): Promise<Ports> {
+    async getSeaportsByCca2(
+        cca2: string): Promise<Ports>
+    {
         const ports = {
             ports:  await DataPaging.getAllPagedData<Port>(
                         this.httpClient,
@@ -39,7 +41,9 @@ class places {
         return ports;
     }
 
-    async getPortByUnlocode(unlocode: string): Promise<Ports> {
+    async getPortByUnlocode(
+        unlocode: string): Promise<Ports>
+    {
         const ports = {
             ports:  await DataPaging.getAllPagedData<Port>(
                         this.httpClient,
