@@ -1,8 +1,8 @@
 import type { NextPage } from 'next'
-import Layout from '../../../components/layout'
-import Country from '../../../lib/data_sources/restcountries.com/country'
-import getRestCountriesApiClient from '../../../lib/data_sources/restcountries.com/api'
-import getFlexportApiClient from '../../../lib/data_sources/flexport/api'
+import Layout from '../../../components/layout/layout'
+import Country from '../../../lib/data-sources/restcountries.com/country'
+import getRestCountriesApiClient from '../../../lib/data-sources/restcountries.com/api'
+import getFlexportApiClient from '../../../lib/data-sources/flexport/api'
 import { useRouter } from 'next/router'
 import Breadcrumbs from '../../../components/breadcrumbs/breadcrumbs'
 

@@ -1,8 +1,8 @@
 import type { NextPage } from 'next'
 import Link from 'next/link';
-import Layout from '../../../components/layout'
-import Country from '../../../lib/data_sources/restcountries.com/country'
-import getRestCountriesApiClient from '../../../lib/data_sources/restcountries.com/api'
+import Layout from '../../../components/layout/layout'
+import Country from '../../../lib/data-sources/restcountries.com/country'
+import getRestCountriesApiClient from '../../../lib/data-sources/restcountries.com/api'
 import Breadcrumbs from '../../../components/breadcrumbs/breadcrumbs'
 
 export async function getStaticProps() {

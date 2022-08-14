@@ -1,7 +1,6 @@
-import React, { ReactNode } from 'react';
-import Styles from '../styles/Footer.module.css'
-import Image from 'next/image'
-import Link from 'next/link'
+import Styles   from './footer.module.css'
+import Image    from 'next/image'
+import Link     from 'next/link'
 
 const Footer = () => (
       <footer className={Styles.footer}>

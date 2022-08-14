@@ -1,11 +1,11 @@
 import type { NextPage } from 'next'
-import Layout from '../../../../components/layout'
-import { getFlexportApiClient } from '../../../../lib/data_sources/flexport/api'
+import Layout from '../../../../components/layout/layout'
+import { getFlexportApiClient } from '../../../../lib/data-sources/flexport/api'
 import { useRouter } from 'next/router'
 import Link from 'next/link'
 import Image from 'next/image'
 import Styles from '../../../../styles/facts/places/ports/index.module.css'
-import getRestCountriesApiClient from '../../../../lib/data_sources/restcountries.com/api'
+import getRestCountriesApiClient from '../../../../lib/data-sources/restcountries.com/api'
 import Breadcrumbs from '../../../../components/breadcrumbs/breadcrumbs'
 
 type Cca2Params = {
