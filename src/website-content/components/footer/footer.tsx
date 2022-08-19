@@ -1,6 +1,10 @@
-import Styles   from './footer.module.css'
-import Image    from 'next/image'
-import Link     from 'next/link'
+import Styles               from './footer.module.css'
+
+import Image                from 'next/image'
+import Link                 from 'next/link'
+
+import IconSupplyChainBook  from '../../public/images/icon-supply-chain-book.png'
+import FlexportLogo         from '../../public/images/flexport-logo.svg'
 
 const Footer = () => (
       <footer className={Styles.footer}>
@@ -42,7 +46,7 @@ const Footer = () => (
                             </div>
                             <div className={Styles.footerGlossaryRight}>
                                 <Image
-                                    src="/images/icon-supply-chain-book.png"
+                                    src={IconSupplyChainBook}
                                     alt="Supply Chain Book"
                                     height={170}
                                     width={199}
@@ -67,7 +71,14 @@ const Footer = () => (
             <div className={Styles.footerLowerSection}>
                 <a className={Styles.footerLowerLeftSection} id="flexport-logo" href="https://www.flexport.com">
                     <span>
-                        <Image className={Styles.footerContentFlexportLogo} layout="raw" src="/images/flexport-logo.svg" alt="Flexport Logo" height={20} width={90}/>
+                        <Image
+                            className={Styles.footerContentFlexportLogo}
+                            layout="raw"
+                            src={FlexportLogo}
+                            alt="Flexport Logo"
+                            height={20}
+                            width={90}
+                        />
                         <div className={Styles.footerContentTagLine}>We&apos;re making global trade easy for everyone.</div>
                     </span>
                 </a>
