@@ -7,6 +7,7 @@ const nextConfig = {
   },
   images: {
     domains: ['assets.flexport.com'],
+    minimumCacheTTL: 60
   },
   async redirects() {
     return [
