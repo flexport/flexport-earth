@@ -174,6 +174,9 @@ resource route 'Microsoft.Cdn/profiles/afdEndpoints/routes@2021-06-01' = {
     forwardingProtocol: originForwardingProtocol
     linkToDefaultDomain: 'Enabled'
     httpsRedirect: 'Enabled'
+    cacheConfiguration: {
+       queryStringCachingBehavior: 'UseQueryString'
+    }
   }
 }
 
