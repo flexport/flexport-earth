@@ -5,6 +5,7 @@ import Link from 'next/link';
 import Styles from '../../../../styles/facts/vehicles/vessels/index.module.css'
 import Image from 'next/image'
 import Breadcrumbs from '../../../../components/breadcrumbs/breadcrumbs'
+import ShipThumbnail from '../../../../public/images/thumbnail-container-ship.png'
 
 function truncate(
   stringToTruncate: string,
@@ -60,7 +61,7 @@ const VesselsPage: NextPage<Vessels> = ({vessels, time}) => {
                   <div id={`vessel-${mmsi}`} className={Styles.vesselLink}>
                     <div className={Styles.vesselThumbnail}>
                       <Image
-                        src={'/images/thumbnail-container-ship.png'}
+                        src={ShipThumbnail}
                         alt="Container Ship Thumbnail"
                         width={132}
                         height={92}
