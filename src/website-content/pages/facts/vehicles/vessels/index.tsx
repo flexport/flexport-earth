@@ -65,7 +65,6 @@ const VesselsPage: NextPage<Vessels> = ({vessels, time}) => {
                         alt="Container Ship Thumbnail"
                         width={132}
                         height={92}
-                        priority={true}
                       />
                     </div>
                     <div className={Styles.vesselInfo}>
