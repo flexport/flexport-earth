@@ -1,9 +1,17 @@
 .main {
-  background-image: url("/images/boat-background.png");
   height:           664px;
   width:            1645px;
   margin:           auto;
   padding-top:      78px;
+  position:         relative;
+}
+
+.mainBackground {
+  z-index: -1;
+}
+
+.mainBackgroundContainer span {
+  z-index: -1;
 }
 
 .mainContent {
