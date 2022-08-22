@@ -100,7 +100,7 @@ const PortsPage: NextPage<Ports> = ({ports, time}) => {
           ))}
         </ol>
         <br/>
-        Data last refreshed @ { time }
+        { ports.length } ports refreshed @ { time }
         <br/><br/>
     </Layout>
   )
