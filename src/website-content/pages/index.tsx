@@ -9,6 +9,7 @@ import PortIcon from '../public/images/icon-port.svg'
 import RightChevron from '../public/images/right-chevron.svg'
 import VesselIcon from '../public/images/icon-vessel.svg'
 import ContainersIcon from '../public/images/icon-containers.svg'
+import Background from '../public/images/boat-background.png'
 
 const Home: NextPage = () => {
   return (
@@ -20,6 +21,15 @@ const Home: NextPage = () => {
       </Head>
 
       <main className={Styles.main}>
+        <div className={Styles.mainBackgroundContainer}>
+          <Image
+            src={Background}
+            alt="Boat Background"
+            objectFit='cover'
+            layout='fill'
+            className={Styles.mainBackground}
+          />
+        </div>
         <div className={Styles.mainContent}>
           <Image
             src={FlexportLogo}
