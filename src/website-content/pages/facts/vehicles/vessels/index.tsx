@@ -115,7 +115,7 @@ const VesselsPage: NextPage<Vessels> = ({vessels, time}) => {
 
       <div className={Styles.clear} />
 
-      Data refreshed @ { time }
+      {vessels.length} vessels refreshed @ { time }
 
       <br/><br/>
 
