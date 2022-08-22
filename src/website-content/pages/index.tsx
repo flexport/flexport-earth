@@ -4,6 +4,11 @@ import Image from 'next/image'
 import Link from 'next/link'
 import Styles from '../styles/HomePage.module.css'
 import Footer from '../components/footer/footer'
+import FlexportLogo from '../public/images/flexport-logo.svg'
+import PortIcon from '../public/images/icon-port.svg'
+import RightChevron from '../public/images/right-chevron.svg'
+import VesselIcon from '../public/images/icon-vessel.svg'
+import ContainersIcon from '../public/images/icon-containers.svg'
 
 const Home: NextPage = () => {
   return (
@@ -17,7 +22,7 @@ const Home: NextPage = () => {
       <main className={Styles.main}>
         <div className={Styles.mainContent}>
           <Image
-            src="/images/flexport-logo.svg"
+            src={FlexportLogo}
             alt="Flexport Logo"
             height={30}
             width={110}
@@ -35,7 +40,7 @@ const Home: NextPage = () => {
             <a id="all-ports-link" href='facts/places/ports'>
               <div className={Styles.portsLink}>
                 <Image
-                  src="/images/icon-port.svg"
+                  src={PortIcon}
                   alt="Port Icon"
                   height={26}
                   width={26}
@@ -45,7 +50,7 @@ const Home: NextPage = () => {
 
                 <span className={Styles.rightChevron}>
                   <Image
-                    src="/images/right-chevron.svg"
+                    src={RightChevron}
                     alt="Right Chevron"
                     height={14}
                     width={14}
@@ -139,7 +144,7 @@ const Home: NextPage = () => {
             <a id="all-vessels-link" href='facts/vehicles/vessels'>
               <div className={Styles.vesselsSection}>
                 <Image
-                  src="/images/icon-vessel.svg"
+                  src={VesselIcon}
                   alt="Vessel Icon"
                   height={26}
                   width={26}
@@ -148,7 +153,7 @@ const Home: NextPage = () => {
                 <span className={Styles.vesselsSectionTitle}>Vessels</span>
 
                 <Image
-                  src="/images/right-chevron.svg"
+                  src={RightChevron}
                   alt="Right Chevron"
                   height={14}
                   width={14}
@@ -158,7 +163,7 @@ const Home: NextPage = () => {
 
             <div className={Styles.containersSection}>
               <Image
-                src="/images/icon-containers.svg"
+                src={ContainersIcon}
                 alt="Containers Icon"
                 height={26}
                 width={26}
@@ -167,7 +172,7 @@ const Home: NextPage = () => {
             <span className={Styles.containersSectionTitle}>Containers</span>
 
               <Image
-                src="/images/right-chevron.svg"
+                src={RightChevron}
                 alt="Right Chevron"
                 height={14}
                 width={14}

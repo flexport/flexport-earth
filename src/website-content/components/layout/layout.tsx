@@ -7,6 +7,8 @@ import Link                 from 'next/link';
 import Styles               from './layout.module.css'
 import Footer               from '../footer/footer'
 
+import FlexportLogo         from '../../public/images/flexport-logo.svg'
+
 type Props = {
   children:         ReactNode;
   title?:           string;
@@ -31,7 +33,7 @@ const Layout = ({
           <div className={Styles.pageWikiTitle}>
               <a id="flexport-logo" href="https://www.flexport.com">
                 <Image
-                  src="/images/flexport-logo.svg"
+                  src={FlexportLogo}
                   alt="Flexport Logo"
                   height={36}
                   width={106}

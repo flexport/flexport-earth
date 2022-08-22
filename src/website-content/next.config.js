@@ -5,8 +5,10 @@ const nextConfig = {
     locales: ["en"],
     defaultLocale: "en",
   },
+  staticPageGenerationTimeout: 500,
   images: {
     domains: ['assets.flexport.com'],
+    minimumCacheTTL: 60
   },
   async redirects() {
     return [
