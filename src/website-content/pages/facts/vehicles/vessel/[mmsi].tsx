@@ -2,10 +2,11 @@ import type { NextPage } from 'next'
 import Layout from '../../../../components/layout/layout'
 import { getFlexportApiClient } from '../../../../lib/data-sources/flexport/api'
 import { useRouter } from 'next/router'
-import Styles from '../../../../styles/facts/vehicles/vessel/mmsi.module.css'
+import Styles from './mmsi.module.css'
 import Image from 'next/image'
 import Breadcrumbs from '../../../../components/breadcrumbs/breadcrumbs'
 import Vessel from '../../../../lib/data-sources/flexport/facts/vehicles/vessels/vessel'
+import VesselDetailHeaderBackground from '../../../../public/images/vessel-detail-header-background.png'
 
 type MMSIParams = {
     params: {
@@ -53,6 +54,16 @@ const VesselPage: NextPage<VesselPageParams> = (params) => {
             <Breadcrumbs />
 
             <div className={Styles.vesselDetailHeader}>
+                <div className={Styles.VesselDetailHeaderBackgroundContainer}>
+                    <Image
+                        src={VesselDetailHeaderBackground}
+                        alt="Vessel Header Background"
+                        objectFit='cover'
+                        layout='fill'
+                        width={1045}
+                        height={339}
+                    />
+                </div>
                 <div className={Styles.vesselDetailTitle}>
                     <Image
                         src={`https://assets.flexport.com/flags/svg/1/${params.vessel.registration_country_code}.svg`}
