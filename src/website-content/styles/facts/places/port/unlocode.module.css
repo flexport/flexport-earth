@@ -6,16 +6,22 @@
     color:                #566AE5;
 }
 
+.PortSateliteBackgroundContainer {
+    z-index:            -1;
+}
+
+.PortSateliteBackgroundContainer span {
+    z-index:            -1;
+}
 
 .portDetailHeader {
     width:              1045px;
     height:             339px;
-    background:       #4B5564;
-    background-image:   url(/images/port-satelite-background.png);
     display:            flex;
     justify-content:    flex-end;
     flex-direction:     column;
     margin-bottom:      40px;
+    position:           relative;
 }
 
 .portDetailTitle {

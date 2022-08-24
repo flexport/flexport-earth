@@ -6,6 +6,7 @@ import Image from 'next/image'
 import Styles from '../../../../styles/facts/places/port/unlocode.module.css'
 import Breadcrumbs from '../../../../components/breadcrumbs/breadcrumbs'
 import Port from '../../../../lib/data-sources/flexport/facts/places/ports/port'
+import PortSateliteBackground from '../../../../public/images/port-satelite-background.png'
 
 type UNLoCodeParams = {
     params: {
@@ -53,6 +54,14 @@ const PortDetailPage: NextPage<PortPageParams> = (params) => {
             <Breadcrumbs />
 
             <div className={Styles.portDetailHeader}>
+                <div className={Styles.PortSateliteBackgroundContainer}>
+                    <Image
+                        src={PortSateliteBackground}
+                        alt="Satelite image of a Port"
+                        objectFit='cover'
+                        layout='fill'
+                    />
+                </div>
                 <div className={Styles.portDetailTitle}>
                     <Image
                         src={`https://assets.flexport.com/flags/svg/1/${params.port.address.country_code}.svg`}
