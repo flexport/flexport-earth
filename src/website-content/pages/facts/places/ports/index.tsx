@@ -6,6 +6,7 @@ import Styles from '../../../../styles/facts/places/ports/index.module.css'
 import Image from 'next/image'
 import getRestCountriesApiClient from '../../../../lib/data-sources/restcountries.com/api'
 import Breadcrumbs from '../../../../components/breadcrumbs/breadcrumbs'
+import SatelitePort from '../../../../public/images/satellite-port.png'
 
 type CountryInfo = {
   countryName:      string,
@@ -86,6 +87,16 @@ const PortsPage: NextPage<Ports> = ({ports, time}) => {
           {ports.map(({ countryName, cca2CountryCode, portCount }) => (
             <Link prefetch={false} key={cca2CountryCode} href={`/facts/places/ports/${cca2CountryCode}`}>
               <li id={`country-${cca2CountryCode}`} className={Styles.port}>
+                <div className={Styles.portBackground}>
+                  <Image
+                    src={SatelitePort}
+                    width={511}
+                    height={160}
+                    alt="Satelite Port Background"
+                    objectFit='cover'
+                    layout='fill'
+                  />
+                </div>
                 <Image
                   src={`https://assets.flexport.com/flags/svg/1/${cca2CountryCode}.svg`}
                   alt={`${cca2CountryCode} Flag`}
