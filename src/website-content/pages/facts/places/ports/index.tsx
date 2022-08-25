@@ -103,7 +103,7 @@ const PortsPage: NextPage<Ports> = ({ports, time}) => {
                   height={32}
                   width={32}
                 />
-                <div id={`country-${cca2CountryCode}`}>
+                <div>
                   {countryName} ports ( {portCount} )
                 </div>
               </li>
