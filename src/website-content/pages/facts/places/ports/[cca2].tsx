@@ -7,6 +7,7 @@ import Image from 'next/image'
 import Styles from '../../../../styles/facts/places/ports/index.module.css'
 import getRestCountriesApiClient from '../../../../lib/data-sources/restcountries.com/api'
 import Breadcrumbs from '../../../../components/breadcrumbs/breadcrumbs'
+import SatelitePort from '../../../../public/images/satellite-port.png'
 
 type Cca2Params = {
     params: {
@@ -127,6 +128,16 @@ const PortsByCountryPage: NextPage<PortsByCountryPageParams> = (params) => {
                 <Link key={unlocode} prefetch={false} href={`/facts/places/port/${unlocode}`}>
 
                   <li id={`port-${unlocode}`} className={Styles.port}>
+                    <div className={Styles.portBackground}>
+                      <Image
+                        src={SatelitePort}
+                        width={511}
+                        height={160}
+                        alt="Satelite Port Background"
+                        objectFit='cover'
+                        layout='fill'
+                      />
+                    </div>
                     <Image
                       src={`https://assets.flexport.com/flags/svg/1/${params.cca2}.svg`}
                       alt={`${params.cca2} Flag`}

@@ -3,11 +3,11 @@
     width:              1045px;
     height:             339px;
     background:       #4B5564;
-    background-image:   url(/images/vessel-detail-header-background.png);
     display:            flex;
     justify-content:    flex-end;
     flex-direction:     column;
     margin-bottom:      40px;
+    position:           relative;
 }
 
 .vesselDetailTitle {

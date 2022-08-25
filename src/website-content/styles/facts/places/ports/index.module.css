@@ -90,7 +90,7 @@
 .port {
     width:              511px;
     height:             160px;
-    background:         linear-gradient( rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5) ), url('/images/satellite-port.png');
+    background:         linear-gradient( rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5) );
     box-shadow:         0px 0px 2px rgba(0, 0, 0, 0.12), 0px 2px 2px rgba(0, 0, 0, 0.12);
     border-radius:      3px;
     float:              left;
@@ -102,6 +102,15 @@
     color:            white;
     padding-left:       20px;
     padding-top:        75px;
+    position:           relative;
+}
+
+.portBackground {
+    z-index: -1;
+}
+
+.portBackground span {
+    z-index: -1;
 }
 
 .port div {
