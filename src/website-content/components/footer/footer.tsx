@@ -70,7 +70,7 @@ const Footer = () => (
 
             <div className={Styles.footerLowerSection}>
                 <a className={Styles.footerLowerLeftSection} id="flexport-logo" href="https://www.flexport.com">
-                    <span>
+                    <div>
                         <Image
                             className={Styles.footerContentFlexportLogo}
                             layout="raw"
@@ -80,7 +80,7 @@ const Footer = () => (
                             width={90}
                         />
                         <div className={Styles.footerContentTagLine}>We&apos;re making global trade easy for everyone.</div>
-                    </span>
+                    </div>
                 </a>
                 <div className={Styles.footerLowerRightSection}>
                     <a href="javascript:alert('Build URL not specified.');" className={Styles.buildNumber}>

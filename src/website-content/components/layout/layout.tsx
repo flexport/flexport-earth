@@ -31,7 +31,7 @@ const Layout = ({
       <header className={Styles.pageHeader}>
         <div className={Styles.pageHeaderContent}>
           <div className={Styles.pageWikiTitle}>
-              <a id="flexport-logo" href="https://www.flexport.com">
+              <a href="https://www.flexport.com">
                 <Image
                   src={FlexportLogo}
                   alt="Flexport Logo"
