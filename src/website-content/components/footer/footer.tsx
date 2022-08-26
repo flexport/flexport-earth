@@ -69,7 +69,7 @@ const Footer = () => (
             <hr className={Styles.footerContentHr}/>
 
             <div className={Styles.footerLowerSection}>
-                <a className={Styles.footerLowerLeftSection} href="https://www.flexport.com">
+                <a className={Styles.footerLowerLeftSection} id="flexport-logo" href="https://www.flexport.com">
                     <div>
                         <Image
                             className={Styles.footerContentFlexportLogo}
