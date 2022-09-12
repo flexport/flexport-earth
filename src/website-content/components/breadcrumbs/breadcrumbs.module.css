@@ -1,21 +1,21 @@
 .breadcrumbs {
-    font-weight:        400;
-    font-size:          14px;
-    line-height:        16px;
-    color:            #39414D;
-    margin-bottom:      24px;
+    font-weight:        400 !important;
+    font-size:          14px !important;
+    line-height:        16px !important;
+    color:            #39414D !important;
+    margin-bottom:      24px !important;
 }
 
 .breadcrumbs a {
     color:            #39414D;
-    text-decoration:    none;
+    text-decoration:    none !important;
 }
 
 .breadcrumbs a:hover {
-    color:            #39414D;
-    text-decoration:    underline;
+    color:            #39414D !important;
+    text-decoration:    underline !important;
 }
 
 .breadcrumbs a:visited {
-    color:            #39414D;
+    color:            #39414D !important;
 }
