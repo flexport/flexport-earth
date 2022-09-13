@@ -33,9 +33,14 @@ function Write-BuildNumber {
 function Write-BuildUrl {
     $IndexPath = "./pages/index.tsx"
 
-    $IndexContent = Get-Content -Path $IndexPath
-    $IndexContent = $IndexContent.Replace("javascript:alert('Build URL not specified.');", $BuildUrl)
-    $IndexContent | Out-File -FilePath $IndexPath
+    $IndexContentOriginal = Get-Content -Path $IndexPath
+    $IndexContentUpdated = $IndexContentOriginal.Replace("javascript:alert('Build URL not specified.');", $BuildUrl)
+
+    if ($IndexContentOriginal -eq $IndexContentUpdated) {
+        throw "The content was not updated with the BuildUrl as expected."
+    }
+
+    $IndexContentUpdated | Out-File -FilePath $IndexPath
 
     Write-Information "Build URL written to $IndexPath"
 }
