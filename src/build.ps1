@@ -112,6 +112,62 @@ function Compress-Website {
     Write-Information ""
 }
 
+function Invoke-BuildWorkflow {
+    [CmdletBinding()]
+    param (
+        [Parameter(Mandatory = $true)]
+        [String]
+        $BuildNumber,
+
+        [Parameter(Mandatory = $false)]
+        [String]
+        $BuildUrl,
+
+        [Parameter(Mandatory = $true)]
+        [String]
+        $FlexportApiClientId,
+
+        [Parameter(Mandatory = $true)]
+        [String]
+        $FlexportApiClientSecret
+    )
+
+    # Validate all the PowerShell scripts
+    $Results = Invoke-ScriptAnalyzer -Path **
+
+    if ($Results) {
+        $Results
+        Write-Error "PowerShell lint issues detected, please fix and try again."
+    }
+
+    Write-Information ""
+    Write-Information "Building Earth Website (Build Number: $BuildNumber | Build URL: $BuildUrl)"
+    Write-Information ""
+
+    try {
+        Push-Location $WebsiteContentSourceDirectory
+
+        Write-BuildNumber
+
+        # Update BuildUrl if available from CI system.
+        # Will not be available when running this script locally.
+        if ($BuildUrl) {
+            Write-BuildUrl
+        }
+
+        Build-Website `
+            -FlexportApiClientId     $FlexportApiClientId `
+            -FlexportApiClientSecret $FlexportApiClientSecret
+
+        Test-UnitAndComponentFunctionality
+
+        Compress-Website
+    }
+    finally {
+        Pop-Location
+    }
+}
+
 $ScriptStartTime                = Get-Date
 $ReleasablesDirectory           = "releasables"
 $WebsiteContentSourceDirectory  = "website-content"
@@ -119,40 +175,11 @@ $WebsiteContentSourceDirectory  = "website-content"
 # Run dependency management
 . "$ReleasablesDirectory/dependencies/dependency-manager.ps1"
 
-# Validate all the PowerShell scripts
-$Results = Invoke-ScriptAnalyzer -Path **
-
-if ($Results) {
-    $Results
-    Write-Error "PowerShell lint issues detected, please fix and try again."
-}
-
-Write-Information ""
-Write-Information "Building Earth Website (Build Number: $BuildNumber | Build URL: $BuildUrl)"
-Write-Information ""
-
-try {
-    Push-Location $WebsiteContentSourceDirectory
-
-    Write-BuildNumber
-
-    # Update BuildUrl if available from CI system.
-    # Will not be available when running this script locally.
-    if ($BuildUrl) {
-        Write-BuildUrl
-    }
-
-    Build-Website `
-        -FlexportApiClientId     $FlexportApiClientId `
-        -FlexportApiClientSecret $FlexportApiClientSecret
-
-    Test-UnitAndComponentFunctionality
-
-    Compress-Website
-}
-finally {
-    Pop-Location
-}
+Invoke-BuildWorkflow `
+    -BuildNumber                $BuildNumber `
+    -BuildUrl                   $BuildUrl `
+    -FlexportApiClientId        $FlexportApiClientId `
+    -FlexportApiClientSecret    $FlexportApiClientSecret
 
 Write-Information "Earth website build completed!"
 Write-Information ""
