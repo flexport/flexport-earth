@@ -19,7 +19,18 @@ type PortPageParams = {
 }
 
 export async function getStaticPaths() {
-    const paths = [{params: {unlocode: 'USLAX'}}];
+
+    // getStaticPaths executes at BUILD TIME.
+
+    // Instead of getting and building all ports at BUILD TIME (which would take a long time)
+    // we're just building one here for sake of verifying the functionality works at BUILD TIME.
+    // All the other ports will be generated at RUN TIME on-demand.
+
+    // USPCV == Port Canaveral.
+    // Nothing special about this port, it was chosen simply because it's a popular port.
+    const testPortUnlocode = 'USPCV';
+
+    const paths = [{params: {unlocode: testPortUnlocode}}];
 
     return {
         paths,
