@@ -15,7 +15,7 @@ describe('Port', () => {
         .getCountryPortsLink('US')
           .click();
 
-      const sanDiegoPortUnLoCode = 'USSAN';
+      const sanDiegoPortUnLoCode = 'USPCV';
 
       new PortsByCountryPage()
         .getPortLink(sanDiegoPortUnLoCode)
@@ -23,6 +23,6 @@ describe('Port', () => {
 
       new PortPage()
         .getBody()
-          .contains('San Diego');
+          .contains('Port Canaveral');
   })
 })
