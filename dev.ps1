@@ -278,4 +278,8 @@ function Invoke-RuntimeTests {
 
 }
 
+# Ensure all the local development tools are installed
+# and up to date before running any development workflows.
+./dev/tools/install-development-tools.ps1
+
 Invoke-Workflow -Workflow $Workflow
