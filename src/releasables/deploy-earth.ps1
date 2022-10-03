@@ -32,7 +32,7 @@ $ScriptStartTime = Get-Date
 . ./dependencies/dependency-manager.ps1
 
 # Load common configuration values
-. ./earth-config.ps1
+. ./earth-runtime-config.ps1
 
 Write-Information ""
 Write-Information "Deploying Earth build $BuildNumber to $EnvironmentName environment..."

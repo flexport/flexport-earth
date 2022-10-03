@@ -70,6 +70,15 @@
     margin-bottom:      16px;
 }
 
+.portDetailSectionSpacer {
+    margin-bottom:  24px;
+    clear:          both;
+}
+
+.portDetailField {
+    clear:          both;
+}
+
 .portDetailFieldName {
     font-weight:        400;
     font-size:          14px;
