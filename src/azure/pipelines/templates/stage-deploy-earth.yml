@@ -24,6 +24,10 @@ stages:
               scriptType: pscore
               arguments: '-BuildNumber $(Build.BuildNumber) -EnvironmentName ${{ parameters.environmentNameShort }} -EarthWebsiteCustomDomainName "$(EarthWebsiteDomainName)" -FlexportApiClientId $(FlexportApiClientId) -FlexportApiClientSecret $(FlexportApiClientSecret)'
               scriptPath: '$(releasablesWorkingDirectory)/deploy-earth.ps1'
+          - task: PublishBuildArtifacts@1
+            inputs:
+              pathToPublish: $(releasablesWorkingDirectory)/testing/functional/cypress/videos
+              artifactName: test-results
 
   - deployment: Destroy
     dependsOn: Deploy
