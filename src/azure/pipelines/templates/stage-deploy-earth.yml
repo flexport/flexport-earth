@@ -25,6 +25,7 @@ stages:
               arguments: '-BuildNumber $(Build.BuildNumber) -EnvironmentName ${{ parameters.environmentNameShort }} -EarthWebsiteCustomDomainName "$(EarthWebsiteDomainName)" -FlexportApiClientId $(FlexportApiClientId) -FlexportApiClientSecret $(FlexportApiClientSecret)'
               scriptPath: '$(releasablesWorkingDirectory)/deploy-earth.ps1'
           - task: PublishBuildArtifacts@1
+            condition: failed()
             inputs:
               pathToPublish: $(releasablesWorkingDirectory)/testing/functional/cypress/videos
               artifactName: test-results
