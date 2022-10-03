@@ -62,8 +62,12 @@ export async function getStaticPaths() {
 
 export async function getStaticProps(params: UNLoCodeParams) {
     const flexportApi       = await getFlexportApiClient();
-    const responseData      = await flexportApi.places.getPortByUnlocode(params.params.unlocode);
-    const flexportApiPort   = responseData.ports[0];
+
+    const responseDataPort      = await flexportApi.places.getPortByUnlocode(params.params.unlocode);
+    const responseDataTerminals = await flexportApi.places.getTerminalsByUnlocode(params.params.unlocode);
+
+    const flexportApiPort       = responseDataPort.ports[0];
+    const flexportApiTerminals  = responseDataTerminals.terminals;
 
     const portDetailPageViewModel: PortDetailPageViewModel = {
         general: {
@@ -76,9 +80,7 @@ export async function getStaticProps(params: UNLoCodeParams) {
             iataCode:   flexportApiPort.iata_code,
             icaoCode:   flexportApiPort.icao_code
         },
-        terminals: [{
-            terminalName: 'CHIWAN CONTAINER TERMINAL (CCT)'
-        }],
+        terminals:      flexportApiTerminals.map((terminal) => { return { terminalName: terminal.name } } ),
         location: {
             latitude:   flexportApiPort.address.geo_location.latitude,
             longitude:  flexportApiPort.address.geo_location.longitude
@@ -218,7 +220,6 @@ const PortDetailPage: NextPage<PortDetailPageViewModel> = (port) => {
                             </div>
                         </div>
                     ))}
-
                 </div>
 
                 <div className={Styles.portDetailRight}>
@@ -274,6 +275,7 @@ const PortDetailPage: NextPage<PortDetailPageViewModel> = (port) => {
                     </div>
                 </div>
             </div>
+            <div className={Styles.portDetailSectionSpacer}></div>
         </Layout>
     )
 }

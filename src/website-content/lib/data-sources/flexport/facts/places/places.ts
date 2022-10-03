@@ -4,14 +4,21 @@ import DataPaging from '../../paging/DataPaging';
 import Port  from './ports/port'
 import Ports from './ports/ports'
 
+import Terminal  from './terminals/terminal'
+import Terminals from './terminals/terminals'
+
 class places {
-    private portsRelativeBaseUrl:   string;
+    private portsRelativeBaseUrl:       string;
+    private terminalsRelativeBaseUrl:   string;
+
     private httpClient:             HttpClient;
 
     constructor(
         authenticatedHttpClient:    HttpClient)
     {
-        this.portsRelativeBaseUrl   = '/places/ports';
+        this.portsRelativeBaseUrl       = '/places/ports';
+        this.terminalsRelativeBaseUrl   = '/places/terminals'
+
         this.httpClient             = authenticatedHttpClient;
     }
 
@@ -53,6 +60,20 @@ class places {
         };
 
         return ports;
+    }
+
+    async getTerminalsByUnlocode(
+        unlocode: string): Promise<Terminals>
+    {
+        const terminals = {
+            terminals:  await DataPaging.getAllPagedData<Terminal>(
+                        this.httpClient,
+                        this.terminalsRelativeBaseUrl,
+                        `unlocode=${unlocode}`
+                    )
+        };
+
+        return terminals;
     }
 }
 
