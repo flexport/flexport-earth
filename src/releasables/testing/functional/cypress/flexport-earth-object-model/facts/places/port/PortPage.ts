@@ -4,4 +4,8 @@ export default class PortPage {
     getBody() {
         return cy.get('body');
     }
+
+    getTerminalLink(terminalCode: string) {
+        return cy.get('#terminal-' + terminalCode);
+    }
 }

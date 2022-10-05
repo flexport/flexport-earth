@@ -75,6 +75,20 @@ class places {
 
         return terminals;
     }
+
+    async getTerminalByTerminalCode(
+        terminalCode: string): Promise<Terminals>
+    {
+        const terminals = {
+            terminals:  await DataPaging.getAllPagedData<Terminal>(
+                        this.httpClient,
+                        this.terminalsRelativeBaseUrl,
+                        `terminal_code=${terminalCode}`
+                    )
+        };
+
+        return terminals;
+    }
 }
 
 export default places;
