@@ -33,7 +33,7 @@ export async function getStaticProps() {
                   mmsi:         vessel.mmsi,
                   cca2:         vessel.registration_country_code,
                   carrierName:  truncate(
-                                  vessel.carrier?.carrier_name ?? '',
+                                  vessel.carrier?.carrier_name ?? '', // TODO: EARTH-288: Unit test.
                                   maxCarrierNameLength
                                 )
                 }))
