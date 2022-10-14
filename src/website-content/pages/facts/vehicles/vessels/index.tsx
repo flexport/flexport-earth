@@ -23,6 +23,8 @@ export async function getStaticProps() {
   const flexportApi   = await getFlexportApiClient();
   const responseData  = await flexportApi.vehicles.getVessels()
 
+  const maxCarrierNameLength = 15;
+
   return {
     props: {
       time:     new Date().toISOString(),
@@ -30,7 +32,10 @@ export async function getStaticProps() {
                   name:         vessel.name,
                   mmsi:         vessel.mmsi,
                   cca2:         vessel.registration_country_code,
-                  carrierName:  truncate(vessel.carrier.carrier_name, 15)
+                  carrierName:  truncate(
+                                  vessel.carrier?.carrier_name ?? '', // TODO: EARTH-288: Unit test.
+                                  maxCarrierNameLength
+                                )
                 }))
     },
     revalidate: 3600
