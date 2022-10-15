@@ -3,9 +3,8 @@ import Layout from '../../../../components/layout/layout'
 import { getFlexportApiClient } from '../../../../lib/data-sources/flexport/api'
 import { useRouter } from 'next/router'
 import Image from 'next/image'
-import Styles from '../../../../styles/facts/places/port/unlocode.module.css'
+import Styles from './terminalCode.module.css'
 import Breadcrumbs from '../../../../components/breadcrumbs/breadcrumbs'
-import Terminal from '../../../../lib/data-sources/flexport/facts/places/terminals/terminal'
 import PortSateliteBackground from '../../../../public/images/port-satelite-background.png'
 
 type TerminalCodeParams = {
