@@ -1,0 +1,104 @@
+.portDetailRight a {
+    font-weight:            400;
+    font-size:              14px;
+    line-height:            20px;
+    text-decoration-line:   underline;
+    color:                #566AE5;
+}
+
+.PortSateliteBackgroundContainer {
+    z-index:            -1;
+}
+
+.PortSateliteBackgroundContainer span {
+    z-index:            -1;
+}
+
+.portDetailHeader {
+    width:              1045px;
+    height:             339px;
+    display:            flex;
+    justify-content:    flex-end;
+    flex-direction:     column;
+    margin-bottom:      40px;
+    position:           relative;
+}
+
+.portDetailTitle {
+    width:              1045px;
+    height:             140px;
+    color:            white;
+    background-image:   linear-gradient(to bottom, rgba(0,0,0,0), rgba(0,0,0,.6));
+    padding-top:        36px;
+    padding-left:       19px;
+}
+
+.portDetailTitle h1 {
+    margin:             0;
+}
+
+.portDetailSubTitle {
+    font-weight:        700;
+    font-size:          22px;
+    line-height:        32px;
+    color:            #000000;
+    margin-bottom:      24px;
+}
+
+.portDetailLeft {
+    float:              left;
+}
+
+.portDetailRight {
+    float:              right;
+}
+
+.portDetailLocation {
+    width:              377px;
+    height:             168px;
+    border:             1px solid #C5D2E7;
+    border-radius:      3px;
+    padding-top:        20px;
+    padding-left:       20px;
+}
+
+.portDetailSectionTitle {
+    font-weight:        700;
+    font-size:          16px;
+    line-height:        20px;
+    color:            #000000;
+    margin-bottom:      16px;
+}
+
+.portDetailSectionSpacer {
+    margin-bottom:  24px;
+    clear:          both;
+}
+
+.portDetailField {
+    clear:          both;
+}
+
+.portDetailFieldName {
+    font-weight:        400;
+    font-size:          14px;
+    line-height:        20px;
+    color:            #67768D;
+    width:              180px;
+    float:              left;
+    margin-bottom:      16px;
+}
+
+.portDetailFieldValue {
+    font-weight:        400;
+    font-size:          14px;
+    line-height:        20px;
+    color:            #39414D;
+    float:              left;
+    margin-bottom:      16px;
+}
+
+.pageDetailLearnMore {
+    padding-top:        30px;
+    padding-left:       21px;
+}
