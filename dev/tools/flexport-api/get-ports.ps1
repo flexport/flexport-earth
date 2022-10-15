@@ -75,8 +75,6 @@ function Invoke-GetPorts {
     $content
 }
 
-ConvertTo
-
 # Load some configuration values...
 $GlobalDevelopmentSettings = Get-Content 'dev/development-config.json' | ConvertFrom-Json
 
