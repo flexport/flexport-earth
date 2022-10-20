@@ -87,37 +87,12 @@ function Get-EnvironmentSettingsObject {
         -ConfigName       "FlexportApiClientSecret" `
         -ConfigPrompt     "What's your Flexport API Client Secret?"
 
+    Set-ConfigValue `
+        -Settings         $LocalSettings `
+        -SettingsFilePath $LocalSettingsPath `
+        -ConfigName       "GoogleAnalyticsMeasurementId" `
+        -ConfigPrompt     "What's your Google Analytics Measurement ID (G-XXXXXXXXXX)?"
+
+
     return $LocalSettings
 }
-
-# $LocalSettingsPath = "$CacheDirectory/environment-settings.json"
-
-# # Configure the local developer settings if they are not yet configured.
-# if (-Not (Test-Path $LocalSettingsPath)) {
-#     Write-Information "Your local settings have not been configured yet at $LocalSettingsPath, let's configure them now..."
-#     Write-Information ""
-
-#     $AzureSubscriptionName        = Read-Host "What is the name of the Azure Subscription you'll deploy to?"
-#     $EnvironmentName              = (Read-Host "What is the name of the Environment to create within your Azure Subscription (short single words preferred)?").ToLower()
-#     $EarthWebsiteCustomDomainName = Read-Host "What custom domain name to use for the Earth Website, if any? (enter for none)"
-
-#     $LocalSettings = [PSCustomObject]@{
-#         AzureSubscriptionName        = $AzureSubscriptionName
-#         EnvironmentName              = $EnvironmentName
-#         EarthWebsiteCustomDomainName = $EarthWebsiteCustomDomainName
-#     }
-
-#     if (-Not (Test-Path $CacheDirectory)) {
-#         New-Item -ItemType Directory -Path $CacheDirectory
-#     }
-
-#     $LocalSettings | ConvertTo-Json | Set-Content -Path $LocalSettingsPath
-# }
-
-# $LocalSettingsJson = Get-Content $LocalSettingsPath
-
-# Write-Information "Local Settings Loaded:"
-# $LocalSettingsJson
-
-# $LocalSettings = $LocalSettingsJson | ConvertFrom-Json
-

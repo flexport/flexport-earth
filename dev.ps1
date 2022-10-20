@@ -108,9 +108,10 @@ function Invoke-Build {
         Push-Location $GlobalDevelopmentSettings.SourceDirectory
 
         ./build.ps1 `
-            -BuildNumber             $([Guid]::NewGuid()) `
-            -FlexportApiClientID     $DeveloperEnvironmentSettings.FlexportApiClientID `
-            -FlexportApiClientSecret $DeveloperEnvironmentSettings.FlexportApiClientSecret
+            -BuildNumber                    $([Guid]::NewGuid()) `
+            -FlexportApiClientID            $DeveloperEnvironmentSettings.FlexportApiClientID `
+            -FlexportApiClientSecret        $DeveloperEnvironmentSettings.FlexportApiClientSecret `
+            -GoogleAnalyticsMeasurementId   $DeveloperEnvironmentSettings.GoogleAnalyticsMeasurementId
     }
     finally {
         Pop-Location
@@ -145,7 +146,8 @@ function Invoke-Deploy {
             -EnvironmentName              $DeveloperEnvironmentSettings.EnvironmentName `
             -EarthWebsiteCustomDomainName $DeveloperEnvironmentSettings.EarthWebsiteCustomDomainName `
             -FlexportApiClientId          $DeveloperEnvironmentSettings.FlexportApiClientId `
-            -FlexportApiClientSecret      $DeveloperEnvironmentSettings.FlexportApiClientSecret
+            -FlexportApiClientSecret      $DeveloperEnvironmentSettings.FlexportApiClientSecret `
+            -GoogleAnalyticsMeasurementId $DeveloperEnvironmentSettings.GoogleAnalyticsMeasurementId
     }
     finally {
         Pop-Location
