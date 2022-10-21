@@ -18,7 +18,11 @@ param (
 
     [Parameter(Mandatory = $true)]
     [String]
-    $FlexportApiClientSecret
+    $FlexportApiClientSecret,
+
+    [Parameter(Mandatory = $true)]
+    [String]
+    $GoogleAnalyticsMeasurementId
 )
 
 Set-StrictMode –Version latest
@@ -112,7 +116,11 @@ function Update-Frontend {
 
         [Parameter(Mandatory = $true)]
         [String]
-        $FlexportApiClientSecret
+        $FlexportApiClientSecret,
+
+        [Parameter(Mandatory = $true)]
+        [String]
+        $GoogleAnalyticsMeasurementId
     )
 
     process {
@@ -183,6 +191,15 @@ function Update-Frontend {
                 Write-Information ""
                 Write-Error "Configuring FLEXPORT_API_CLIENT_SECRET failed."
             }
+            $Output = az webapp config appsettings set `
+                --resource-group $EarthFrontendResourceGroupName `
+                --name $WebsiteName `
+                --settings NEXT_PUBLIC_GOOGLE_ANALYTICS_MEASUREMENT_ID="$GoogleAnalyticsMeasurementId"
+            if (!$?) {
+                Write-Information $Output
+                Write-Information ""
+                Write-Error "Configuring NEXT_PUBLIC_GOOGLE_ANALYTICS_MEASUREMENT_ID failed."
+            }
             Write-Information "Website configured!"
             Write-Information ""
             Write-Information "Deploying website content..."
@@ -201,6 +218,21 @@ function Update-Frontend {
             if (-Not ($URLToTest)) {
                 $URLToTest = "https://$CDNHostname"
             }
+
+            Write-Information "Purging CDN cache!"
+            # REFACTOR: dedup endpoint-name w/ cdn-front-door.bicep
+            $Output = az afd endpoint purge `
+                --resource-group $EarthFrontendResourceGroupName `
+                --profile-name 'EarthFrontDoor' `
+                --endpoint-name "$EnvironmentName-earth-cdn-endpoint" `
+                --content-paths '/*'
+            if (!$?) {
+                Write-Information $Output
+                Write-Information ""
+                Write-Error "CDN cache purged failed."
+            }
+            Write-Information "CDN cache purged!"
+            Write-Information ""
 
             Write-Information ""
             Write-Information "=================================================================="
@@ -258,10 +290,11 @@ function Update-Frontend {
 Update-FrontendResourceGroup
 
 $EarthWebsiteUrl = Update-Frontend `
-    -EnvironmentName            $EnvironmentName `
-    -CustomDomainName           $EarthWebsiteCustomDomainName `
-    -FlexportApiClientId        $FlexportApiClientId `
-    -FlexportApiClientSecret    $FlexportApiClientSecret
+    -EnvironmentName                $EnvironmentName `
+    -CustomDomainName               $EarthWebsiteCustomDomainName `
+    -FlexportApiClientId            $FlexportApiClientId `
+    -FlexportApiClientSecret        $FlexportApiClientSecret `
+    -GoogleAnalyticsMeasurementId   $GoogleAnalyticsMeasurementId
 
 ./test-earth.ps1 `
     -BuildNumber     $BuildNumber `
