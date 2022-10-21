@@ -13,7 +13,7 @@ const { publicRuntimeConfig } = getConfig();
 // This code adopted from:
 // https://dev.to/asross311/strongly-typed-google-analytics-v4-with-nextjs-4g13
 
-export const GA4_MEASUREMENT_ID = publicRuntimeConfig.NEXT_PUBLIC_GOOGLE_ANALYTICS_MEASUREMENT_ID ?? '';
+export const GA4_MEASUREMENT_ID = publicRuntimeConfig.NEXT_PUBLIC_GOOGLE_ANALYTICS_MEASUREMENT_ID ?? 'not specified';
 
 
 const Footer = () => (
