@@ -14,11 +14,7 @@ param (
 
     [Parameter(Mandatory = $true)]
     [String]
-    $FlexportApiClientSecret,
-
-    [Parameter(Mandatory = $true)]
-    [String]
-    $GoogleAnalyticsMeasurementId
+    $FlexportApiClientSecret
 )
 
 Set-StrictMode –Version latest
@@ -61,11 +57,7 @@ function Build-Website {
 
         [Parameter(Mandatory = $true)]
         [String]
-        $FlexportApiClientSecret,
-
-        [Parameter(Mandatory = $true)]
-        [String]
-        $GoogleAnalyticsMeasurementId
+        $FlexportApiClientSecret
     )
 
     Write-Information ""
@@ -76,7 +68,7 @@ function Build-Website {
         Write-Error "Failed to install dependencies, see previous log entries."
     }
 
-    $env:FLEXPORT_API_CLIENT_ID = "$FlexportApiClientId"; $env:FLEXPORT_API_CLIENT_SECRET = "$FlexportApiClientSecret"; $env:NEXT_PUBLIC_GOOGLE_ANALYTICS_MEASUREMENT_ID = "$GoogleAnalyticsMeasurementId"; npm run build
+    $env:FLEXPORT_API_CLIENT_ID = "$FlexportApiClientId"; $env:FLEXPORT_API_CLIENT_SECRET = "$FlexportApiClientSecret"; npm run build
     if (!$?) {
         Write-Error "Failed to build the website, see previous log entries."
     }
@@ -137,11 +129,7 @@ function Invoke-BuildWorkflow {
 
         [Parameter(Mandatory = $true)]
         [String]
-        $FlexportApiClientSecret,
-
-        [Parameter(Mandatory = $true)]
-        [String]
-        $GoogleAnalyticsMeasurementId
+        $FlexportApiClientSecret
     )
 
     # Validate all the PowerShell scripts
@@ -169,8 +157,7 @@ function Invoke-BuildWorkflow {
 
         Build-Website `
             -FlexportApiClientId            $FlexportApiClientId `
-            -FlexportApiClientSecret        $FlexportApiClientSecret `
-            -GoogleAnalyticsMeasurementId   $GoogleAnalyticsMeasurementId
+            -FlexportApiClientSecret        $FlexportApiClientSecret
 
         Test-UnitAndComponentFunctionality
 
@@ -192,8 +179,7 @@ Invoke-BuildWorkflow `
     -BuildNumber                    $BuildNumber `
     -BuildUrl                       $BuildUrl `
     -FlexportApiClientId            $FlexportApiClientId `
-    -FlexportApiClientSecret        $FlexportApiClientSecret `
-    -GoogleAnalyticsMeasurementId   $GoogleAnalyticsMeasurementId
+    -FlexportApiClientSecret        $FlexportApiClientSecret
 
 Write-Information "Earth website build completed!"
 Write-Information ""

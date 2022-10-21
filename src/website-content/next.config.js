@@ -33,6 +33,10 @@ const nextConfig = {
     images: {
       layoutRaw: true
     }
+  },
+  publicRuntimeConfig: {
+    staticFolder: '/static',
+    NEXT_PUBLIC_GOOGLE_ANALYTICS_MEASUREMENT_ID: process.env.NEXT_PUBLIC_GOOGLE_ANALYTICS_MEASUREMENT_ID
   }
 }
 

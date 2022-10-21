@@ -110,8 +110,7 @@ function Invoke-Build {
         ./build.ps1 `
             -BuildNumber                    $([Guid]::NewGuid()) `
             -FlexportApiClientID            $DeveloperEnvironmentSettings.FlexportApiClientID `
-            -FlexportApiClientSecret        $DeveloperEnvironmentSettings.FlexportApiClientSecret `
-            -GoogleAnalyticsMeasurementId   $DeveloperEnvironmentSettings.GoogleAnalyticsMeasurementId
+            -FlexportApiClientSecret        $DeveloperEnvironmentSettings.FlexportApiClientSecret
     }
     finally {
         Pop-Location
