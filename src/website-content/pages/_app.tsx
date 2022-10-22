@@ -7,7 +7,9 @@ import { useRouter }      from 'next/router'
 import { AppProps  }      from 'next/app'
 import Script             from 'next/script'
 
-import { GA4_MEASUREMENT_ID, pageview } from '../lib/google-analytics/ga4'
+import App from 'next/app'
+
+import { NEXT_PUBLIC_GA4_MEASUREMENT_ID, pageview } from '../lib/google-analytics/ga4'
 
 function MyApp({ Component, pageProps }: AppProps) {
 
@@ -36,7 +38,7 @@ function MyApp({ Component, pageProps }: AppProps) {
         // https://nextjs.org/docs/messages/next-script-for-ga#using-gtagjs
       }
       <Script
-        src={`https://www.googletagmanager.com/gtag/js?id=${GA4_MEASUREMENT_ID}`}
+        src={`https://www.googletagmanager.com/gtag/js?id=${NEXT_PUBLIC_GA4_MEASUREMENT_ID}`}
         strategy="afterInteractive"
       />
       <Script id="google-analytics" strategy="afterInteractive">
@@ -45,13 +47,20 @@ function MyApp({ Component, pageProps }: AppProps) {
           function gtag(){window.dataLayer.push(arguments);}
           gtag('js', new Date());
 
-          gtag('config', '${GA4_MEASUREMENT_ID}');
+          gtag('config', '${NEXT_PUBLIC_GA4_MEASUREMENT_ID}');
         `}
       </Script>
 
       <Component {...pageProps} />
     </>
   )
+}
+
+MyApp.getInitialProps = async (appContext: any) => {
+  // calls page's `getInitialProps` and fills `appProps.pageProps`
+  const appProps = await App.getInitialProps(appContext);
+
+  return { ...appProps }
 }
 
 export default MyApp

@@ -36,7 +36,7 @@ const nextConfig = {
   },
   publicRuntimeConfig: {
     staticFolder: '/static',
-    NEXT_PUBLIC_GOOGLE_ANALYTICS_MEASUREMENT_ID: process.env.NEXT_PUBLIC_GOOGLE_ANALYTICS_MEASUREMENT_ID
+    NEXT_PUBLIC_GAID: process.env.NEXT_PUBLIC_GOOGLE_ANALYTICS_MEASUREMENT_ID
   }
 }
 

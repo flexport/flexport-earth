@@ -8,7 +8,7 @@
   "scripts": {
     "dev": "next dev",
     "build": "next build",
-    "start": "node_modules/next/dist/bin/next start --port ${PORT:-3000}",
+    "start": "echo NEXT_PUBLIC_GOOGLE_ANALYTICS_MEASUREMENT_ID: ${NEXT_PUBLIC_GOOGLE_ANALYTICS_MEASUREMENT_ID}; node_modules/next/dist/bin/next start --port ${PORT:-3000}",
     "lint": "next lint",
     "test": "node_modules/cypress/bin/cypress run --component"
   },
