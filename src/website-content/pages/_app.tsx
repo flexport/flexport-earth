@@ -9,11 +9,6 @@ import Script             from 'next/script'
 
 import App from 'next/app'
 
-import getConfig from 'next/config';
-
-const { publicRuntimeConfig } = getConfig();
-
-
 import { NEXT_PUBLIC_GA4_MEASUREMENT_ID, pageview } from '../lib/google-analytics/ga4'
 
 function MyApp({ Component, pageProps }: AppProps) {
@@ -35,14 +30,6 @@ function MyApp({ Component, pageProps }: AppProps) {
     };
 
   }, [router.events])
-
-  console.log();
-  console.log('_app.tsx:');
-  console.log(`NEXT_PUBLIC_GA4_MEASUREMENT_ID: ${NEXT_PUBLIC_GA4_MEASUREMENT_ID}`);
-  console.log(`process.env.NEXT_PUBLIC_GOOGLE_ANALYTICS_MEASUREMENT_ID: ${process.env.NEXT_PUBLIC_GOOGLE_ANALYTICS_MEASUREMENT_ID}`);
-  console.log();
-
-  const x =  publicRuntimeConfig.NEXT_PUBLIC_GAID;
 
   return(
     <>
