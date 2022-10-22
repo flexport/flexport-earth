@@ -6,16 +6,6 @@ import Link                 from 'next/link'
 import IconSupplyChainBook  from '../../public/images/icon-supply-chain-book.png'
 import FlexportLogo         from '../../public/images/flexport-logo.svg'
 
-import getConfig from 'next/config';
-
-const { publicRuntimeConfig } = getConfig();
-
-// This code adopted from:
-// https://dev.to/asross311/strongly-typed-google-analytics-v4-with-nextjs-4g13
-
-export const GA4_MEASUREMENT_ID = publicRuntimeConfig.NEXT_PUBLIC_GOOGLE_ANALYTICS_MEASUREMENT_ID ?? 'not specified';
-export const GA4_MEASUREMENT_ID_PROCESS = process.env.NEXT_PUBLIC_GOOGLE_ANALYTICS_MEASUREMENT_ID ?? 'NA';
-
 const Footer = () => (
       <footer className={Styles.footer}>
         <div className={Styles.footerContent}>
@@ -94,8 +84,6 @@ const Footer = () => (
                 </a>
                 <div className={Styles.footerLowerRightSection}>
                     <a href="javascript:alert('Build URL not specified.');" className={Styles.buildNumber}>
-                        <div className={Styles.buildNumber}>{GA4_MEASUREMENT_ID_PROCESS} |&nbsp;</div>
-                        <div className={Styles.buildNumber}>{GA4_MEASUREMENT_ID} |&nbsp;</div>
                         <div id="build-number-anchor"></div>
                     </a>
                     <div className={Styles.footerCopyright}>

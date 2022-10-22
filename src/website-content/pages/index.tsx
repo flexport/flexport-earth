@@ -11,14 +11,14 @@ import VesselIcon from '../public/images/icon-vessel.svg'
 import ContainersIcon from '../public/images/icon-containers.svg'
 import Background from '../public/images/boat-background.png'
 
-export async function getStaticProps() {
-  const cachePageDurationSeconds = 86400;
+// export async function getStaticProps() {
+//   const cachePageDurationSeconds = 86400;
 
-  return {
-    props: {    },
-    revalidate: cachePageDurationSeconds,
-  }
-}
+//   return {
+//     props: {    },
+//     revalidate: cachePageDurationSeconds,
+//   }
+// }
 
 const Home: NextPage = () => {
   return (
