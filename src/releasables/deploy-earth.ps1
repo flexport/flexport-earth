@@ -168,41 +168,19 @@ function Update-Frontend {
             $Output = az webapp config appsettings set `
                 --resource-group $EarthFrontendResourceGroupName `
                 --name $WebsiteName `
-                --settings WEBSITE_RUN_FROM_PACKAGE="1"
+                --settings `
+                    "WEBSITE_RUN_FROM_PACKAGE=1" `
+                    "FLEXPORT_API_CLIENT_ID=$FlexportApiClientId" `
+                    "FLEXPORT_API_CLIENT_SECRET=$FlexportApiClientSecret" `
+                    "NEXT_PUBLIC_GOOGLE_ANALYTICS_MEASUREMENT_ID=$GoogleAnalyticsMeasurementId"
             if (!$?) {
                 Write-Information $Output
                 Write-Information ""
-                Write-Error "Configuring WEBSITE_RUN_FROM_PACKAGE failed."
-            }
-            $Output = az webapp config appsettings set `
-                --resource-group $EarthFrontendResourceGroupName `
-                --name $WebsiteName `
-                --settings FLEXPORT_API_CLIENT_ID="$FlexportApiClientId"
-            if (!$?) {
-                Write-Information $Output
-                Write-Information ""
-                Write-Error "Configuring FLEXPORT_API_CLIENT_ID failed."
-            }
-            $Output = az webapp config appsettings set `
-                --resource-group $EarthFrontendResourceGroupName `
-                --name $WebsiteName `
-                --settings FLEXPORT_API_CLIENT_SECRET="$FlexportApiClientSecret"
-            if (!$?) {
-                Write-Information $Output
-                Write-Information ""
-                Write-Error "Configuring FLEXPORT_API_CLIENT_SECRET failed."
-            }
-            $Output = az webapp config appsettings set `
-                --resource-group $EarthFrontendResourceGroupName `
-                --name $WebsiteName `
-                --settings NEXT_PUBLIC_GOOGLE_ANALYTICS_MEASUREMENT_ID="$GoogleAnalyticsMeasurementId"
-            if (!$?) {
-                Write-Information $Output
-                Write-Information ""
-                Write-Error "Configuring NEXT_PUBLIC_GOOGLE_ANALYTICS_MEASUREMENT_ID failed."
+                Write-Error "Configuring website failed."
             }
             Write-Information "Website configured!"
             Write-Information ""
+
             Write-Information "Deploying website content..."
             $Output = az webapp deployment source config-zip `
                 --resource-group $EarthFrontendResourceGroupName `
