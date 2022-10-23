@@ -159,8 +159,9 @@ function Update-Frontend {
 
             $CreateResponse = $CreateResponseJson | ConvertFrom-Json
 
-            $CDNHostname = $CreateResponse.properties.outputs.frontDoorEndpointHostName.value
-            $WebsiteName = $CreateResponse.properties.outputs.websiteName.value
+            $CDNHostname            = $CreateResponse.properties.outputs.frontDoorEndpointHostName.value
+            $EndpointResourceName   = $CreateResponse.properties.outputs.frontDoorEndpointName.value
+            $WebsiteName            = $CreateResponse.properties.outputs.websiteName.value
 
             Write-Information ""
             Write-Information "Confguring website..."
@@ -220,11 +221,10 @@ function Update-Frontend {
             }
 
             Write-Information "Purging CDN cache!"
-            # REFACTOR: dedup endpoint-name w/ cdn-front-door.bicep
             $Output = az afd endpoint purge `
                 --resource-group $EarthFrontendResourceGroupName `
                 --profile-name 'EarthFrontDoor' `
-                --endpoint-name "$EnvironmentName-earth-cdn-endpoint" `
+                --endpoint-name $EndpointResourceName `
                 --content-paths '/*'
             if (!$?) {
                 Write-Information $Output

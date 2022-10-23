@@ -39,4 +39,5 @@ module frontDoor 'cdn-front-door.bicep' = {
 }
 
 output websiteName string = websiteName
+output frontDoorEndpointName string = frontDoorEndpointName
 output frontDoorEndpointHostName string = frontDoor.outputs.frontDoorEndpointHostName
