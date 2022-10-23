@@ -91,7 +91,14 @@ function Get-EnvironmentSettingsObject {
         -Settings         $LocalSettings `
         -SettingsFilePath $LocalSettingsPath `
         -ConfigName       "GoogleAnalyticsMeasurementId" `
-        -ConfigPrompt     "What's your Google Analytics Measurement ID (G-XXXXXXXXXX)?"
+        -ConfigPrompt     "What's your Google Analytics Measurement ID (G-XXXXXXXXXX)?
+
+See docs here on how to set it up:
+https://github.com/flexport/flexport-earth/tree/main/product/docs/administrative-features/reporting-and-analytics/google-analytics#how-to-provision-a-new-google-analytics-account-for-a-new-earth-environment
+
+You can also just press enter to skip.
+
+"
 
 
     return $LocalSettings
