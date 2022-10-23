@@ -46,6 +46,18 @@ The NextJS frontend can be started by running:
 
 Note: Will need to open a new terminal window for this after starting the website locally.
 
+## Google Analytics
+
+You can optionally use / test Google Analytics in your personal development environment.
+
+First you will need to create your own presonal Google Analytics account, see [here](../../product/docs/administrative-features/reporting-and-analytics/google-analytics/README.md#how-to-provision-a-new-google-analytics-account-for-a-new-earth-environment) for how to do that.
+
+Then configure your Google Analytics Measurement ID in your local configuration.
+
+If this is your first time running Earth, simply executing any of the development scripts will prompt you for this (and other configuration settings) at which point you can input this ID.
+
+If you've previously executed Earth, then you can set the value in your [local configuration](./configuration/LocalDevelopment.md).
+
 ## Azure
 
 You'll need an Azure subscription to deploy to. Once you have one, you can follow the steps below.
