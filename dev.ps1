@@ -114,7 +114,6 @@ function Invoke-Build {
             -FlexportApiClientID            $DeveloperEnvironmentSettings.FlexportApiClientID `
             -FlexportApiClientSecret        $DeveloperEnvironmentSettings.FlexportApiClientSecret
 
-        Write-Information "Earth website build $BuildNumber completed successfully!"
         Write-Information ""
         Write-Information "To run the build locally: ./dev StartWebsite"
         Write-Information ""
