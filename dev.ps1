@@ -107,10 +107,19 @@ function Invoke-Build {
     try {
         Push-Location $GlobalDevelopmentSettings.SourceDirectory
 
+        $BuildNumber = [Guid]::NewGuid()
+
         ./build.ps1 `
-            -BuildNumber                    $([Guid]::NewGuid()) `
+            -BuildNumber                    $BuildNumber `
             -FlexportApiClientID            $DeveloperEnvironmentSettings.FlexportApiClientID `
             -FlexportApiClientSecret        $DeveloperEnvironmentSettings.FlexportApiClientSecret
+
+        Write-Information "Earth website build $BuildNumber completed successfully!"
+        Write-Information ""
+        Write-Information "To run the build locally: ./dev StartWebsite"
+        Write-Information ""
+        Write-Information "To deploy the build to Azure: ./dev Deploy"
+        Write-Information ""
     }
     finally {
         Pop-Location
