@@ -282,7 +282,7 @@ $EarthWebsiteUrl = Update-Frontend `
 
 $MaxE2ETestRetries = 3
 
-for ($i = 0; $i -lt $MaxE2ETestRetries; $i++) {
+for ($i = 0; $i -le $MaxE2ETestRetries; $i++) {
     try {
         ./test-earth.ps1 `
             -BuildNumber     $BuildNumber `
