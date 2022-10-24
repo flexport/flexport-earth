@@ -282,7 +282,7 @@ $EarthWebsiteUrl = Update-Frontend `
 
 $MaxE2ETestRetries = 3
 
-for ($i = 0; $i -le $MaxE2ETestRetries; $i++) {
+for ($i = 1; $i -le $MaxE2ETestRetries; $i++) {
     try {
         ./test-earth.ps1 `
             -BuildNumber     $BuildNumber `
@@ -293,16 +293,14 @@ for ($i = 0; $i -le $MaxE2ETestRetries; $i++) {
     }
     catch {
         Write-Information ""
-        Write-Information "E2E tests failed with the following error:"
-        Write-Information $_
+        Write-Information "($i / $MaxE2ETestRetries) E2E tests failed!"
         Write-Information ""
-        Write-Information "This is try $i out of $MaxE2ETestRetries."
 
-        if ($i -lt $MaxE2ETestRetries) {
-            Write-Information "Retrying..."
-        } else {
+        if ($i -ge $MaxE2ETestRetries) {
             Write-Error "E2E tests could not pass after $MaxE2ETestRetries retries, giving up..."
         }
+
+        Write-Information "Retrying..."
     }
 }
 
