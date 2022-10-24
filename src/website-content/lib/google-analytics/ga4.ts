@@ -7,7 +7,9 @@ const { publicRuntimeConfig } = getConfig();
 
 export const NEXT_PUBLIC_GA4_MEASUREMENT_ID = publicRuntimeConfig.NEXT_PUBLIC_GAID;
 
-console.log(`NEXT_PUBLIC_GA4_MEASUREMENT_ID: ${NEXT_PUBLIC_GA4_MEASUREMENT_ID}`);
+if (NEXT_PUBLIC_GA4_MEASUREMENT_ID != undefined) {
+    console.log(`NEXT_PUBLIC_GA4_MEASUREMENT_ID: ${NEXT_PUBLIC_GA4_MEASUREMENT_ID}`);
+}
 
 export const pageview = (url: URL) => {
     window.gtag('config', NEXT_PUBLIC_GA4_MEASUREMENT_ID, {
