@@ -247,12 +247,20 @@ function Start-Website {
 
     try {
         Push-Location $WebsiteContentDirectory
+
+        $GoogleAnalyticsMeasurementId = $DeveloperEnvironmentSettings.GoogleAnalyticsMeasurementId
+
+        # Set environment variables that the website requires before starting.
+        $env:NEXT_PUBLIC_GOOGLE_ANALYTICS_MEASUREMENT_ID=$GoogleAnalyticsMeasurementId
+
         npm run dev
     }
     finally {
         Pop-Location
-    }
 
+        # Clean up env vars
+        Remove-Item Env:\NEXT_PUBLIC_GOOGLE_ANALYTICS_MEASUREMENT_ID
+    }
 }
 
 function Invoke-RuntimeTests {
