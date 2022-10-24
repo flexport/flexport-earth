@@ -274,9 +274,37 @@ $EarthWebsiteUrl = Update-Frontend `
     -FlexportApiClientSecret        $FlexportApiClientSecret `
     -GoogleAnalyticsMeasurementId   $GoogleAnalyticsMeasurementId
 
-./test-earth.ps1 `
-    -BuildNumber     $BuildNumber `
-    -EarthWebsiteUrl $EarthWebsiteUrl
+# Run E2E tests, with multiple retries as sometimes
+# they fail with transient errors instead of real issues.
+
+# The retries avoid doing full deployments and also avoid
+# blocking CD pipeline waiting for someone to manually retry.
+
+$MaxE2ETestRetries = 3
+
+for ($i = 0; $i -lt $MaxE2ETestRetries; $i++) {
+    try {
+        ./test-earth.ps1 `
+            -BuildNumber     $BuildNumber `
+            -EarthWebsiteUrl $EarthWebsiteUrl
+
+        # Break the retry loop if last test run was successful.
+        break
+    }
+    catch {
+        Write-Information ""
+        Write-Information "E2E tests failed with the following error:"
+        Write-Information $_
+        Write-Information ""
+        Write-Information "This is try $i out of $MaxE2ETestRetries."
+
+        if ($i -lt $MaxE2ETestRetries) {
+            Write-Information "Retrying..."
+        } else {
+            Write-Error "E2E tests could not pass after $MaxE2ETestRetries retries, giving up..."
+        }
+    }
+}
 
 $Duration = New-TimeSpan -Start $ScriptStartTime -End $(Get-Date)
 Write-Information "Script completed in $Duration"
