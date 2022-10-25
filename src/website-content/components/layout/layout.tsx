@@ -40,7 +40,9 @@ const Layout = ({
                 />
               </a>
               <span id="wiki-title-vertical-line" className={Styles.wikiTitleVerticalLine} />
-              <span id="wiki-subtitle" className={Styles.wikiSubTitle}>Wiki</span>
+              <span id="wiki-subtitle" className={Styles.wikiSubTitle}>
+                <Link href="/"><a>Wiki</a></Link>
+              </span>
           </div>
           <div className={Styles.majorLinks}>
             <Link href='/facts/places/ports'>
