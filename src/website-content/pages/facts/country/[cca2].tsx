@@ -35,7 +35,7 @@ async function getAllCountryCodes() {
 
 export async function getStaticPaths() {
     const paths = [{params: {cca2: 'US'}}];
-    //const paths = await getAllCountryCodes();
+
     return {
         paths,
         fallback: true
