@@ -277,7 +277,6 @@ const PortDetailPage: NextPage<PortDetailPageViewModel> = (port) => {
                     </div>
                 </div>
             </div>
-            <div className={Styles.portDetailSectionSpacer}></div>
         </Layout>
     )
 }

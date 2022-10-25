@@ -128,7 +128,6 @@ const VesselPage: NextPage<VesselPageParams> = (params) => {
                             {params.vessel.mmsi}
                         </span>
                     </div>
-
                 </div>
 
                 <div className={Styles.vesselDetailRight}>

@@ -155,10 +155,6 @@ const PortsByCountryPage: NextPage<PortsByCountryPageParams> = (params) => {
 
         ))}
         </div>
-
-        <div className={Styles.clear}>
-          <br/><br/>
-        </div>
       </Layout>
     )
 }
