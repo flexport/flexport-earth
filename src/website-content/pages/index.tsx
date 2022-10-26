@@ -28,6 +28,7 @@ const Home: NextPage = () => {
             objectFit='cover'
             layout='fill'
             className={Styles.mainBackground}
+            priority={true}
           />
         </div>
         <div className={Styles.mainContent}>
