@@ -51,7 +51,9 @@ const VesselPage: NextPage<VesselPageParams> = (params) => {
 
     return (
         <Layout title={params.vessel.name} selectMajorLink='vessels'>
-            <Breadcrumbs />
+            <Breadcrumbs
+                currentPageName={params.vessel.name}
+            />
 
             <div className={Styles.vesselDetailHeader}>
                 <div className={Styles.VesselDetailHeaderBackgroundContainer}>

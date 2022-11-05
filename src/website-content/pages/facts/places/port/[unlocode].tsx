@@ -108,7 +108,9 @@ const PortDetailPage: NextPage<PortDetailPageViewModel> = (port) => {
 
     return (
         <Layout title={port.general.portName} selectMajorLink='ports'>
-            <Breadcrumbs />
+            <Breadcrumbs
+                currentPageName={port.general.portName}
+            />
 
             <div className={Styles.portDetailHeader}>
                 <div className={Styles.PortSateliteBackgroundContainer}>
