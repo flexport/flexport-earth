@@ -27,6 +27,8 @@ export function titleize(string: string) {
 }
 
 export default function NextBreadcrumbs({
+  breadcrumbsComponentCssId='breadcrumbs',
+  currentPageName='',
   getTextGenerator=_defaultGetTextGenerator,
   getDefaultTextGenerator=_defaultGetDefaultTextGenerator,
   router=({} as NextRouter) // This parameter is primarily for unit tests to inject a mock.
@@ -46,14 +48,24 @@ export default function NextBreadcrumbs({
                 const param = pathnameNestedRoutes[idx].replace("[", "").replace("]", "");
                 const href  = "/" + asPathNestedRoutes.slice(0, idx + 1).join("/");
 
+                let text = '';
+
+                if (idx == asPathNestedRoutes.length - 1 && currentPageName != '') {
+                  text = currentPageName;
+                } else {
+                  text = getDefaultTextGenerator(titleize(subpath), href);
+                }
+
                 return {
                     href,
                     textGenerator:  getTextGenerator(param, router.query),
-                    text:           getDefaultTextGenerator(titleize(subpath), href)
+                    text:           text
                 };
             });
 
             let allCrumbs = [{ href: "/", text: "Wiki" }, ...crumblist];
+
+            // TODO: Refactor: Move specific crumb names to filter outside of the Breadcrumb component.
 
             return allCrumbs.filter(v =>
               v.text != 'Facts' &&
@@ -65,7 +77,7 @@ export default function NextBreadcrumbs({
     );
 
   return (
-    <Breadcrumbs aria-label="breadcrumb" id="breadcrumbs" className={Styles.breadcrumbs} separator={
+    <Breadcrumbs aria-label="breadcrumb" id={breadcrumbsComponentCssId} className={Styles.breadcrumbs} separator={
         <Image
             src={RightChevron}
             alt="Right Chevron"

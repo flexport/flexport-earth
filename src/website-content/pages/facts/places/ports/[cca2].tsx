@@ -107,7 +107,9 @@ const PortsByCountryPage: NextPage<PortsByCountryPageParams> = (params) => {
 
     return (
       <Layout title='Ports' selectMajorLink='ports'>
-        <Breadcrumbs />
+        <Breadcrumbs
+          currentPageName={params.countryName}
+        />
 
         <h1 className={Styles.title}>{params.countryName} ports</h1>
 
