@@ -1,6 +1,6 @@
 import type { NextRouter } from 'next/router';
 
-const createMockedRouter = (page: string): NextRouter => ({
+const createMockedRouter = (page: string = 'test'): NextRouter => ({
   basePath: '',
   route: '/page/[page]',
   pathname: '/page/[page]',
