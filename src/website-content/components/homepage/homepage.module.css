@@ -1,0 +1,108 @@
+.main {
+    height:           664px;
+    width:            1645px;
+    margin:           auto;
+    padding-top:      78px;
+    position:         relative;
+  }
+
+  .mainBackground {
+    z-index: -1;
+  }
+
+  .mainBackgroundContainer span {
+    z-index: -1;
+  }
+
+  .mainContent {
+    width:              1049px;
+    margin:             auto;
+  }
+
+  .wikiTitleVerticalLine {
+    border-left:            1px solid #C5D2E7;
+    margin-left:            11px;
+    margin-right:           11px;
+    position:               relative;
+    top:                    -3px;
+    padding-top:            6px;
+  }
+
+  .wikiSubTitle {
+    font-size:              18px;
+    font-weight:            700;
+    font-size:              20px;
+    line-height:            20px;
+    position:               relative;
+    top:                    -7px;
+    color:                white;
+  }
+
+  .tagLine {
+    font-weight:            700;
+    font-size:              32px;
+    line-height:            48px;
+    letter-spacing:         -0.02em;
+    margin-top:             9px;
+    color:                white;
+  }
+
+  .rightChevron {
+    position:             relative;
+    top:                  -7px;
+    margin-left:          18px;
+  }
+
+
+
+  .vesselsAndContainersSection {
+    margin-top:           24px;
+  }
+
+  .vesselsSection {
+    width:                243px;
+    height:               96px;
+    box-shadow:           0px 0px 2px rgba(0, 0, 0, 0.12), 0px 2px 2px rgba(0, 0, 0, 0.12);
+    border-radius:        3px;
+    background-color:   white;
+    float:                left;
+    font-weight:          700;
+    font-size:            20px;
+    line-height:          32px;
+    color:              #000000;
+    display:              flex;
+    align-items:          center;
+    padding-left:         23px;
+    cursor:               pointer;
+  }
+
+  .vesselsSectionTitle {
+    margin-left:          20px;
+    margin-right:         10px;
+  }
+
+  .vesselsSection:hover {
+    text-decoration:      underline;
+  }
+
+  .containersSection {
+    width:                243px;
+    height:               96px;
+    box-shadow:           0px 0px 2px rgba(0, 0, 0, 0.12), 0px 2px 2px rgba(0, 0, 0, 0.12);
+    border-radius:        3px;
+    background-color:   white;
+    float:                left;
+    margin-left:          25px;
+    font-weight:          700;
+    font-size:            20px;
+    line-height:          32px;
+    color:              #000000;
+    display:              flex;
+    align-items:          center;
+    padding-left:         23px;
+  }
+
+  .containersSectionTitle {
+    margin-left:          18px;
+    margin-right:         10px;
+  }
