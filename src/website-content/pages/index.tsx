@@ -14,7 +14,7 @@ type CountryInfo = {
 export async function getServerSideProps({ res }: {res: NextApiResponse }) {
   res.setHeader(
     'Cache-Control',
-    'public, s-maxage=86400, stale-while-revalidate=59'
+    'public, maxage=86400, stale-while-revalidate=86400 stale-if-error=86400'
   )
 
   const countriesApi = getRestCountriesApiClient();
