@@ -29,11 +29,6 @@ const nextConfig = {
       },
     ]
   },
-  experimental: {
-    images: {
-      layoutRaw: true
-    }
-  },
   publicRuntimeConfig: {
     staticFolder: '/static',
     NEXT_PUBLIC_GAID: process.env.NEXT_PUBLIC_GOOGLE_ANALYTICS_MEASUREMENT_ID

@@ -15,6 +15,7 @@ const createMockedRouter = (page: string = 'test'): NextRouter => ({
   back: () => {},
   prefetch: () => Promise.resolve(),
   beforePopState: () => {},
+  forward: () => {},
   events: {
     emit: () => {},
     on: () => {},
