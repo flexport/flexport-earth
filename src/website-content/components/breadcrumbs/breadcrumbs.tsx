@@ -73,7 +73,7 @@ export default function NextBreadcrumbs({
               v.text != 'Vehicles'
             );
         },
-        [router.asPath, router.pathname, router.query, getTextGenerator, getDefaultTextGenerator]
+        [router.asPath, router.pathname, router.query, currentPageName, getTextGenerator, getDefaultTextGenerator]
     );
 
   return (
