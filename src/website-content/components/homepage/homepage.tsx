@@ -1,9 +1,7 @@
-import type { NextPage } from 'next'
 import Head     from 'next/head'
 import Image    from 'next/image'
-import Link     from 'next/link'
 
-import Styles from './homePage.module.css'
+import Styles from './homepage.module.css'
 import Footer from '../footer/footer'
 
 import FlexportLogo     from '../../public/images/flexport-logo.svg'

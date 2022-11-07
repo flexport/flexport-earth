@@ -1,4 +1,4 @@
-import type { NextPage } from 'next'
+import type { NextPage, NextApiResponse } from 'next'
 
 import Homepage                   from '../components/homepage/homepage'
 
@@ -11,7 +11,12 @@ type CountryInfo = {
   portCount:        number
 }
 
-export async function getServerSideProps() {
+export async function getServerSideProps({ res }: {res: NextApiResponse }) {
+  res.setHeader(
+    'Cache-Control',
+    'public, s-maxage=86400, stale-while-revalidate=59'
+  )
+
   const countriesApi = getRestCountriesApiClient();
   const flexportApi  = await getFlexportApiClient();
   const countries    = await countriesApi.countries.getAllCountriesAsMap();
