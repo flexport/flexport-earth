@@ -41,7 +41,7 @@ const Layout = ({
               </a>
               <span id="wiki-title-vertical-line" className={Styles.wikiTitleVerticalLine} />
               <span id="wiki-subtitle" className={Styles.wikiSubTitle}>
-                <Link href="/"><a>Wiki</a></Link>
+                <Link href="/">Wiki</Link>
               </span>
           </div>
           <div className={Styles.majorLinks}>

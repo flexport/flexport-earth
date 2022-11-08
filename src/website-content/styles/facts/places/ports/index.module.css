@@ -105,11 +105,7 @@
     position:           relative;
 }
 
-.portBackground {
-    z-index: -1;
-}
-
-.portBackground span {
+.portBackground img {
     z-index: -1;
 }
 

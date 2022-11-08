@@ -26,6 +26,10 @@
     margin-bottom:      32px;
 }
 
+.vessel a {
+    color: black;
+}
+
 .vesselThumbnail {
     float:              left;
 }
