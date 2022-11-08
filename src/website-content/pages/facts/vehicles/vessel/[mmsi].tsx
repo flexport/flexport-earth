@@ -62,8 +62,6 @@ const VesselPage: NextPage<VesselPageParams> = (params) => {
                         alt="Vessel Header Background"
                         objectFit='cover'
                         layout='fill'
-                        width={1045}
-                        height={339}
                     />
                 </div>
                 <div className={Styles.vesselDetailTitle}>

@@ -217,10 +217,14 @@ const PortDetailPage: NextPage<PortDetailPageViewModel> = (port) => {
                         <div key={terminalName}>
                             <div className={Styles.portDetailSectionSpacer}></div>
 
-                            <Link prefetch={false} key={terminalCode} href={`/facts/places/terminal/${terminalCode}`}>
-                                <a id={`terminal-${terminalCode}`} className={Styles.portDetailSectionTitle}>
-                                    Terminal: {terminalName}
-                                </a>
+                            <Link
+                                prefetch={false}
+                                key={terminalCode}
+                                id={`terminal-${terminalCode}`}
+                                className={Styles.portDetailSectionTitle}
+                                href={`/facts/places/terminal/${terminalCode}`}
+                            >
+                                Terminal: {terminalName}
                             </Link>
                         </div>
                     ))}

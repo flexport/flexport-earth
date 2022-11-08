@@ -90,8 +90,6 @@ const PortsPage: NextPage<Ports> = ({ports, time}) => {
                 <div className={Styles.portBackground}>
                   <Image
                     src={SatelitePort}
-                    width={511}
-                    height={160}
                     alt="Satelite Port Background"
                     objectFit='cover'
                     layout='fill'
