@@ -12,6 +12,8 @@ class DataPaging {
         let relativeUrlWithQueryString: string        = `${relativeUrl}?${queryStringParameters}&per=100`;
 
         do {
+            console.log(`Calling ${relativeUrlWithQueryString}`);
+
             const response = await httpClient.Get(
                 relativeUrlWithQueryString
             );
