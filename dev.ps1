@@ -5,12 +5,13 @@
 param (
     [Parameter(Mandatory = $true)]
     [ValidateSet(
-        'Build',
-        'Deploy',
-        'Destroy',
+        'BuildRelease',
+        'StartWebsiteLocallyDevMode',
+        'StartWebsiteLocallyProdMode',
+        'DeployToAzure',
+        'RunE2ETests',
         'Push',
-        'StartWebsite',
-        'RuntimeTests'
+        'DestroyAzureEnvironment'
     )]
     [String]
     $Workflow
@@ -22,12 +23,13 @@ $ErrorActionPreference = "Stop"
 $InformationPreference = "Continue"
 
 enum DevWorkflows {
-    build
-    deploy
-    destroy
-    push
-    startWebsite
-    runtimeTests
+    BuildRelease
+    StartWebsiteLocallyDevMode
+    StartWebsiteLocallyProdMode
+    DeployToAzure
+    RunE2ETests
+    Push
+    DestroyAzureEnvironment
 }
 
 function Invoke-Workflow {
@@ -42,46 +44,57 @@ function Invoke-Workflow {
     $GlobalDevelopmentSettings = Get-Content 'dev/development-config.json' | ConvertFrom-Json
 
     $DevelopmentToolsDirectory = $GlobalDevelopmentSettings.DevelopmentToolsDirectory
+
     . "$DevelopmentToolsDirectory/local-config-manager.ps1"
+
     $DeveloperEnvironmentSettings = Get-EnvironmentSettingsObject
 
     switch ($Workflow) {
-        build
+        BuildRelease
         {
             Invoke-Build `
                 -GlobalDevelopmentSettings      $GlobalDevelopmentSettings `
                 -DeveloperEnvironmentSettings   $DeveloperEnvironmentSettings
         }
 
-        deploy
+        DeployToAzure
         {
             Invoke-Deploy `
                 -GlobalDevelopmentSettings      $GlobalDevelopmentSettings `
                 -DeveloperEnvironmentSettings   $DeveloperEnvironmentSettings
         }
 
-        destroy
+        DestroyAzureEnvironment
         {
             Invoke-Destroy `
                 -GlobalDevelopmentSettings      $GlobalDevelopmentSettings `
                 -DeveloperEnvironmentSettings   $DeveloperEnvironmentSettings
         }
 
-        push
+        Push
         {
             Invoke-Push `
                 -GlobalDevelopmentSettings      $GlobalDevelopmentSettings `
                 -DeveloperEnvironmentSettings   $DeveloperEnvironmentSettings
         }
 
-        startWebsite
+        StartWebsiteLocallyDevMode
         {
             Start-Website `
                 -GlobalDevelopmentSettings      $GlobalDevelopmentSettings `
-                -DeveloperEnvironmentSettings   $DeveloperEnvironmentSettings
+                -DeveloperEnvironmentSettings   $DeveloperEnvironmentSettings `
+                -Mode                           Dev
         }
 
-        runtimeTests
+        StartWebsiteLocallyProdMode
+        {
+            Start-Website `
+                -GlobalDevelopmentSettings      $GlobalDevelopmentSettings `
+                -DeveloperEnvironmentSettings   $DeveloperEnvironmentSettings `
+                -Mode                           Prod
+        }
+
+        RunE2ETests
         {
             Invoke-RuntimeTests `
                 -GlobalDevelopmentSettings      $GlobalDevelopmentSettings `
@@ -115,9 +128,14 @@ function Invoke-Build {
             -FlexportApiClientSecret        $DeveloperEnvironmentSettings.FlexportApiClientSecret
 
         Write-Information ""
-        Write-Information "To run the build locally: ./dev StartWebsite"
+        Write-Information "To run the build locally:"
         Write-Information ""
-        Write-Information "To deploy the build to Azure: ./dev Deploy"
+        Write-Information "   ./dev StartWebsiteLocallyDevMode"
+        Write-Information "   ./dev StartWebsiteLocallyProdMode"
+        Write-Information ""
+        Write-Information "To deploy the build to Azure:"
+        Write-Information ""
+        Write-Information "   ./dev DeployToAzure"
         Write-Information ""
     }
     finally {
@@ -231,6 +249,11 @@ function Invoke-Push {
     git push --set-upstream origin $CurrentBranchName
 }
 
+enum LocalWebsiteModes {
+    Dev
+    Prod
+}
+
 function Start-Website {
     [CmdletBinding()]
     param (
@@ -240,7 +263,11 @@ function Start-Website {
 
         [Parameter(Mandatory = $true)]
         [Object]
-        $DeveloperEnvironmentSettings
+        $DeveloperEnvironmentSettings,
+
+        [Parameter(Mandatory = $true)]
+        [LocalWebsiteModes]
+        $Mode
     )
 
     $WebsiteContentDirectory = $GlobalDevelopmentSettings.WebsiteContentSourceDirectory
@@ -253,7 +280,19 @@ function Start-Website {
         # Set environment variables that the website requires before starting.
         $env:NEXT_PUBLIC_GOOGLE_ANALYTICS_MEASUREMENT_ID=$GoogleAnalyticsMeasurementId
 
-        npm run dev
+        switch ($Mode) {
+            Dev
+            {
+                npm run dev
+            }
+
+            Prod
+            {
+                npm run start
+            }
+
+            default { throw "The specified mode '${Mode}' is not valid." }
+        }
     }
     finally {
         Pop-Location

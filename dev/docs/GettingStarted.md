@@ -30,19 +30,23 @@ If running on Windows, install the [Windows Subsystem for Linux](https://docs.mi
 
 ## Building a Release
 
-    ./dev build
+    ./dev BuildRelease
 
 Note: This will also execute the unit and component tests.
 
 ## Viewing Website Content Locally
 
-The NextJS frontend can be started by running:
+The NextJS frontend can be started in [dev mode](https://nextjs.org/docs/api-reference/cli#development) by running:
 
-    ./dev StartWebsite
+    ./dev StartWebsiteLocallyDevMode
 
-## Testing Website Functionality Locally
+The NextJS frontend can be started in [production mode](https://nextjs.org/docs/api-reference/cli#production) by running:
 
-    ./dev RuntimeTests
+    ./dev StartWebsiteLocallyProdMode
+
+## Execute End to End Tests Locally
+
+    ./dev RunE2ETests
 
 Note: Will need to open a new terminal window for this after starting the website locally.
 
@@ -66,17 +70,17 @@ For provisioning new Azure Accounts, Tenants, and Subscriptions, continue [here]
 
 ### Deploy your locally built changes to Azure
 
-    ./dev deploy
+    ./dev DeployToAzure
 
 ### Clean up your Azure deployment
 
-    ./dev destroy
+    ./dev DestroyAzureEnvironment
 
 ### Pushing Changes to GitHub
 
 Once you've made some changes and committed them, you can push them remotely using the push script:
 
-    ./dev push
+    ./dev Push
 
 ## Developing for Earth
 
