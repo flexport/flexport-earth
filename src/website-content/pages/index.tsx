@@ -1,4 +1,4 @@
-import type { NextPage, NextApiResponse } from 'next'
+import type { NextPage, NextApiRequest, NextApiResponse } from 'next'
 
 import Homepage                   from '../components/homepage/homepage'
 
@@ -11,7 +11,9 @@ type CountryInfo = {
   portCount:        number
 }
 
-export async function getServerSideProps({ res }: {res: NextApiResponse }) {
+export async function getServerSideProps({ req, res }: {req: NextApiRequest, res: NextApiResponse }) {
+  console.log(`req.url: ${req.url}\n${JSON.stringify(req.headers)}`);
+
   res.setHeader(
     'Cache-Control',
     'public, maxage=86400, stale-while-revalidate=86400 stale-if-error=86400'
