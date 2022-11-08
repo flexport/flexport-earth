@@ -6,13 +6,14 @@ We use Cypress.io for unit testing frontend code.
 
 ### Guidance
 
-Keep your unit tests next to the code that they test.
+Keep your tests next to the code that they test.
 
 See the [Breadcrumbs UI Component](/src/website-content/components/breadcrumbs) as an example:
 
 ```
 /src/website-content/components/breadcrumbs/
 - ...
+- breadcrumbs.component-test.cy.tsx
 - breadcrumbs.tsx
 - breadcrumbs.unit-test.cy.ts
 - ...
@@ -20,7 +21,7 @@ See the [Breadcrumbs UI Component](/src/website-content/components/breadcrumbs) 
 
 ## Manual Testing
 
-### Call the Ports Flexort API
+### Call the Ports Flexport API
 
 ```
 ~/git/flexport-earth> ./dev/tools/flexport-api/get-ports.ps1 | ConvertTo-Json
