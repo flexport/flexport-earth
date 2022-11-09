@@ -27,11 +27,12 @@ export function titleize(string: string) {
 }
 
 export default function NextBreadcrumbs({
-  breadcrumbsComponentCssId='breadcrumbs',
-  currentPageName='',
-  getTextGenerator=_defaultGetTextGenerator,
-  getDefaultTextGenerator=_defaultGetDefaultTextGenerator,
-  router=({} as NextRouter) // This parameter is primarily for unit tests to inject a mock.
+  breadcrumbsComponentCssId = 'breadcrumbs',
+  currentPageName           = '',
+  doNotLinkList             = [''],
+  getTextGenerator          = _defaultGetTextGenerator,
+  getDefaultTextGenerator   = _defaultGetDefaultTextGenerator,
+  router                    = ({} as NextRouter) // This parameter is primarily for unit tests to inject a mock.
 }) {
     const nextRouter = useRouter();
 
@@ -67,28 +68,44 @@ export default function NextBreadcrumbs({
 
             // TODO: Refactor: Move specific crumb names to filter outside of the Breadcrumb component.
 
+            console.log(doNotLinkList[0]);
+
             return allCrumbs.filter(v =>
               v.text != 'Facts' &&
               v.text != 'Places' &&
               v.text != 'Vehicles'
             );
         },
-        [router.asPath, router.pathname, router.query, currentPageName, getTextGenerator, getDefaultTextGenerator]
+        [
+          router.asPath,
+          router.pathname,
+          router.query,
+          currentPageName,
+          doNotLinkList,
+          getTextGenerator,
+          getDefaultTextGenerator
+        ]
     );
 
   return (
-    <Breadcrumbs aria-label="breadcrumb" id={breadcrumbsComponentCssId} className={Styles.breadcrumbs} separator={
-        <Image
-            src={RightChevron}
-            alt="Right Chevron"
-            height={10}
-            width={10}
-        />}
+    <Breadcrumbs
+      aria-label  = "breadcrumb"
+      id          = {breadcrumbsComponentCssId}
+      className   = {Styles.breadcrumbs}
+      separator   = {
+                    <Image
+                        src   = {RightChevron}
+                        alt   = "Right Chevron"
+                        height= {10}
+                        width = {10}
+                    />}
     >
+      {
 
-      {breadcrumbs.map((crumb, idx) => (
-        <Crumb {...crumb} key={idx} last={idx === breadcrumbs.length - 1} />
-      ))}
+        breadcrumbs.map((crumb, idx) => (
+          <Crumb {...crumb} key={idx} skipLink={idx === breadcrumbs.length - 1 || doNotLinkList.includes(crumb.text)} />
+        ))
+      }
     </Breadcrumbs>
   );
 }
@@ -96,7 +113,7 @@ export default function NextBreadcrumbs({
 type CrumbType = {
     text: string,
     href: string,
-    last: boolean
+    skipLink: boolean
 }
 
 function Crumb(ct: CrumbType) {
@@ -105,16 +122,12 @@ function Crumb(ct: CrumbType) {
 
   useEffect(
     () => {
-        // // If `textGenerator` is nonexistent, then don't do anything
-        // if (!Boolean(textGenerator)) { return; }
-        // // Run the text generator and set the text again
-        // const finalText = await textGenerator();
         setText(text);
     },
     [text]
   );
 
-  if (ct.last) {
+  if (ct.skipLink) {
     return <span>{ct.text}</span>
   }
 

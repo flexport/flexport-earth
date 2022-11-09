@@ -60,4 +60,49 @@ describe('Breadcrumbs', () => {
         .last()
         .should('have.text', testPageName);
     })
+
+    it('should link all crumbs except the last', () => {
+      // Arrange
+      const testPageName = 'Test Page Name';
+
+      let breadcrumbsComponent =
+        <NextBreadcrumbs
+          breadcrumbsComponentCssId = {breadcrumbsComponentCssId}
+          router                    = {createMockedRouter(
+                                        '/facts/places/terminal/[terminalCode]',
+                                        {terminalCode: 'abc'}
+                                      )}
+        />;
+
+      // Act
+      cy.mount(breadcrumbsComponent);
+
+      // Assert
+      cy.get(breadcrumbListItemCss).contains('Terminal').should('have.attr', 'href');
+      cy.get(breadcrumbListItemCss).last().should('not.have.attr', 'href');
+    })
+
+    it('should allow skipping linking of specific crumbs', () => {
+      // Arrange
+      const testPageName = 'Test Page Name';
+
+      let breadcrumbsComponent =
+        <NextBreadcrumbs
+          breadcrumbsComponentCssId = {breadcrumbsComponentCssId}
+          doNotLinkList             = {['Terminal']}
+          router                    = {createMockedRouter(
+                                        '/facts/places/terminal/[terminalCode]',
+                                        {terminalCode: 'abc'}
+                                      )}
+        />;
+
+      // Act
+      cy.mount(breadcrumbsComponent);
+
+      // Assert
+      cy
+        .get(breadcrumbListItemCss)
+          .contains('Terminal')
+              .should('not.have.attr', 'href');
+    })
 })
