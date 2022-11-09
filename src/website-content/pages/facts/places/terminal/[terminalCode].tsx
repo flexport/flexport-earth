@@ -93,6 +93,7 @@ const PortDetailPage: NextPage<TerminalDetailPageViewModel> = (port) => {
         <Layout title={port.general.terminalName} selectMajorLink='terminals'>
             <Breadcrumbs
                 currentPageName={port.general.terminalName}
+                doNotLinkList={['Terminal']}
             />
 
             <div className={Styles.portDetailHeader}>
