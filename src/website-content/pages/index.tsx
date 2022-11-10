@@ -1,9 +1,9 @@
 import type { NextPage, NextApiResponse } from 'next'
 
-import Homepage                   from '../components/homepage/homepage'
+import Homepage                   from 'components/homepage/homepage'
 
-import getRestCountriesApiClient  from '../lib/data-sources/restcountries.com/api'
-import { getFlexportApiClient }   from '../lib/data-sources/flexport/api'
+import getRestCountriesApiClient  from 'lib/data-sources/restcountries.com/api'
+import { getFlexportApiClient }   from 'lib/data-sources/flexport/api'
 
 type CountryInfo = {
   countryName:      string,

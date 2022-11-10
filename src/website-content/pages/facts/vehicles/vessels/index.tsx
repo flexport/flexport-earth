@@ -1,11 +1,14 @@
-import type { NextPage } from 'next'
-import { getFlexportApiClient } from '../../../../lib/data-sources/flexport/api'
-import Layout from '../../../../components/layout/layout'
-import Link from 'next/link';
-import Styles from '../../../../styles/facts/vehicles/vessels/index.module.css'
-import Image from 'next/image'
-import Breadcrumbs from '../../../../components/breadcrumbs/breadcrumbs'
-import ShipThumbnail from '../../../../public/images/thumbnail-container-ship.png'
+import type { NextPage }  from 'next'
+import Image              from 'next/image'
+import Link               from 'next/link';
+
+import Layout                   from 'components/layout/layout'
+import Breadcrumbs              from 'components/breadcrumbs/breadcrumbs'
+
+import { getFlexportApiClient } from 'lib/data-sources/flexport/api'
+
+import Styles                   from 'styles/facts/vehicles/vessels/index.module.css'
+import ShipThumbnail            from 'public/images/thumbnail-container-ship.png'
 
 function truncate(
   stringToTruncate: string,
