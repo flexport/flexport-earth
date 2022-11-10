@@ -1,10 +1,12 @@
-import type { NextPage } from 'next'
-import Layout from '../../../components/layout/layout'
-import Country from '../../../lib/data-sources/restcountries.com/country'
-import getRestCountriesApiClient from '../../../lib/data-sources/restcountries.com/api'
-import getFlexportApiClient from '../../../lib/data-sources/flexport/api'
-import { useRouter } from 'next/router'
-import Breadcrumbs from '../../../components/breadcrumbs/breadcrumbs'
+import type { NextPage }    from 'next'
+import { useRouter }        from 'next/router'
+
+import Layout                       from 'components/layout/layout'
+import Breadcrumbs                  from 'components/breadcrumbs/breadcrumbs'
+
+import Country                      from 'lib/data-sources/restcountries.com/country'
+import getRestCountriesApiClient    from 'lib/data-sources/restcountries.com/api'
+import getFlexportApiClient         from 'lib/data-sources/flexport/api'
 
 type CountryCodeParams = {
     params: {

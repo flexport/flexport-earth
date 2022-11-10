@@ -1,11 +1,14 @@
-import type { NextPage } from 'next'
-import Layout from '../../../../components/layout/layout'
-import { getFlexportApiClient } from '../../../../lib/data-sources/flexport/api'
-import { useRouter } from 'next/router'
-import Image from 'next/image'
-import Styles from './terminalCode.module.css'
-import Breadcrumbs from '../../../../components/breadcrumbs/breadcrumbs'
-import PortSateliteBackground from '../../../../public/images/port-satelite-background.png'
+import type { NextPage }    from 'next'
+import { useRouter }        from 'next/router'
+import Image                from 'next/image'
+
+import Layout                   from 'components/layout/layout'
+import Breadcrumbs              from 'components/breadcrumbs/breadcrumbs'
+
+import { getFlexportApiClient } from 'lib/data-sources/flexport/api'
+
+import Styles                   from './terminalCode.module.css'
+import PortSateliteBackground   from 'public/images/port-satelite-background.png'
 
 type TerminalCodeParams = {
     params: {

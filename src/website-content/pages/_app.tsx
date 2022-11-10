@@ -1,6 +1,6 @@
-import '../styles/globals.css'
-import '../styles/Fonts.css'
-import '../public/build-number.css'
+import 'styles/globals.css'
+import 'styles/Fonts.css'
+import 'public/build-number.css'
 
 import { useEffect }      from 'react'
 import { useRouter }      from 'next/router'
@@ -9,7 +9,7 @@ import Script             from 'next/script'
 
 import App from 'next/app'
 
-import { NEXT_PUBLIC_GA4_MEASUREMENT_ID, pageview } from '../lib/google-analytics/ga4'
+import { NEXT_PUBLIC_GA4_MEASUREMENT_ID, pageview } from 'lib/google-analytics/ga4'
 
 function MyApp({ Component, pageProps }: AppProps) {
 

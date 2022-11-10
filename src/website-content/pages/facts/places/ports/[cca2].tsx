@@ -1,13 +1,16 @@
-import type { NextPage } from 'next'
-import Layout from '../../../../components/layout/layout'
-import { getFlexportApiClient } from '../../../../lib/data-sources/flexport/api'
-import { useRouter } from 'next/router'
-import Link from 'next/link'
-import Image from 'next/image'
-import Styles from '../../../../styles/facts/places/ports/index.module.css'
-import getRestCountriesApiClient from '../../../../lib/data-sources/restcountries.com/api'
-import Breadcrumbs from '../../../../components/breadcrumbs/breadcrumbs'
-import SatelitePort from '../../../../public/images/satellite-port.png'
+import type { NextPage }  from 'next'
+import { useRouter }      from 'next/router'
+import Link               from 'next/link'
+import Image              from 'next/image'
+
+import Layout                     from 'components/layout/layout'
+import Breadcrumbs                from 'components/breadcrumbs/breadcrumbs'
+
+import { getFlexportApiClient }   from 'lib/data-sources/flexport/api'
+import getRestCountriesApiClient  from 'lib/data-sources/restcountries.com/api'
+
+import SatelitePort               from 'public/images/satellite-port.png'
+import Styles                     from 'styles/facts/places/ports/index.module.css'
 
 type Cca2Params = {
     params: {

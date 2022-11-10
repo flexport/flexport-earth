@@ -1,9 +1,11 @@
-import type { NextPage } from 'next'
-import Link from 'next/link';
-import Layout from '../../../components/layout/layout'
-import Country from '../../../lib/data-sources/restcountries.com/country'
-import getRestCountriesApiClient from '../../../lib/data-sources/restcountries.com/api'
-import Breadcrumbs from '../../../components/breadcrumbs/breadcrumbs'
+import type { NextPage }  from 'next'
+import Link               from 'next/link';
+
+import Layout                     from 'components/layout/layout'
+import Breadcrumbs                from 'components/breadcrumbs/breadcrumbs'
+
+import Country                    from 'lib/data-sources/restcountries.com/country'
+import getRestCountriesApiClient  from 'lib/data-sources/restcountries.com/api'
 
 export async function getStaticProps() {
   const countriesApi = getRestCountriesApiClient();
