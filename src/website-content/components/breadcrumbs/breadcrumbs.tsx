@@ -32,7 +32,8 @@ export default function NextBreadcrumbs({
   doNotLinkList             = [''],
   getTextGenerator          = _defaultGetTextGenerator,
   getDefaultTextGenerator   = _defaultGetDefaultTextGenerator,
-  router                    = ({} as NextRouter) // This parameter is primarily for unit tests to inject a mock.
+  router                    = ({} as NextRouter), // This parameter is primarily for unit tests to inject a mock.
+  omitCrumbs                = ['Facts', 'Places', 'Vehicles']
 }) {
     const nextRouter = useRouter();
 
@@ -66,14 +67,8 @@ export default function NextBreadcrumbs({
 
             let allCrumbs = [{ href: "/", text: "Wiki" }, ...crumblist];
 
-            // TODO: Refactor: Move specific crumb names to filter outside of the Breadcrumb component.
-
-            console.log(doNotLinkList[0]);
-
-            return allCrumbs.filter(v =>
-              v.text != 'Facts' &&
-              v.text != 'Places' &&
-              v.text != 'Vehicles'
+            return allCrumbs.filter(crumb =>
+              !omitCrumbs.includes(crumb.text)
             );
         },
         [
@@ -81,9 +76,9 @@ export default function NextBreadcrumbs({
           router.pathname,
           router.query,
           currentPageName,
-          doNotLinkList,
           getTextGenerator,
-          getDefaultTextGenerator
+          getDefaultTextGenerator,
+          omitCrumbs
         ]
     );
 
@@ -103,7 +98,15 @@ export default function NextBreadcrumbs({
       {
 
         breadcrumbs.map((crumb, idx) => (
-          <Crumb {...crumb} key={idx} skipLink={idx === breadcrumbs.length - 1 || doNotLinkList.includes(crumb.text)} />
+          <Crumb
+            {...crumb}
+            key      =  {idx}
+            skipLink =  { // Skip making the crumb clickable if it's the last or,
+                          // it's specified in the doNotLinkList.
+                          idx === breadcrumbs.length - 1 ||
+                          doNotLinkList.includes(crumb.text)
+                        }
+          />
         ))
       }
     </Breadcrumbs>
