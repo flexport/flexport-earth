@@ -22,7 +22,7 @@ Write-Information ""
 Write-Information "Testing Earth (build $BuildNumber) at $EarthWebsiteUrl"
 Write-Information ""
 
-$TestRootPath = "testing/functional"
+$TestRootPath = "testing/e2e"
 
 try {
     Push-Location $TestRootPath
