@@ -227,7 +227,7 @@ function Update-Frontend {
 
             $BuildNumberUrl = "$URLToTest/build-number.css"
 
-            for ($i = 0; $i -lt 20; $i++) {
+            for ($i = 0; $i -lt 25; $i++) {
                 try {
                     $Response            = Invoke-WebRequest $BuildNumberUrl
                     $StatusCode          = $Response.StatusCode
