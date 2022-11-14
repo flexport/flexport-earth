@@ -3,8 +3,8 @@ import Link                         from 'next/link'
 
 import Styles from                  './ports-card.module.css'
 
-import PortIcon                     from '../../public/images/icon-port.svg'
-import RightChevron                 from '../../public/images/right-chevron.svg'
+import PortIcon                     from 'public/images/icon-port.svg'
+import RightChevron                 from 'public/images/right-chevron.svg'
 
 export type PortsCardCountryInfo = {
     countryName:      string,

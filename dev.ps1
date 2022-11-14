@@ -96,7 +96,7 @@ function Invoke-Workflow {
 
         RunE2ETests
         {
-            Invoke-RuntimeTests `
+            Invoke-E2ETests `
                 -GlobalDevelopmentSettings      $GlobalDevelopmentSettings `
                 -DeveloperEnvironmentSettings   $DeveloperEnvironmentSettings
         }
@@ -302,7 +302,7 @@ function Start-Website {
     }
 }
 
-function Invoke-RuntimeTests {
+function Invoke-E2ETests {
     [CmdletBinding()]
     param (
         [Parameter(Mandatory = $true)]

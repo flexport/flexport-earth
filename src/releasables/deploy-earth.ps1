@@ -227,7 +227,7 @@ function Update-Frontend {
 
             $BuildNumberUrl = "$URLToTest/build-number.css"
 
-            for ($i = 0; $i -lt 20; $i++) {
+            for ($i = 0; $i -lt 25; $i++) {
                 try {
                     $Response            = Invoke-WebRequest $BuildNumberUrl
                     $StatusCode          = $Response.StatusCode
@@ -279,30 +279,10 @@ $EarthWebsiteUrl = Update-Frontend `
 
 # The retries avoid doing full deployments and also avoid
 # blocking CD pipeline waiting for someone to manually retry.
-
-$MaxE2ETestRetries = 3
-
-for ($i = 1; $i -le $MaxE2ETestRetries; $i++) {
-    try {
-        ./test-earth.ps1 `
-            -BuildNumber     $BuildNumber `
-            -EarthWebsiteUrl $EarthWebsiteUrl
-
-        # Break the retry loop if last test run was successful.
-        break
-    }
-    catch {
-        Write-Information ""
-        Write-Information "($i / $MaxE2ETestRetries) E2E tests failed!"
-        Write-Information ""
-
-        if ($i -ge $MaxE2ETestRetries) {
-            Write-Error "E2E tests could not pass after $MaxE2ETestRetries retries, giving up..."
-        }
-
-        Write-Information "Retrying..."
-    }
-}
+./test-earth.ps1 `
+    -BuildNumber        $BuildNumber `
+    -EarthWebsiteUrl    $EarthWebsiteUrl `
+    -MaxTries           3
 
 $Duration = New-TimeSpan -Start $ScriptStartTime -End $(Get-Date)
 Write-Information "Script completed in $Duration"

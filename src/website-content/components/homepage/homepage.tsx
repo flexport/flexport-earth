@@ -4,11 +4,11 @@ import Image    from 'next/image'
 import Styles from './homepage.module.css'
 import Footer from '../footer/footer'
 
-import FlexportLogo     from '../../public/images/flexport-logo.svg'
-import RightChevron     from '../../public/images/right-chevron.svg'
-import VesselIcon       from '../../public/images/icon-vessel.svg'
-import ContainersIcon   from '../../public/images/icon-containers.svg'
-import Background       from '../../public/images/boat-background-optimized.webp'
+import FlexportLogo     from 'public/images/flexport-logo.svg'
+import RightChevron     from 'public/images/right-chevron.svg'
+import VesselIcon       from 'public/images/icon-vessel.svg'
+import ContainersIcon   from 'public/images/icon-containers.svg'
+import Background       from 'public/images/boat-background-optimized.webp'
 
 import PortCard from './ports-card'
 
