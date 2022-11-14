@@ -55,6 +55,31 @@ or
 
 `./dev StartWebsiteLocallyProdMode`
 
+### Continuous E2E Testing
+
+You may want to run the E2E tests in a loop for a duration of time for various testing purposes.
+
+For example, if you want to run the tests aginst Production for 1hr:
+
+`./dev/tools/testing/e2e-test-monitor.ps1 -TargetUrl "https://www.flexport-earth.com" -BuildNumber "20221110.6" -LoopForDuration "01:00:00"`
+
+Note: The build number is displayed in the footer of the target environment.
+
+## Cache / CDN Testing
+
+Sometimes you want to monitor if certain requests are being satisifed from the CDN or not.
+
+You can monitor a target like so:
+
+```
+./dev/tools/testing/cache-hit-monitor.ps1 -UrlToPoll "https://www.flexport-earth.com/_next/image?url=%2F_next%2Fstatic%2Fmedia%2Fboat-background-optimized.43626b77.webp&w=1920&q=75" -PollDurationMinutes 180
+
+1: 11/14/2022 11:05:15: 00:00:00.5068720: TCP_HIT`
+1: 11/14/2022 02:05:15: 00:00:00.5068720: TCP_REMOTE_HIT`
+1: 11/14/2022 05:05:15: 00:00:00.5068720: TCP_MISS`
+1: 11/14/2022 08:05:15: 00:00:00.5068720: TCP_HIT
+```
+
 ## Manual Testing
 
 ### Call the Ports Flexport API
