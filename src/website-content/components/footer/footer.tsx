@@ -3,8 +3,8 @@ import Styles               from './footer.module.css'
 import Image                from 'next/image'
 import Link                 from 'next/link'
 
-import IconSupplyChainBook  from '../../public/images/icon-supply-chain-book.png'
-import FlexportLogo         from '../../public/images/flexport-logo.svg'
+import IconSupplyChainBook  from 'public/images/icon-supply-chain-book.png'
+import FlexportLogo         from 'public/images/flexport-logo.svg'
 
 const Footer = () => (
       <footer className={Styles.footer}>

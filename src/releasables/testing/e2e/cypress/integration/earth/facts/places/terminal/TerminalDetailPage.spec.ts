@@ -1,11 +1,11 @@
 /// <reference types="cypress" />
 
-import { gotoHomePage }               from '../../../../../flexport-earth-object-model/HomePage'
-import ListCountriesAndPortCountsPage from  '../../../../../flexport-earth-object-model/facts/places/ports/ListCountriesAndPortCountsPage'
-import PortsByCountryPage             from  '../../../../../flexport-earth-object-model/facts/places/ports/PortsByCountryPage'
-import PortPage                       from  '../../../../../flexport-earth-object-model/facts/places/port/PortPage'
+import { gotoHomePage }               from  'flexport-earth-object-model/HomePage'
+import ListCountriesAndPortCountsPage from  'flexport-earth-object-model/facts/places/ports/ListCountriesAndPortCountsPage'
+import PortsByCountryPage             from  'flexport-earth-object-model/facts/places/ports/PortsByCountryPage'
+import PortPage                       from  'flexport-earth-object-model/facts/places/port/PortPage'
 
-import { TestData }                   from  '../../../TestData';
+import { TestData }                   from  'integration/earth/TestData';
 
 describe('Terminal Detail Page', () => {
   it('Can view Terminal Details for a Valid Terminal', () => {
@@ -29,10 +29,6 @@ describe('Terminal Detail Page', () => {
     new PortsByCountryPage()
       .getPortLink(TestData.Ports.ValidPortUnloCode)
         .click();
-
-    new PortPage()
-      .getBody()
-        .contains(TestData.Countries.ValidCountryName);
 
     // Step 3: Validate that the Ports Terminals Appear as expected
     new PortPage()

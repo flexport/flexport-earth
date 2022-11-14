@@ -7,7 +7,7 @@ import Link                 from 'next/link';
 import Styles               from './layout.module.css'
 import Footer               from '../footer/footer'
 
-import FlexportLogo         from '../../public/images/flexport-logo.svg'
+import FlexportLogo         from 'public/images/flexport-logo.svg'
 
 type Props = {
   children:         ReactNode;

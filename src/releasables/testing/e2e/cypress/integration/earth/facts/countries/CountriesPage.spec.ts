@@ -1,6 +1,6 @@
 /// <reference types="cypress" />
 
-import { gotoCountriesPage, CountriesPage } from '../../../../flexport-earth-object-model/facts/countries/CountriesPage'
+import { gotoCountriesPage, CountriesPage } from 'flexport-earth-object-model/facts/countries/CountriesPage'
 
 describe('Countries Page', () => {
   let countriesPage: CountriesPage;

@@ -5,7 +5,7 @@ import { NextRouter, useRouter }  from 'next/router';
 import React, { useEffect }       from 'react'
 import type { ParsedUrlQuery }    from 'querystring'
 import Styles                     from './breadcrumbs.module.css'
-import RightChevron               from '../../public/images/right-chevron.svg'
+import RightChevron               from 'public/images/right-chevron.svg'
 
 // NOTE: This code adapted from https://dev.to/dan_starner/building-dynamic-breadcrumbs-in-nextjs-17oa
 

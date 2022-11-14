@@ -1,9 +1,9 @@
 /// <reference types="cypress" />
 
-import { gotoHomePage }               from '../../../../../flexport-earth-object-model/HomePage'
-import ListCountriesAndPortCountsPage from  '../../../../../flexport-earth-object-model/facts/places/ports/ListCountriesAndPortCountsPage'
-import PortsByCountryPage             from  '../../../../../flexport-earth-object-model/facts/places/ports/PortsByCountryPage'
-import PortPage                       from  '../../../../../flexport-earth-object-model/facts/places/port/PortPage'
+import { gotoHomePage }               from  'flexport-earth-object-model/HomePage'
+import ListCountriesAndPortCountsPage from  'flexport-earth-object-model/facts/places/ports/ListCountriesAndPortCountsPage'
+import PortsByCountryPage             from  'flexport-earth-object-model/facts/places/ports/PortsByCountryPage'
+import PortPage                       from  'flexport-earth-object-model/facts/places/port/PortPage'
 
 // TODO: EARTH-257: REFACTOR:
 //       Refactor test data into a central/reusable location.
