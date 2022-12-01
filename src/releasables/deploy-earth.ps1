@@ -276,13 +276,26 @@ $EarthWebsiteUrl = Update-Frontend `
 
 # Run E2E tests, with multiple retries as sometimes
 # they fail with transient errors instead of real issues.
-
 # The retries avoid doing full deployments and also avoid
 # blocking CD pipeline waiting for someone to manually retry.
 ./test-earth.ps1 `
     -BuildNumber        $BuildNumber `
     -EarthWebsiteUrl    $EarthWebsiteUrl `
     -MaxTries           3
+
+# Once we've confirmed the latest application and tests are working successfully,
+# deploy the E2E Monitor for continuously running the tests against the environment
+# to catch any issues that occur between deployments.
+try {
+    Push-Location "./testing/e2e/monitor"
+
+    ./deploy-e2e-monitor.ps1 `
+        -EnvironmentName $EnvironmentName `
+        -DeployLocation  "WestUS2"
+}
+finally {
+    Pop-Location
+}
 
 $Duration = New-TimeSpan -Start $ScriptStartTime -End $(Get-Date)
 Write-Information "Script completed in $Duration"
