@@ -289,7 +289,7 @@ $EarthWebsiteUrl = Update-Frontend `
 try {
     Push-Location "./testing/e2e/monitor"
 
-    ./testing/e2e/monitor/deploy-e2e-monitor.ps1 `
+    ./deploy-e2e-monitor.ps1 `
         -EnvironmentName $EnvironmentName `
         -DeployLocation  "WestUS2"
 }
