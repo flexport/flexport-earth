@@ -286,9 +286,16 @@ $EarthWebsiteUrl = Update-Frontend `
 # Once we've confirmed the latest application and tests are working successfully,
 # deploy the E2E Monitor for continuously running the tests against the environment
 # to catch any issues that occur between deployments.
-./testing/e2e/monitor/deploy-e2e-monitor.ps1 `
-    -EnvironmentName $EnvironmentName `
-    -DeployLocation  "WestUS2"
+try {
+    Push-Location "./testing/e2e/monitor"
+
+    ./testing/e2e/monitor/deploy-e2e-monitor.ps1 `
+        -EnvironmentName $EnvironmentName `
+        -DeployLocation  "WestUS2"
+}
+finally {
+    Pop-Location
+}
 
 $Duration = New-TimeSpan -Start $ScriptStartTime -End $(Get-Date)
 Write-Information "Script completed in $Duration"
