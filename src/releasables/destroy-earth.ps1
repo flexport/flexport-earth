@@ -20,6 +20,16 @@ if($PSCmdlet.ShouldProcess($EnvironmentName)) {
     Write-Information ""
     Write-Information "Destroying $EnvironmentName environment..."
 
+    try {
+        Push-Location "./testing/e2e/monitor"
+
+        ./destroy-e2e-monitor.ps1 `
+            -EnvironmentName $EnvironmentName
+    }
+    finally {
+        Pop-Location
+    }
+
     az `
         group delete --name $EarthFrontendResourceGroupName `
         -y

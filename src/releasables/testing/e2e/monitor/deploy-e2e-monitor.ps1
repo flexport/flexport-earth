@@ -2,11 +2,7 @@
 param (
     [Parameter(Mandatory = $true)]
     [String]
-    $EnvironmentName,
-
-    [Parameter(Mandatory = $true)]
-    [String]
-    $DeployLocation
+    $EnvironmentName
 )
 
 Set-StrictMode –Version latest
@@ -20,18 +16,18 @@ function Set-E2EMonitorResourceGroup {
     param (
         [Parameter(Mandatory = $true)]
         [String]
-        $EnvironmentName,
+        $E2EMonitorResourceGroupName,
 
         [Parameter(Mandatory = $true)]
         [String]
-        $DeployLocation
+        $E2EMonitorResourceGroupAzureRegion
     )
 
     process {
-        if ($PSCmdlet.ShouldProcess($DeployLocation)) {
+        if ($PSCmdlet.ShouldProcess($E2EMonitorResourceGroupName)) {
             $DeploymentParameters = [PSCustomObject]@{
-                environmentShortName = @{ value = $EnvironmentName.ToLower() }
-                resourceGroupLocation= @{ value = $DeployLocation }
+                resourceGroupName    = @{ value = $E2EMonitorResourceGroupName }
+                resourceGroupLocation= @{ value = $E2EMonitorResourceGroupAzureRegion }
             }
 
             $DeploymentParametersJson = $DeploymentParameters | ConvertTo-Json
@@ -43,24 +39,16 @@ function Set-E2EMonitorResourceGroup {
             Write-Information "$DeploymentParametersJson"
             Write-Information ""
 
-            $CreateResponseJson = az `
-                deployment sub create `
-                --location $DeployLocation `
+            az deployment sub create `
+                --location      $E2EMonitorResourceGroupAzureRegion `
                 --template-file ./infrastructure/resource-group.bicep `
-                --parameters $DeploymentParametersJson
+                --parameters    $DeploymentParametersJson
 
             if (!$?) {
                 Write-Error "Resource group deployment failed!"
-                Exit 1
             }
 
-            $CreateResponse     = $CreateResponseJson | ConvertFrom-Json
-            $ResourceGroupName  = $CreateResponse.properties.outputs.resourceGroupName.value
-
-            Write-Information "Provisioning E2E Monitor Resource Group $ResourceGroupName completed!"
-
-            # Return the name
-            $ResourceGroupName
+            Write-Information "Provisioning E2E Monitor Resource Group $E2EMonitorResourceGroupName completed!"
         }
     }
 }
@@ -75,18 +63,18 @@ function Set-E2EMonitorResources {
 
         [Parameter(Mandatory = $true)]
         [String]
-        $DeployLocation,
+        $E2EMonitorResourceGroupName,
 
         [Parameter(Mandatory = $true)]
         [String]
-        $E2EMonitorResourceGroupName
+        $E2EMonitorResourceGroupAzureRegion
     )
 
     process {
-        if ($PSCmdlet.ShouldProcess($DeployLocation)) {
+        if ($PSCmdlet.ShouldProcess($E2EMonitorResourceGroupName)) {
             $DeploymentParameters = [PSCustomObject]@{
                 environmentShortName = @{ value = $EnvironmentName.ToLower() }
-                location             = @{ value = $DeployLocation }
+                location             = @{ value = $E2EMonitorResourceGroupAzureRegion }
             }
 
             $DeploymentParametersJson = $DeploymentParameters | ConvertTo-Json
@@ -94,17 +82,16 @@ function Set-E2EMonitorResources {
 
             Write-Information ""
             Write-Information "Provisioning the E2E Monitor Resources..."
-            Write-Information "Environment Name:            $EnvironmentName"
-            Write-Information "Deploy Location:             $DeployLocation"
-            Write-Information "E2EMonitorResourceGroupName: $E2EMonitorResourceGroupName"
+            Write-Information "DeploymentParametersJson:"
+            Write-Information "$DeploymentParametersJson"
             Write-Information ""
 
             az `
                 deployment group create `
-                --mode Complete `
-                --resource-group $E2EMonitorResourceGroupName `
-                --template-file ./infrastructure/main.bicep `
-                --parameters $DeploymentParametersJson
+                --mode              Complete `
+                --resource-group    $E2EMonitorResourceGroupName `
+                --template-file     ./infrastructure/main.bicep `
+                --parameters        $DeploymentParametersJson
 
             if (!$?) {
                 Write-Error "Resource group deployment failed."
@@ -117,11 +104,17 @@ function Set-E2EMonitorResources {
 }
 
 # Deploy infrastructure
-$E2EMonitorResourceGroupName = Set-E2EMonitorResourceGroup `
-    -EnvironmentName $EnvironmentName `
-    -DeployLocation  $DeployLocation
+. ./e2e-monitor-config.ps1
+
+$E2EMonitorConfig                   = Get-E2EMonitorConfig -EnvironmentName $EnvironmentName
+$E2EMonitorResourceGroupName        = $E2EMonitorConfig.E2EMonitorResourceGroupName
+$E2EMonitorResourceGroupAzureRegion = $E2EMonitorConfig.E2EMonitorResourceGroupAzureRegion
+
+Set-E2EMonitorResourceGroup `
+    -E2EMonitorResourceGroupName        $E2EMonitorResourceGroupName `
+    -E2EMonitorResourceGroupAzureRegion $E2EMonitorResourceGroupAzureRegion
 
 Set-E2EMonitorResources `
-    -EnvironmentName                $EnvironmentName `
-    -DeployLocation                 $DeployLocation `
-    -E2EMonitorResourceGroupName    $E2EMonitorResourceGroupName
+    -EnvironmentName                    $EnvironmentName `
+    -E2EMonitorResourceGroupName        $E2EMonitorResourceGroupName `
+    -E2EMonitorResourceGroupAzureRegion $E2EMonitorResourceGroupAzureRegion
