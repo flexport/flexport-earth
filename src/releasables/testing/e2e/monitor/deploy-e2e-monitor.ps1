@@ -71,7 +71,7 @@ function Set-E2EMonitorResources {
     )
 
     process {
-        if ($PSCmdlet.ShouldProcess($DeployLocation)) {
+        if ($PSCmdlet.ShouldProcess($E2EMonitorResourceGroupName)) {
             $DeploymentParameters = [PSCustomObject]@{
                 environmentShortName = @{ value = $EnvironmentName.ToLower() }
                 location             = @{ value = $E2EMonitorResourceGroupAzureRegion }
