@@ -10,23 +10,21 @@ Set-StrictMode –Version latest
 $ErrorActionPreference = "Stop"
 $InformationPreference = "Continue"
 
-. ./e2e-monitor-config.ps1
-
 # Performs Create or Update operation for the E2E Monitor Resource Group.
 function Set-E2EMonitorResourceGroup {
     [CmdletBinding(SupportsShouldProcess=$true)]
     param (
         [Parameter(Mandatory = $true)]
         [String]
-        $EnvironmentName
+        $E2EMonitorResourceGroupName,
+
+        [Parameter(Mandatory = $true)]
+        [String]
+        $E2EMonitorResourceGroupAzureRegion
     )
 
     process {
         if ($PSCmdlet.ShouldProcess($DeployLocation)) {
-            $E2EMonitorConfig                   = Get-E2EMonitorConfig -EnvironmentName $EnvironmentName
-            $E2EMonitorResourceGroupAzureRegion = $E2EMonitorConfig.E2EMonitorResourceGroupAzureRegion
-            $E2EMonitorResourceGroupName        = $E2EMonitorConfig.E2EMonitorResourceGroupName
-
             $DeploymentParameters = [PSCustomObject]@{
                 resourceGroupName    = @{ value = $E2EMonitorResourceGroupName }
                 resourceGroupLocation= @{ value = $E2EMonitorResourceGroupAzureRegion }
@@ -51,9 +49,6 @@ function Set-E2EMonitorResourceGroup {
             }
 
             Write-Information "Provisioning E2E Monitor Resource Group $ResourceGroupName completed!"
-
-            # Return the name
-            $E2EMonitorResourceGroupName
         }
     }
 }
@@ -68,18 +63,18 @@ function Set-E2EMonitorResources {
 
         [Parameter(Mandatory = $true)]
         [String]
-        $DeployLocation,
+        $E2EMonitorResourceGroupName,
 
         [Parameter(Mandatory = $true)]
         [String]
-        $E2EMonitorResourceGroupName
+        $E2EMonitorResourceGroupAzureRegion
     )
 
     process {
         if ($PSCmdlet.ShouldProcess($DeployLocation)) {
             $DeploymentParameters = [PSCustomObject]@{
                 environmentShortName = @{ value = $EnvironmentName.ToLower() }
-                location             = @{ value = $DeployLocation }
+                location             = @{ value = $E2EMonitorResourceGroupAzureRegion }
             }
 
             $DeploymentParametersJson = $DeploymentParameters | ConvertTo-Json
@@ -109,11 +104,17 @@ function Set-E2EMonitorResources {
 }
 
 # Deploy infrastructure
-$E2EMonitorResourceGroupName = Set-E2EMonitorResourceGroup `
-    -EnvironmentName $EnvironmentName `
-    -DeployLocation  $DeployLocation
+. ./e2e-monitor-config.ps1
+
+$E2EMonitorConfig                   = Get-E2EMonitorConfig -EnvironmentName $EnvironmentName
+$E2EMonitorResourceGroupName        = $E2EMonitorConfig.E2EMonitorResourceGroupName
+$E2EMonitorResourceGroupAzureRegion = $E2EMonitorConfig.E2EMonitorResourceGroupAzureRegion
+
+Set-E2EMonitorResourceGroup `
+    -E2EMonitorResourceGroupName        $E2EMonitorResourceGroupName `
+    -E2EMonitorResourceGroupAzureRegion $E2EMonitorResourceGroupAzureRegion
 
 Set-E2EMonitorResources `
-    -EnvironmentName                $EnvironmentName `
-    -DeployLocation                 $DeployLocation `
-    -E2EMonitorResourceGroupName    $E2EMonitorResourceGroupName
+    -EnvironmentName                    $EnvironmentName `
+    -E2EMonitorResourceGroupName        $E2EMonitorResourceGroupName `
+    -E2EMonitorResourceGroupAzureRegion $E2EMonitorResourceGroupAzureRegion
