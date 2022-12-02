@@ -290,8 +290,7 @@ try {
     Push-Location "./testing/e2e/monitor"
 
     ./deploy-e2e-monitor.ps1 `
-        -EnvironmentName $EnvironmentName `
-        -DeployLocation  "WestUS2"
+        -EnvironmentName $EnvironmentName
 }
 finally {
     Pop-Location
