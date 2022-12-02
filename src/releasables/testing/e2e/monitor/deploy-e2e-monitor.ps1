@@ -24,7 +24,7 @@ function Set-E2EMonitorResourceGroup {
     )
 
     process {
-        if ($PSCmdlet.ShouldProcess($DeployLocation)) {
+        if ($PSCmdlet.ShouldProcess($E2EMonitorResourceGroupName)) {
             $DeploymentParameters = [PSCustomObject]@{
                 resourceGroupName    = @{ value = $E2EMonitorResourceGroupName }
                 resourceGroupLocation= @{ value = $E2EMonitorResourceGroupAzureRegion }
@@ -48,7 +48,7 @@ function Set-E2EMonitorResourceGroup {
                 Write-Error "Resource group deployment failed!"
             }
 
-            Write-Information "Provisioning E2E Monitor Resource Group $ResourceGroupName completed!"
+            Write-Information "Provisioning E2E Monitor Resource Group $E2EMonitorResourceGroupName completed!"
         }
     }
 }
