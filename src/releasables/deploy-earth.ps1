@@ -59,6 +59,19 @@ function Update-SubscriptionBudget {
 
             $ParametersJson = $Parameters | ConvertTo-Json
 
+            # PowerShell v7.3.0 has a breaking change in how it handles
+            # parsing double quotes in strings. Previous versions required
+            # escaping the double quotes. Dev machines have been updated,
+            # but the Azure DevOps machines haven't yet.
+
+            $CurrentPowerShellVersion = $($PSVersionTable.PSVersion)
+            $CurrentPowerShellMajorVersion = $CurrentPowerShellVersion.Major
+            $CurrentPowerShellMinorVersion = $CurrentPowerShellVersion.Minor
+
+            if ($CurrentPowerShellMajorVersion -le 7 -and $CurrentPowerShellMinorVersion -lt 3) {
+                $ParametersJson = $ParametersJson.Replace('"', '\"')
+            }
+
             az `
                 deployment sub create `
                 --location $EarthFrontendResourceGroupLocation `
@@ -88,6 +101,19 @@ function Update-FrontendResourceGroup {
             }
 
             $ParametersJson = $Parameters | ConvertTo-Json
+
+            # PowerShell v7.3.0 has a breaking change in how it handles
+            # parsing double quotes in strings. Previous versions required
+            # escaping the double quotes. Dev machines have been updated,
+            # but the Azure DevOps machines haven't yet.
+
+            $CurrentPowerShellVersion = $($PSVersionTable.PSVersion)
+            $CurrentPowerShellMajorVersion = $CurrentPowerShellVersion.Major
+            $CurrentPowerShellMinorVersion = $CurrentPowerShellVersion.Minor
+
+            if ($CurrentPowerShellMajorVersion -le 7 -and $CurrentPowerShellMinorVersion -lt 3) {
+                $ParametersJson = $ParametersJson.Replace('"', '\"')
+            }
 
             az `
                 deployment sub create `
@@ -150,6 +176,19 @@ function Update-Frontend {
             }
 
             $FrontendParametersJson = $FrontendParameters | ConvertTo-Json
+
+            # PowerShell v7.3.0 has a breaking change in how it handles
+            # parsing double quotes in strings. Previous versions required
+            # escaping the double quotes. Dev machines have been updated,
+            # but the Azure DevOps machines haven't yet.
+
+            $CurrentPowerShellVersion = $($PSVersionTable.PSVersion)
+            $CurrentPowerShellMajorVersion = $CurrentPowerShellVersion.Major
+            $CurrentPowerShellMinorVersion = $CurrentPowerShellVersion.Minor
+
+            if ($CurrentPowerShellMajorVersion -le 7 -and $CurrentPowerShellMinorVersion -lt 3) {
+                $FrontendParametersJson = $FrontendParametersJson.Replace('"', '\"')
+            }
 
             $CreateResponseJson = az deployment group create `
                 --mode Complete `

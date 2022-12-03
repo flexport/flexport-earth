@@ -32,6 +32,19 @@ function Set-ContainerInfraResourceGroup {
 
             $DeploymentParametersJson = $DeploymentParameters | ConvertTo-Json
 
+            # PowerShell v7.3.0 has a breaking change in how it handles
+            # parsing double quotes in strings. Previous versions required
+            # escaping the double quotes. Dev machines have been updated,
+            # but the Azure DevOps machines haven't yet.
+
+            $CurrentPowerShellVersion = $($PSVersionTable.PSVersion)
+            $CurrentPowerShellMajorVersion = $CurrentPowerShellVersion.Major
+            $CurrentPowerShellMinorVersion = $CurrentPowerShellVersion.Minor
+
+            if ($CurrentPowerShellMajorVersion -le 7 -and $CurrentPowerShellMinorVersion -lt 3) {
+                $DeploymentParametersJson = $DeploymentParametersJson.Replace('"', '\"')
+            }
+
             Write-Information ""
             Write-Information "Provisioning the Container infra Resource Group..."
             Write-Information "DeploymentParametersJson:"
@@ -77,6 +90,19 @@ function Set-ContainerInfraResources {
             }
 
             $DeploymentParametersJson = $DeploymentParameters | ConvertTo-Json
+
+            # PowerShell v7.3.0 has a breaking change in how it handles
+            # parsing double quotes in strings. Previous versions required
+            # escaping the double quotes. Dev machines have been updated,
+            # but the Azure DevOps machines haven't yet.
+
+            $CurrentPowerShellVersion = $($PSVersionTable.PSVersion)
+            $CurrentPowerShellMajorVersion = $CurrentPowerShellVersion.Major
+            $CurrentPowerShellMinorVersion = $CurrentPowerShellVersion.Minor
+
+            if ($CurrentPowerShellMajorVersion -le 7 -and $CurrentPowerShellMinorVersion -lt 3) {
+                $DeploymentParametersJson = $DeploymentParametersJson.Replace('"', '\"')
+            }
 
             Write-Information ""
             Write-Information "Provisioning the Container infra resources..."
