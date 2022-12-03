@@ -36,7 +36,7 @@ if($PSCmdlet.ShouldProcess($EnvironmentName)) {
     if($Exists -eq "true") {
         az group delete `
             --name $EarthFrontendResourceGroupName `
-            -yes
+            --yes
 
         if (!$?) {
             Write-Information ""
