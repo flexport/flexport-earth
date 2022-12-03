@@ -29,7 +29,6 @@ function Write-BuildNumber {
 
     Write-Information "Build number written to $BuildNumberFilePath"
 }
-
 function Write-BuildUrl {
     $FilePath = "./components/footer/footer.tsx"
 
@@ -47,7 +46,6 @@ function Write-BuildUrl {
 
     Write-Information "Build URL written to $FilePath"
 }
-
 function Build-Website {
     [CmdletBinding()]
     param (
@@ -76,7 +74,6 @@ function Build-Website {
     Write-Information "Website files compiled successfully!"
     Write-Information ""
 }
-
 function Test-UnitAndComponentFunctionality {
     Write-Information ""
     Write-Information "Running unit tests..."
@@ -162,6 +159,16 @@ function Invoke-BuildWorkflow {
         Test-UnitAndComponentFunctionality
 
         Compress-Website
+    }
+    finally {
+        Pop-Location
+    }
+
+    try {
+        Push-Location "$ReleasablesDirectory/testing/e2e"
+
+        ./build-e2e-tests.ps1 `
+            -BuildNumber $BuildNumber
     }
     finally {
         Pop-Location
