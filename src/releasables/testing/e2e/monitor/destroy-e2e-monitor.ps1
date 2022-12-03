@@ -18,16 +18,22 @@ if($PSCmdlet.ShouldProcess($EnvironmentName)) {
     $E2EMonitorConfig               = Get-E2EMonitorConfig -EnvironmentName $EnvironmentName
     $E2EMonitorResourceGroupName    = $E2EMonitorConfig.E2EMonitorResourceGroupName
 
-    Write-Information ""
-    Write-Information "Destroying E2E Monitor in the $EnvironmentName environment..."
+    $Exists = az group exists --resource-group $E2EMonitorResourceGroupName
 
-    az group delete `
-        --name $E2EMonitorResourceGroupName `
-        --yes
+    if($Exists -eq "true") {
+        Write-Information ""
+        Write-Information "Destroying E2E Monitor in the $EnvironmentName environment..."
 
-    if (!$?) {
-        Write-Error "Deletion of resource group $E2EMonitorResourceGroupName failed!"
+        az group delete `
+            --name $E2EMonitorResourceGroupName `
+            --yes
+
+        if (!$?) {
+            Write-Error "Deletion of resource group $E2EMonitorResourceGroupName failed!"
+        }
+
+        Write-Information "E2E Monitor destroyed!"
+    } else {
+        Write-Information "Resource group $E2EMonitorResourceGroupName doesn't exist, moving on..."
     }
-
-    Write-Information "E2E Monitor destroyed!"
 }
