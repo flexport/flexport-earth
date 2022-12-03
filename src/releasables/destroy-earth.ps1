@@ -37,13 +37,13 @@ if($PSCmdlet.ShouldProcess($EnvironmentName)) {
         az group delete `
             --name $EarthFrontendResourceGroupName `
             -yes
+
+        if (!$?) {
+            Write-Information ""
+            Write-Error "Deletion of the frontend resource group $EarthFrontendResourceGroupName failed!"
+        }
     } else {
         Write-Information "Resource group $EarthFrontendResourceGroupName doesn't exist, moving on..."
-    }
-
-    if (!$?) {
-        Write-Information ""
-        Write-Error "Deletion of the frontend resource group $EarthFrontendResourceGroupName failed!"
     }
 
     try {
