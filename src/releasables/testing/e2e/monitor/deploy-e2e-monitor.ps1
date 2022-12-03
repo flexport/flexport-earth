@@ -94,7 +94,7 @@ function Set-E2EMonitorResources {
                 --parameters        $DeploymentParametersJson
 
             if (!$?) {
-                Write-Error "Resource group deployment failed."
+                Write-Error "Resources deployment failed."
                 Exit 1
             }
 

@@ -58,7 +58,6 @@ function Update-SubscriptionBudget {
             }
 
             $ParametersJson = $Parameters | ConvertTo-Json
-            $ParametersJson = $ParametersJson.Replace('"', '\"')
 
             az `
                 deployment sub create `
@@ -82,13 +81,19 @@ function Update-FrontendResourceGroup {
 
     process {
         if ($PSCmdlet.ShouldProcess($EarthFrontendResourceGroupName)) {
-            $Parameters = '{\"earthFrontendResourceGroupName\":{\"value\":\"' + $EarthFrontendResourceGroupName + '\"}, \"resourceGroupLocation\":{\"value\":\"' + $EarthFrontendResourceGroupLocation + '\"}}'
+            $Parameters = [PSCustomObject]@{
+                earthFrontendResourceGroupName  = @{ value = $EarthFrontendResourceGroupName }
+                resourceGroupLocation           = @{ value = $EarthFrontendResourceGroupLocation }
+
+            }
+
+            $ParametersJson = $Parameters | ConvertTo-Json
 
             az `
                 deployment sub create `
                 --location $EarthFrontendResourceGroupLocation `
                 --template-file ./frontend/earth-frontend.bicep `
-                --parameters $Parameters
+                --parameters $ParametersJson
 
             if (!$?) {
                 Write-Error "Resource group deployment failed."
@@ -145,7 +150,6 @@ function Update-Frontend {
             }
 
             $FrontendParametersJson = $FrontendParameters | ConvertTo-Json
-            $FrontendParametersJson = $FrontendParametersJson.Replace('"', '\"')
 
             $CreateResponseJson = az deployment group create `
                 --mode Complete `
@@ -262,6 +266,16 @@ function Update-Frontend {
             Return $URLToTest
         }
     }
+}
+
+try {
+    Push-Location "./shared-infrastructure/containers"
+
+    ./deploy-container-infrastructure.ps1 `
+        -EnvironmentName $EnvironmentName
+}
+finally {
+    Pop-Location
 }
 
 #Update-SubscriptionBudget
