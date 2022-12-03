@@ -31,7 +31,6 @@ function Set-E2EMonitorResourceGroup {
             }
 
             $DeploymentParametersJson = $DeploymentParameters | ConvertTo-Json
-            $DeploymentParametersJson = $DeploymentParametersJson.Replace('"', '\"')
 
             Write-Information ""
             Write-Information "Provisioning the E2E Monitor Resource Group..."
@@ -78,7 +77,6 @@ function Set-E2EMonitorResources {
             }
 
             $DeploymentParametersJson = $DeploymentParameters | ConvertTo-Json
-            $DeploymentParametersJson = $DeploymentParametersJson.Replace('"', '\"')
 
             Write-Information ""
             Write-Information "Provisioning the E2E Monitor Resources..."
