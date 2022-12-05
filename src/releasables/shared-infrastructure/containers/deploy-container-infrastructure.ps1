@@ -51,7 +51,7 @@ function Set-ContainerInfraResourceGroup {
             Write-Information "$DeploymentParametersJson"
             Write-Information ""
 
-            az deployment sub create `
+            $Response = az deployment sub create `
                 --location      $ContainerInfraResourceGroupAzureRegion `
                 --template-file ./resource-group.bicep `
                 --parameters    $DeploymentParametersJson
@@ -110,7 +110,7 @@ function Set-ContainerInfraResources {
             Write-Information "$DeploymentParametersJson"
             Write-Information ""
 
-            az `
+            $ResponseJson = az `
                 deployment group create `
                 --mode              Complete `
                 --resource-group    $ContainerInfraResourceGroupName `
@@ -119,10 +119,15 @@ function Set-ContainerInfraResources {
 
             if (!$?) {
                 Write-Error "Resources deployment failed."
-                Exit 1
             }
 
+            $Response = $ResponseJson | ConvertFrom-Json
+
+            $ContainerLoginServer = $Response.properties.outputs.containerLoginServer.value
+
             Write-Information "Provisioning Container infra resources completed!"
+
+            $ContainerLoginServer
         }
     }
 }

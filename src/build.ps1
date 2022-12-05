@@ -14,7 +14,15 @@ param (
 
     [Parameter(Mandatory = $true)]
     [String]
-    $FlexportApiClientSecret
+    $FlexportApiClientSecret,
+
+    [Parameter(Mandatory = $false)]
+    [Boolean]
+    $Publish = $false,
+
+    [Parameter(Mandatory = $false)]
+    [String]
+    $AzureContainerRegistryLoginServer
 )
 
 Set-StrictMode –Version latest
@@ -126,7 +134,15 @@ function Invoke-BuildWorkflow {
 
         [Parameter(Mandatory = $true)]
         [String]
-        $FlexportApiClientSecret
+        $FlexportApiClientSecret,
+
+        [Parameter(Mandatory = $false)]
+        [Boolean]
+        $Publish = $false,
+
+        [Parameter(Mandatory = $false)]
+        [String]
+        $AzureContainerRegistryLoginServer
     )
 
     # Validate all the PowerShell scripts
@@ -168,7 +184,9 @@ function Invoke-BuildWorkflow {
         Push-Location "$ReleasablesDirectory/testing/e2e"
 
         ./build-e2e-tests.ps1 `
-            -BuildNumber $BuildNumber
+            -BuildNumber                        $BuildNumber `
+            -Publish                            $Publish `
+            -AzureContainerRegistryLoginServer  $AzureContainerRegistryLoginServer
     }
     finally {
         Pop-Location
@@ -183,10 +201,12 @@ $WebsiteContentSourceDirectory  = "website-content"
 . "$ReleasablesDirectory/dependencies/dependency-manager.ps1"
 
 Invoke-BuildWorkflow `
-    -BuildNumber                    $BuildNumber `
-    -BuildUrl                       $BuildUrl `
-    -FlexportApiClientId            $FlexportApiClientId `
-    -FlexportApiClientSecret        $FlexportApiClientSecret
+    -BuildNumber                        $BuildNumber `
+    -BuildUrl                           $BuildUrl `
+    -FlexportApiClientId                $FlexportApiClientId `
+    -FlexportApiClientSecret            $FlexportApiClientSecret `
+    -Publish                            $Publish `
+    -AzureContainerRegistryLoginServer  $AzureContainerRegistryLoginServer
 
 Write-Information "Earth website build completed!"
 Write-Information ""

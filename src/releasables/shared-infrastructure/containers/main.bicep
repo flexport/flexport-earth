@@ -13,3 +13,6 @@ module registry './container-registry.bicep' = {
     environmentShortName: environmentShortName
   }
 }
+
+@description('Output the login server property for later use')
+output containerLoginServer string = registry.outputs.loginServer

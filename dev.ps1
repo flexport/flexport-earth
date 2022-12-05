@@ -6,6 +6,7 @@ param (
     [Parameter(Mandatory = $true)]
     [ValidateSet(
         'BuildRelease',
+        'BuildReleaseAndPublish',
         'StartWebsiteLocallyDevMode',
         'StartWebsiteLocallyProdMode',
         'DeployToAzure',
@@ -24,6 +25,7 @@ $InformationPreference = "Continue"
 
 enum DevWorkflows {
     BuildRelease
+    BuildReleaseAndPublish
     StartWebsiteLocallyDevMode
     StartWebsiteLocallyProdMode
     DeployToAzure
@@ -53,6 +55,13 @@ function Invoke-Workflow {
         BuildRelease
         {
             Invoke-Build `
+                -GlobalDevelopmentSettings      $GlobalDevelopmentSettings `
+                -DeveloperEnvironmentSettings   $DeveloperEnvironmentSettings
+        }
+
+        BuildReleaseAndPublish
+        {
+            Invoke-BuildAndPublish `
                 -GlobalDevelopmentSettings      $GlobalDevelopmentSettings `
                 -DeveloperEnvironmentSettings   $DeveloperEnvironmentSettings
         }
@@ -126,6 +135,45 @@ function Invoke-Build {
             -BuildNumber                    $BuildNumber `
             -FlexportApiClientID            $DeveloperEnvironmentSettings.FlexportApiClientID `
             -FlexportApiClientSecret        $DeveloperEnvironmentSettings.FlexportApiClientSecret
+
+        Write-Information ""
+        Write-Information "To run the build locally:"
+        Write-Information ""
+        Write-Information "   ./dev StartWebsiteLocallyDevMode"
+        Write-Information "   ./dev StartWebsiteLocallyProdMode"
+        Write-Information ""
+        Write-Information "To deploy the build to Azure:"
+        Write-Information ""
+        Write-Information "   ./dev DeployToAzure"
+        Write-Information ""
+    }
+    finally {
+        Pop-Location
+    }
+}
+
+function Invoke-BuildAndPublish {
+    [CmdletBinding()]
+    param (
+        [Parameter(Mandatory = $true)]
+        [Object]
+        $GlobalDevelopmentSettings,
+
+        [Parameter(Mandatory = $true)]
+        [Object]
+        $DeveloperEnvironmentSettings
+    )
+
+    try {
+        Push-Location $GlobalDevelopmentSettings.SourceDirectory
+
+        $BuildNumber = [Guid]::NewGuid()
+
+        ./build-and-publish.ps1 `
+            -BuildNumber                    $BuildNumber `
+            -FlexportApiClientID            $DeveloperEnvironmentSettings.FlexportApiClientID `
+            -FlexportApiClientSecret        $DeveloperEnvironmentSettings.FlexportApiClientSecret `
+            -PublishToEnvironment           $DeveloperEnvironmentSettings.EnvironmentName
 
         Write-Information ""
         Write-Information "To run the build locally:"
