@@ -38,6 +38,8 @@ docker build `
     --build-arg BUILD_NUMBER=$BuildNumber `
     . `
     --tag $E2EMonitorContainerImageName
+Write-Information "Building Docker image $ImageName"
+docker build --build-arg BUILD_NUMBER=$BuildNumber . -t $ImageName
 
 if ($Publish) {
     Write-Information "Publishing to $AzureContainerRegistryLoginServer"
