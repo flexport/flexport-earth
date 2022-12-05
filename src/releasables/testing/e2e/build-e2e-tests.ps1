@@ -20,7 +20,7 @@ $InformationPreference = "Continue"
 
 $ImageName = "earth-e2e-tests:$BuildNumber"
 
-Write-Infomation "Building Docker image $ImageName"
+Write-Information "Building Docker image $ImageName"
 docker build --build-arg BUILD_NUMBER=$BuildNumber . -t $ImageName
 
 if ($Publish) {
