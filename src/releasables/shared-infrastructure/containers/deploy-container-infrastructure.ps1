@@ -79,14 +79,18 @@ function Set-ContainerInfraResources {
 
         [Parameter(Mandatory = $true)]
         [String]
-        $ContainerInfraResourceGroupAzureRegion
+        $ContainerInfraResourceGroupAzureRegion,
+
+        [Parameter(Mandatory = $true)]
+        [String]
+        $AzureContainerRegistryName
     )
 
     process {
         if ($PSCmdlet.ShouldProcess($ContainerInfraResourceGroupName)) {
             $DeploymentParameters = [PSCustomObject]@{
-                environmentShortName = @{ value = $EnvironmentName.ToLower() }
-                location             = @{ value = $ContainerInfraResourceGroupAzureRegion }
+                location                    = @{ value = $ContainerInfraResourceGroupAzureRegion }
+                azureContainerRegistryName  = @{ value = $AzureContainerRegistryName }
             }
 
             $DeploymentParametersJson = $DeploymentParameters | ConvertTo-Json
@@ -138,6 +142,7 @@ function Set-ContainerInfraResources {
 $ContainerInfraConfig                   = Get-ContainerInfraConfig -EnvironmentName $EnvironmentName
 $ContainerInfraResourceGroupName        = $ContainerInfraConfig.ContainerInfraResourceGroupName
 $ContainerInfraResourceGroupAzureRegion = $ContainerInfraConfig.ContainerInfraResourceGroupAzureRegion
+$ContainerRegistryName                  = $ContainerInfraConfig.ContainerRegistryName
 
 Set-ContainerInfraResourceGroup `
     -ContainerInfraResourceGroupName        $ContainerInfraResourceGroupName `
@@ -146,4 +151,5 @@ Set-ContainerInfraResourceGroup `
 Set-ContainerInfraResources `
     -EnvironmentName                        $EnvironmentName `
     -ContainerInfraResourceGroupName        $ContainerInfraResourceGroupName `
-    -ContainerInfraResourceGroupAzureRegion $ContainerInfraResourceGroupAzureRegion
+    -ContainerInfraResourceGroupAzureRegion $ContainerInfraResourceGroupAzureRegion `
+    -AzureContainerRegistryName             $ContainerRegistryName

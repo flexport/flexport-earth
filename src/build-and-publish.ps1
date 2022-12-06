@@ -44,7 +44,8 @@ try {
         -FlexportApiClientID                $FlexportApiClientId `
         -FlexportApiClientSecret            $FlexportApiClientSecret `
         -Publish                            $true `
-        -AzureContainerRegistryLoginServer  $ContainerRegistryLoginServer
+        -AzureContainerRegistryLoginServer  $ContainerRegistryLoginServer `
+        -BuildEnvironmentName               $PublishToEnvironment
 }
 finally {
     Pop-Location

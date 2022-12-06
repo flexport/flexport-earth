@@ -10,7 +10,11 @@ param (
 
     [Parameter(Mandatory = $false)]
     [String]
-    $AzureContainerRegistryLoginServer
+    $AzureContainerRegistryLoginServer,
+
+    [Parameter(Mandatory = $false)]
+    [String]
+    $BuildEnvironmentName
 )
 
 Set-StrictMode –Version latest
@@ -18,10 +22,12 @@ Set-StrictMode –Version latest
 $ErrorActionPreference = "Stop"
 $InformationPreference = "Continue"
 
-. ./e2e-monitor-config.ps1
+. ./monitor/e2e-monitor-config.ps1
+
+Write-Information "BuildEnvironmentName: $BuildEnvironmentName"
 
 $E2EMonitorConfig = Get-E2EMonitorConfig `
-    -EnvironmentName    $EnvironmentName `
+    -EnvironmentName    $BuildEnvironmentName `
     -BuildNumber        $BuildNumber
 
 $E2EMonitorContainerImageName = $E2EMonitorConfig.E2EMonitorContainerImageName

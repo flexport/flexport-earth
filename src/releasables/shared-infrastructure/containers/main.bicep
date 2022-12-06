@@ -3,14 +3,13 @@ targetScope='resourceGroup'
 @description('The location into which regionally scoped resources should be deployed.')
 param location string  = resourceGroup().location
 
-@description('The short name or prefix of the target environment.')
-param environmentShortName string
+param azureContainerRegistryName string
 
 module registry './container-registry.bicep' = {
   name: 'containerRegistryDeployment'
   params: {
-    location:             location
-    environmentShortName: environmentShortName
+    location:                   location
+    azureContainerRegistryName: azureContainerRegistryName
   }
 }
 
