@@ -14,7 +14,11 @@ param (
 
     [Parameter(Mandatory = $true)]
     [String]
-    $PublishToEnvironment
+    $PublishToEnvironment,
+
+    [Parameter(Mandatory = $false)]
+    [String]
+    $BuildUrl
 )
 
 Set-StrictMode –Version latest
@@ -41,6 +45,7 @@ try {
 
     ./build.ps1 `
         -BuildNumber                        $BuildNumber `
+        -BuildUrl                           $BuildUrl `
         -FlexportApiClientID                $FlexportApiClientId `
         -FlexportApiClientSecret            $FlexportApiClientSecret `
         -Publish                            $true `

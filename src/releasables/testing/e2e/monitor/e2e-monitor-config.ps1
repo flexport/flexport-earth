@@ -3,7 +3,7 @@ Set-StrictMode –Version latest
 function Get-E2EMonitorConfig {
     [CmdletBinding(SupportsShouldProcess)]
     param (
-        [Parameter(Mandatory=$true)]
+        [Parameter(Mandatory=$false)]
         [String]
         $EnvironmentName,
 
