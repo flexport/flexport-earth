@@ -28,6 +28,10 @@ Write-Information "BuildEnvironmentName: $BuildEnvironmentName"
 
 $E2EMonitorConfig = Get-E2EMonitorConfig `
     -EnvironmentName    $BuildEnvironmentName `
+. ./e2e-monitor-config.ps1
+
+$E2EMonitorConfig = Get-E2EMonitorConfig `
+    -EnvironmentName    $EnvironmentName `
     -BuildNumber        $BuildNumber
 
 $E2EMonitorContainerImageName = $E2EMonitorConfig.E2EMonitorContainerImageName
@@ -38,8 +42,6 @@ docker build `
     --build-arg BUILD_NUMBER=$BuildNumber `
     . `
     --tag $E2EMonitorContainerImageName
-Write-Information "Building Docker image $ImageName"
-docker build --build-arg BUILD_NUMBER=$BuildNumber . -t $ImageName
 
 if ($Publish) {
     Write-Information "Publishing to $AzureContainerRegistryLoginServer"

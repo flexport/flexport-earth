@@ -7,7 +7,7 @@ function Get-E2EMonitorConfig {
         [String]
         $EnvironmentName,
 
-        [Parameter(Mandatory=$false)]
+        [Parameter(Mandatory=$true)]
         [String]
         $BuildNumber
     )
