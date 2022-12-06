@@ -26,12 +26,10 @@ $InformationPreference = "Continue"
 
 Write-Information "BuildEnvironmentName: $BuildEnvironmentName"
 
-$E2EMonitorConfig = Get-E2EMonitorConfig `
-    -EnvironmentName    $BuildEnvironmentName `
 . ./e2e-monitor-config.ps1
 
 $E2EMonitorConfig = Get-E2EMonitorConfig `
-    -EnvironmentName    $EnvironmentName `
+    -EnvironmentName    $BuildEnvironmentName `
     -BuildNumber        $BuildNumber
 
 $E2EMonitorContainerImageName = $E2EMonitorConfig.E2EMonitorContainerImageName
