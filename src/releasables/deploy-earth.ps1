@@ -307,16 +307,6 @@ function Update-Frontend {
     }
 }
 
-try {
-    Push-Location "./shared-infrastructure/containers"
-
-    ./deploy-container-infrastructure.ps1 `
-        -EnvironmentName $EnvironmentName
-}
-finally {
-    Pop-Location
-}
-
 #Update-SubscriptionBudget
 Update-FrontendResourceGroup
 
@@ -331,19 +321,28 @@ $EarthWebsiteUrl = Update-Frontend `
 # they fail with transient errors instead of real issues.
 # The retries avoid doing full deployments and also avoid
 # blocking CD pipeline waiting for someone to manually retry.
-./test-earth.ps1 `
-    -BuildNumber        $BuildNumber `
-    -EarthWebsiteUrl    $EarthWebsiteUrl `
-    -MaxTries           3
+# ./test-earth.ps1 `
+#     -BuildNumber        $BuildNumber `
+#     -EarthWebsiteUrl    $EarthWebsiteUrl `
+#     -MaxTries           3
 
 # Once we've confirmed the latest application and tests are working successfully,
 # deploy the E2E Monitor for continuously running the tests against the environment
 # to catch any issues that occur between deployments.
+
+. ./shared-infrastructure/containers/container-infra-config.ps1
+
+$ContainerInfraConfig = Get-ContainerInfraConfig -EnvironmentName $EnvironmentName
+
+
 try {
     Push-Location "./testing/e2e/monitor"
 
     ./deploy-e2e-monitor.ps1 `
-        -EnvironmentName $EnvironmentName
+        -EnvironmentName        $EnvironmentName `
+        -BuildNumber            $BuildNumber `
+        -ContainerRegistryName  $ContainerInfraConfig.ContainerRegistryName `
+        -TargetWebsiteUrl       $EarthWebsiteUrl
 }
 finally {
     Pop-Location

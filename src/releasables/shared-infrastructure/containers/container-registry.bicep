@@ -1,10 +1,7 @@
-@description('The short name or prefix of the target environment.')
-param environmentShortName string
-
 @minLength(5)
 @maxLength(50)
 @description('Provide a globally unique name of your Azure Container Registry')
-param acrName string = '${environmentShortName}earthregistry'
+param acrName string
 
 @description('Provide a location for the registry.')
 param location string = resourceGroup().location

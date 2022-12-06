@@ -12,6 +12,7 @@ function Get-ContainerInfraConfig {
         $Config = [PSCustomObject]@{
             ContainerInfraResourceGroupName        = "$EnvironmentName-earth-container-infra"
             ContainerInfraResourceGroupAzureRegion = "WestUS2"
+            ContainerRegistryName                  = "${EnvironmentName}earthregistry"
         }
 
         $Config
