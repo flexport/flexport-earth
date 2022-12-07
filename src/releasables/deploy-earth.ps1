@@ -307,16 +307,6 @@ function Update-Frontend {
     }
 }
 
-try {
-    Push-Location "./shared-infrastructure/containers"
-
-    ./deploy-container-infrastructure.ps1 `
-        -EnvironmentName $EnvironmentName
-}
-finally {
-    Pop-Location
-}
-
 #Update-SubscriptionBudget
 Update-FrontendResourceGroup
 
@@ -339,11 +329,19 @@ $EarthWebsiteUrl = Update-Frontend `
 # Once we've confirmed the latest application and tests are working successfully,
 # deploy the E2E Monitor for continuously running the tests against the environment
 # to catch any issues that occur between deployments.
+
+. ./shared-infrastructure/containers/container-infra-config.ps1
+
+$ContainerInfraConfig = Get-ContainerInfraConfig -EnvironmentName $EnvironmentName
+
 try {
     Push-Location "./testing/e2e/monitor"
 
     ./deploy-e2e-monitor.ps1 `
-        -EnvironmentName $EnvironmentName
+        -EnvironmentName        $EnvironmentName `
+        -BuildNumber            $BuildNumber `
+        -ContainerRegistryName  $ContainerInfraConfig.ContainerRegistryName `
+        -TargetWebsiteUrl       $EarthWebsiteUrl
 }
 finally {
     Pop-Location

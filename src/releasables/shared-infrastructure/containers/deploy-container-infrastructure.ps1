@@ -51,12 +51,13 @@ function Set-ContainerInfraResourceGroup {
             Write-Information "$DeploymentParametersJson"
             Write-Information ""
 
-            az deployment sub create `
+            $Response = az deployment sub create `
                 --location      $ContainerInfraResourceGroupAzureRegion `
                 --template-file ./resource-group.bicep `
                 --parameters    $DeploymentParametersJson
 
             if (!$?) {
+                Write-Information $Response
                 Write-Error "Resource group deployment failed!"
             }
 
@@ -79,14 +80,18 @@ function Set-ContainerInfraResources {
 
         [Parameter(Mandatory = $true)]
         [String]
-        $ContainerInfraResourceGroupAzureRegion
+        $ContainerInfraResourceGroupAzureRegion,
+
+        [Parameter(Mandatory = $true)]
+        [String]
+        $AzureContainerRegistryName
     )
 
     process {
         if ($PSCmdlet.ShouldProcess($ContainerInfraResourceGroupName)) {
             $DeploymentParameters = [PSCustomObject]@{
-                environmentShortName = @{ value = $EnvironmentName.ToLower() }
-                location             = @{ value = $ContainerInfraResourceGroupAzureRegion }
+                location                    = @{ value = $ContainerInfraResourceGroupAzureRegion }
+                azureContainerRegistryName  = @{ value = $AzureContainerRegistryName }
             }
 
             $DeploymentParametersJson = $DeploymentParameters | ConvertTo-Json
@@ -110,7 +115,7 @@ function Set-ContainerInfraResources {
             Write-Information "$DeploymentParametersJson"
             Write-Information ""
 
-            az `
+            $ResponseJson = az `
                 deployment group create `
                 --mode              Complete `
                 --resource-group    $ContainerInfraResourceGroupName `
@@ -119,10 +124,15 @@ function Set-ContainerInfraResources {
 
             if (!$?) {
                 Write-Error "Resources deployment failed."
-                Exit 1
             }
 
+            $Response = $ResponseJson | ConvertFrom-Json
+
+            $ContainerLoginServer = $Response.properties.outputs.containerLoginServer.value
+
             Write-Information "Provisioning Container infra resources completed!"
+
+            $ContainerLoginServer
         }
     }
 }
@@ -133,6 +143,7 @@ function Set-ContainerInfraResources {
 $ContainerInfraConfig                   = Get-ContainerInfraConfig -EnvironmentName $EnvironmentName
 $ContainerInfraResourceGroupName        = $ContainerInfraConfig.ContainerInfraResourceGroupName
 $ContainerInfraResourceGroupAzureRegion = $ContainerInfraConfig.ContainerInfraResourceGroupAzureRegion
+$ContainerRegistryName                  = $ContainerInfraConfig.ContainerRegistryName
 
 Set-ContainerInfraResourceGroup `
     -ContainerInfraResourceGroupName        $ContainerInfraResourceGroupName `
@@ -141,4 +152,5 @@ Set-ContainerInfraResourceGroup `
 Set-ContainerInfraResources `
     -EnvironmentName                        $EnvironmentName `
     -ContainerInfraResourceGroupName        $ContainerInfraResourceGroupName `
-    -ContainerInfraResourceGroupAzureRegion $ContainerInfraResourceGroupAzureRegion
+    -ContainerInfraResourceGroupAzureRegion $ContainerInfraResourceGroupAzureRegion `
+    -AzureContainerRegistryName             $ContainerRegistryName

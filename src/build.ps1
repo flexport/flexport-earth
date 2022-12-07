@@ -14,7 +14,19 @@ param (
 
     [Parameter(Mandatory = $true)]
     [String]
-    $FlexportApiClientSecret
+    $FlexportApiClientSecret,
+
+    [Parameter(Mandatory = $false)]
+    [Boolean]
+    $Publish = $false,
+
+    [Parameter(Mandatory = $false)]
+    [String]
+    $AzureContainerRegistryLoginServer,
+
+    [Parameter(Mandatory = $false)]
+    [String]
+    $BuildEnvironmentName
 )
 
 Set-StrictMode –Version latest
@@ -29,7 +41,6 @@ function Write-BuildNumber {
 
     Write-Information "Build number written to $BuildNumberFilePath"
 }
-
 function Write-BuildUrl {
     $FilePath = "./components/footer/footer.tsx"
 
@@ -47,7 +58,6 @@ function Write-BuildUrl {
 
     Write-Information "Build URL written to $FilePath"
 }
-
 function Build-Website {
     [CmdletBinding()]
     param (
@@ -76,7 +86,6 @@ function Build-Website {
     Write-Information "Website files compiled successfully!"
     Write-Information ""
 }
-
 function Test-UnitAndComponentFunctionality {
     Write-Information ""
     Write-Information "Running unit tests..."
@@ -129,7 +138,19 @@ function Invoke-BuildWorkflow {
 
         [Parameter(Mandatory = $true)]
         [String]
-        $FlexportApiClientSecret
+        $FlexportApiClientSecret,
+
+        [Parameter(Mandatory = $false)]
+        [Boolean]
+        $Publish = $false,
+
+        [Parameter(Mandatory = $false)]
+        [String]
+        $AzureContainerRegistryLoginServer,
+
+        [Parameter(Mandatory = $false)]
+        [String]
+        $BuildEnvironmentName
     )
 
     # Validate all the PowerShell scripts
@@ -166,6 +187,19 @@ function Invoke-BuildWorkflow {
     finally {
         Pop-Location
     }
+
+    try {
+        Push-Location "$ReleasablesDirectory/testing/e2e"
+
+        ./build-e2e-tests.ps1 `
+            -BuildNumber                        $BuildNumber `
+            -Publish                            $Publish `
+            -AzureContainerRegistryLoginServer  $AzureContainerRegistryLoginServer `
+            -BuildEnvironmentName               $BuildEnvironmentName
+    }
+    finally {
+        Pop-Location
+    }
 }
 
 $ScriptStartTime                = Get-Date
@@ -176,10 +210,13 @@ $WebsiteContentSourceDirectory  = "website-content"
 . "$ReleasablesDirectory/dependencies/dependency-manager.ps1"
 
 Invoke-BuildWorkflow `
-    -BuildNumber                    $BuildNumber `
-    -BuildUrl                       $BuildUrl `
-    -FlexportApiClientId            $FlexportApiClientId `
-    -FlexportApiClientSecret        $FlexportApiClientSecret
+    -BuildNumber                        $BuildNumber `
+    -BuildUrl                           $BuildUrl `
+    -FlexportApiClientId                $FlexportApiClientId `
+    -FlexportApiClientSecret            $FlexportApiClientSecret `
+    -Publish                            $Publish `
+    -AzureContainerRegistryLoginServer  $AzureContainerRegistryLoginServer `
+    -BuildEnvironmentName               $BuildEnvironmentName
 
 Write-Information "Earth website build completed!"
 Write-Information ""

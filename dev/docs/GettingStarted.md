@@ -21,7 +21,7 @@ Your commits must be be [verified](https://docs.github.com/en/authentication/man
 If running on Windows, install the [Windows Subsystem for Linux](https://docs.microsoft.com/en-us/windows/wsl/install) first.
 
 1. [PowerShell Core (7.3.0)](https://docs.microsoft.com/en-us/powershell/scripting/install/installing-powershell)
-2. [Azure CLI (2.42.0)](https://docs.microsoft.com/en-us/cli/azure/install-azure-cli)
+2. [Azure CLI (2.43.0)](https://docs.microsoft.com/en-us/cli/azure/install-azure-cli)
 3. [NodeJS (16.15.0)](https://nodejs.org/en/download/)
 
 ## Start a PowerShell Console
