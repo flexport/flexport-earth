@@ -116,6 +116,11 @@ function Set-E2EMonitorResources {
                                         --output tsv `
                                         --query accessToken
                         )
+
+            if (!$?) {
+                Write-Error "Failed to get access token for the Container Registry!"
+            }
+
             Write-Information "Token acquired!"
             Write-Information ""
 

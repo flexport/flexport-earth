@@ -11,7 +11,7 @@ $ErrorActionPreference = "Stop"
 $InformationPreference = "Continue"
 
 # Run dependency management
-. ./releasables/dependencies/dependency-manager.ps1
+. ./src/releasables/dependencies/dependency-manager.ps1
 
 $SubscriptionDeploymentServicePricipalName = "${AzureSubscriptionName}-earth-deployer".ToLower()
 

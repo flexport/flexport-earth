@@ -57,6 +57,7 @@ function Set-ContainerInfraResourceGroup {
                 --parameters    $DeploymentParametersJson
 
             if (!$?) {
+                Write-Information $Response
                 Write-Error "Resource group deployment failed!"
             }
 
@@ -135,8 +136,6 @@ function Set-ContainerInfraResources {
         }
     }
 }
-
-az login --identity
 
 # Deploy infrastructure
 . ./container-infra-config.ps1

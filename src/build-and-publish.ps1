@@ -16,6 +16,18 @@ param (
     [String]
     $PublishToEnvironment,
 
+    [Parameter(Mandatory=$true)]
+    [SecureString]
+    $AzureServicePrincipalCredentialsTenant,
+
+    [Parameter(Mandatory=$true)]
+    [SecureString]
+    $AzureServicePrincipalCredentialsAppId,
+
+    [Parameter(Mandatory=$true)]
+    [SecureString]
+    $AzureServicePrincipalCredentialsPassword,
+
     [Parameter(Mandatory = $false)]
     [String]
     $BuildUrl
@@ -25,6 +37,15 @@ Set-StrictMode –Version latest
 
 $ErrorActionPreference = "Stop"
 $InformationPreference = "Continue"
+
+# Sign in to Azure as the Deployer Service Principal so that
+# we can interact with build infrastructure such as the Azure Container Service
+# for publishing Docker images that are built.
+
+./azure/sign-in-as-service-principal.ps1 `
+    -ServicePrincipalCredentialsTenant      $AzureServicePrincipalCredentialsTenant `
+    -ServicePrincipalCredentialsAppId       $AzureServicePrincipalCredentialsAppId `
+    -ServicePrincipalCredentialsPassword    $AzureServicePrincipalCredentialsPassword
 
 $ContainerRegistryLoginServer = ""
 

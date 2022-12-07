@@ -49,4 +49,8 @@ if ($Publish) {
     az acr login --name $AzureContainerRegistryLoginServer
 
     docker push $RemoteImageName
+
+    if (!$?) {
+        Write-Error "Docker push failed!"
+    }
 }

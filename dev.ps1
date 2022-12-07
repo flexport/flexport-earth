@@ -164,16 +164,39 @@ function Invoke-BuildAndPublish {
         $DeveloperEnvironmentSettings
     )
 
+    # Load Global Development Settings
+    $GlobalDevelopmentSettings = Get-Content 'dev/development-config.json' | ConvertFrom-Json
+
+    $CacheDirectory         = $GlobalDevelopmentSettings.CacheDirectory
+    $AzureSubscriptionName  = $DeveloperEnvironmentSettings.AzureSubscriptionName
+
+    $SubscriptionDeploymentServicePricipalName = "$AzureSubscriptionName-earth-deployer".ToLower()
+
+    $CredsPath = "$CacheDirectory/azure/creds/${SubscriptionDeploymentServicePricipalName}.json"
+
+    if (-Not (Test-Path $CredsPath)) {
+        Write-Error "Service Principal cached credentials not found at $.CredsPath. Please run ./azure/subscription-provision.ps1 to create a Service Principal, which will cache the credentials for use."
+    }
+
+    $ServicePrincipalCredentials = Get-Content -Path $CredsPath | ConvertFrom-Json
+
+    [SecureString]$AzureServicePrincipalCredentialsTenant   = ConvertTo-SecureString -String $ServicePrincipalCredentials.Tenant   -AsPlainText
+    [SecureString]$AzureServicePrincipalCredentialsAppId    = ConvertTo-SecureString -String $ServicePrincipalCredentials.AppId    -AsPlainText
+    [SecureString]$AzureServicePrincipalCredentialsPassword = ConvertTo-SecureString -String $ServicePrincipalCredentials.Password -AsPlainText
+
     try {
         Push-Location $GlobalDevelopmentSettings.SourceDirectory
 
         $BuildNumber = [Guid]::NewGuid()
 
         ./build-and-publish.ps1 `
-            -BuildNumber                    $BuildNumber `
-            -FlexportApiClientID            $DeveloperEnvironmentSettings.FlexportApiClientID `
-            -FlexportApiClientSecret        $DeveloperEnvironmentSettings.FlexportApiClientSecret `
-            -PublishToEnvironment           $DeveloperEnvironmentSettings.EnvironmentName
+            -BuildNumber                                $BuildNumber `
+            -FlexportApiClientID                        $DeveloperEnvironmentSettings.FlexportApiClientID `
+            -FlexportApiClientSecret                    $DeveloperEnvironmentSettings.FlexportApiClientSecret `
+            -PublishToEnvironment                       $DeveloperEnvironmentSettings.EnvironmentName `
+            -AzureServicePrincipalCredentialsTenant     $AzureServicePrincipalCredentialsTenant `
+            -AzureServicePrincipalCredentialsAppId      $AzureServicePrincipalCredentialsAppId `
+            -AzureServicePrincipalCredentialsPassword   $AzureServicePrincipalCredentialsPassword
 
         Write-Information ""
         Write-Information "To run the build locally:"
