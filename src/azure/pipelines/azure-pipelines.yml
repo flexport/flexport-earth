@@ -23,7 +23,11 @@ stages:
     pool:
       vmImage: $(vmImage)
     variables:
+<<<<<<< HEAD
       ${{ if startsWith(variables['Build.SourceBranch'], 'refs/pull/') }}:
+=======
+      ${{ if eq(variables['isPR'], 'true') }}:
+>>>>>>> 270b15c (earth-324: Fix if)
         publishToEnvironment: 'pr$(System.PullRequest.PullRequestNumber)'
       ${{ else }}:
         publishToEnvironment: 'dev'
