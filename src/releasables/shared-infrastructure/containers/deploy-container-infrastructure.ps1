@@ -137,8 +137,6 @@ function Set-ContainerInfraResources {
     }
 }
 
-az login --identity
-
 # Deploy infrastructure
 . ./container-infra-config.ps1
 
