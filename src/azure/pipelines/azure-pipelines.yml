@@ -23,7 +23,7 @@ stages:
     pool:
       vmImage: $(vmImage)
     variables:
-      ${{ if variables['isPR'], 'true' }}:
+      ${{ if eq(variables['isPR'], 'true') }}:
         publishToEnvironment: 'pr$(System.PullRequest.PullRequestNumber)'
       ${{ else }}:
         publishToEnvironment: 'dev'
