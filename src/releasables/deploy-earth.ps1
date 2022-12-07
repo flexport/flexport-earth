@@ -321,10 +321,10 @@ $EarthWebsiteUrl = Update-Frontend `
 # they fail with transient errors instead of real issues.
 # The retries avoid doing full deployments and also avoid
 # blocking CD pipeline waiting for someone to manually retry.
-# ./test-earth.ps1 `
-#     -BuildNumber        $BuildNumber `
-#     -EarthWebsiteUrl    $EarthWebsiteUrl `
-#     -MaxTries           3
+./test-earth.ps1 `
+    -BuildNumber        $BuildNumber `
+    -EarthWebsiteUrl    $EarthWebsiteUrl `
+    -MaxTries           3
 
 # Once we've confirmed the latest application and tests are working successfully,
 # deploy the E2E Monitor for continuously running the tests against the environment
@@ -333,7 +333,6 @@ $EarthWebsiteUrl = Update-Frontend `
 . ./shared-infrastructure/containers/container-infra-config.ps1
 
 $ContainerInfraConfig = Get-ContainerInfraConfig -EnvironmentName $EnvironmentName
-
 
 try {
     Push-Location "./testing/e2e/monitor"
