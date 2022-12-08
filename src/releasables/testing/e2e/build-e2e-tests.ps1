@@ -24,6 +24,10 @@ $InformationPreference = "Continue"
 
 . ./e2e-tests-config.ps1
 
+$E2ETestConfig = Get-E2ETestConfig `
+    -EnvironmentName $BuildEnvironmentName `
+    -BuildNumber     $BuildNumber
+
 Write-Information "BuildEnvironmentName: $BuildEnvironmentName"
 
 $E2ETestsContainerImageNameAndTag = "$($E2ETestConfig.E2ETestsContainerImageName):$BuildNumber"
