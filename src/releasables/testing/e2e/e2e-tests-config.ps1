@@ -3,7 +3,7 @@ Set-StrictMode –Version latest
 $ErrorActionPreference = "Stop"
 $InformationPreference = "Continue"
 
-function Get-E2EMonitorConfig {
+function Get-E2ETestConfig {
     [CmdletBinding(SupportsShouldProcess)]
     param (
         [Parameter(Mandatory=$false)]
@@ -16,9 +16,12 @@ function Get-E2EMonitorConfig {
     )
 
     if($PSCmdlet.ShouldProcess($EnvironmentName)) {
+        $E2ETestsContainerImageName = "earth-e2e-tests"
+
         $E2EMonitorConfig = [PSCustomObject]@{
-            E2EMonitorResourceGroupName        = "$EnvironmentName-e2e-monitor"
-            E2EMonitorResourceGroupAzureRegion = "WestUS2"
+            E2ETestsContainerRepository        = $E2ETestsContainerImageName
+            E2ETestsContainerImageName         = $E2ETestsContainerImageName
+            E2ETestsContainerImageAndTag       = "$E2ETestsContainerImageName\:$BuildNumber"
         }
 
         $E2EMonitorConfig

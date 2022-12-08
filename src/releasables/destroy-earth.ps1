@@ -17,6 +17,8 @@ if($PSCmdlet.ShouldProcess($EnvironmentName)) {
     # Load common configuration values
     . ./earth-runtime-config.ps1
 
+    $EarthRuntimeConfig = Get-EarthRuntimeConfig -EnvironmentName $EnvironmentName
+
     Write-Information ""
     Write-Information "Destroying $EnvironmentName environment..."
     Write-Information ""
@@ -31,9 +33,15 @@ if($PSCmdlet.ShouldProcess($EnvironmentName)) {
         Pop-Location
     }
 
+    $EarthFrontendResourceGroupName = $EarthRuntimeConfig.EarthFrontendResourceGroupName
+
+    Write-Information "Checking if resource group $EarthFrontendResourceGroupName exists..."
+
     $Exists = az group exists --resource-group $EarthFrontendResourceGroupName
 
     if($Exists -eq "true") {
+        Write-Information "Destroying frontend infrastructure..."
+
         az group delete `
             --name $EarthFrontendResourceGroupName `
             --yes

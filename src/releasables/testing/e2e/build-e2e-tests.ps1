@@ -22,31 +22,25 @@ Set-StrictMode –Version latest
 $ErrorActionPreference = "Stop"
 $InformationPreference = "Continue"
 
-. ./monitor/e2e-monitor-config.ps1
+. ./e2e-tests-config.ps1
 
 Write-Information "BuildEnvironmentName: $BuildEnvironmentName"
 
-. ./e2e-monitor-config.ps1
+$E2ETestsContainerImageNameAndTag = "$($E2ETestConfig.E2ETestsContainerImageName):$BuildNumber"
 
-$E2EMonitorConfig = Get-E2EMonitorConfig `
-    -EnvironmentName    $BuildEnvironmentName `
-    -BuildNumber        $BuildNumber
-
-$E2EMonitorContainerImageName = $E2EMonitorConfig.E2EMonitorContainerImageName
-
-Write-Information "Building Docker image $E2EMonitorContainerImageName"
+Write-Information "Building Docker image $E2ETestsContainerImageNameAndTag"
 
 docker build `
     --build-arg BUILD_NUMBER=$BuildNumber `
     . `
-    --tag $E2EMonitorContainerImageName
+    --tag $E2ETestsContainerImageNameAndTag
 
 if ($Publish) {
     Write-Information "Publishing to $AzureContainerRegistryLoginServer"
 
-    $RemoteImageName = "$AzureContainerRegistryLoginServer/$E2EMonitorContainerImageName"
+    $RemoteImageName = "$AzureContainerRegistryLoginServer/$E2ETestsContainerImageNameAndTag"
 
-    docker tag $E2EMonitorContainerImageName $RemoteImageName
+    docker tag $E2ETestsContainerImageNameAndTag $RemoteImageName
 
     az acr login --name $AzureContainerRegistryLoginServer
 

@@ -98,6 +98,23 @@ https://github.com/flexport/flexport-earth/tree/main/product/docs/administrative
 
 "
 
+    Set-ConfigValue `
+        -Settings         $LocalSettings `
+        -SettingsFilePath $LocalSettingsPath `
+        -ConfigName       "ContainerSourceRegistryServerAddress" `
+        -ConfigPrompt     "What's the server address for the Azure Container Registry that Container images should be promoted from?"
+
+    Set-ConfigValue `
+        -Settings         $LocalSettings `
+        -SettingsFilePath $LocalSettingsPath `
+        -ConfigName       "ContainerSourceRegistryServicePrincipalUsername" `
+        -ConfigPrompt     "What's the username for authenticating for the Azure Container Registry that Container images should be promoted from?"
+
+    Set-ConfigValue `
+        -Settings         $LocalSettings `
+        -SettingsFilePath $LocalSettingsPath `
+        -ConfigName       "ContainerSourceRegistryServicePrincipalPassword" `
+        -ConfigPrompt     "What's the password for authenticating for the Azure Container Registry that Container images should be promoted from?"
 
     return $LocalSettings
 }

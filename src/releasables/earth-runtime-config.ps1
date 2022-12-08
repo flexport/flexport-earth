@@ -1,7 +1,23 @@
 ﻿Set-StrictMode –Version latest
 
-$EarthFrontendResourceGroupName     = "$EnvironmentName-earth-frontend".ToLower()
-$EarthFrontendResourceGroupLocation = "WestUS"
+$ErrorActionPreference = "Stop"
+$InformationPreference = "Continue"
 
-Write-Verbose "EarthFrontendResourceGroupLocation: $EarthFrontendResourceGroupLocation"
-Write-Verbose "EarthFrontendResourceGroupName:     $EarthFrontendResourceGroupName"
+function Get-EarthRuntimeConfig {
+    [CmdletBinding(SupportsShouldProcess)]
+    param (
+        [Parameter(Mandatory=$false)]
+        [String]
+        $EnvironmentName
+    )
+
+    if($PSCmdlet.ShouldProcess($EnvironmentName)) {
+        $Config = [PSCustomObject]@{
+            EarthFrontendResourceGroupName     = "$EnvironmentName-earth-frontend".ToLower()
+            EarthFrontendResourceGroupLocation = "WestUS"
+            EarthDeployerServicePrincipalName  = "$EnvironmentName-earth-deployer"
+        }
+
+        return $Config
+    }
+}

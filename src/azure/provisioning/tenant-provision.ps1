@@ -8,7 +8,7 @@ $AzureTenantId = (az account show | ConvertFrom-Json).HomeTenantId
 
 Write-Information "Provisioning Deployer role in Tetant $AzureTenantId..."
 
-$Parameters = '{\"azureTenantId\":{\"value\":\"' + $AzureTenantId + '\"}}'
+$Parameters = '{"azureTenantId":{"value":"' + $AzureTenantId + '"}}'
 
 az deployment mg create `
     --location              WestUS `

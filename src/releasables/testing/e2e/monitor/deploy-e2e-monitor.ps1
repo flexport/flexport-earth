@@ -10,11 +10,23 @@ param (
 
     [Parameter(Mandatory = $true)]
     [String]
-    $ContainerRegistryName,
+    $TargetWebsiteUrl,
 
     [Parameter(Mandatory = $true)]
     [String]
-    $TargetWebsiteUrl
+    $ContainerSourceRegistryServerAddress,
+
+    [Parameter(Mandatory = $true)]
+    [String]
+    $ContainerSourceRegistryServicePrincipalUsername,
+
+    [Parameter(Mandatory = $true)]
+    [SecureString]
+    $ContainerSourceRegistryServicePrincipalPassword,
+
+    [Parameter(Mandatory = $true)]
+    [String]
+    $ContainerTargetRegistryName
 )
 
 Set-StrictMode –Version latest
@@ -99,7 +111,7 @@ function Set-E2EMonitorResources {
 
         [Parameter(Mandatory = $true)]
         [String]
-        $E2EMonitorContainerImageName,
+        $E2ETestsContainerImageName,
 
         [Parameter(Mandatory = $true)]
         [String]
@@ -108,7 +120,9 @@ function Set-E2EMonitorResources {
 
     process {
         if ($PSCmdlet.ShouldProcess($E2EMonitorResourceGroupName)) {
-
+            Write-Information ""
+            Write-Information "Provisioning the E2E Monitor Resources..."
+            Write-Information ""
             Write-Information "Getting Container Registry access token..."
             $Token =    $(az acr login `
                                         --name $ContainerRegistryName `
@@ -129,7 +143,7 @@ function Set-E2EMonitorResources {
                 location                    = @{ value = $E2EMonitorResourceGroupAzureRegion }
                 containerRegistryServerName = @{ value = "$ContainerRegistryName.azurecr.io" }
                 containerRegistryPassword   = @{ value = $Token }
-                image                       = @{ value = "$ContainerRegistryName.azurecr.io/$E2EMonitorContainerImageName" }
+                image                       = @{ value = "$ContainerRegistryName.azurecr.io/$E2ETestsContainerImageName" }
                 targetWebsiteUrl            = @{ value = $TargetWebsiteUrl }
             }
 
@@ -147,9 +161,6 @@ function Set-E2EMonitorResources {
             if ($CurrentPowerShellMajorVersion -le 7 -and $CurrentPowerShellMinorVersion -lt 3) {
                 $DeploymentParametersJson = $DeploymentParametersJson.Replace('"', '\"')
             }
-
-            Write-Information ""
-            Write-Information "Provisioning the E2E Monitor Resources..."
 
             Write-Information ""
             Write-Information "Provisioning Container Group and Containers..."
@@ -170,27 +181,45 @@ function Set-E2EMonitorResources {
 }
 
 # Deploy infrastructure
+. ../e2e-tests-config.ps1
 . ./e2e-monitor-config.ps1
+
+$E2ETestsConfig = Get-E2ETestConfig `
+    -EnvironmentName    $EnvironmentName `
+    -BuildNumber        $BuildNumber
 
 $E2EMonitorConfig = Get-E2EMonitorConfig `
     -EnvironmentName    $EnvironmentName `
     -BuildNumber        $BuildNumber
 
+$E2ETestsContainerRepository        = $E2ETestsConfig.E2ETestsContainerRepository
+$E2ETestsContainerImageName         = $E2ETestsConfig.E2ETestsContainerImageName
 $E2EMonitorResourceGroupName        = $E2EMonitorConfig.E2EMonitorResourceGroupName
 $E2EMonitorResourceGroupAzureRegion = $E2EMonitorConfig.E2EMonitorResourceGroupAzureRegion
-$E2EMonitorContainerImageName       = $E2EMonitorConfig.E2EMonitorContainerImageName
+
+# Ensure the image from the lower environment has
+# been promoted/imported so that it can be used.
+
+../../../shared-infrastructure/containers/import-image-from-registry.ps1 `
+    -SourceRegistryServerAddress            $ContainerSourceRegistryServerAddress `
+    -SourceRegistryServicePrincipalUsername $ContainerSourceRegistryServicePrincipalUsername `
+    -SourceRegistryServicePrincipalPassword $ContainerSourceRegistryServicePrincipalPassword `
+    -SourceRegistryImageName                $E2ETestsContainerImageName `
+    -SourceRegistryImageReleaseTag          $BuildNumber `
+    -DestinationRegistryName                $ContainerTargetRegistryName `
+    -DestinationRepositoryName              $E2ETestsContainerRepository
 
 Set-E2EMonitorResourceGroup `
     -E2EMonitorResourceGroupName        $E2EMonitorResourceGroupName `
     -E2EMonitorResourceGroupAzureRegion $E2EMonitorResourceGroupAzureRegion
 
-Write-Information "ContainerRegistryName:        $ContainerRegistryName"
-Write-Information "E2EMonitorContainerImageName: $E2EMonitorContainerImageName"
+Write-Information "ContainerRegistryName:       $ContainerTargetRegistryName"
+Write-Information "E2ETestsContainerImageName:  $E2ETestsContainerImageName"
 
 Set-E2EMonitorResources `
     -EnvironmentName                    $EnvironmentName `
     -E2EMonitorResourceGroupName        $E2EMonitorResourceGroupName `
     -E2EMonitorResourceGroupAzureRegion $E2EMonitorResourceGroupAzureRegion `
-    -ContainerRegistryName              $ContainerRegistryName `
-    -E2EMonitorContainerImageName       $E2EMonitorContainerImageName `
+    -ContainerRegistryName              $ContainerTargetRegistryName `
+    -E2ETestsContainerImageName         $E2ETestsContainerImageName `
     -TargetWebsiteUrl                   $TargetWebsiteUrl

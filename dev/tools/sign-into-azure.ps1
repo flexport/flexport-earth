@@ -5,33 +5,46 @@ $InformationPreference = "Continue"
 
 # Load global development settings
 $GlobalDevelopmentSettings = Get-Content 'dev/development-config.json' | ConvertFrom-Json
-$DevelopmentToolsDirectory = $GlobalDevelopmentSettings.DevelopmentToolsDirectory
+
+$CacheDirectory             = $GlobalDevelopmentSettings.CacheDirectory
+$DevelopmentToolsDirectory  = $GlobalDevelopmentSettings.DevelopmentToolsDirectory
 
 . "$DevelopmentToolsDirectory/local-config-manager.ps1"
 
 $DeveloperEnvironmentSettings = Get-EnvironmentSettingsObject
 
+$CurrentAzureSubscriptionName = $DeveloperEnvironmentSettings.AzureSubscriptionName
+
+. ./src/releasables/earth-runtime-config.ps1
+
+$EarthRuntimeConfig = Get-EarthRuntimeConfig -EnvironmentName $DeveloperEnvironmentSettings.EnvironmentName
+$EarthDeployerServicePrincipalName = $EarthRuntimeConfig.EarthDeployerServicePrincipalName
+
 Write-Information ""
-Write-Information "Ensuring you're signed into the correct Azure Subscription..."
-$ConfiguredAzureSubscriptionName = $DeveloperEnvironmentSettings.AzureSubscriptionName
+Write-Information "Signing into Azure as the Deployer Service Principal $EarthDeployerServicePrincipalName..."
 
-$AzAccountShowResults = az account show
+$DeployerCredentials = Get-Content -Path $CacheDirectory/azure/creds/$EarthDeployerServicePrincipalName.json | ConvertFrom-Json
 
-if (-Not ($AzAccountShowResults)) {
-    Write-Information "Signing in as $ConfiguredAzureSubscriptionName..."
-    ./azure/sign-in-as-service-principal.ps1 -AzureSubscriptionName $ConfiguredAzureSubscriptionName
+az login `
+    --service-principal `
+    --username  $DeployerCredentials.appId `
+    --password  $DeployerCredentials.password `
+    --tenant    $DeployerCredentials.tenant
+
+if (!$?) {
+    Write-Error "Failed to sign in as $EarthDeployerServicePrincipalName."
 }
 
-$CurrentAzureSubscriptionName = (az account show | ConvertFrom-Json).name
+$AccountInfo = az account show | ConvertFrom-Json
 
-if ($CurrentAzureSubscriptionName -ne $ConfiguredAzureSubscriptionName) {
-    Write-Information "You're currently signed into $CurrentAzureSubscriptionName, but your configured Azure Subscription Name is $ConfiguredAzureSubscriptionName"
-
-    $Answer = Read-Host "Do you want to sign into $ConfiguredAzureSubscriptionName ?"
-
-    if ($Answer.ToLower() -eq 'y') {
-        ./azure/sign-in-as-service-principal.ps1 -AzureSubscriptionName $ConfiguredAzureSubscriptionName
-    }
+if (!$?) {
+    Write-Error "Failed get account information!"
 }
 
-Write-Information "You are signed into the $CurrentAzureSubscriptionName Azure Subscription."
+$CurrentLoggedInUsername = $AccountInfo.user.name
+
+if ($CurrentLoggedInUsername -ne $DeployerCredentials.appId) {
+    Write-Error "Not logged in as the intended user: $DeployerCredentials.appId. Logged in as $CurrentLoggedInUsername something went wrong!"
+}
+
+Write-Information "You are signed into the $CurrentAzureSubscriptionName Azure Subscription as $EarthDeployerServicePrincipalName."

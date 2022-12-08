@@ -232,18 +232,38 @@ function Invoke-Deploy {
     . "$DevelopmentToolsDirectory/sign-into-azure.ps1"
     . "$DevelopmentToolsDirectory/build-number.ps1"
 
+    $CacheDirectory         = $GlobalDevelopmentSettings.CacheDirectory
+    $AzureSubscriptionName  = $DeveloperEnvironmentSettings.AzureSubscriptionName
+
+    $SubscriptionDeploymentServicePricipalName = "$AzureSubscriptionName-earth-deployer".ToLower()
+
+    $CredsPath = "$CacheDirectory/azure/creds/${SubscriptionDeploymentServicePricipalName}.json"
+
+    if (-Not (Test-Path $CredsPath)) {
+        Write-Error "Service Principal cached credentials not found at $.CredsPath. Please run ./azure/subscription-provision.ps1 to create a Service Principal, which will cache the credentials for use."
+    }
+
+    $ServicePrincipalCredentials = Get-Content -Path $CredsPath | ConvertFrom-Json
+
+    $ContainerSourceRegistryServerAddress                           = $DeveloperEnvironmentSettings.ContainerSourceRegistryServerAddress
+    $ContainerSourceRegistryServicePrincipalUsername                = $DeveloperEnvironmentSettings.ContainerSourceRegistryServicePrincipalUsername
+    [SecureString]$ContainerSourceRegistryServicePrincipalPassword  = ConvertTo-SecureString -String $DeveloperEnvironmentSettings.ContainerSourceRegistryServicePrincipalPassword -AsPlainText
+
     $BuildNumber = Get-BuildNumber
 
     try {
         Push-Location $ReleasablesPath
 
         ./deploy-earth.ps1 `
-            -BuildNumber                  $BuildNumber `
-            -EnvironmentName              $DeveloperEnvironmentSettings.EnvironmentName `
-            -EarthWebsiteCustomDomainName $DeveloperEnvironmentSettings.EarthWebsiteCustomDomainName `
-            -FlexportApiClientId          $DeveloperEnvironmentSettings.FlexportApiClientId `
-            -FlexportApiClientSecret      $DeveloperEnvironmentSettings.FlexportApiClientSecret `
-            -GoogleAnalyticsMeasurementId $DeveloperEnvironmentSettings.GoogleAnalyticsMeasurementId
+            -BuildNumber                                        $BuildNumber `
+            -EnvironmentName                                    $DeveloperEnvironmentSettings.EnvironmentName `
+            -EarthWebsiteCustomDomainName                       $DeveloperEnvironmentSettings.EarthWebsiteCustomDomainName `
+            -FlexportApiClientId                                $DeveloperEnvironmentSettings.FlexportApiClientId `
+            -FlexportApiClientSecret                            $DeveloperEnvironmentSettings.FlexportApiClientSecret `
+            -GoogleAnalyticsMeasurementId                       $DeveloperEnvironmentSettings.GoogleAnalyticsMeasurementId `
+            -ContainerSourceRegistryServerAddress               $ContainerSourceRegistryServerAddress `
+            -ContainerSourceRegistryServicePrincipalUsername    $ContainerSourceRegistryServicePrincipalUsername `
+            -ContainerSourceRegistryServicePrincipalPassword    $ContainerSourceRegistryServicePrincipalPassword
     }
     finally {
         Pop-Location

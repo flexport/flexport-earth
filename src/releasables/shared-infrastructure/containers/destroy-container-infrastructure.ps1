@@ -18,6 +18,8 @@ if($PSCmdlet.ShouldProcess($EnvironmentName)) {
     $Config             = Get-ContainerInfraConfig -EnvironmentName $EnvironmentName
     $ResourceGroupName  = $Config.ContainerInfraResourceGroupName
 
+    Write-Information "Checking if resource group $ResourceGroupName exists..."
+
     $Exists = az group exists --resource-group $ResourceGroupName
 
     if($Exists -eq "true") {

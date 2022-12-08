@@ -38,6 +38,8 @@ Set-StrictMode –Version latest
 $ErrorActionPreference = "Stop"
 $InformationPreference = "Continue"
 
+Write-Information "First, ensuring Docker Container infrastructure is prepared to receive build output..."
+
 # Sign in to Azure as the Deployer Service Principal so that
 # we can interact with build infrastructure such as the Azure Container Service
 # for publishing Docker images that are built.
@@ -60,10 +62,12 @@ finally {
     Pop-Location
 }
 
+Write-Information ""
+Write-Information "Container infrastructure is operational, commencing build..."
+Write-Information ""
+
 # Build
 try {
-    Write-Information "ContainerRegistryLoginServer: $ContainerRegistryLoginServer"
-
     ./build.ps1 `
         -BuildNumber                        $BuildNumber `
         -BuildUrl                           $BuildUrl `

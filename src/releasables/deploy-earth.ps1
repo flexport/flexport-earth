@@ -22,7 +22,19 @@ param (
 
     [Parameter(Mandatory = $true)]
     [String]
-    $GoogleAnalyticsMeasurementId
+    $GoogleAnalyticsMeasurementId,
+
+    [Parameter(Mandatory = $true)]
+    [String]
+    $ContainerSourceRegistryServerAddress,
+
+    [Parameter(Mandatory = $true)]
+    [String]
+    $ContainerSourceRegistryServicePrincipalUsername,
+
+    [Parameter(Mandatory = $true)]
+    [SecureString]
+    $ContainerSourceRegistryServicePrincipalPassword
 )
 
 Set-StrictMode –Version latest
@@ -34,12 +46,6 @@ $ScriptStartTime = Get-Date
 
 # Run dependency management
 . ./dependencies/dependency-manager.ps1
-
-# Load common configuration values
-. ./earth-runtime-config.ps1
-
-Write-Information ""
-Write-Information "Deploying Earth build $BuildNumber to $EnvironmentName environment..."
 
 # Performs Create if doesn't exist.
 function Update-SubscriptionBudget {
@@ -89,13 +95,21 @@ function Update-SubscriptionBudget {
 # Performs Create if doesn't exist.
 function Update-FrontendResourceGroup {
     [CmdletBinding(SupportsShouldProcess)]
-    Param()
+    Param(
+        [Parameter(Mandatory = $true)]
+        [String]
+        $EarthFrontendResourceGroupName,
+
+        [Parameter(Mandatory = $true)]
+        [String]
+        $EarthFrontendResourceGroupLocation
+    )
 
     process {
         if ($PSCmdlet.ShouldProcess($EarthFrontendResourceGroupName)) {
             $Parameters = [PSCustomObject]@{
-                earthFrontendResourceGroupName  = @{ value = $EarthFrontendResourceGroupName }
-                resourceGroupLocation           = @{ value = $EarthFrontendResourceGroupLocation }
+                earthFrontendResourceGroupName = @{ value = $EarthFrontendResourceGroupName }
+                resourceGroupLocation          = @{ value = $EarthFrontendResourceGroupLocation }
 
             }
 
@@ -135,6 +149,10 @@ function Update-Frontend {
         [Parameter(Mandatory = $true)]
         [String]
         $EnvironmentName,
+
+        [Parameter(Mandatory = $true)]
+        [String]
+        $EarthFrontendResourceGroupName,
 
         [Parameter(Mandatory = $false)]
         [String]
@@ -201,9 +219,9 @@ function Update-Frontend {
 
             $CreateResponse = $CreateResponseJson | ConvertFrom-Json
 
-            $CDNHostname            = $CreateResponse.properties.outputs.frontDoorEndpointHostName.value
-            $EndpointResourceName   = $CreateResponse.properties.outputs.frontDoorEndpointName.value
-            $WebsiteName            = $CreateResponse.properties.outputs.websiteName.value
+            $CDNHostname = $CreateResponse.properties.outputs.frontDoorEndpointHostName.value
+            $EndpointResourceName = $CreateResponse.properties.outputs.frontDoorEndpointName.value
+            $WebsiteName = $CreateResponse.properties.outputs.websiteName.value
 
             Write-Information ""
             Write-Information "Confguring website..."
@@ -211,10 +229,10 @@ function Update-Frontend {
                 --resource-group $EarthFrontendResourceGroupName `
                 --name $WebsiteName `
                 --settings `
-                    "WEBSITE_RUN_FROM_PACKAGE=1" `
-                    "FLEXPORT_API_CLIENT_ID=$FlexportApiClientId" `
-                    "FLEXPORT_API_CLIENT_SECRET=$FlexportApiClientSecret" `
-                    "NEXT_PUBLIC_GOOGLE_ANALYTICS_MEASUREMENT_ID=$GoogleAnalyticsMeasurementId"
+                "WEBSITE_RUN_FROM_PACKAGE=1" `
+                "FLEXPORT_API_CLIENT_ID=$FlexportApiClientId" `
+                "FLEXPORT_API_CLIENT_SECRET=$FlexportApiClientSecret" `
+                "NEXT_PUBLIC_GOOGLE_ANALYTICS_MEASUREMENT_ID=$GoogleAnalyticsMeasurementId"
             if (!$?) {
                 Write-Information $Output
                 Write-Information ""
@@ -271,9 +289,9 @@ function Update-Frontend {
 
             for ($i = 0; $i -lt 25; $i++) {
                 try {
-                    $Response            = Invoke-WebRequest $BuildNumberUrl
-                    $StatusCode          = $Response.StatusCode
-                    $Content             = $Response.Content
+                    $Response = Invoke-WebRequest $BuildNumberUrl
+                    $StatusCode = $Response.StatusCode
+                    $Content = $Response.Content
                     $ContainsBuildNumber = $Content.Contains($BuildNumber)
 
                     Write-Information "$i : Received HTTP Status Code: $StatusCode, ContainsBuildNumber: $ContainsBuildNumber"
@@ -306,11 +324,23 @@ function Update-Frontend {
     }
 }
 
+# Load common configuration values
+. ./earth-runtime-config.ps1
+
+$EarthRuntimeConfig = Get-EarthRuntimeConfig -EnvironmentName $EnvironmentName
+
+Write-Information ""
+Write-Information "Deploying Earth build $BuildNumber to $EnvironmentName environment..."
+
 #Update-SubscriptionBudget
-Update-FrontendResourceGroup
+
+Update-FrontendResourceGroup `
+    -EarthFrontendResourceGroupName     $($EarthRuntimeConfig.EarthFrontendResourceGroupName) `
+    -EarthFrontendResourceGroupLocation $($EarthRuntimeConfig.EarthFrontendResourceGroupLocation) `
 
 $EarthWebsiteUrl = Update-Frontend `
     -EnvironmentName                $EnvironmentName `
+    -EarthFrontendResourceGroupName $($EarthRuntimeConfig.EarthFrontendResourceGroupName) `
     -CustomDomainName               $EarthWebsiteCustomDomainName `
     -FlexportApiClientId            $FlexportApiClientId `
     -FlexportApiClientSecret        $FlexportApiClientSecret `
@@ -320,10 +350,10 @@ $EarthWebsiteUrl = Update-Frontend `
 # they fail with transient errors instead of real issues.
 # The retries avoid doing full deployments and also avoid
 # blocking CD pipeline waiting for someone to manually retry.
-# ./test-earth.ps1 `
-#     -BuildNumber        $BuildNumber `
-#     -EarthWebsiteUrl    $EarthWebsiteUrl `
-#     -MaxTries           3
+./test-earth.ps1 `
+    -BuildNumber        $BuildNumber `
+    -EarthWebsiteUrl    $EarthWebsiteUrl `
+    -MaxTries           3
 
 # Once we've confirmed the latest application and tests are working successfully,
 # deploy the E2E Monitor for continuously running the tests against the environment
@@ -337,10 +367,13 @@ try {
     Push-Location "./testing/e2e/monitor"
 
     ./deploy-e2e-monitor.ps1 `
-        -EnvironmentName        $EnvironmentName `
-        -BuildNumber            $BuildNumber `
-        -ContainerRegistryName  $ContainerInfraConfig.ContainerRegistryName `
-        -TargetWebsiteUrl       $EarthWebsiteUrl
+        -EnvironmentName                                    $EnvironmentName `
+        -BuildNumber                                        $BuildNumber `
+        -TargetWebsiteUrl                                   $EarthWebsiteUrl `
+        -ContainerSourceRegistryServerAddress               $ContainerSourceRegistryServerAddress `
+        -ContainerSourceRegistryServicePrincipalUsername    $ContainerSourceRegistryServicePrincipalUsername `
+        -ContainerSourceRegistryServicePrincipalPassword    $ContainerSourceRegistryServicePrincipalPassword `
+        -ContainerTargetRegistryName                        $ContainerInfraConfig.ContainerRegistryName
 }
 finally {
     Pop-Location
