@@ -232,18 +232,36 @@ function Invoke-Deploy {
     . "$DevelopmentToolsDirectory/sign-into-azure.ps1"
     . "$DevelopmentToolsDirectory/build-number.ps1"
 
+    $CacheDirectory         = $GlobalDevelopmentSettings.CacheDirectory
+    $AzureSubscriptionName  = $DeveloperEnvironmentSettings.AzureSubscriptionName
+
+    $SubscriptionDeploymentServicePricipalName = "$AzureSubscriptionName-earth-deployer".ToLower()
+
+    $CredsPath = "$CacheDirectory/azure/creds/${SubscriptionDeploymentServicePricipalName}.json"
+
+    if (-Not (Test-Path $CredsPath)) {
+        Write-Error "Service Principal cached credentials not found at $.CredsPath. Please run ./azure/subscription-provision.ps1 to create a Service Principal, which will cache the credentials for use."
+    }
+
+    $ContainerSourceRegistryServerAddress               = $DeveloperEnvironmentSettings.ContainerSourceRegistryServerAddress
+    $ContainerSourceRegistryServicePrincipalUsername    = $DeveloperEnvironmentSettings.ContainerSourceRegistryServicePrincipalUsername
+    $ContainerSourceRegistryServicePrincipalPassword    = $DeveloperEnvironmentSettings.ContainerSourceRegistryServicePrincipalPassword
+
     $BuildNumber = Get-BuildNumber
 
     try {
         Push-Location $ReleasablesPath
 
         ./deploy-earth.ps1 `
-            -BuildNumber                  $BuildNumber `
-            -EnvironmentName              $DeveloperEnvironmentSettings.EnvironmentName `
-            -EarthWebsiteCustomDomainName $DeveloperEnvironmentSettings.EarthWebsiteCustomDomainName `
-            -FlexportApiClientId          $DeveloperEnvironmentSettings.FlexportApiClientId `
-            -FlexportApiClientSecret      $DeveloperEnvironmentSettings.FlexportApiClientSecret `
-            -GoogleAnalyticsMeasurementId $DeveloperEnvironmentSettings.GoogleAnalyticsMeasurementId
+            -BuildNumber                                        $BuildNumber `
+            -EnvironmentName                                    $DeveloperEnvironmentSettings.EnvironmentName `
+            -EarthWebsiteCustomDomainName                       $DeveloperEnvironmentSettings.EarthWebsiteCustomDomainName `
+            -FlexportApiClientId                                $DeveloperEnvironmentSettings.FlexportApiClientId `
+            -FlexportApiClientSecret                            $DeveloperEnvironmentSettings.FlexportApiClientSecret `
+            -GoogleAnalyticsMeasurementId                       $DeveloperEnvironmentSettings.GoogleAnalyticsMeasurementId `
+            -ContainerSourceRegistryServerAddress               $ContainerSourceRegistryServerAddress `
+            -ContainerSourceRegistryServicePrincipalUsername    $ContainerSourceRegistryServicePrincipalUsername `
+            -ContainerSourceRegistryServicePrincipalPwd         $ContainerSourceRegistryServicePrincipalPassword
     }
     finally {
         Pop-Location
@@ -313,9 +331,9 @@ function Invoke-Push {
         Write-Error "The current branch is behind origin/main by $CommitsBehindOriginMain, please update it before continuing."
     }
 
-    Invoke-Build   -GlobalDevelopmentSettings $GlobalDevelopmentSettings -DeveloperEnvironmentSettings $DeveloperEnvironmentSettings
-    Invoke-Deploy  -GlobalDevelopmentSettings $GlobalDevelopmentSettings -DeveloperEnvironmentSettings $DeveloperEnvironmentSettings
-    Invoke-Destroy -GlobalDevelopmentSettings $GlobalDevelopmentSettings -DeveloperEnvironmentSettings $DeveloperEnvironmentSettings
+    Invoke-BuildAndPublish  -GlobalDevelopmentSettings $GlobalDevelopmentSettings -DeveloperEnvironmentSettings $DeveloperEnvironmentSettings
+    Invoke-Deploy           -GlobalDevelopmentSettings $GlobalDevelopmentSettings -DeveloperEnvironmentSettings $DeveloperEnvironmentSettings
+    Invoke-Destroy          -GlobalDevelopmentSettings $GlobalDevelopmentSettings -DeveloperEnvironmentSettings $DeveloperEnvironmentSettings
 
     git push --set-upstream origin $CurrentBranchName
 }

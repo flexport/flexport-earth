@@ -21,6 +21,8 @@ $InformationPreference = "Continue"
 # Run dependency management
 . ./releasables/dependencies/dependency-manager.ps1
 
+Write-Information "Signing into Azure as Service Principal..."
+
 az login `
     --service-principal `
     --tenant    $(ConvertFrom-SecureString -SecureString $ServicePrincipalCredentialsTenant   -AsPlainText) `
@@ -30,3 +32,5 @@ az login `
 if (!$?) {
     Write-Error "Failed to login as service principal."
 }
+
+Write-Information "Sign in completed successfully!"
