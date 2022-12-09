@@ -1,8 +1,5 @@
-@description('The short name or prefix of the target environment.')
-param environmentShortName string
-
 @description('Name for the container group')
-param name string = '${environmentShortName}e2etestmonitorcontainergroup'
+param containerGroupName string
 
 @description('Location for all resources.')
 param location string = resourceGroup().location
@@ -20,10 +17,10 @@ param image string
 param targetWebsiteUrl string
 
 @description('The number of CPU cores to allocate to the container.')
-param cpuCores int = 1
+param cpuCores int = 2
 
 @description('The amount of memory to allocate to the container in gigabytes.')
-param memoryInGb int = 2
+param memoryInGb int = 4
 
 @description('The behavior of Azure runtime if container has stopped.')
 @allowed([
@@ -34,12 +31,12 @@ param memoryInGb int = 2
 param restartPolicy string = 'Never'
 
 resource containerGroup 'Microsoft.ContainerInstance/containerGroups@2021-09-01' = {
-  name: name
+  name: containerGroupName
   location: location
   properties: {
     containers: [
       {
-        name: name
+        name: containerGroupName
         properties: {
           image: image
           resources: {

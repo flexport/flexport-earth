@@ -138,13 +138,16 @@ function Set-E2EMonitorResources {
             Write-Information "Token acquired!"
             Write-Information ""
 
+            $ContainerImage     = "$ContainerRegistryName.azurecr.io/$E2ETestsContainerImageName"
+            $ContainerGroupName = "${EnvironmentName}e2etestmonitorcontainergroup"
+
             $DeploymentParameters = [PSCustomObject]@{
-                environmentShortName        = @{ value = $EnvironmentName.ToLower() }
                 location                    = @{ value = $E2EMonitorResourceGroupAzureRegion }
                 containerRegistryServerName = @{ value = "$ContainerRegistryName.azurecr.io" }
                 containerRegistryPassword   = @{ value = $Token }
-                image                       = @{ value = "$ContainerRegistryName.azurecr.io/$E2ETestsContainerImageName" }
+                image                       = @{ value = $ContainerImage }
                 targetWebsiteUrl            = @{ value = $TargetWebsiteUrl }
+                containerGroupName          = @{ value = $ContainerGroupName }
             }
 
             $DeploymentParametersJson = $DeploymentParameters | ConvertTo-Json
@@ -176,6 +179,61 @@ function Set-E2EMonitorResources {
             }
 
             Write-Information "Provisioning E2E Monitor Resources completed!"
+
+            Write-Information "Checking that the monitor is working..."
+
+            $ContainerReadyForEvaluation = $false
+
+            for ($i = 0; $i -le 50; $i++) {
+
+                Write-Information "Getting container statuses..."
+
+                $containersJson = az container show `
+                    --resource-group    $E2EMonitorResourceGroupName `
+                    --name              $ContainerGroupName
+
+                $containers = $containersJson | ConvertFrom-Json
+
+                # Get the container, somehow this array is being
+                # auto-translated to the first container in the array...?
+                $container = $containers.containers
+
+                $image = $container.image
+
+                if ($image -eq $ContainerImage) {
+                    # Check its state...
+                    $ContainerState = $container.instanceView.currentState.state
+
+                    Write-Information "$image state is $ContainerState"
+
+                    if ($ContainerState -eq "Terminated") {
+                        $ContainerReadyForEvaluation = $true
+                        break
+                    }
+                } else {
+                    Write-Error "Container image $image doesn't match expected $ContainerImage"
+                }
+
+                Write-Information "Sleeping for 5 seconds before checking again..."
+
+                Start-Sleep -Seconds 5
+            }
+
+            if ($ContainerReadyForEvaluation -eq $false) {
+                Write-Error "Failed to test if container is working successfully."
+            }
+
+            Write-Information "Getting logs for container..."
+
+            $ContainerLogs = $(az container logs `
+                --resource-group    $E2EMonitorResourceGroupName `
+                --name              $ContainerGroupName) | ConvertTo-Json
+
+            if ($ContainerLogs.Contains("Run Finished") -eq $false) {
+                Write-Error "Container logs do not indicate the E2E tests were executed."
+            }
+
+            Write-Information "E2E tests were executed!"
         }
     }
 }
