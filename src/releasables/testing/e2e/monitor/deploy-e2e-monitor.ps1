@@ -193,7 +193,8 @@ $E2EMonitorConfig = Get-E2EMonitorConfig `
     -BuildNumber        $BuildNumber
 
 $E2ETestsContainerRepository        = $E2ETestsConfig.E2ETestsContainerRepository
-$E2ETestsContainerImageName         = $E2ETestsConfig.E2ETestsContainerImageAndTag
+$E2ETestsContainerImageName         = $E2ETestsConfig.E2ETestsContainerImageName
+$E2ETestsContainerImageAndTag       = $E2ETestsConfig.E2ETestsContainerImageAndTag
 $E2EMonitorResourceGroupName        = $E2EMonitorConfig.E2EMonitorResourceGroupName
 $E2EMonitorResourceGroupAzureRegion = $E2EMonitorConfig.E2EMonitorResourceGroupAzureRegion
 
@@ -218,5 +219,5 @@ Set-E2EMonitorResources `
     -E2EMonitorResourceGroupName        $E2EMonitorResourceGroupName `
     -E2EMonitorResourceGroupAzureRegion $E2EMonitorResourceGroupAzureRegion `
     -ContainerRegistryName              $ContainerTargetRegistryName `
-    -E2ETestsContainerImageName         $E2ETestsContainerImageName `
+    -E2ETestsContainerImageName         $E2ETestsContainerImageAndTag `
     -TargetWebsiteUrl                   $TargetWebsiteUrl

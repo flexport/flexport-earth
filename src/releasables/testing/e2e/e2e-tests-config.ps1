@@ -21,7 +21,7 @@ function Get-E2ETestConfig {
         $E2EMonitorConfig = [PSCustomObject]@{
             E2ETestsContainerRepository        = $E2ETestsContainerImageName
             E2ETestsContainerImageName         = $E2ETestsContainerImageName
-            E2ETestsContainerImageAndTag       = "$E2ETestsContainerImageName\:$BuildNumber"
+            E2ETestsContainerImageAndTag       = "$($E2ETestsContainerImageName):$BuildNumber"
         }
 
         $E2EMonitorConfig
