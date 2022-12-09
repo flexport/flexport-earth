@@ -204,7 +204,7 @@ $E2EMonitorResourceGroupAzureRegion = $E2EMonitorConfig.E2EMonitorResourceGroupA
 ../../../shared-infrastructure/containers/import-image-from-registry.ps1 `
     -SourceRegistryServerAddress            $ContainerSourceRegistryServerAddress `
     -SourceRegistryServicePrincipalUsername $ContainerSourceRegistryServicePrincipalUsername `
-    -SourceRegistryServicePrincipalPwdd $ContainerSourceRegistryServicePrincipalPwd `
+    -SourceRegistryServicePrincipalPwd      $ContainerSourceRegistryServicePrincipalPwd `
     -SourceRegistryImageName                $E2ETestsContainerImageName `
     -SourceRegistryImageReleaseTag          $BuildNumber `
     -DestinationRegistryName                $ContainerTargetRegistryName `
