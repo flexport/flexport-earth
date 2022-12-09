@@ -78,11 +78,13 @@ if ($repositories) {
 }
 
 if ($Import -eq $True) {
-    Write-Information "Attempting to import $SourceRegistryServerAddress/$SourceRegistryImageName to $DestinationRegistryName..."
+    $ImageAndTag = "$SourceRegistryImageName\:$SourceRegistryImageReleaseTag"
+
+    Write-Information "Attempting to import $SourceRegistryServerAddress/$ImageAndTag to $DestinationRegistryName..."
 
     az acr import `
         --name        $DestinationRegistryName `
-        --source      "$SourceRegistryServerAddress/$SourceRegistryImageName" `
+        --source      "$SourceRegistryServerAddress/$ImageAndTag" `
         --image       $SourceRegistryImageName `
         --username    $SourceRegistryServicePrincipalUsername `
         --password    $SourceRegistryServicePrincipalPassword

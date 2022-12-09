@@ -193,7 +193,7 @@ $E2EMonitorConfig = Get-E2EMonitorConfig `
     -BuildNumber        $BuildNumber
 
 $E2ETestsContainerRepository        = $E2ETestsConfig.E2ETestsContainerRepository
-$E2ETestsContainerImageName         = $E2ETestsConfig.E2ETestsContainerImageName
+$E2ETestsContainerImageName         = $E2ETestsConfig.E2ETestsContainerImageAndTag
 $E2EMonitorResourceGroupName        = $E2EMonitorConfig.E2EMonitorResourceGroupName
 $E2EMonitorResourceGroupAzureRegion = $E2EMonitorConfig.E2EMonitorResourceGroupAzureRegion
 
@@ -212,9 +212,6 @@ $E2EMonitorResourceGroupAzureRegion = $E2EMonitorConfig.E2EMonitorResourceGroupA
 Set-E2EMonitorResourceGroup `
     -E2EMonitorResourceGroupName        $E2EMonitorResourceGroupName `
     -E2EMonitorResourceGroupAzureRegion $E2EMonitorResourceGroupAzureRegion
-
-Write-Information "ContainerRegistryName:       $ContainerTargetRegistryName"
-Write-Information "E2ETestsContainerImageName:  $E2ETestsContainerImageName"
 
 Set-E2EMonitorResources `
     -EnvironmentName                    $EnvironmentName `
