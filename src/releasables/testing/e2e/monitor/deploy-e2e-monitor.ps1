@@ -185,7 +185,6 @@ function Set-E2EMonitorResources {
             $ContainerReadyForEvaluation = $false
 
             for ($i = 0; $i -le 50; $i++) {
-
                 Write-Information "Getting container statuses..."
 
                 $containersJson = az container show `
@@ -195,10 +194,9 @@ function Set-E2EMonitorResources {
                 $containers = $containersJson | ConvertFrom-Json
 
                 # Get the container, somehow this array is being
-                # auto-translated to the first container in the array...?
-                $container = $containers.containers
-
-                $image = $container.image
+                # auto-translated to the first container in the array...?!
+                $container  = $containers.containers
+                $image      = $container.image
 
                 if ($image -eq $ContainerImage) {
                     # Check its state...
