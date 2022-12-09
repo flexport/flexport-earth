@@ -21,8 +21,8 @@ param (
     $ContainerSourceRegistryServicePrincipalUsername,
 
     [Parameter(Mandatory = $true)]
-    [SecureString]
-    $ContainerSourceRegistryServicePrincipalPassword,
+    [String]
+    $ContainerSourceRegistryServicePrincipalPwd,
 
     [Parameter(Mandatory = $true)]
     [String]
@@ -204,7 +204,7 @@ $E2EMonitorResourceGroupAzureRegion = $E2EMonitorConfig.E2EMonitorResourceGroupA
 ../../../shared-infrastructure/containers/import-image-from-registry.ps1 `
     -SourceRegistryServerAddress            $ContainerSourceRegistryServerAddress `
     -SourceRegistryServicePrincipalUsername $ContainerSourceRegistryServicePrincipalUsername `
-    -SourceRegistryServicePrincipalPassword $ContainerSourceRegistryServicePrincipalPassword `
+    -SourceRegistryServicePrincipalPwdd $ContainerSourceRegistryServicePrincipalPwd `
     -SourceRegistryImageName                $E2ETestsContainerImageName `
     -SourceRegistryImageReleaseTag          $BuildNumber `
     -DestinationRegistryName                $ContainerTargetRegistryName `

@@ -18,7 +18,7 @@ param (
 
     [Parameter(Mandatory = $true)]
     [String]
-    $SourceRegistryServicePrincipalPassword,
+    $SourceRegistryServicePrincipalPwd,
 
     [Parameter(Mandatory = $true)]
     [String]
@@ -87,7 +87,7 @@ if ($Import -eq $True) {
         --source      "$SourceRegistryServerAddress/$ImageAndTag" `
         --image       $ImageAndTag `
         --username    $SourceRegistryServicePrincipalUsername `
-        --password    $SourceRegistryServicePrincipalPassword
+        --password    $SourceRegistryServicePrincipalPwd
 
     if (!$?) {
         Write-Error "Importing image $SourceRegistryImageName from $SourceRegistryServerAddress failed!"
