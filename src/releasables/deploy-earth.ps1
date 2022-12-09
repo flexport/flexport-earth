@@ -372,7 +372,7 @@ try {
         -TargetWebsiteUrl                                   $EarthWebsiteUrl `
         -ContainerSourceRegistryServerAddress               $ContainerSourceRegistryServerAddress `
         -ContainerSourceRegistryServicePrincipalUsername    $ContainerSourceRegistryServicePrincipalUsername `
-        -ContainerSourceRegistryServicePrincipalPassword    $ContainerSourceRegistryServicePrincipalPassword `
+        -ContainerSourceRegistryServicePrincipalPassword    $ContainerSourceRegistryServicePrincipalPwd `
         -ContainerTargetRegistryName                        $ContainerInfraConfig.ContainerRegistryName
 }
 finally {
