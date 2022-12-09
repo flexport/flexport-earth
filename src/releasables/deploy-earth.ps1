@@ -33,8 +33,8 @@ param (
     $ContainerSourceRegistryServicePrincipalUsername,
 
     [Parameter(Mandatory = $true)]
-    [SecureString]
-    $ContainerSourceRegistryServicePrincipalPassword
+    [String]
+    $ContainerSourceRegistryServicePrincipalPwd
 )
 
 Set-StrictMode –Version latest

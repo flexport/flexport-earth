@@ -243,11 +243,9 @@ function Invoke-Deploy {
         Write-Error "Service Principal cached credentials not found at $.CredsPath. Please run ./azure/subscription-provision.ps1 to create a Service Principal, which will cache the credentials for use."
     }
 
-    $ServicePrincipalCredentials = Get-Content -Path $CredsPath | ConvertFrom-Json
-
-    $ContainerSourceRegistryServerAddress                           = $DeveloperEnvironmentSettings.ContainerSourceRegistryServerAddress
-    $ContainerSourceRegistryServicePrincipalUsername                = $DeveloperEnvironmentSettings.ContainerSourceRegistryServicePrincipalUsername
-    [SecureString]$ContainerSourceRegistryServicePrincipalPassword  = ConvertTo-SecureString -String $DeveloperEnvironmentSettings.ContainerSourceRegistryServicePrincipalPassword -AsPlainText
+    $ContainerSourceRegistryServerAddress               = $DeveloperEnvironmentSettings.ContainerSourceRegistryServerAddress
+    $ContainerSourceRegistryServicePrincipalUsername    = $DeveloperEnvironmentSettings.ContainerSourceRegistryServicePrincipalUsername
+    $ContainerSourceRegistryServicePrincipalPassword    = $DeveloperEnvironmentSettings.ContainerSourceRegistryServicePrincipalPassword
 
     $BuildNumber = Get-BuildNumber
 
@@ -263,7 +261,7 @@ function Invoke-Deploy {
             -GoogleAnalyticsMeasurementId                       $DeveloperEnvironmentSettings.GoogleAnalyticsMeasurementId `
             -ContainerSourceRegistryServerAddress               $ContainerSourceRegistryServerAddress `
             -ContainerSourceRegistryServicePrincipalUsername    $ContainerSourceRegistryServicePrincipalUsername `
-            -ContainerSourceRegistryServicePrincipalPassword    $ContainerSourceRegistryServicePrincipalPassword
+            -ContainerSourceRegistryServicePrincipalPwd         $ContainerSourceRegistryServicePrincipalPassword
     }
     finally {
         Pop-Location
