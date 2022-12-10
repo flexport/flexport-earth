@@ -212,9 +212,11 @@ function Set-E2EMonitorResources {
                     Write-Error "Container image $image doesn't match expected $ContainerImage"
                 }
 
-                Write-Information "Sleeping for 5 seconds before checking again..."
+                $WaitTimeSeconds = 10
 
-                Start-Sleep -Seconds 5
+                Write-Information "Sleeping for $WaitTimeSeconds seconds before checking again..."
+
+                Start-Sleep -Seconds $WaitTimeSeconds
             }
 
             if ($ContainerReadyForEvaluation -eq $false) {
