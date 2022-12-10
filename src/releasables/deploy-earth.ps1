@@ -100,7 +100,7 @@ Write-Information "Deploying Earth build $BuildNumber to $EnvironmentName enviro
 try {
     Push-Location "./shared-infrastructure/containers"
 
-    ./deploy-container-infrastructure.ps1 -EnvironmentName $PublishToEnvironment
+    ./deploy-container-infrastructure.ps1 -EnvironmentName $EnvironmentName
 }
 finally {
     Pop-Location
