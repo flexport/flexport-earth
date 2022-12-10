@@ -69,7 +69,7 @@ Write-Information ""
 try {
     ./build.ps1 `
         -BuildNumber                        $BuildNumber `
-        -BuildUrl                           $CIBuildUrl `
+        -CIBuildUrl                         $CIBuildUrl `
         -FlexportApiClientID                $FlexportApiClientId `
         -FlexportApiClientSecret            $FlexportApiClientSecret `
         -Publish                            $true `
