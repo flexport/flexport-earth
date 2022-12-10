@@ -34,61 +34,6 @@ Set-StrictMode –Version latest
 $ErrorActionPreference = "Stop"
 $InformationPreference = "Continue"
 
-# Performs Create or Update operation for the E2E Monitor Resource Group.
-function Set-E2EMonitorResourceGroup {
-    [CmdletBinding(SupportsShouldProcess=$true)]
-    param (
-        [Parameter(Mandatory = $true)]
-        [String]
-        $E2EMonitorResourceGroupName,
-
-        [Parameter(Mandatory = $true)]
-        [String]
-        $E2EMonitorResourceGroupAzureRegion
-    )
-
-    process {
-        if ($PSCmdlet.ShouldProcess($E2EMonitorResourceGroupName)) {
-            $DeploymentParameters = [PSCustomObject]@{
-                resourceGroupName    = @{ value = $E2EMonitorResourceGroupName }
-                resourceGroupLocation= @{ value = $E2EMonitorResourceGroupAzureRegion }
-            }
-
-            $DeploymentParametersJson = $DeploymentParameters | ConvertTo-Json
-
-            # PowerShell v7.3.0 has a breaking change in how it handles
-            # parsing double quotes in strings. Previous versions required
-            # escaping the double quotes. Dev machines have been updated,
-            # but the Azure DevOps machines haven't yet.
-
-            $CurrentPowerShellVersion = $($PSVersionTable.PSVersion)
-            $CurrentPowerShellMajorVersion = $CurrentPowerShellVersion.Major
-            $CurrentPowerShellMinorVersion = $CurrentPowerShellVersion.Minor
-
-            if ($CurrentPowerShellMajorVersion -le 7 -and $CurrentPowerShellMinorVersion -lt 3) {
-                $DeploymentParametersJson = $DeploymentParametersJson.Replace('"', '\"')
-            }
-
-            Write-Information ""
-            Write-Information "Provisioning the E2E Monitor Resource Group..."
-            Write-Information "DeploymentParametersJson:"
-            Write-Information "$DeploymentParametersJson"
-            Write-Information ""
-
-            az deployment sub create `
-                --location      $E2EMonitorResourceGroupAzureRegion `
-                --template-file ./infrastructure/resource-group.bicep `
-                --parameters    $DeploymentParametersJson
-
-            if (!$?) {
-                Write-Error "Resource group deployment failed!"
-            }
-
-            Write-Information "Provisioning E2E Monitor Resource Group $E2EMonitorResourceGroupName completed!"
-        }
-    }
-}
-
 # Performs Create or Update operation for the E2E Monitor resources.
 function Set-E2EMonitorResources {
     [CmdletBinding(SupportsShouldProcess=$true)]
@@ -268,9 +213,20 @@ $E2EMonitorResourceGroupAzureRegion = $E2EMonitorConfig.E2EMonitorResourceGroupA
     -DestinationRegistryName                $ContainerTargetRegistryName `
     -DestinationRepositoryName              $E2ETestsContainerRepository
 
-Set-E2EMonitorResourceGroup `
-    -E2EMonitorResourceGroupName        $E2EMonitorResourceGroupName `
-    -E2EMonitorResourceGroupAzureRegion $E2EMonitorResourceGroupAzureRegion
+Write-Information "Creating resource group $ContainerInfraResourceGroupName..."
+
+$ResourceGroupCreateResponse = az group create `
+    --name      $E2EMonitorResourceGroupName `
+    --location  $E2EMonitorResourceGroupAzureRegion
+
+if (!$?) {
+    Write-Information   $ResourceGroupCreateResponse
+    Write-Information   ""
+    Write-Error         "Failed to create resource group $($FrontendConfig.EarthFrontendResourceGroupName)!"
+}
+
+Write-Information "Resource group created, deploying infrastructure to it..."
+
 
 Set-E2EMonitorResources `
     -EnvironmentName                    $EnvironmentName `
