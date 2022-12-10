@@ -25,10 +25,8 @@ Write-Information ""
 Write-Information "Testing Earth (build $BuildNumber) at $EarthWebsiteUrl"
 Write-Information ""
 
-$TestRootPath = "testing/e2e"
-
 try {
-    Push-Location $TestRootPath
+    Push-Location "testing/e2e"
 
     ./run-e2e-tests.ps1 `
         -EarthWebsiteUrl $EarthWebsiteUrl `

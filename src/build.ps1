@@ -6,7 +6,7 @@ param (
 
     [Parameter(Mandatory = $false)]
     [String]
-    $BuildUrl,
+    $CIBuildUrl,
 
     [Parameter(Mandatory = $true)]
     [String]
@@ -41,23 +41,25 @@ function Write-BuildNumber {
 
     Write-Information "Build number written to $BuildNumberFilePath"
 }
+
 function Write-BuildUrl {
     $FilePath = "./components/footer/footer.tsx"
 
     $IndexContentOriginal = Get-Content -Path $FilePath -Raw
     $IndexContentUpdated  = $IndexContentOriginal.Replace(
         "javascript:alert('Build URL not specified.');",
-        $BuildUrl
+        $CIBuildUrl
     )
 
-    if ($IndexContentUpdated.Contains($BuildUrl) -eq $false) {
-        Write-Error "The content was not updated with the BuildUrl as expected."
+    if ($IndexContentUpdated.Contains($CIBuildUrl) -eq $false) {
+        Write-Error "The content was not updated with the CIBuildUrl as expected."
     }
 
     $IndexContentUpdated | Out-File -FilePath $FilePath
 
     Write-Information "Build URL written to $FilePath"
 }
+
 function Build-Website {
     [CmdletBinding()]
     param (
@@ -79,6 +81,7 @@ function Build-Website {
     }
 
     $env:FLEXPORT_API_CLIENT_ID = "$FlexportApiClientId"; $env:FLEXPORT_API_CLIENT_SECRET = "$FlexportApiClientSecret"; npm run build
+
     if (!$?) {
         Write-Error "Failed to build the website, see previous log entries."
     }
@@ -86,6 +89,7 @@ function Build-Website {
     Write-Information "Website files compiled successfully!"
     Write-Information ""
 }
+
 function Test-UnitAndComponentFunctionality {
     Write-Information ""
     Write-Information "Running unit tests..."
@@ -130,7 +134,7 @@ function Invoke-BuildWorkflow {
 
         [Parameter(Mandatory = $false)]
         [String]
-        $BuildUrl,
+        $CIBuildUrl,
 
         [Parameter(Mandatory = $true)]
         [String]
@@ -162,7 +166,7 @@ function Invoke-BuildWorkflow {
     }
 
     Write-Information ""
-    Write-Information "Building Earth Website (Build Number: $BuildNumber | Build URL: $BuildUrl)"
+    Write-Information "Building Earth Website (Build Number: $BuildNumber | Build URL: $CIBuildUrl)"
     Write-Information ""
 
     try {
@@ -172,13 +176,13 @@ function Invoke-BuildWorkflow {
 
         # Update BuildUrl if available from CI system.
         # Will not be available when running this script locally.
-        if ($BuildUrl) {
+        if ($CIBuildUrl) {
             Write-BuildUrl
         }
 
         Build-Website `
-            -FlexportApiClientId            $FlexportApiClientId `
-            -FlexportApiClientSecret        $FlexportApiClientSecret
+            -FlexportApiClientId        $FlexportApiClientId `
+            -FlexportApiClientSecret    $FlexportApiClientSecret
 
         Test-UnitAndComponentFunctionality
 
@@ -211,15 +215,15 @@ $WebsiteContentSourceDirectory  = "website-content"
 
 Invoke-BuildWorkflow `
     -BuildNumber                        $BuildNumber `
-    -BuildUrl                           $BuildUrl `
+    -CIBuildUrl                         $CIBuildUrl `
     -FlexportApiClientId                $FlexportApiClientId `
     -FlexportApiClientSecret            $FlexportApiClientSecret `
     -Publish                            $Publish `
     -AzureContainerRegistryLoginServer  $AzureContainerRegistryLoginServer `
     -BuildEnvironmentName               $BuildEnvironmentName
 
-Write-Information "Earth website build completed!"
-Write-Information ""
+$Duration = New-TimeSpan `
+    -Start $ScriptStartTime `
+    -End   $(Get-Date)
 
-$Duration = New-TimeSpan -Start $ScriptStartTime -End $(Get-Date)
-Write-Information "Script completed in $Duration"
+Write-Information "Earth website build completed in $Duration"

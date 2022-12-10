@@ -35,7 +35,7 @@ stages:
         key: ./src/website-content/package-lock.json
         path: ./src/releasables/frontend/content
 
-    - pwsh: ./build-and-publish.ps1 -BuildNumber $(Build.BuildNumber) -BuildUrl "https://dev.azure.com/flexport-earth/Earth/_build/results?buildId=$(Build.BuildId)" -FlexportApiClientId $(FlexportApiClientId) -FlexportApiClientSecret $(FlexportApiClientSecret) -PublishToEnvironment $(publishToEnvironment) -AzureServicePrincipalCredentialsTenant $(ConvertTo-SecureString -String $(DeployerAzureServicePrincipalTenant) -AsPlainText) -AzureServicePrincipalCredentialsAppId $(ConvertTo-SecureString -String $(DeployerAzureServicePrincipalAppId) -AsPlainText) -AzureServicePrincipalCredentialsPassword $(ConvertTo-SecureString -String $(DeployerAzureServicePrincipalPassword) -AsPlainText)
+    - pwsh: ./build-and-publish.ps1 -BuildNumber $(Build.BuildNumber) -CIBuildUrl "https://dev.azure.com/flexport-earth/Earth/_build/results?buildId=$(Build.BuildId)" -FlexportApiClientId $(FlexportApiClientId) -FlexportApiClientSecret $(FlexportApiClientSecret) -PublishToEnvironment $(publishToEnvironment) -AzureServicePrincipalCredentialsTenant $(ConvertTo-SecureString -String $(DeployerAzureServicePrincipalTenant) -AsPlainText) -AzureServicePrincipalCredentialsAppId $(ConvertTo-SecureString -String $(DeployerAzureServicePrincipalAppId) -AsPlainText) -AzureServicePrincipalCredentialsPassword $(ConvertTo-SecureString -String $(DeployerAzureServicePrincipalPassword) -AsPlainText)
       displayName: 'Build Script'
       workingDirectory: './src'
 
