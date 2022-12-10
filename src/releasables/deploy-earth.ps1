@@ -98,7 +98,7 @@ Write-Information "Deploying Earth build $BuildNumber to $EnvironmentName enviro
 #Update-SubscriptionBudget
 
 try {
-    Push-Location "./releasables/shared-infrastructure/containers"
+    Push-Location "./shared-infrastructure/containers"
 
     ./deploy-container-infrastructure.ps1 -EnvironmentName $PublishToEnvironment
 }
