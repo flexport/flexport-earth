@@ -6,6 +6,8 @@ COPY cypress.io/ /cypress.io/
 
 WORKDIR /cypress.io
 
+RUN npm install
+
 ENV CYPRESS_BUILD_NUMBER=$BUILD_NUMBER
 ENV CYPRESS_EARTH_WEBSITE_URL=http://localhost:3000
 

@@ -1,4 +1,4 @@
-const { defineConfig } = require("cypress");
+﻿const { defineConfig } = require("cypress");
 
 module.exports = defineConfig({
   viewportWidth: 1920,
@@ -14,4 +14,4 @@ module.exports = defineConfig({
   chromeWebSecurity: false
 });
 
-export {};
+export default {};
