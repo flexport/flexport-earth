@@ -97,6 +97,15 @@ Write-Information "Deploying Earth build $BuildNumber to $EnvironmentName enviro
 
 #Update-SubscriptionBudget
 
+try {
+    Push-Location "./shared-infrastructure/containers"
+
+    ./deploy-container-infrastructure.ps1 -EnvironmentName $EnvironmentName
+}
+finally {
+    Pop-Location
+}
+
 $EarthWebsiteUrl = ""
 
 try {
