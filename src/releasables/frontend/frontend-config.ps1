@@ -1,6 +1,9 @@
 Set-StrictMode –Version latest
 
-function Get-ContainerInfraConfig {
+$ErrorActionPreference = "Stop"
+$InformationPreference = "Continue"
+
+function Get-FrontendConfig {
     [CmdletBinding(SupportsShouldProcess)]
     param (
         [Parameter(Mandatory=$true)]
@@ -10,9 +13,8 @@ function Get-ContainerInfraConfig {
 
     if($PSCmdlet.ShouldProcess($EnvironmentName)) {
         $Config = [PSCustomObject]@{
-            ContainerInfraResourceGroupName        = "$EnvironmentName-earth-container-infra"
-            ContainerInfraResourceGroupAzureRegion = "WestUS"
-            ContainerRegistryName                  = "${EnvironmentName}earthregistry"
+            EarthFrontendResourceGroupName     = "$EnvironmentName-earth-frontend".ToLower()
+            EarthFrontendResourceGroupLocation = "WestUS"
         }
 
         $Config

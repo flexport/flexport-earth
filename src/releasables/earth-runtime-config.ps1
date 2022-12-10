@@ -13,8 +13,6 @@ function Get-EarthRuntimeConfig {
 
     if($PSCmdlet.ShouldProcess($EnvironmentName)) {
         $Config = [PSCustomObject]@{
-            EarthFrontendResourceGroupName     = "$EnvironmentName-earth-frontend".ToLower()
-            EarthFrontendResourceGroupLocation = "WestUS"
             EarthDeployerServicePrincipalName  = "$EnvironmentName-earth-deployer"
         }
 

@@ -14,56 +14,30 @@ $InformationPreference = "Continue"
 . ./dependencies/dependency-manager.ps1
 
 if($PSCmdlet.ShouldProcess($EnvironmentName)) {
-    # Load common configuration values
-    . ./earth-runtime-config.ps1
-
-    $EarthRuntimeConfig = Get-EarthRuntimeConfig -EnvironmentName $EnvironmentName
-
     Write-Information ""
     Write-Information "Destroying $EnvironmentName environment..."
     Write-Information ""
 
-    try {
-        Push-Location "./testing/e2e/monitor"
+    $EarthResourceGroupsPattern = "$EnvironmentName-earth-"
 
-        ./destroy-e2e-monitor.ps1 `
-            -EnvironmentName $EnvironmentName
-    }
-    finally {
-        Pop-Location
-    }
+    Write-Information "Deleting all resource groups that start with '$EarthResourceGroupsPattern'..."
+    Write-Information ""
 
-    $EarthFrontendResourceGroupName = $EarthRuntimeConfig.EarthFrontendResourceGroupName
+    $ResourceGroupsJson = az group list --query "[?starts_with(name, '$EarthResourceGroupsPattern')]"
+    $ResourceGroups     = $ResourceGroupsJson | ConvertFrom-Json
 
-    Write-Information "Checking if resource group $EarthFrontendResourceGroupName exists..."
+    foreach ($ResourceGroup in $ResourceGroups) {
+        $ResourceGroupName = $ResourceGroup.name
 
-    $Exists = az group exists --resource-group $EarthFrontendResourceGroupName
-
-    if($Exists -eq "true") {
-        Write-Information "Destroying frontend infrastructure..."
+        Write-Information "Deleting resource group $ResourceGroupName..."
 
         az group delete `
-            --name $EarthFrontendResourceGroupName `
+            --name $ResourceGroupName `
             --yes
 
-        if (!$?) {
-            Write-Information ""
-            Write-Error "Deletion of the frontend resource group $EarthFrontendResourceGroupName failed!"
-        }
-    } else {
-        Write-Information "Resource group $EarthFrontendResourceGroupName doesn't exist, moving on..."
+        Write-Information "Deleted!"
     }
 
-    try {
-        Push-Location "./shared-infrastructure/containers"
-
-        ./destroy-container-infrastructure.ps1 `
-            -EnvironmentName $EnvironmentName
-    }
-    finally {
-        Pop-Location
-    }
+    Write-Information ""
+    Write-Information "All Earth resources have been deleted."
 }
-
-Write-Information ""
-Write-Information "All Earth resources have been deleted."
