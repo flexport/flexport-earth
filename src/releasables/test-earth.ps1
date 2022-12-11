@@ -21,10 +21,6 @@ $InformationPreference = "Continue"
 # Run dependency management
 . ./dependencies/dependency-manager.ps1
 
-Write-Information ""
-Write-Information "Testing Earth (build $BuildNumber) at $EarthWebsiteUrl"
-Write-Information ""
-
 try {
     Push-Location "testing/e2e"
 

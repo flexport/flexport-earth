@@ -213,7 +213,7 @@ $E2EMonitorResourceGroupAzureRegion = $E2EMonitorConfig.E2EMonitorResourceGroupA
     -DestinationRegistryName                $ContainerTargetRegistryName `
     -DestinationRepositoryName              $E2ETestsContainerRepository
 
-Write-Information "Creating resource group $ContainerInfraResourceGroupName..."
+Write-Information "Creating resource group $E2EMonitorResourceGroupName..."
 
 $ResourceGroupCreateResponse = az group create `
     --name      $E2EMonitorResourceGroupName `
@@ -222,7 +222,7 @@ $ResourceGroupCreateResponse = az group create `
 if (!$?) {
     Write-Information   $ResourceGroupCreateResponse
     Write-Information   ""
-    Write-Error         "Failed to create resource group $($FrontendConfig.EarthFrontendResourceGroupName)!"
+    Write-Error         "Failed to create resource group $E2EMonitorResourceGroupName!"
 }
 
 Write-Information "Resource group created, deploying infrastructure to it..."
