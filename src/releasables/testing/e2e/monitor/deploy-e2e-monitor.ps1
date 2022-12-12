@@ -13,16 +13,8 @@ param (
     $EarthWebsiteBaseUrl,
 
     [Parameter(Mandatory = $true)]
-    [String]
-    $ContainerSourceRegistryServerAddress,
-
-    [Parameter(Mandatory = $true)]
-    [String]
-    $ContainerSourceRegistryServicePrincipalUsername,
-
-    [Parameter(Mandatory = $true)]
-    [String]
-    $ContainerSourceRegistryServicePrincipalPwd,
+    [PSCustomObject]
+    $LowerEnvironmentContainerSource,
 
     [Parameter(Mandatory = $true)]
     [String]
@@ -31,6 +23,10 @@ param (
     [Parameter(Mandatory = $true)]
     [String]
     $ContainerTargetRegistryServerAddress,
+
+    [Parameter(Mandatory = $true)]
+    [String]
+    $ContainerTargetRegistryTenant,
 
     [Parameter(Mandatory = $true)]
     [String]
@@ -72,6 +68,10 @@ function Set-E2EMonitorResources {
 
         [Parameter(Mandatory = $true)]
         [String]
+        $ContainerRegistryTenant,
+
+        [Parameter(Mandatory = $true)]
+        [String]
         $ContainerRegistryUsername,
 
         [Parameter(Mandatory = $true)]
@@ -96,9 +96,10 @@ function Set-E2EMonitorResources {
             $ContainerImage     = "$ContainerRegistryServerAddress/$E2ETestsContainerImageName"
             $ContainerGroupName = "${EnvironmentName}-e2e-test-monitor-container-group"
 
-            $DeploymentParameters = [PSCustomObject]@{
+            $DeploymentParameters = @{
                 location                    = @{ value = $E2EMonitorResourceGroupAzureRegion }
                 containerRegistryServerName = @{ value = $ContainerRegistryServerAddress }
+                containerRegistryTenant     = @{ value = $ContainerRegistryTenant }
                 containerRegistryUsername   = @{ value = $ContainerRegistryUsername }
                 containerRegistryPassword   = @{ value = $ContainerRegistryPwd }
                 e2eTestContainerImageName   = @{ value = $ContainerImage }
@@ -223,9 +224,7 @@ $E2EMonitorResourceGroupAzureRegion = $E2EMonitorConfig.E2EMonitorResourceGroupA
 # been promoted/imported so that it can be used.
 
 ../../../shared-infrastructure/containers/import-image-from-registry.ps1 `
-    -SourceRegistryServerAddress            $ContainerSourceRegistryServerAddress `
-    -SourceRegistryServicePrincipalUsername $ContainerSourceRegistryServicePrincipalUsername `
-    -SourceRegistryServicePrincipalPwd      $ContainerSourceRegistryServicePrincipalPwd `
+    -ContainerSource                        $LowerEnvironmentContainerSource `
     -SourceRegistryImageName                $E2ETestsContainerImageName `
     -SourceRegistryImageReleaseTag          $BuildNumber `
     -DestinationRegistryName                $ContainerTargetRegistryName `
@@ -251,6 +250,7 @@ Set-E2EMonitorResources `
     -E2EMonitorResourceGroupAzureRegion $E2EMonitorResourceGroupAzureRegion `
     -ContainerRegistryName              $ContainerTargetRegistryName `
     -ContainerRegistryServerAddress     $ContainerTargetRegistryServerAddress `
+    -ContainerRegistryTenant            $ContainerTargetRegistryTenant `
     -ContainerRegistryUsername          $ContainerTargetRegistryUsername `
     -ContainerRegistryPwd               $ContainerTargetRegistryPwd `
     -E2ETestsContainerImageName         $E2ETestsContainerImageAndTag `

@@ -1,8 +1,8 @@
 [CmdletBinding()]
 param (
     [Parameter(Mandatory = $true)]
-    [String]
-    $SourceRegistryServerAddress,
+    [PSCustomObject]
+    $ContainerSource,
 
     [Parameter(Mandatory = $true)]
     [String]
@@ -11,14 +11,6 @@ param (
     [Parameter(Mandatory = $true)]
     [String]
     $SourceRegistryImageReleaseTag,
-
-    [Parameter(Mandatory = $true)]
-    [String]
-    $SourceRegistryServicePrincipalUsername,
-
-    [Parameter(Mandatory = $true)]
-    [String]
-    $SourceRegistryServicePrincipalPwd,
 
     [Parameter(Mandatory = $true)]
     [String]
@@ -76,17 +68,17 @@ if ($repositories) {
 if ($Import -eq $True) {
     $ImageAndTag = "$($SourceRegistryImageName):$SourceRegistryImageReleaseTag"
 
-    Write-Information "Attempting to import $SourceRegistryServerAddress/$ImageAndTag to $DestinationRegistryName..."
+    Write-Information "Attempting to import ${ContainerSource.RegistryServerAddress}/$ImageAndTag to $DestinationRegistryName..."
 
     az acr import `
         --name        $DestinationRegistryName `
-        --source      "$SourceRegistryServerAddress/$ImageAndTag" `
+        --source      "${ContainerSource.RegistryServerAddress}/$ImageAndTag" `
         --image       $ImageAndTag `
-        --username    $SourceRegistryServicePrincipalUsername `
-        --password    $SourceRegistryServicePrincipalPwd
+        --username    $ContainerSource.RegistryServicePrincipalUsername `
+        --password    $ContainerSource.RegistryServicePrincipalPassword
 
     if (!$?) {
-        Write-Error "Importing image $SourceRegistryImageName from $SourceRegistryServerAddress failed!"
+        Write-Error "Importing image $SourceRegistryImageName from ${ContainerSource.RegistryServerAddress} failed!"
     }
 
     Write-Information "Import complete."

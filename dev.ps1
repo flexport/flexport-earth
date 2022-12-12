@@ -246,6 +246,7 @@ function Invoke-Deploy {
     $DeployerServicePrincipalCredentials = Get-Content -Path $CredsPath | ConvertFrom-Json
 
     $ContainerSourceRegistryServerAddress               = $DeveloperEnvironmentSettings.ContainerSourceRegistryServerAddress
+    $ContainerTargetRegistryServicePrincipalTenant      = $DeveloperEnvironmentSettings.ContainerSourceRegistryServicePrincipalTenant
     $ContainerSourceRegistryServicePrincipalUsername    = $DeveloperEnvironmentSettings.ContainerSourceRegistryServicePrincipalUsername
     $ContainerSourceRegistryServicePrincipalPassword    = $DeveloperEnvironmentSettings.ContainerSourceRegistryServicePrincipalPassword
 
@@ -262,6 +263,7 @@ function Invoke-Deploy {
             -FlexportApiClientSecret                            $DeveloperEnvironmentSettings.FlexportApiClientSecret `
             -GoogleAnalyticsMeasurementId                       $DeveloperEnvironmentSettings.GoogleAnalyticsMeasurementId `
             -ContainerSourceRegistryServerAddress               $ContainerSourceRegistryServerAddress `
+            -ContainerTargetRegistryTenant                      $ContainerTargetRegistryServicePrincipalTenant `
             -ContainerSourceRegistryServicePrincipalUsername    $ContainerSourceRegistryServicePrincipalUsername `
             -ContainerSourceRegistryServicePrincipalPwd         $ContainerSourceRegistryServicePrincipalPassword `
             -ContainerTargetRegistryUsername                    $DeployerServicePrincipalCredentials.appId `

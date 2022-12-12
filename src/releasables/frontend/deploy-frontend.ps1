@@ -73,7 +73,7 @@ function Update-FrontendInfrastructure {
                 $URLToTest = "https://www.$CustomDomainName"
             }
 
-            $FrontendParameters = [PSCustomObject]@{
+            $FrontendParameters = @{
                 environmentShortName = @{ value = $EnvironmentName.ToLower() }
                 customDomainName     = @{ value = $CustomDomainName.ToLower() }
             }
@@ -85,9 +85,9 @@ function Update-FrontendInfrastructure {
             # escaping the double quotes. Dev machines have been updated,
             # but the Azure DevOps machines haven't yet.
 
-            $CurrentPowerShellVersion = $($PSVersionTable.PSVersion)
-            $CurrentPowerShellMajorVersion = $CurrentPowerShellVersion.Major
-            $CurrentPowerShellMinorVersion = $CurrentPowerShellVersion.Minor
+            $CurrentPowerShellVersion       = $($PSVersionTable.PSVersion)
+            $CurrentPowerShellMajorVersion  = $CurrentPowerShellVersion.Major
+            $CurrentPowerShellMinorVersion  = $CurrentPowerShellVersion.Minor
 
             if ($CurrentPowerShellMajorVersion -le 7 -and $CurrentPowerShellMinorVersion -lt 3) {
                 $FrontendParametersJson = $FrontendParametersJson.Replace('"', '\"')
@@ -139,7 +139,7 @@ function Update-FrontendInfrastructure {
             Write-Information "=================================================================="
             Write-Information ""
 
-            $FrontendInfraOutput = [PSCustomObject]@{
+            $FrontendInfraOutput = @{
                 earthWebsiteBaseUrl             = $URLToTest
                 azureWebsiteResourceName        = $WebsiteName
                 azureCdnEndpointResourceName    = $EndpointResourceName
@@ -177,8 +177,6 @@ function Update-FrontendWebsite {
 
     process {
         if ($PSCmdlet.ShouldProcess($EarthFrontendResourceGroupName)) {
-            Write-Information "Deploying website content..."
-
             $Output = az webapp deployment source config-zip `
                 --resource-group    $EarthFrontendResourceGroupName `
                 --name              $AzureWebsiteResourceName `
