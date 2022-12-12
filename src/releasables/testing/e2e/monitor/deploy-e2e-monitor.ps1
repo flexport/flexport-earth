@@ -198,6 +198,9 @@ function Set-E2EMonitorResources {
     }
 }
 
+Write-Information "Deploying E2E Monitor..."
+Write-Information ""
+
 # Deploy infrastructure
 . ../e2e-tests-config.ps1
 . ./e2e-monitor-config.ps1

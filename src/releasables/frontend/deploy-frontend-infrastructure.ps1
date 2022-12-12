@@ -293,5 +293,6 @@ Update-FrontendWebsite `
 
 Write-Information ""
 Write-Information "Deployment of Earth's frontend completed!"
+Write-Information ""
 
 return $FrontendInfraOutput.EarthWebsiteBaseUrl
