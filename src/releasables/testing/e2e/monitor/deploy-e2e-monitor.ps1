@@ -90,7 +90,7 @@ function Set-E2EMonitorResources {
             Write-Information ""
 
             $ContainerImage     = "$ContainerRegistryServerAddress/$E2ETestsContainerImageName"
-            $ContainerGroupName = "${EnvironmentName}e2e-test-monitor-container-group"
+            $ContainerGroupName = "${EnvironmentName}-e2e-test-monitor-container-group"
 
             $DeploymentParameters = [PSCustomObject]@{
                 location                    = @{ value = $E2EMonitorResourceGroupAzureRegion }
