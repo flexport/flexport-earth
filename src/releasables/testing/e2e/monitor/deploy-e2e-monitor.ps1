@@ -144,7 +144,7 @@ function Set-E2EMonitorResources {
 
             $ContainerReadyForEvaluation = $false
 
-            for ($i = 0; $i -le 50; $i++) {
+            for ($i = 0; $i -le 100; $i++) {
                 Write-Information "Getting container statuses..."
 
                 $containersJson = az container show `

@@ -86,12 +86,11 @@ function Update-SubscriptionBudget {
                 $ParametersJson = $ParametersJson.Replace('"', '\"')
             }
 
-            az `
-                deployment sub create `
-                --location $EarthFrontendResourceGroupLocation `
+            az deployment sub create `
+                --location      $EarthFrontendResourceGroupLocation `
                 --template-file azure-subscription/subscription-budget.bicep `
-                --parameters @azure-subscription/subscription-budget.parameters.json `
-                --parameters $ParametersJson
+                --parameters    @azure-subscription/subscription-budget.parameters.json `
+                --parameters    $ParametersJson
 
             if (!$?) {
                 Write-Error "Budget deployment failed."
@@ -120,7 +119,7 @@ $EarthWebsiteUrl = ""
 try {
     Push-Location "./frontend"
 
-    $EarthWebsiteUrl = ./deploy-frontend-infrastructure.ps1 `
+    $EarthWebsiteUrl = ./deploy-frontend.ps1 `
         -EnvironmentName                $EnvironmentName `
         -BuildNumber                    $BuildNumber `
         -EarthWebsiteCustomDomainName   $EarthWebsiteCustomDomainName `
@@ -136,10 +135,10 @@ finally {
 # they fail with transient errors instead of real issues.
 # The retries avoid doing full deployments and also avoid
 # blocking CD pipeline waiting for someone to manually retry.
-# ./test-earth.ps1 `
-#     -BuildNumber        $BuildNumber `
-#     -EarthWebsiteUrl    $EarthWebsiteUrl `
-#     -MaxTries           3
+./test-earth.ps1 `
+    -BuildNumber        $BuildNumber `
+    -EarthWebsiteUrl    $EarthWebsiteUrl `
+    -MaxTries           3
 
 # Once we've confirmed the latest application and tests are working successfully,
 # deploy the E2E Monitor for continuously running the tests against the environment
