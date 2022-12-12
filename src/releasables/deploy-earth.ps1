@@ -26,6 +26,10 @@ param (
 
     [Parameter(Mandatory = $true)]
     [String]
+    $ContainerSourceRegistryServerAddress,
+
+    [Parameter(Mandatory = $true)]
+    [String]
     $ContainerSourceRegistryServicePrincipalUsername,
 
     [Parameter(Mandatory = $true)]
@@ -152,7 +156,7 @@ try {
         -EnvironmentName                                    $EnvironmentName `
         -BuildNumber                                        $BuildNumber `
         -EarthWebsiteBaseUrl                                $EarthWebsiteUrl `
-        -ContainerSourceRegistryServerAddress               $ContainerInfraConfig.ContainerRegistryServerAddress `
+        -ContainerSourceRegistryServerAddress               $ContainerSourceRegistryServerAddress `
         -ContainerSourceRegistryServicePrincipalUsername    $ContainerSourceRegistryServicePrincipalUsername `
         -ContainerSourceRegistryServicePrincipalPwd         $ContainerSourceRegistryServicePrincipalPwd `
         -ContainerTargetRegistryName                        $ContainerInfraConfig.ContainerRegistryName `
