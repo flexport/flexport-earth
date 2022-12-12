@@ -12,9 +12,9 @@ param containerRegistryUsername string = '00000000-0000-0000-0000-000000000000'
 param containerRegistryPassword string
 
 @description('Container image to deploy. Should be of the form repoName/imagename:tag for images stored in public Docker Hub, or a fully qualified URI for other registries. Images from private registries require additional registry credentials.')
-param image string
+param e2eTestContainerImageName string
 
-param targetWebsiteUrl string
+param earthWebsiteBaseUrl string
 
 @description('The number of CPU cores to allocate to the container.')
 param cpuCores int = 2
@@ -38,7 +38,7 @@ resource containerGroup 'Microsoft.ContainerInstance/containerGroups@2021-09-01'
       {
         name: containerGroupName
         properties: {
-          image: image
+          image: e2eTestContainerImageName
           resources: {
             requests: {
               cpu: cpuCores
@@ -48,7 +48,7 @@ resource containerGroup 'Microsoft.ContainerInstance/containerGroups@2021-09-01'
           environmentVariables: [
             {
               name: 'CYPRESS_EARTH_WEBSITE_URL'
-              value: targetWebsiteUrl
+              value: earthWebsiteBaseUrl
             }
           ]
         }

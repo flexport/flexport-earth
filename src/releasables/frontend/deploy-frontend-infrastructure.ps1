@@ -282,6 +282,7 @@ $FrontendInfraOutput = Update-FrontendInfrastructure `
 
 Write-Information ""
 Write-Information "Frontend infrastructure deployed, deploying NextJS website..."
+Write-Information ""
 
 Update-FrontendWebsite `
     -BuildNumber                    $BuildNumber `
@@ -292,5 +293,6 @@ Update-FrontendWebsite `
 
 Write-Information ""
 Write-Information "Deployment of Earth's frontend completed!"
+Write-Information ""
 
 return $FrontendInfraOutput.EarthWebsiteBaseUrl

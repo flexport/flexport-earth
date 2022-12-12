@@ -34,7 +34,15 @@ param (
 
     [Parameter(Mandatory = $true)]
     [String]
-    $ContainerSourceRegistryServicePrincipalPwd
+    $ContainerSourceRegistryServicePrincipalPwd,
+
+    [Parameter(Mandatory = $true)]
+    [String]
+    $ContainerTargetRegistryUsername,
+
+    [Parameter(Mandatory = $true)]
+    [String]
+    $ContainerTargetRegistryPwd
 )
 
 Set-StrictMode –Version latest
@@ -94,6 +102,7 @@ function Update-SubscriptionBudget {
 
 Write-Information ""
 Write-Information "Deploying Earth build $BuildNumber to $EnvironmentName environment..."
+Write-Information ""
 
 #Update-SubscriptionBudget
 
@@ -127,10 +136,10 @@ finally {
 # they fail with transient errors instead of real issues.
 # The retries avoid doing full deployments and also avoid
 # blocking CD pipeline waiting for someone to manually retry.
-./test-earth.ps1 `
-    -BuildNumber        $BuildNumber `
-    -EarthWebsiteUrl    $EarthWebsiteUrl `
-    -MaxTries           3
+# ./test-earth.ps1 `
+#     -BuildNumber        $BuildNumber `
+#     -EarthWebsiteUrl    $EarthWebsiteUrl `
+#     -MaxTries           3
 
 # Once we've confirmed the latest application and tests are working successfully,
 # deploy the E2E Monitor for continuously running the tests against the environment
@@ -146,15 +155,21 @@ try {
     ./deploy-e2e-monitor.ps1 `
         -EnvironmentName                                    $EnvironmentName `
         -BuildNumber                                        $BuildNumber `
-        -TargetWebsiteUrl                                   $EarthWebsiteUrl `
+        -EarthWebsiteBaseUrl                                $EarthWebsiteUrl `
         -ContainerSourceRegistryServerAddress               $ContainerSourceRegistryServerAddress `
         -ContainerSourceRegistryServicePrincipalUsername    $ContainerSourceRegistryServicePrincipalUsername `
         -ContainerSourceRegistryServicePrincipalPwd         $ContainerSourceRegistryServicePrincipalPwd `
-        -ContainerTargetRegistryName                        $ContainerInfraConfig.ContainerRegistryName
+        -ContainerTargetRegistryName                        $ContainerInfraConfig.ContainerRegistryName `
+        -ContainerTargetRegistryServerAddress               $ContainerInfraConfig.ContainerRegistryServerAddress `
+        -ContainerTargetRegistryUsername                    $ContainerTargetRegistryUsername `
+        -ContainerTargetRegistryPwd                         $ContainerTargetRegistryPwd
 }
 finally {
     Pop-Location
 }
 
-$Duration = New-TimeSpan -Start $ScriptStartTime -End $(Get-Date)
-Write-Information "Script completed in $Duration"
+$Duration = New-TimeSpan `
+    -Start $ScriptStartTime `
+    -End   $(Get-Date)
+
+Write-Information "Earth deployment completed in $Duration"
