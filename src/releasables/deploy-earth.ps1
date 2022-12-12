@@ -160,6 +160,7 @@ try {
         -ContainerSourceRegistryServicePrincipalUsername    $ContainerSourceRegistryServicePrincipalUsername `
         -ContainerSourceRegistryServicePrincipalPwd         $ContainerSourceRegistryServicePrincipalPwd `
         -ContainerTargetRegistryName                        $ContainerInfraConfig.ContainerRegistryName `
+        -ContainerTargetRegistryServerAddress               $ContainerInfraConfig.ContainerSourceRegistryServerAddress `
         -ContainerTargetRegistryUsername                    $ContainerTargetRegistryUsername `
         -ContainerTargetRegistryPwd                         $ContainerTargetRegistryPwd
 }

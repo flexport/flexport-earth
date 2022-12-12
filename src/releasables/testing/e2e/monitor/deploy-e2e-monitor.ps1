@@ -30,6 +30,10 @@ param (
 
     [Parameter(Mandatory = $true)]
     [String]
+    $ContainerTargetRegistryServerAddress,
+
+    [Parameter(Mandatory = $true)]
+    [String]
     $ContainerTargetRegistryUsername,
 
     [Parameter(Mandatory = $true)]
@@ -118,7 +122,11 @@ function Set-E2EMonitorResources {
             }
 
             Write-Information ""
-            Write-Information "Provisioning Container Group and Containers..."
+            Write-Information "Provisioning E2E Monitor Container Group and Containers..."
+            Write-Information ""
+            Write-Information "Container Group Deployment Parameters:"
+            Write-Information $DeploymentParametersJson
+            Write-Information ""
 
             az deployment group create `
                 --mode              Complete `
@@ -239,7 +247,7 @@ Set-E2EMonitorResources `
     -E2EMonitorResourceGroupName        $E2EMonitorResourceGroupName `
     -E2EMonitorResourceGroupAzureRegion $E2EMonitorResourceGroupAzureRegion `
     -ContainerRegistryName              $ContainerTargetRegistryName `
-    -ContainerRegistryServerAddress     $ContainerSourceRegistryServerAddress `
+    -ContainerRegistryServerAddress     $ContainerTargetRegistryServerAddress `
     -ContainerRegistryUsername          $ContainerTargetRegistryUsername `
     -ContainerRegistryPwd               $ContainerTargetRegistryPwd `
     -E2ETestsContainerImageName         $E2ETestsContainerImageAndTag `
