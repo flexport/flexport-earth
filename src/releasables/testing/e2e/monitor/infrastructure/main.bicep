@@ -8,13 +8,15 @@ param containerGroupName string
 
 param containerRegistryServerName string
 
+param containerRegistryUsername string
+
 @secure()
 param containerRegistryPassword string
 
 @description('Container image to deploy. Should be of the form repoName/imagename:tag for images stored in public Docker Hub, or a fully qualified URI for other registries. Images from private registries require additional registry credentials.')
-param image string
+param e2eTestContainerImageName string
 
-param targetWebsiteUrl string
+param earthWebsiteBaseUrl string
 
 // Deploying storage account using module
 // module storage './storage.bicep' = {
@@ -25,14 +27,15 @@ param targetWebsiteUrl string
 //   }
 // }
 
-module storage './container.bicep' = {
-  name: 'e2eMonitorContainer'
+module storage './container-group.bicep' = {
+  name: 'E2EMonitorContainerGroup'
   params: {
     location:                     location
     containerGroupName:           containerGroupName
-    image:                        image
+    e2eTestContainerImageName:    e2eTestContainerImageName
     containerRegistryServerName:  containerRegistryServerName
+    containerRegistryUsername:    containerRegistryUsername
     containerRegistryPassword:    containerRegistryPassword
-    targetWebsiteUrl:             targetWebsiteUrl
+    earthWebsiteBaseUrl:          earthWebsiteBaseUrl
   }
 }

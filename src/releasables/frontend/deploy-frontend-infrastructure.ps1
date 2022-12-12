@@ -282,6 +282,7 @@ $FrontendInfraOutput = Update-FrontendInfrastructure `
 
 Write-Information ""
 Write-Information "Frontend infrastructure deployed, deploying NextJS website..."
+Write-Information ""
 
 Update-FrontendWebsite `
     -BuildNumber                    $BuildNumber `

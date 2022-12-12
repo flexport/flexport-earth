@@ -10,7 +10,7 @@ param (
 
     [Parameter(Mandatory = $true)]
     [String]
-    $TargetWebsiteUrl,
+    $EarthWebsiteBaseUrl,
 
     [Parameter(Mandatory = $true)]
     [String]
@@ -26,7 +26,15 @@ param (
 
     [Parameter(Mandatory = $true)]
     [String]
-    $ContainerTargetRegistryName
+    $ContainerTargetRegistryName,
+
+    [Parameter(Mandatory = $true)]
+    [String]
+    $ContainerTargetRegistryUsername,
+
+    [Parameter(Mandatory = $true)]
+    [String]
+    $ContainerTargetRegistryPwd
 )
 
 Set-StrictMode –Version latest
@@ -56,11 +64,23 @@ function Set-E2EMonitorResources {
 
         [Parameter(Mandatory = $true)]
         [String]
+        $ContainerRegistryServerAddress,
+
+        [Parameter(Mandatory = $true)]
+        [String]
+        $ContainerRegistryUsername,
+
+        [Parameter(Mandatory = $true)]
+        [String]
+        $ContainerRegistryPwd,
+
+        [Parameter(Mandatory = $true)]
+        [String]
         $E2ETestsContainerImageName,
 
         [Parameter(Mandatory = $true)]
         [String]
-        $TargetWebsiteUrl
+        $EarthWebsiteBaseUrl
     )
 
     process {
@@ -68,30 +88,17 @@ function Set-E2EMonitorResources {
             Write-Information ""
             Write-Information "Provisioning the E2E Monitor Resources..."
             Write-Information ""
-            Write-Information "Getting Container Registry access token..."
-            $Token =    $(az acr login `
-                                        --name $ContainerRegistryName `
-                                        --expose-token `
-                                        --output tsv `
-                                        --query accessToken
-                        )
 
-            if (!$?) {
-                Write-Error "Failed to get access token for the Container Registry!"
-            }
-
-            Write-Information "Token acquired!"
-            Write-Information ""
-
-            $ContainerImage     = "$ContainerRegistryName.azurecr.io/$E2ETestsContainerImageName"
-            $ContainerGroupName = "${EnvironmentName}e2etestmonitorcontainergroup"
+            $ContainerImage     = "$ContainerRegistryServerAddress/$E2ETestsContainerImageName"
+            $ContainerGroupName = "${EnvironmentName}e2e-test-monitor-container-group"
 
             $DeploymentParameters = [PSCustomObject]@{
                 location                    = @{ value = $E2EMonitorResourceGroupAzureRegion }
-                containerRegistryServerName = @{ value = "$ContainerRegistryName.azurecr.io" }
-                containerRegistryPassword   = @{ value = $Token }
-                image                       = @{ value = $ContainerImage }
-                targetWebsiteUrl            = @{ value = $TargetWebsiteUrl }
+                containerRegistryServerName = @{ value = $ContainerRegistryServerAddress }
+                containerRegistryUsername   = @{ value = $ContainerRegistryUsername }
+                containerRegistryPassword   = @{ value = $ContainerRegistryPwd }
+                e2eTestContainerImageName   = @{ value = $ContainerImage }
+                earthWebsiteBaseUrl         = @{ value = $EarthWebsiteBaseUrl }
                 containerGroupName          = @{ value = $ContainerGroupName }
             }
 
@@ -124,7 +131,7 @@ function Set-E2EMonitorResources {
             }
 
             Write-Information "Provisioning E2E Monitor Resources completed!"
-
+            Write-Information ""
             Write-Information "Checking that the monitor is working..."
 
             $ContainerReadyForEvaluation = $false
@@ -227,11 +234,17 @@ if (!$?) {
 
 Write-Information "Resource group created, deploying infrastructure to it..."
 
-
 Set-E2EMonitorResources `
     -EnvironmentName                    $EnvironmentName `
     -E2EMonitorResourceGroupName        $E2EMonitorResourceGroupName `
     -E2EMonitorResourceGroupAzureRegion $E2EMonitorResourceGroupAzureRegion `
     -ContainerRegistryName              $ContainerTargetRegistryName `
+    -ContainerRegistryServerAddress     $ContainerSourceRegistryServerAddress `
+    -ContainerRegistryUsername          $ContainerTargetRegistryUsername `
+    -ContainerRegistryPwd               $ContainerTargetRegistryPwd `
     -E2ETestsContainerImageName         $E2ETestsContainerImageAndTag `
-    -TargetWebsiteUrl                   $TargetWebsiteUrl
+    -EarthWebsiteBaseUrl                $EarthWebsiteBaseUrl
+
+Write-Information ""
+Write-Information "E2E Monitor Deployed!"
+Write-Information ""

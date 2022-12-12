@@ -46,8 +46,6 @@ Write-Information ""
 $Import = $False
 
 if ($repositories) {
-    Write-Information "There's repos!"
-
     Write-Information ""
     Write-Information "Checking $DestinationRegistryName to see if image tag $SourceRegistryImageReleaseTag already exists..."
     Write-Information ""
@@ -69,8 +67,6 @@ if ($repositories) {
         Write-Information "Image tag $SourceRegistryImageReleaseTag already exists in the target $DestinationRegistryName registry."
     }
 } else {
-    Write-Information "There's no repos!"
-
     Write-Information ""
     Write-Information "Repository $DestinationRepositoryName doesn't exist..."
 
