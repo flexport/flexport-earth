@@ -4,6 +4,7 @@ $ErrorActionPreference = "Stop"
 $InformationPreference = "Continue"
 
 function Get-EarthRuntimeConfig {
+    [OutputType('System.Collections.Hashtable')]
     [CmdletBinding(SupportsShouldProcess)]
     param (
         [Parameter(Mandatory=$false)]
@@ -12,7 +13,7 @@ function Get-EarthRuntimeConfig {
     )
 
     if($PSCmdlet.ShouldProcess($EnvironmentName)) {
-        $Config = [PSCustomObject]@{
+        $Config = @{
             EarthDeployerServicePrincipalName  = "$EnvironmentName-earth-deployer"
         }
 

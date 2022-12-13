@@ -2,23 +2,19 @@
 param (
     [Parameter(Mandatory = $true)]
     [PSCustomObject]
-    $ContainerSource,
+    $FromContainerRegistry,
+
+    [Parameter(Mandatory = $true)]
+    [PSCustomObject]
+    $ToContainerRegistry,
 
     [Parameter(Mandatory = $true)]
     [String]
-    $SourceRegistryImageName,
+    $ImageName,
 
     [Parameter(Mandatory = $true)]
     [String]
-    $SourceRegistryImageReleaseTag,
-
-    [Parameter(Mandatory = $true)]
-    [String]
-    $DestinationRegistryName,
-
-    [Parameter(Mandatory = $true)]
-    [String]
-    $DestinationRepositoryName
+    $ImageTag
 )
 
 Set-StrictMode –Version latest
@@ -27,9 +23,13 @@ $ErrorActionPreference = "Stop"
 $InformationPreference = "Continue"
 
 Write-Information ""
-Write-Information "Checking to see if repository $DestinationRepositoryName already exists..."
+Write-Information "Checking to see if repository $($ToContainerRegistry.RegistryName)/$($ImageName) already exists..."
 
-$repositories = $(az acr repository list --name $DestinationRegistryName --output tsv|tail -1)
+$repositories = $(
+    az acr repository list `
+        --name      $ToContainerRegistry.RegistryName `
+        --output    tsv|tail -1
+)
 
 Write-Information "The following repositories were returned:"
 Write-Information $($repositories | ConvertTo-Json)
@@ -39,46 +39,46 @@ $Import = $False
 
 if ($repositories) {
     Write-Information ""
-    Write-Information "Checking $DestinationRegistryName to see if image tag $SourceRegistryImageReleaseTag already exists..."
+    Write-Information "Checking $($ToContainerRegistry.RegistryName)/$($ImageName) to see if image tag $ImageTag already exists..."
     Write-Information ""
 
     # First check if the image already exists in the destination...
     $tags = $(az acr repository show-tags `
-        --name          $DestinationRegistryName `
-        --repository    $DestinationRepositoryName `
+        --name          $ToContainerRegistry.RegistryName `
+        --repository    $ImageName `
         --output        tsv)
 
     Write-Information "The following tags exists:"
     Write-Information $($tags | ConvertTo-Json)
 
-    if (-Not $tags.Contains($SourceRegistryImageReleaseTag)) {
-        Write-Information "Image does not exist in $DestinationRegistryName."
+    if (-Not $tags.Contains($ImageTag)) {
+        Write-Information "Tag does not exist in repository $($ToContainerRegistry.RegistryName)/$($ImageName)."
 
         $Import = $True
     } else {
-        Write-Information "Image tag $SourceRegistryImageReleaseTag already exists in the target $DestinationRegistryName registry."
+        Write-Information "Image tag $ImageTag already exists in the target $($ToContainerRegistry.RegistryName)/$($ImageName) repository."
     }
 } else {
     Write-Information ""
-    Write-Information "Repository $DestinationRepositoryName doesn't exist..."
+    Write-Information "Repository $($ToContainerRegistry.RegistryName)/$($ImageName) doesn't exist..."
 
     $Import = $True
 }
 
 if ($Import -eq $True) {
-    $ImageAndTag = "$($SourceRegistryImageName):$SourceRegistryImageReleaseTag"
+    $ImageAndTag = "$($ImageName):$ImageTag"
 
-    Write-Information "Attempting to import ${ContainerSource.RegistryServerAddress}/$ImageAndTag to $DestinationRegistryName..."
+    Write-Information "Attempting to import $($FromContainerRegistry.RegistryName)/$ImageAndTag to $DestinationRegistryName..."
 
     az acr import `
         --name        $DestinationRegistryName `
-        --source      "${ContainerSource.RegistryServerAddress}/$ImageAndTag" `
+        --source      "$($FromContainerRegistry.RegistryServerAddress)/$ImageAndTag" `
         --image       $ImageAndTag `
-        --username    $ContainerSource.RegistryServicePrincipalUsername `
-        --password    $ContainerSource.RegistryServicePrincipalPassword
+        --username    $FromContainerRegistry.RegistryServicePrincipalUsername `
+        --password    $FromContainerRegistry.RegistryServicePrincipalPassword
 
     if (!$?) {
-        Write-Error "Importing image $SourceRegistryImageName from ${ContainerSource.RegistryServerAddress} failed!"
+        Write-Error "Importing image $ImageAndTag from $($FromContainerRegistry.RegistryServerAddress) failed!"
     }
 
     Write-Information "Import complete."

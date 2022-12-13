@@ -16,7 +16,8 @@ function Get-E2EMonitorConfig {
     )
 
     if($PSCmdlet.ShouldProcess($EnvironmentName)) {
-        $E2EMonitorConfig = [PSCustomObject]@{
+        $E2EMonitorConfig = @{
+            E2EMonitorContainerGroupName       = "$EnvironmentName-earth-e2e-monitor-container-group"
             E2EMonitorResourceGroupName        = "$EnvironmentName-earth-e2e-monitor"
             E2EMonitorResourceGroupAzureRegion = "WestUS"
         }
