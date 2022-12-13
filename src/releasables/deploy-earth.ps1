@@ -33,8 +33,8 @@ param (
     $ContainerSourceRegistryServicePrincipalUsername,
 
     [Parameter(Mandatory = $true)]
-    [String]
-    $ContainerSourceRegistryServicePrincipalPwd,
+    [SecureString]
+    $ContainerSourceRegistryServicePrincipalPassword,
 
     [Parameter(Mandatory = $true)]
     [String]
@@ -45,8 +45,8 @@ param (
     $ContainerTargetRegistryUsername,
 
     [Parameter(Mandatory = $true)]
-    [String]
-    $ContainerTargetRegistryPwd
+    [SecureString]
+    $ContainerTargetRegistryPassword
 )
 
 Set-StrictMode –Version latest
@@ -61,7 +61,7 @@ $ScriptStartTime = Get-Date
 $LowerEnvironmentContainerRegistry = @{
     RegistryServerAddress            = $ContainerSourceRegistryServerAddress
     RegistryServicePrincipalUsername = $ContainerSourceRegistryServicePrincipalUsername
-    RegistryServicePrincipalPassword = $ContainerSourceRegistryServicePrincipalPwd
+    RegistryServicePrincipalPassword = $ContainerSourceRegistryServicePrincipalPassword
 }
 
 Write-Information ""
@@ -100,10 +100,10 @@ finally {
 # they fail with transient errors instead of real issues.
 # The retries avoid doing full deployments and also avoid
 # blocking CD pipeline waiting for someone to manually retry.
-# ./test-earth.ps1 `
-#     -BuildNumber        $BuildNumber `
-#     -EarthWebsiteUrl    $EarthWebsiteUrl `
-#     -MaxTries           3
+./test-earth.ps1 `
+    -BuildNumber        $BuildNumber `
+    -EarthWebsiteUrl    $EarthWebsiteUrl `
+    -MaxTries           3
 
 # Once we've confirmed the latest application and tests are working successfully,
 # deploy the E2E Monitor for continuously running the tests against the environment
@@ -118,18 +118,18 @@ $ContainerRegistry = @{
     RegistryServerAddress            = $ContainerInfraConfig.ContainerRegistryServerAddress
     RegistryTenant                   = $ContainerTargetRegistryTenant
     RegistryServicePrincipalUsername = $ContainerTargetRegistryUsername
-    RegistryServicePrincipalPassword = $ContainerTargetRegistryPwd
+    RegistryServicePrincipalPassword = $ContainerTargetRegistryPassword
 }
 
 try {
     Push-Location "./testing/e2e/monitor"
 
     ./deploy-e2e-monitor.ps1 `
-        -EnvironmentName                                    $EnvironmentName `
-        -BuildNumber                                        $BuildNumber `
-        -EarthWebsiteBaseUrl                                $EarthWebsiteUrl `
-        -LowerEnvironmentContainerRegistry                  $LowerEnvironmentContainerRegistry `
-        -ContainerRegistry                                  $ContainerRegistry
+        -EnvironmentName                    $EnvironmentName `
+        -BuildNumber                        $BuildNumber `
+        -EarthWebsiteBaseUrl                $EarthWebsiteUrl `
+        -LowerEnvironmentContainerRegistry  $LowerEnvironmentContainerRegistry `
+        -ContainerRegistry                  $ContainerRegistry
 }
 finally {
     Pop-Location

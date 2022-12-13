@@ -34,6 +34,46 @@ enum DevWorkflows {
     DestroyAzureEnvironment
 }
 
+function Get-DeployerServicePrincipalCredentials {
+    [CmdletBinding()]
+    Param(
+        [Parameter(Mandatory = $true)]
+        [Object]
+        $GlobalDevelopmentSettings,
+
+        [Parameter(Mandatory = $true)]
+        [Object]
+        $DeveloperEnvironmentSettings
+    )
+
+    process {
+        #if ($PSCmdlet.ShouldProcess($GlobalDevelopmentSettings)) {
+            $CacheDirectory         = $GlobalDevelopmentSettings.CacheDirectory
+            $AzureSubscriptionName  = $DeveloperEnvironmentSettings.AzureSubscriptionName
+
+            $SubscriptionDeploymentServicePricipalName = "$AzureSubscriptionName-earth-deployer".ToLower()
+
+            $CredsPath = "$CacheDirectory/azure/creds/${SubscriptionDeploymentServicePricipalName}.json"
+
+            if (-Not (Test-Path $CredsPath)) {
+                Write-Error "Service Principal cached credentials not found at $.CredsPath. Please run ./azure/subscription-provision.ps1 to create a Service Principal, which will cache the credentials for use."
+            }
+
+            $ServicePrincipalCredentials = Get-Content -Path $CredsPath | ConvertFrom-Json
+
+            $ServicePrincipalCredentials = @{
+                Tenant      = $ServicePrincipalCredentials.tenant
+                DisplayName = $ServicePrincipalCredentials.displayName
+                AppId       = $ServicePrincipalCredentials.appId
+                Password    = ConvertTo-SecureString -String $ServicePrincipalCredentials.password -AsPlainText
+            }
+
+
+            return $ServicePrincipalCredentials
+        #}
+    }
+}
+
 function Invoke-Workflow {
     [CmdletBinding()]
     param (
@@ -164,25 +204,9 @@ function Invoke-BuildAndPublish {
         $DeveloperEnvironmentSettings
     )
 
-    # Load Global Development Settings
-    $GlobalDevelopmentSettings = Get-Content 'dev/development-config.json' | ConvertFrom-Json
-
-    $CacheDirectory         = $GlobalDevelopmentSettings.CacheDirectory
-    $AzureSubscriptionName  = $DeveloperEnvironmentSettings.AzureSubscriptionName
-
-    $SubscriptionDeploymentServicePricipalName = "$AzureSubscriptionName-earth-deployer".ToLower()
-
-    $CredsPath = "$CacheDirectory/azure/creds/${SubscriptionDeploymentServicePricipalName}.json"
-
-    if (-Not (Test-Path $CredsPath)) {
-        Write-Error "Service Principal cached credentials not found at $.CredsPath. Please run ./azure/subscription-provision.ps1 to create a Service Principal, which will cache the credentials for use."
-    }
-
-    $ServicePrincipalCredentials = Get-Content -Path $CredsPath | ConvertFrom-Json
-
-    [SecureString]$AzureServicePrincipalCredentialsTenant   = ConvertTo-SecureString -String $ServicePrincipalCredentials.Tenant   -AsPlainText
-    [SecureString]$AzureServicePrincipalCredentialsAppId    = ConvertTo-SecureString -String $ServicePrincipalCredentials.AppId    -AsPlainText
-    [SecureString]$AzureServicePrincipalCredentialsPassword = ConvertTo-SecureString -String $ServicePrincipalCredentials.Password -AsPlainText
+    $ServicePrincipalCredentials = Get-DeployerServicePrincipalCredentials `
+        -GlobalDevelopmentSettings      $GlobalDevelopmentSettings `
+        -DeveloperEnvironmentSettings   $DeveloperEnvironmentSettings
 
     try {
         Push-Location $GlobalDevelopmentSettings.SourceDirectory
@@ -190,13 +214,13 @@ function Invoke-BuildAndPublish {
         $BuildNumber = [Guid]::NewGuid()
 
         ./build-and-publish.ps1 `
-            -BuildNumber                                $BuildNumber `
-            -FlexportApiClientID                        $DeveloperEnvironmentSettings.FlexportApiClientID `
-            -FlexportApiClientSecret                    $DeveloperEnvironmentSettings.FlexportApiClientSecret `
-            -PublishToEnvironment                       $DeveloperEnvironmentSettings.EnvironmentName `
-            -AzureServicePrincipalCredentialsTenant     $AzureServicePrincipalCredentialsTenant `
-            -AzureServicePrincipalCredentialsAppId      $AzureServicePrincipalCredentialsAppId `
-            -AzureServicePrincipalCredentialsPassword   $AzureServicePrincipalCredentialsPassword
+            -BuildNumber                     $BuildNumber `
+            -FlexportApiClientID             $DeveloperEnvironmentSettings.FlexportApiClientID `
+            -FlexportApiClientSecret         $DeveloperEnvironmentSettings.FlexportApiClientSecret `
+            -PublishToEnvironment            $DeveloperEnvironmentSettings.EnvironmentName `
+            -AzureServicePrincipalTenant     $ServicePrincipalCredentials.Tenant `
+            -AzureServicePrincipalAppId      $ServicePrincipalCredentials.AppId `
+            -AzureServicePrincipalPassword   $ServicePrincipalCredentials.Password
 
         Write-Information ""
         Write-Information "To run the build locally:"
@@ -232,18 +256,9 @@ function Invoke-Deploy {
     . "$DevelopmentToolsDirectory/sign-into-azure.ps1"
     . "$DevelopmentToolsDirectory/build-number.ps1"
 
-    $CacheDirectory         = $GlobalDevelopmentSettings.CacheDirectory
-    $AzureSubscriptionName  = $DeveloperEnvironmentSettings.AzureSubscriptionName
-
-    $SubscriptionDeploymentServicePricipalName = "$AzureSubscriptionName-earth-deployer".ToLower()
-
-    $CredsPath = "$CacheDirectory/azure/creds/${SubscriptionDeploymentServicePricipalName}.json"
-
-    if (-Not (Test-Path $CredsPath)) {
-        Write-Error "Service Principal cached credentials not found at $.CredsPath. Please run ./azure/subscription-provision.ps1 to create a Service Principal, which will cache the credentials for use."
-    }
-
-    $DeployerServicePrincipalCredentials = Get-Content -Path $CredsPath | ConvertFrom-Json
+    $DeployerServicePrincipalCredentials = Get-DeployerServicePrincipalCredentials `
+        -GlobalDevelopmentSettings      $GlobalDevelopmentSettings `
+        -DeveloperEnvironmentSettings   $DeveloperEnvironmentSettings
 
     $ContainerSourceRegistryServerAddress               = $DeveloperEnvironmentSettings.ContainerSourceRegistryServerAddress
     $ContainerTargetRegistryServicePrincipalTenant      = $DeveloperEnvironmentSettings.ContainerSourceRegistryServicePrincipalTenant
@@ -266,8 +281,8 @@ function Invoke-Deploy {
             -ContainerTargetRegistryTenant                      $ContainerTargetRegistryServicePrincipalTenant `
             -ContainerSourceRegistryServicePrincipalUsername    $ContainerSourceRegistryServicePrincipalUsername `
             -ContainerSourceRegistryServicePrincipalPwd         $ContainerSourceRegistryServicePrincipalPassword `
-            -ContainerTargetRegistryUsername                    $DeployerServicePrincipalCredentials.appId `
-            -ContainerTargetRegistryPwd                         $DeployerServicePrincipalCredentials.password
+            -ContainerTargetRegistryUsername                    $DeployerServicePrincipalCredentials.AppId `
+            -ContainerTargetRegistryPassword                    $DeployerServicePrincipalCredentials.Password
     }
     finally {
         Pop-Location

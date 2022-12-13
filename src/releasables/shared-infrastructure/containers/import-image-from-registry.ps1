@@ -68,10 +68,10 @@ if ($repositories) {
 if ($Import -eq $True) {
     $ImageAndTag = "$($ImageName):$ImageTag"
 
-    Write-Information "Attempting to import $($FromContainerRegistry.RegistryName)/$ImageAndTag to $DestinationRegistryName..."
+    Write-Information "Attempting to import $($FromContainerRegistry.RegistryServerAddress)/$ImageAndTag to $($ToContainerRegister.RegistryServerAddress)..."
 
     az acr import `
-        --name        $DestinationRegistryName `
+        --name        $ToContainerRegistry.RegistryName `
         --source      "$($FromContainerRegistry.RegistryServerAddress)/$ImageAndTag" `
         --image       $ImageAndTag `
         --username    $FromContainerRegistry.RegistryServicePrincipalUsername `
