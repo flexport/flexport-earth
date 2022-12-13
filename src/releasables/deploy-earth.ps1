@@ -56,7 +56,6 @@ $InformationPreference = "Continue"
 
 $ScriptStartTime = Get-Date
 
-# Run dependency management
 . ./dependencies/dependency-manager.ps1
 
 $LowerEnvironmentContainerSource = @{
