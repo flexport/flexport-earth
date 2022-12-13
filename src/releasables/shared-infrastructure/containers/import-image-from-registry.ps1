@@ -75,7 +75,7 @@ if ($Import -eq $True) {
         --source      "$($FromContainerRegistry.RegistryServerAddress)/$ImageAndTag" `
         --image       $ImageAndTag `
         --username    $FromContainerRegistry.RegistryServicePrincipalUsername `
-        --password    $FromContainerRegistry.RegistryServicePrincipalPassword
+        --password    $($FromContainerRegistry.RegistryServicePrincipalPassword | ConvertFrom-SecureString -AsPlainText)
 
     if (!$?) {
         Write-Error "Importing image $ImageAndTag from $($FromContainerRegistry.RegistryServerAddress) failed!"
