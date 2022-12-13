@@ -19,7 +19,7 @@ param deployerServicePrincipalUsername  string
 @secure()
 param deployerServicePrincipalPassword  string
 
-var frequency       = 'Minutes'
+var frequency       = 'Minute'
 var interval        = '10'
 var type            = 'recurrence'
 var workflowSchema  = 'https://schema.management.azure.com/providers/Microsoft.Logic/schemas/2016-06-01/workflowdefinition.json#'
