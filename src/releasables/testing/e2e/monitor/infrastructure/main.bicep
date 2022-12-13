@@ -6,10 +6,16 @@ param location string  = resourceGroup().location
 @description('The name of the container group.')
 param containerGroupName string
 
+@description('The Container Registry to use for pulling the E2E Test Conainter images.')
 param containerRegistryServerName string
 
+@description('The Container Registry to use for pulling the E2E Test Conainter images.')
+param containerRegistryTenant string
+
+@description('The username that the Container Instance service should use to authenticate with the Container Registry when pulling the E2E Test Conainter images.')
 param containerRegistryUsername string
 
+@description('The password that the Container Instance service should use to authenticate with the Container Registry when pulling the E2E Test Conainter images.')
 @secure()
 param containerRegistryPassword string
 
@@ -27,7 +33,7 @@ param earthWebsiteBaseUrl string
 //   }
 // }
 
-module storage './container-group.bicep' = {
+module containerGroup './container-group.bicep' = {
   name: 'E2EMonitorContainerGroup'
   params: {
     location:                     location
@@ -37,5 +43,16 @@ module storage './container-group.bicep' = {
     containerRegistryUsername:    containerRegistryUsername
     containerRegistryPassword:    containerRegistryPassword
     earthWebsiteBaseUrl:          earthWebsiteBaseUrl
+  }
+}
+
+module logicAppScheduledTask './logic-app-scheduled-task.bicep' = {
+  name: 'E2EMonitorLogicApp'
+  params: {
+    e2eTestMonitorContainerGroupName:     containerGroupName
+    e2eTestMonitorResourceGroupLocation:  location
+    deployerServicePrincipalTenent:       containerRegistryTenant
+    deployerServicePrincipalUsername:     containerRegistryUsername
+    deployerServicePrincipalPassword:     containerRegistryPassword
   }
 }

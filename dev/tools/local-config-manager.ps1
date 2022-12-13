@@ -107,6 +107,12 @@ https://github.com/flexport/flexport-earth/tree/main/product/docs/administrative
     Set-ConfigValue `
         -Settings         $LocalSettings `
         -SettingsFilePath $LocalSettingsPath `
+        -ConfigName       "ContainerSourceRegistryServicePrincipalTenant" `
+        -ConfigPrompt     "What's the Azure Tenant ID for authenticating for the Azure Container Registry that Container images should be promoted from?"
+
+    Set-ConfigValue `
+        -Settings         $LocalSettings `
+        -SettingsFilePath $LocalSettingsPath `
         -ConfigName       "ContainerSourceRegistryServicePrincipalUsername" `
         -ConfigPrompt     "What's the username for authenticating for the Azure Container Registry that Container images should be promoted from?"
 
