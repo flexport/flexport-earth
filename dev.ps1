@@ -43,14 +43,16 @@ function Get-DeployerServicePrincipalCredentials {
 
         [Parameter(Mandatory = $true)]
         [Object]
-        $DeveloperEnvironmentSettings
+        $DeveloperEnvironmentSettings,
+
+       [Parameter(Mandatory = $true)]
+       [PSCustomObject]
+       $EarthRuntimeConfig
     )
 
     process {
-        $CacheDirectory                             = $GlobalDevelopmentSettings.CachedAzureCredsDirectory
-        $AzureSubscriptionName                      = $DeveloperEnvironmentSettings.AzureSubscriptionName
-        $SubscriptionDeploymentServicePricipalName  = "$AzureSubscriptionName-earth-deployer".ToLower()
-        $CredsPath                                  = "$CacheDirectory/${SubscriptionDeploymentServicePricipalName}.json"
+        $CacheDirectory = $GlobalDevelopmentSettings.CachedAzureCredsDirectory
+        $CredsPath      = "$CacheDirectory/$($EarthRuntimeConfig.EarthDeployerServicePrincipalName).json"
 
         if (-Not (Test-Path $CredsPath)) {
             Write-Error "Service Principal cached credentials not found at $.CredsPath. Please run ./azure/subscription-provision.ps1 to create a Service Principal, which will cache the credentials for use."
@@ -64,7 +66,6 @@ function Get-DeployerServicePrincipalCredentials {
             AppId       = $ServicePrincipalCredentials.appId
             Password    = ConvertTo-SecureString -String $ServicePrincipalCredentials.password -AsPlainText
         }
-
 
         return $ServicePrincipalCredentials
     }
@@ -87,6 +88,10 @@ function Invoke-Workflow {
 
     $DeveloperEnvironmentSettings = Get-EnvironmentSettingsObject
 
+    . ./src/releasables/earth-runtime-config.ps1
+
+    $EarthRuntimeConfig = Get-EarthRuntimeConfig -EnvironmentName $DeveloperEnvironmentSettings.EnvironmentName
+
     switch ($Workflow) {
         BuildRelease
         {
@@ -99,7 +104,8 @@ function Invoke-Workflow {
         {
             Invoke-BuildAndPublish `
                 -GlobalDevelopmentSettings      $GlobalDevelopmentSettings `
-                -DeveloperEnvironmentSettings   $DeveloperEnvironmentSettings
+                -DeveloperEnvironmentSettings   $DeveloperEnvironmentSettings `
+                -EarthRuntimeConfig             $EarthRuntimeConfig
         }
 
         DeployToAzure
@@ -197,12 +203,17 @@ function Invoke-BuildAndPublish {
 
         [Parameter(Mandatory = $true)]
         [Object]
-        $DeveloperEnvironmentSettings
+        $DeveloperEnvironmentSettings,
+
+        [Parameter(Mandatory = $true)]
+        [PSCustomObject]
+        $EarthRuntimeConfig
     )
 
     $ServicePrincipalCredentials = Get-DeployerServicePrincipalCredentials `
         -GlobalDevelopmentSettings      $GlobalDevelopmentSettings `
-        -DeveloperEnvironmentSettings   $DeveloperEnvironmentSettings
+        -DeveloperEnvironmentSettings   $DeveloperEnvironmentSettings `
+        -EarthRuntimeConfig             $EarthRuntimeConfig
 
     try {
         Push-Location $GlobalDevelopmentSettings.SourceDirectory
@@ -243,7 +254,11 @@ function Invoke-Deploy {
 
         [Parameter(Mandatory = $true)]
         [Object]
-        $DeveloperEnvironmentSettings
+        $DeveloperEnvironmentSettings,
+
+        [Parameter(Mandatory = $true)]
+        [PSCustomObject]
+        $EarthRuntimeConfig
     )
 
     $ReleasablesPath           = $GlobalDevelopmentSettings.ReleasablesDirectory
@@ -254,7 +269,8 @@ function Invoke-Deploy {
 
     $DeployerServicePrincipalCredentials = Get-DeployerServicePrincipalCredentials `
         -GlobalDevelopmentSettings      $GlobalDevelopmentSettings `
-        -DeveloperEnvironmentSettings   $DeveloperEnvironmentSettings
+        -DeveloperEnvironmentSettings   $DeveloperEnvironmentSettings `
+        -EarthRuntimeConfig             $EarthRuntimeConfig
 
     $ContainerSourceRegistryServerAddress               = $DeveloperEnvironmentSettings.ContainerSourceRegistryServerAddress
     $ContainerTargetRegistryServicePrincipalTenant      = $DeveloperEnvironmentSettings.ContainerSourceRegistryServicePrincipalTenant
