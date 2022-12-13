@@ -21,16 +21,16 @@ param (
     $PublishToEnvironment,
 
     [Parameter(Mandatory=$true)]
-    [SecureString]
-    $AzureServicePrincipalCredentialsTenant,
+    [String]
+    $AzureServicePrincipalTenant,
+
+    [Parameter(Mandatory=$true)]
+    [String]
+    $AzureServicePrincipalAppId,
 
     [Parameter(Mandatory=$true)]
     [SecureString]
-    $AzureServicePrincipalCredentialsAppId,
-
-    [Parameter(Mandatory=$true)]
-    [SecureString]
-    $AzureServicePrincipalCredentialsPassword
+    $AzureServicePrincipalPassword
 )
 
 Set-StrictMode –Version latest
@@ -47,9 +47,9 @@ Write-Information "First, ensuring Docker Container infrastructure is prepared t
 # for publishing Docker images that are built.
 
 ./azure/sign-in-as-service-principal.ps1 `
-    -ServicePrincipalCredentialsTenant      $AzureServicePrincipalCredentialsTenant `
-    -ServicePrincipalCredentialsAppId       $AzureServicePrincipalCredentialsAppId `
-    -ServicePrincipalCredentialsPassword    $AzureServicePrincipalCredentialsPassword
+    -ServicePrincipalTenant      $AzureServicePrincipalTenant `
+    -ServicePrincipalAppId       $AzureServicePrincipalAppId `
+    -ServicePrincipalPassword    $AzureServicePrincipalPassword
 
 $ContainerRegistryLoginServer = ""
 

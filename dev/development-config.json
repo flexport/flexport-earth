@@ -1,5 +1,6 @@
 {
     "cacheDirectory"                : ".cache",
+    "cachedAzureCredsDirectory"     : ".cache/azure/creds",
     "developmentToolsDirectory"     : "dev/tools",
     "sourceDirectory"               : "src",
     "releasablesDirectory"          : "src/releasables",

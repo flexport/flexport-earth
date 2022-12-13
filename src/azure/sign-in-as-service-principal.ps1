@@ -1,16 +1,16 @@
 ﻿[CmdletBinding()]
 param (
     [Parameter(Mandatory=$true)]
-    [SecureString]
-    $ServicePrincipalCredentialsTenant,
+    [String]
+    $ServicePrincipalTenant,
+
+    [Parameter(Mandatory=$true)]
+    [String]
+    $ServicePrincipalAppId,
 
     [Parameter(Mandatory=$true)]
     [SecureString]
-    $ServicePrincipalCredentialsAppId,
-
-    [Parameter(Mandatory=$true)]
-    [SecureString]
-    $ServicePrincipalCredentialsPassword
+    $ServicePrincipalPassword
 )
 
 Set-StrictMode –Version latest
@@ -25,9 +25,9 @@ Write-Information "Signing into Azure as Service Principal..."
 
 az login `
     --service-principal `
-    --tenant    $(ConvertFrom-SecureString -SecureString $ServicePrincipalCredentialsTenant   -AsPlainText) `
-    --username  $(ConvertFrom-SecureString -SecureString $ServicePrincipalCredentialsAppId    -AsPlainText) `
-    --password  $(ConvertFrom-SecureString -SecureString $ServicePrincipalCredentialsPassword -AsPlainText)
+    --tenant    $ServicePrincipalTenant `
+    --username  $ServicePrincipalAppId `
+    --password  $(ConvertFrom-SecureString -SecureString $ServicePrincipalPassword -AsPlainText)
 
 if (!$?) {
     Write-Error "Failed to login as service principal."

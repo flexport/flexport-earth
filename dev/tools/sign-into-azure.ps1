@@ -6,7 +6,7 @@ $InformationPreference = "Continue"
 # Load global development settings
 $GlobalDevelopmentSettings = Get-Content 'dev/development-config.json' | ConvertFrom-Json
 
-$CacheDirectory             = $GlobalDevelopmentSettings.CacheDirectory
+$CacheDirectory             = $GlobalDevelopmentSettings.CachedAzureCredsDirectory
 $DevelopmentToolsDirectory  = $GlobalDevelopmentSettings.DevelopmentToolsDirectory
 
 . "$DevelopmentToolsDirectory/local-config-manager.ps1"
@@ -23,7 +23,7 @@ $EarthDeployerServicePrincipalName = $EarthRuntimeConfig.EarthDeployerServicePri
 Write-Information ""
 Write-Information "Signing into Azure as the Deployer Service Principal $EarthDeployerServicePrincipalName..."
 
-$DeployerCredentials = Get-Content -Path $CacheDirectory/azure/creds/$EarthDeployerServicePrincipalName.json | ConvertFrom-Json
+$DeployerCredentials = Get-Content -Path $CacheDirectory/$EarthDeployerServicePrincipalName.json | ConvertFrom-Json
 
 az login `
     --service-principal `

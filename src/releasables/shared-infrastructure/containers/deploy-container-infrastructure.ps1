@@ -33,7 +33,7 @@ function Set-ContainerInfraResources {
 
     process {
         if ($PSCmdlet.ShouldProcess($ContainerInfraResourceGroupName)) {
-            $DeploymentParameters = [PSCustomObject]@{
+            $DeploymentParameters = @{
                 location                    = @{ value = $ContainerInfraResourceGroupAzureRegion }
                 azureContainerRegistryName  = @{ value = $AzureContainerRegistryName }
             }

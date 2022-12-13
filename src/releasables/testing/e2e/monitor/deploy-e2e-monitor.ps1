@@ -64,7 +64,7 @@ function Set-E2EMonitorResources {
                 containerRegistryServerName = @{ value = $ContainerRegistry.RegistryServerAddress }
                 containerRegistryTenant     = @{ value = $ContainerRegistry.RegistryTenant }
                 containerRegistryUsername   = @{ value = $ContainerRegistry.RegistryServicePrincipalUsername }
-                containerRegistryPassword   = @{ value = $ContainerRegistry.RegistryServicePrincipalPassword }
+                containerRegistryPassword   = @{ value = $ContainerRegistry.RegistryServicePrincipalPassword | ConvertFrom-SecureString -AsPlainText }
                 e2eTestContainerImageName   = @{ value = $ContainerImage }
                 earthWebsiteBaseUrl         = @{ value = $EarthWebsiteBaseUrl }
                 containerGroupName          = @{ value = $E2EMonitorConfig.E2EMonitorContainerGroupName }
