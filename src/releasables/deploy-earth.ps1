@@ -58,7 +58,7 @@ $ScriptStartTime = Get-Date
 
 . ./dependencies/dependency-manager.ps1
 
-$LowerEnvironmentContainerSource = @{
+$LowerEnvironmentContainerRegistry = @{
     RegistryServerAddress            = $ContainerSourceRegistryServerAddress
     RegistryServicePrincipalUsername = $ContainerSourceRegistryServicePrincipalUsername
     RegistryServicePrincipalPassword = $ContainerSourceRegistryServicePrincipalPwd
@@ -100,10 +100,10 @@ finally {
 # they fail with transient errors instead of real issues.
 # The retries avoid doing full deployments and also avoid
 # blocking CD pipeline waiting for someone to manually retry.
-./test-earth.ps1 `
-    -BuildNumber        $BuildNumber `
-    -EarthWebsiteUrl    $EarthWebsiteUrl `
-    -MaxTries           3
+# ./test-earth.ps1 `
+#     -BuildNumber        $BuildNumber `
+#     -EarthWebsiteUrl    $EarthWebsiteUrl `
+#     -MaxTries           3
 
 # Once we've confirmed the latest application and tests are working successfully,
 # deploy the E2E Monitor for continuously running the tests against the environment
@@ -113,6 +113,14 @@ finally {
 
 $ContainerInfraConfig = Get-ContainerInfraConfig -EnvironmentName $EnvironmentName
 
+$ContainerRegistry = @{
+    RegistryName                     = $ContainerInfraConfig.ContainerRegistryName
+    RegistryServerAddress            = $ContainerInfraConfig.ContainerRegistryServerAddress
+    RegistryTenant                   = $ContainerTargetRegistryTenant
+    RegistryServicePrincipalUsername = $ContainerTargetRegistryUsername
+    RegistryServicePrincipalPassword = $ContainerTargetRegistryPwd
+}
+
 try {
     Push-Location "./testing/e2e/monitor"
 
@@ -120,12 +128,8 @@ try {
         -EnvironmentName                                    $EnvironmentName `
         -BuildNumber                                        $BuildNumber `
         -EarthWebsiteBaseUrl                                $EarthWebsiteUrl `
-        -LowerEnvironmentContainerSource                    $LowerEnvironmentContainerSource `
-        -ContainerTargetRegistryName                        $ContainerInfraConfig.ContainerRegistryName `
-        -ContainerTargetRegistryServerAddress               $ContainerInfraConfig.ContainerRegistryServerAddress `
-        -ContainerTargetRegistryTenant                      $ContainerTargetRegistryTenant `
-        -ContainerTargetRegistryUsername                    $ContainerTargetRegistryUsername `
-        -ContainerTargetRegistryPwd                         $ContainerTargetRegistryPwd
+        -LowerEnvironmentContainerRegistry                  $LowerEnvironmentContainerRegistry `
+        -ContainerRegistry                                  $ContainerRegistry
 }
 finally {
     Pop-Location
