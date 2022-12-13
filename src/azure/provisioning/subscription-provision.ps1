@@ -33,15 +33,13 @@ $ServicePrincipalCredentials = az ad sp create-for-rbac `
 
 # Load Global Development Settings
 $GlobalDevelopmentSettings = Get-Content 'dev/development-config.json' | ConvertFrom-Json
-$CacheDirectory = $GlobalDevelopmentSettings.CacheDirectory
+$CacheDirectory = $GlobalDevelopmentSettings.CachedAzureCredsDirectory
 
-$LocalCacheFolder = "$CacheDirectory/azure/creds"
-
-if (-Not (Test-Path $LocalCacheFolder)) {
-    New-Item -ItemType Directory -Path $LocalCacheFolder
+if (-Not (Test-Path $CacheDirectory)) {
+    New-Item -ItemType Directory -Path $CacheDirectory
 }
 
-$CredsPath = "$LocalCacheFolder/${SubscriptionDeploymentServicePricipalName}.json"
+$CredsPath = "$CacheDirectory/${SubscriptionDeploymentServicePricipalName}.json"
 $ServicePrincipalCredentials | Out-File -FilePath $CredsPath
 
 Write-Information ""

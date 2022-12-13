@@ -47,30 +47,26 @@ function Get-DeployerServicePrincipalCredentials {
     )
 
     process {
-        #if ($PSCmdlet.ShouldProcess($GlobalDevelopmentSettings)) {
-            $CacheDirectory         = $GlobalDevelopmentSettings.CacheDirectory
-            $AzureSubscriptionName  = $DeveloperEnvironmentSettings.AzureSubscriptionName
+        $CacheDirectory                             = $GlobalDevelopmentSettings.CachedAzureCredsDirectory
+        $AzureSubscriptionName                      = $DeveloperEnvironmentSettings.AzureSubscriptionName
+        $SubscriptionDeploymentServicePricipalName  = "$AzureSubscriptionName-earth-deployer".ToLower()
+        $CredsPath                                  = "$CacheDirectory/${SubscriptionDeploymentServicePricipalName}.json"
 
-            $SubscriptionDeploymentServicePricipalName = "$AzureSubscriptionName-earth-deployer".ToLower()
+        if (-Not (Test-Path $CredsPath)) {
+            Write-Error "Service Principal cached credentials not found at $.CredsPath. Please run ./azure/subscription-provision.ps1 to create a Service Principal, which will cache the credentials for use."
+        }
 
-            $CredsPath = "$CacheDirectory/azure/creds/${SubscriptionDeploymentServicePricipalName}.json"
+        $ServicePrincipalCredentials = Get-Content -Path $CredsPath | ConvertFrom-Json
 
-            if (-Not (Test-Path $CredsPath)) {
-                Write-Error "Service Principal cached credentials not found at $.CredsPath. Please run ./azure/subscription-provision.ps1 to create a Service Principal, which will cache the credentials for use."
-            }
-
-            $ServicePrincipalCredentials = Get-Content -Path $CredsPath | ConvertFrom-Json
-
-            $ServicePrincipalCredentials = @{
-                Tenant      = $ServicePrincipalCredentials.tenant
-                DisplayName = $ServicePrincipalCredentials.displayName
-                AppId       = $ServicePrincipalCredentials.appId
-                Password    = ConvertTo-SecureString -String $ServicePrincipalCredentials.password -AsPlainText
-            }
+        $ServicePrincipalCredentials = @{
+            Tenant      = $ServicePrincipalCredentials.tenant
+            DisplayName = $ServicePrincipalCredentials.displayName
+            AppId       = $ServicePrincipalCredentials.appId
+            Password    = ConvertTo-SecureString -String $ServicePrincipalCredentials.password -AsPlainText
+        }
 
 
-            return $ServicePrincipalCredentials
-        #}
+        return $ServicePrincipalCredentials
     }
 }
 
