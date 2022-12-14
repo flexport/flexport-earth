@@ -32,45 +32,19 @@ param memoryInGb int = 2
 param restartPolicy string = 'Never'
 
 resource containerGroup 'Microsoft.ContainerInstance/containerGroups@2021-09-01' = {
-  name: containerGroupName
+  name:     containerGroupName
   location: location
   properties: {
     containers: [
-      // {
-      //   name: '1920x1200'
-      //   properties: {
-      //     image: e2eTestContainerImageName
-      //     resources: {
-      //       requests: {
-      //         cpu: cpuCores
-      //         memoryInGB: memoryInGb
-      //       }
-      //     }
-      //     environmentVariables: [
-      //       {
-      //         name: 'CYPRESS_EARTH_WEBSITE_URL'
-      //         value: earthWebsiteBaseUrl
-      //       }
-      //       {
-      //         name: 'CYPRESS_VIEWPORT_WIDTH'
-      //         value: '1920'
-      //       }
-      //       {
-      //         name: 'CYPRESS_VIEWPORT_HEIGHT'
-      //         value: '1200'
-      //       }
-      //     ]
-      //   }
-      // }
       {
-        name: '3840x2160'
+        name:       '1920x1200'
         properties: {
-          image: e2eTestContainerImageName
-          resources: {
+          image:      e2eTestContainerImageName
+          resources:  {
             requests: {
-              cpu: cpuCores
-              memoryInGB: memoryInGb
-            }
+                        cpu:        cpuCores
+                        memoryInGB: memoryInGb
+                      }
           }
           environmentVariables: [
             {
@@ -79,24 +53,50 @@ resource containerGroup 'Microsoft.ContainerInstance/containerGroups@2021-09-01'
             }
             {
               name: 'CYPRESS_VIEWPORT_WIDTH'
-              value: '3840'
+              value: '1920'
             }
             {
               name: 'CYPRESS_VIEWPORT_HEIGHT'
-              value: '2160'
+              value: '1200'
+            }
+          ]
+        }
+      }
+      {
+        name:       '3840x2160'
+        properties: {
+          image:      e2eTestContainerImageName
+          resources:  {
+            requests: {
+                        cpu:        cpuCores
+                        memoryInGB: memoryInGb
+                      }
+          }
+          environmentVariables: [
+            {
+              name:   'CYPRESS_EARTH_WEBSITE_URL'
+              value:  earthWebsiteBaseUrl
+            }
+            {
+              name:   'CYPRESS_VIEWPORT_WIDTH'
+              value:  '3840'
+            }
+            {
+              name:   'CYPRESS_VIEWPORT_HEIGHT'
+              value:  '2160'
             }
           ]
         }
       }
     ]
-    osType: 'Linux'
-    restartPolicy: restartPolicy
+    osType:                   'Linux'
+    restartPolicy:            restartPolicy
     imageRegistryCredentials: [
-      {
-        server:   containerRegistryServerName
-        username: containerRegistryUsername
-        password: containerRegistryPassword
-      }
-    ]
+                                {
+                                  server:   containerRegistryServerName
+                                  username: containerRegistryUsername
+                                  password: containerRegistryPassword
+                                }
+                              ]
   }
 }
