@@ -20,7 +20,7 @@ param earthWebsiteBaseUrl string
 param cpuCores int = 2
 
 @description('The amount of memory to allocate to the container in gigabytes.')
-param memoryInGb int = 4
+param memoryInGb int = 2
 
 @description('The behavior of Azure runtime if container has stopped.')
 @allowed([
