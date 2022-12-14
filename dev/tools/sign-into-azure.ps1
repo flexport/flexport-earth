@@ -1,3 +1,10 @@
+[CmdletBinding()]
+param (
+    [Parameter(Mandatory = $false)]
+    [String]
+    $AzureSubscriptionName = $null
+)
+
 Set-StrictMode –Version latest
 
 $ErrorActionPreference = "Stop"
@@ -9,19 +16,21 @@ $GlobalDevelopmentSettings = Get-Content 'dev/development-config.json' | Convert
 $CacheDirectory             = $GlobalDevelopmentSettings.CachedAzureCredsDirectory
 $DevelopmentToolsDirectory  = $GlobalDevelopmentSettings.DevelopmentToolsDirectory
 
-. "$DevelopmentToolsDirectory/local-config-manager.ps1"
+. $DevelopmentToolsDirectory/local-config-manager.ps1
 
-$DeveloperEnvironmentSettings = Get-EnvironmentSettingsObject
+$DeveloperEnvironmentSettings = Get-DeveloperEnvironmentSettings
 
-$CurrentAzureSubscriptionName = $DeveloperEnvironmentSettings.AzureSubscriptionName
+if (-Not $AzureSubscriptionName){
+    $AzureSubscriptionName = $DeveloperEnvironmentSettings.AzureSubscriptionName
+}
 
 . ./src/releasables/earth-runtime-config.ps1
 
-$EarthRuntimeConfig = Get-EarthRuntimeConfig -EnvironmentName $DeveloperEnvironmentSettings.EnvironmentName
-$EarthDeployerServicePrincipalName = $EarthRuntimeConfig.EarthDeployerServicePrincipalName
+$EarthRuntimeConfig                 = Get-EarthRuntimeConfig -AzureSubscriptionName $AzureSubscriptionName
+$EarthDeployerServicePrincipalName  = $EarthRuntimeConfig.EarthDeployerServicePrincipalName
 
 Write-Information ""
-Write-Information "Signing into Azure as the Deployer Service Principal $EarthDeployerServicePrincipalName..."
+Write-Information "Signing into $AzureSubscriptionName Azure Subscription as the Deployer Service Principal $EarthDeployerServicePrincipalName..."
 
 $DeployerCredentials = Get-Content -Path $CacheDirectory/$EarthDeployerServicePrincipalName.json | ConvertFrom-Json
 
@@ -47,4 +56,4 @@ if ($CurrentLoggedInUsername -ne $DeployerCredentials.appId) {
     Write-Error "Not logged in as the intended user: $DeployerCredentials.appId. Logged in as $CurrentLoggedInUsername something went wrong!"
 }
 
-Write-Information "You are signed into the $CurrentAzureSubscriptionName Azure Subscription as $EarthDeployerServicePrincipalName."
+Write-Information "You are now signed in as $EarthDeployerServicePrincipalName"

@@ -1,4 +1,4 @@
-FROM cypress/included:10.11.0
+FROM cypress/included:12.0.2
 
 ARG BUILD_NUMBER
 
@@ -8,7 +8,12 @@ WORKDIR /cypress.io
 
 RUN npm install
 
+# Environment variables set from buildtime arguments:
 ENV CYPRESS_BUILD_NUMBER=$BUILD_NUMBER
+
+# Environment variables set from runtime argument:
+ENV CYPRESS_VIEWPORT_HEIGHT=1200
+ENV CYPRESS_VIEWPORT_WIDTH=1920
 ENV CYPRESS_EARTH_WEBSITE_URL=http://localhost:3000
 
 CMD [ "node" ]

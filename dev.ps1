@@ -86,11 +86,12 @@ function Invoke-Workflow {
 
     . "$DevelopmentToolsDirectory/local-config-manager.ps1"
 
-    $DeveloperEnvironmentSettings = Get-EnvironmentSettingsObject
+    $DeveloperEnvironmentSettings = Get-DeveloperEnvironmentSettings
 
     . ./src/releasables/earth-runtime-config.ps1
 
-    $EarthRuntimeConfig = Get-EarthRuntimeConfig -EnvironmentName $DeveloperEnvironmentSettings.EnvironmentName
+    $EarthRuntimeConfig = Get-EarthRuntimeConfig `
+        -AzureSubscriptionName $DeveloperEnvironmentSettings.AzureSubscriptionName
 
     switch ($Workflow) {
         BuildRelease
@@ -102,6 +103,8 @@ function Invoke-Workflow {
 
         BuildReleaseAndPublish
         {
+            Write-Information "EarthRuntimeConfig: $EarthRuntimeConfig"
+
             Invoke-BuildAndPublish `
                 -GlobalDevelopmentSettings      $GlobalDevelopmentSettings `
                 -DeveloperEnvironmentSettings   $DeveloperEnvironmentSettings `
@@ -112,7 +115,8 @@ function Invoke-Workflow {
         {
             Invoke-Deploy `
                 -GlobalDevelopmentSettings      $GlobalDevelopmentSettings `
-                -DeveloperEnvironmentSettings   $DeveloperEnvironmentSettings
+                -DeveloperEnvironmentSettings   $DeveloperEnvironmentSettings `
+                -EarthRuntimeConfig             $EarthRuntimeConfig
         }
 
         DestroyAzureEnvironment
@@ -126,7 +130,8 @@ function Invoke-Workflow {
         {
             Invoke-Push `
                 -GlobalDevelopmentSettings      $GlobalDevelopmentSettings `
-                -DeveloperEnvironmentSettings   $DeveloperEnvironmentSettings
+                -DeveloperEnvironmentSettings   $DeveloperEnvironmentSettings `
+                -EarthRuntimeConfig             $EarthRuntimeConfig
         }
 
         StartWebsiteLocallyDevMode
@@ -275,7 +280,7 @@ function Invoke-Deploy {
     $ContainerSourceRegistryServerAddress               = $DeveloperEnvironmentSettings.ContainerSourceRegistryServerAddress
     $ContainerTargetRegistryServicePrincipalTenant      = $DeveloperEnvironmentSettings.ContainerSourceRegistryServicePrincipalTenant
     $ContainerSourceRegistryServicePrincipalUsername    = $DeveloperEnvironmentSettings.ContainerSourceRegistryServicePrincipalUsername
-    $ContainerSourceRegistryServicePrincipalPassword    = $DeveloperEnvironmentSettings.ContainerSourceRegistryServicePrincipalPassword
+    $ContainerSourceRegistryServicePrincipalPassword    = $($DeveloperEnvironmentSettings.ContainerSourceRegistryServicePrincipalPassword | ConvertTo-SecureString -AsPlainText)
 
     $BuildNumber = Get-BuildNumber
 
@@ -292,7 +297,7 @@ function Invoke-Deploy {
             -ContainerSourceRegistryServerAddress               $ContainerSourceRegistryServerAddress `
             -ContainerTargetRegistryTenant                      $ContainerTargetRegistryServicePrincipalTenant `
             -ContainerSourceRegistryServicePrincipalUsername    $ContainerSourceRegistryServicePrincipalUsername `
-            -ContainerSourceRegistryServicePrincipalPwd         $ContainerSourceRegistryServicePrincipalPassword `
+            -ContainerSourceRegistryServicePrincipalPassword    $ContainerSourceRegistryServicePrincipalPassword `
             -ContainerTargetRegistryUsername                    $DeployerServicePrincipalCredentials.AppId `
             -ContainerTargetRegistryPassword                    $DeployerServicePrincipalCredentials.Password
     }
@@ -338,7 +343,11 @@ function Invoke-Push {
 
         [Parameter(Mandatory = $true)]
         [Object]
-        $DeveloperEnvironmentSettings
+        $DeveloperEnvironmentSettings,
+
+        [Parameter(Mandatory = $true)]
+        [PSCustomObject]
+        $EarthRuntimeConfig
     )
 
     $RelesablesDirectory = $GlobalDevelopmentSettings.ReleasablesDirectory
@@ -364,8 +373,8 @@ function Invoke-Push {
         Write-Error "The current branch is behind origin/main by $CommitsBehindOriginMain, please update it before continuing."
     }
 
-    Invoke-BuildAndPublish  -GlobalDevelopmentSettings $GlobalDevelopmentSettings -DeveloperEnvironmentSettings $DeveloperEnvironmentSettings
-    Invoke-Deploy           -GlobalDevelopmentSettings $GlobalDevelopmentSettings -DeveloperEnvironmentSettings $DeveloperEnvironmentSettings
+    Invoke-BuildAndPublish  -GlobalDevelopmentSettings $GlobalDevelopmentSettings -DeveloperEnvironmentSettings $DeveloperEnvironmentSettings -EarthRuntimeConfig $EarthRuntimeConfig
+    Invoke-Deploy           -GlobalDevelopmentSettings $GlobalDevelopmentSettings -DeveloperEnvironmentSettings $DeveloperEnvironmentSettings -EarthRuntimeConfig $EarthRuntimeConfig
     Invoke-Destroy          -GlobalDevelopmentSettings $GlobalDevelopmentSettings -DeveloperEnvironmentSettings $DeveloperEnvironmentSettings
 
     git push --set-upstream origin $CurrentBranchName

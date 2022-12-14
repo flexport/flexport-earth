@@ -34,3 +34,4 @@ if (!$?) {
 }
 
 Write-Information "Sign in completed successfully!"
+Write-Information ""
