@@ -36,32 +36,6 @@ resource containerGroup 'Microsoft.ContainerInstance/containerGroups@2021-09-01'
   properties: {
     containers: [
       {
-        name: '1200x1080'
-        properties: {
-          image: e2eTestContainerImageName
-          resources: {
-            requests: {
-              cpu: cpuCores
-              memoryInGB: memoryInGb
-            }
-          }
-          environmentVariables: [
-            {
-              name: 'CYPRESS_EARTH_WEBSITE_URL'
-              value: earthWebsiteBaseUrl
-            }
-            {
-              name: 'CYPRESS_VIEWPORT_WIDTH'
-              value: '1200'
-            }
-            {
-              name: 'CYPRESS_VIEWPORT_HEIGHT'
-              value: '1080'
-            }
-          ]
-        }
-      }
-      {
         name: '1920x1200'
         properties: {
           image: e2eTestContainerImageName
