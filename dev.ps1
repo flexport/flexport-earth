@@ -132,7 +132,8 @@ function Invoke-Workflow {
         {
             Invoke-Push `
                 -GlobalDevelopmentSettings      $GlobalDevelopmentSettings `
-                -DeveloperEnvironmentSettings   $DeveloperEnvironmentSettings
+                -DeveloperEnvironmentSettings   $DeveloperEnvironmentSettings `
+                -EarthRuntimeConfig             $EarthRuntimeConfig
         }
 
         StartWebsiteLocallyDevMode
@@ -344,7 +345,11 @@ function Invoke-Push {
 
         [Parameter(Mandatory = $true)]
         [Object]
-        $DeveloperEnvironmentSettings
+        $DeveloperEnvironmentSettings,
+
+        [Parameter(Mandatory = $true)]
+        [PSCustomObject]
+        $EarthRuntimeConfig
     )
 
     $RelesablesDirectory = $GlobalDevelopmentSettings.ReleasablesDirectory
@@ -370,7 +375,7 @@ function Invoke-Push {
         Write-Error "The current branch is behind origin/main by $CommitsBehindOriginMain, please update it before continuing."
     }
 
-    Invoke-BuildAndPublish  -GlobalDevelopmentSettings $GlobalDevelopmentSettings -DeveloperEnvironmentSettings $DeveloperEnvironmentSettings
+    Invoke-BuildAndPublish  -GlobalDevelopmentSettings $GlobalDevelopmentSettings -DeveloperEnvironmentSettings $DeveloperEnvironmentSettings -EarthRuntimeConfig $EarthRuntimeConfig
     Invoke-Deploy           -GlobalDevelopmentSettings $GlobalDevelopmentSettings -DeveloperEnvironmentSettings $DeveloperEnvironmentSettings
     Invoke-Destroy          -GlobalDevelopmentSettings $GlobalDevelopmentSettings -DeveloperEnvironmentSettings $DeveloperEnvironmentSettings
 
