@@ -376,7 +376,7 @@ function Invoke-Push {
     }
 
     Invoke-BuildAndPublish  -GlobalDevelopmentSettings $GlobalDevelopmentSettings -DeveloperEnvironmentSettings $DeveloperEnvironmentSettings -EarthRuntimeConfig $EarthRuntimeConfig
-    Invoke-Deploy           -GlobalDevelopmentSettings $GlobalDevelopmentSettings -DeveloperEnvironmentSettings $DeveloperEnvironmentSettings
+    Invoke-Deploy           -GlobalDevelopmentSettings $GlobalDevelopmentSettings -DeveloperEnvironmentSettings $DeveloperEnvironmentSettings -EarthRuntimeConfig $EarthRuntimeConfig
     Invoke-Destroy          -GlobalDevelopmentSettings $GlobalDevelopmentSettings -DeveloperEnvironmentSettings $DeveloperEnvironmentSettings
 
     git push --set-upstream origin $CurrentBranchName
