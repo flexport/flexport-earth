@@ -86,11 +86,12 @@ function Invoke-Workflow {
 
     . "$DevelopmentToolsDirectory/local-config-manager.ps1"
 
-    $DeveloperEnvironmentSettings = Get-EnvironmentSettingsObject
+    $DeveloperEnvironmentSettings = Get-DeveloperEnvironmentSettings
 
     . ./src/releasables/earth-runtime-config.ps1
 
-    $EarthRuntimeConfig = Get-EarthRuntimeConfig -EnvironmentName $DeveloperEnvironmentSettings.EnvironmentName
+    $EarthRuntimeConfig = Get-EarthRuntimeConfig `
+        -AzureSubscriptionName $DeveloperEnvironmentSettings.AzureSubscriptionName
 
     switch ($Workflow) {
         BuildRelease
@@ -112,7 +113,8 @@ function Invoke-Workflow {
         {
             Invoke-Deploy `
                 -GlobalDevelopmentSettings      $GlobalDevelopmentSettings `
-                -DeveloperEnvironmentSettings   $DeveloperEnvironmentSettings
+                -DeveloperEnvironmentSettings   $DeveloperEnvironmentSettings `
+                -EarthRuntimeConfig             $EarthRuntimeConfig
         }
 
         DestroyAzureEnvironment
@@ -275,7 +277,7 @@ function Invoke-Deploy {
     $ContainerSourceRegistryServerAddress               = $DeveloperEnvironmentSettings.ContainerSourceRegistryServerAddress
     $ContainerTargetRegistryServicePrincipalTenant      = $DeveloperEnvironmentSettings.ContainerSourceRegistryServicePrincipalTenant
     $ContainerSourceRegistryServicePrincipalUsername    = $DeveloperEnvironmentSettings.ContainerSourceRegistryServicePrincipalUsername
-    $ContainerSourceRegistryServicePrincipalPassword    = $DeveloperEnvironmentSettings.ContainerSourceRegistryServicePrincipalPassword
+    $ContainerSourceRegistryServicePrincipalPassword    = $($DeveloperEnvironmentSettings.ContainerSourceRegistryServicePrincipalPassword | ConvertTo-SecureString -AsPlainText)
 
     $BuildNumber = Get-BuildNumber
 
@@ -292,7 +294,7 @@ function Invoke-Deploy {
             -ContainerSourceRegistryServerAddress               $ContainerSourceRegistryServerAddress `
             -ContainerTargetRegistryTenant                      $ContainerTargetRegistryServicePrincipalTenant `
             -ContainerSourceRegistryServicePrincipalUsername    $ContainerSourceRegistryServicePrincipalUsername `
-            -ContainerSourceRegistryServicePrincipalPwd         $ContainerSourceRegistryServicePrincipalPassword `
+            -ContainerSourceRegistryServicePrincipalPassword    $ContainerSourceRegistryServicePrincipalPassword `
             -ContainerTargetRegistryUsername                    $DeployerServicePrincipalCredentials.AppId `
             -ContainerTargetRegistryPassword                    $DeployerServicePrincipalCredentials.Password
     }

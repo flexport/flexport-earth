@@ -3,15 +3,6 @@
 $ErrorActionPreference = "Stop"
 $InformationPreference = "Continue"
 
-# Load Global Development Settings
-$GlobalDevelopmentSettings = Get-Content 'dev/development-config.json' | ConvertFrom-Json
-
-$ReleasablesDirectory = $GlobalDevelopmentSettings.ReleasablesDirectory
-$CacheDirectory       = $GlobalDevelopmentSettings.CacheDirectory
-
-# Run dependency management
-. "$ReleasablesDirectory/dependencies/dependency-manager.ps1"
-
 function Set-ConfigValue {
     [CmdletBinding(SupportsShouldProcess)]
     Param(
@@ -45,8 +36,15 @@ function Set-ConfigValue {
     }
 }
 
-function Get-EnvironmentSettingsObject {
-    $LocalSettingsPath = "$CacheDirectory/environment-settings.json"
+# Gets settings that apply to everyone everywhere.
+function Get-GlobalDevelopmentSettings {
+    Get-Content 'dev/development-config.json' | ConvertFrom-Json
+}
+
+# Gets settings that are specific to you as a developer.
+function Get-DeveloperEnvironmentSettings {
+    $GlobalDevelopmentSettings  = Get-GlobalDevelopmentSettings
+    $LocalSettingsPath          = "$($GlobalDevelopmentSettings.CacheDirectory)/environment-settings.json"
 
     if (-Not (Test-Path $LocalSettingsPath)) {
         Set-Content -Path $LocalSettingsPath -Value "{}"
