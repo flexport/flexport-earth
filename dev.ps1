@@ -103,6 +103,8 @@ function Invoke-Workflow {
 
         BuildReleaseAndPublish
         {
+            Write-Information "EarthRuntimeConfig: $EarthRuntimeConfig"
+
             Invoke-BuildAndPublish `
                 -GlobalDevelopmentSettings      $GlobalDevelopmentSettings `
                 -DeveloperEnvironmentSettings   $DeveloperEnvironmentSettings `
