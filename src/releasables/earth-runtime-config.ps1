@@ -9,12 +9,12 @@ function Get-EarthRuntimeConfig {
     param (
         [Parameter(Mandatory=$false)]
         [String]
-        $EnvironmentName
+        $AzureSubscriptionName
     )
 
-    if($PSCmdlet.ShouldProcess($EnvironmentName)) {
+    if($PSCmdlet.ShouldProcess($AzureSubscriptionName)) {
         $Config = @{
-            EarthDeployerServicePrincipalName  = "$EnvironmentName-earth-deployer"
+            EarthDeployerServicePrincipalName  = "$AzureSubscriptionName-earth-deployer".ToLower()
         }
 
         return $Config

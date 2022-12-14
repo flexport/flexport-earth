@@ -80,7 +80,7 @@ $GlobalDevelopmentSettings = Get-Content 'dev/development-config.json' | Convert
 
 $DevelopmentToolsDirectory = $GlobalDevelopmentSettings.DevelopmentToolsDirectory
 . "$DevelopmentToolsDirectory/local-config-manager.ps1"
-$DeveloperEnvironmentSettings = Get-EnvironmentSettingsObject
+$DeveloperEnvironmentSettings = Get-DeveloperEnvironmentSettings
 
 $FlexportApiAccessToken = Invoke-AuthFlexportApi `
     -FlexportApiClientId        $DeveloperEnvironmentSettings.FlexportApiClientId `
