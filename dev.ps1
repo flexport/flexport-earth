@@ -93,8 +93,6 @@ function Invoke-Workflow {
     $EarthRuntimeConfig = Get-EarthRuntimeConfig `
         -AzureSubscriptionName $DeveloperEnvironmentSettings.AzureSubscriptionName
 
-    Write-Information "Workflow: $Workflow"
-
     switch ($Workflow) {
         BuildRelease
         {
