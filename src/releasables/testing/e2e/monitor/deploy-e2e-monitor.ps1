@@ -107,6 +107,7 @@ function Set-E2EMonitorResources {
             Write-Information "Checking that the monitor is working..."
 
             $ContainerReadyForEvaluation = $false
+            $ContainerNameToEvaluate     = ""
 
             for ($i = 0; $i -le 100; $i++) {
                 Write-Information "Getting container statuses..."
@@ -115,25 +116,33 @@ function Set-E2EMonitorResources {
                     --resource-group    $E2EMonitorConfig.E2EMonitorResourceGroupName `
                     --name              $E2EMonitorConfig.E2EMonitorContainerGroupName
 
-                $containers = $containersJson | ConvertFrom-Json
+                $containers = $($containersJson | ConvertFrom-Json).containers
 
-                # Get the container, somehow this array is being
-                # auto-translated to the first container in the array...?!
-                $container  = $containers.containers
-                $image      = $container.image
+                Write-Information "$($containers.Length) containers found, evaluating..."
 
-                if ($image -eq $ContainerImage) {
-                    # Check its state...
-                    $ContainerState = $container.instanceView.currentState.state
+                # There's possibly multiple containers in the group,
+                # just check on the first one that's finished running (i.e. Terminated)
+                foreach ($container in $containers) {
+                    $image = $container.image
 
-                    Write-Information "$image state is $ContainerState"
+                    if ($image -eq $ContainerImage) {
+                        # Check its state...
+                        $ContainerState = $container.instanceView.currentState.state
 
-                    if ($ContainerState -eq "Terminated") {
-                        $ContainerReadyForEvaluation = $true
-                        break
+                        Write-Information "$($container.name) state is $ContainerState"
+
+                        if ($ContainerState -eq "Terminated") {
+                            $ContainerReadyForEvaluation = $true
+                            $ContainerNameToEvaluate     = $container.name
+                            break
+                        }
+                    } else {
+                        Write-Error "Container image $image doesn't match expected $ContainerImage"
                     }
-                } else {
-                    Write-Error "Container image $image doesn't match expected $ContainerImage"
+                }
+
+                if ($ContainerReadyForEvaluation) {
+                    break
                 }
 
                 $WaitTimeSeconds = 10
@@ -151,7 +160,8 @@ function Set-E2EMonitorResources {
 
             $ContainerLogs = $(az container logs `
                 --resource-group    $E2EMonitorConfig.E2EMonitorResourceGroupName `
-                --name              $E2EMonitorConfig.E2EMonitorContainerGroupName) | ConvertTo-Json
+                --name              $E2EMonitorConfig.E2EMonitorContainerGroupName `
+                --container-name    $ContainerNameToEvaluate) | ConvertTo-Json
 
             if ($ContainerLogs.Contains("Run Finished") -eq $false) {
                 Write-Error "Container logs do not indicate the E2E tests were executed."
