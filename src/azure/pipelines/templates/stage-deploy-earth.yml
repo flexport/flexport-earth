@@ -27,7 +27,7 @@ stages:
           - task: PublishBuildArtifacts@1
             condition: failed()
             inputs:
-              pathToPublish: $(releasablesWorkingDirectory)/testing/e2e/cypress/videos
+              pathToPublish: $(releasablesWorkingDirectory)/testing/e2e/cypress.io/results
               artifactName: test-results
 
   - deployment: Destroy
