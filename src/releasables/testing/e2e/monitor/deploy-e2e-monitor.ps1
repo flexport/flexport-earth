@@ -35,6 +35,10 @@ function Set-E2EMonitorResources {
         $EnvironmentName,
 
         [Parameter(Mandatory = $true)]
+        [String]
+        $BuildNumber,
+
+        [Parameter(Mandatory = $true)]
         [PSCustomObject]
         $ContainerRegistry,
 
@@ -158,13 +162,27 @@ function Set-E2EMonitorResources {
 
             Write-Information "Getting logs for container..."
 
-            $ContainerLogs = $(az container logs `
+            $ContainerLogsRaw = $(az container logs `
                 --resource-group    $E2EMonitorConfig.E2EMonitorResourceGroupName `
                 --name              $E2EMonitorConfig.E2EMonitorContainerGroupName `
-                --container-name    $ContainerNameToEvaluate) | ConvertTo-Json
+                --container-name    $ContainerNameToEvaluate)
 
-            if ($ContainerLogs.Contains("Run Finished") -eq $false) {
-                Write-Error "Container logs do not indicate the E2E tests were executed."
+            # Convert the output to JSON so it can be tested for containing
+            # text since the original raw output contains all sorts of encoding.
+            $ContainerLogsJson = $ContainerLogsRaw | ConvertTo-Json
+
+            if ($ContainerLogsJson.Contains($BuildNumber) -eq $false) {
+                $ContainerLogsRaw
+
+                Write-Error "Did not find build number $BuildNumber in the logs. The correct image may not have been deployed."
+            }
+
+            $TestRunCompletionTextToLookFor = "Run Finished"
+
+            if ($ContainerLogsJson.Contains($TestRunCompletionTextToLookFor) -eq $false) {
+                $ContainerLogsRaw
+
+                Write-Error "Container logs do not indicate the E2E test suite is working properly. Did not find \"$TestRunCompletionTextToLookFor\" in the logs."
             }
 
             Write-Information "E2E tests were executed!"
@@ -212,6 +230,7 @@ Write-Information "Resource group created, deploying infrastructure to it..."
 
 Set-E2EMonitorResources `
     -EnvironmentName        $EnvironmentName `
+    -BuildNumber            $BuildNumber `
     -ContainerRegistry      $ContainerRegistry `
     -E2ETestsConfig         $E2ETestsConfig `
     -E2EMonitorConfig       $E2EMonitorConfig `

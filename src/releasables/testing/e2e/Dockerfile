@@ -1,4 +1,4 @@
-FROM cypress/included:12.0.2
+FROM cypress/included:12.1.0
 
 ARG BUILD_NUMBER
 
@@ -16,4 +16,4 @@ ENV CYPRESS_VIEWPORT_HEIGHT=1200
 ENV CYPRESS_VIEWPORT_WIDTH=1920
 ENV CYPRESS_EARTH_WEBSITE_URL=http://localhost:3000
 
-CMD [ "node" ]
+ENTRYPOINT [ "cypress", "run", "--browser", "chrome", "--ci-build-id", "$BUILD_NUMBER" ]
