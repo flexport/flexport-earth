@@ -16,4 +16,4 @@ ENV CYPRESS_VIEWPORT_HEIGHT=1200
 ENV CYPRESS_VIEWPORT_WIDTH=1920
 ENV CYPRESS_EARTH_WEBSITE_URL=http://localhost:3000
 
-ENTRYPOINT [ "cypress", "run", "--browser", "chrome", "--ci-build-id", "$BUILD_NUMBER" ]
+ENTRYPOINT [ "cypress", "run", "--browser", "chrome", "--config", "video=false" ]
