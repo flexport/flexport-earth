@@ -34,10 +34,16 @@ $E2ETestsContainerImageNameAndTag = "$($E2ETestConfig.E2ETestsContainerImageName
 
 Write-Information "Building Docker image $E2ETestsContainerImageNameAndTag"
 
+$BuildPath = "."
+
 docker build `
     --build-arg BUILD_NUMBER=$BuildNumber `
-    . `
+    $BuildPath `
     --tag $E2ETestsContainerImageNameAndTag
+
+if (!$?) {
+    Write-Error "Docker build failed!"
+}
 
 if ($Publish) {
     Write-Information "Publishing to $AzureContainerRegistryLoginServer"

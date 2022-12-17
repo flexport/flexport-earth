@@ -9,24 +9,7 @@ describe('Earth Homepage', () => {
     homePage = gotoHomePage();
   })
 
-  it('Displays the Homepage', () => {
-    homePage
-      .getBody()
-        .contains("Discover the world of supply chain");
-  })
-
-  it('Links to flexport.com', () => {
-    homePage
-      .getHeader()
-        .getFlexportLogo()
-          .click();
-
-    cy
-      .url()
-      .should('eq', 'https://www.flexport.com/');
-  })
-
-  it('Shows correct build number', () => {
+  it('Shows build number ' + Cypress.env('BUILD_NUMBER'), () => {
     homePage
       .getFooter()
         .BuildNumber.then($els => {
@@ -39,5 +22,16 @@ describe('Earth Homepage', () => {
           // the returned value will have double quotes around it, but this is correct
           expect(contentValue).to.eq('"' + Cypress.env('BUILD_NUMBER') + '"')
         })
+  })
+
+  it('Links to flexport.com', () => {
+    homePage
+      .getHeader()
+        .getFlexportLogo()
+          .click();
+
+    cy
+      .url()
+      .should('eq', 'https://www.flexport.com/');
   })
 })
