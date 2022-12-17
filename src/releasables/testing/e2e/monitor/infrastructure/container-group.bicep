@@ -37,7 +37,7 @@ resource containerGroup 'Microsoft.ContainerInstance/containerGroups@2021-09-01'
   properties: {
     containers: [
       {
-        name:       '1920x1200'
+        name:       '1280x1024'
         properties: {
           image:      e2eTestContainerImageName
           resources:  {
@@ -53,17 +53,17 @@ resource containerGroup 'Microsoft.ContainerInstance/containerGroups@2021-09-01'
             }
             {
               name: 'CYPRESS_VIEWPORT_WIDTH'
-              value: '1920'
+              value: '1280'
             }
             {
               name: 'CYPRESS_VIEWPORT_HEIGHT'
-              value: '1200'
+              value: '1024'
             }
           ]
         }
       }
       {
-        name:       '3840x2160'
+        name:       '5120x1440'
         properties: {
           image:      e2eTestContainerImageName
           resources:  {
@@ -74,16 +74,16 @@ resource containerGroup 'Microsoft.ContainerInstance/containerGroups@2021-09-01'
           }
           environmentVariables: [
             {
-              name:   'CYPRESS_EARTH_WEBSITE_URL'
-              value:  earthWebsiteBaseUrl
+              name: 'CYPRESS_EARTH_WEBSITE_URL'
+              value: earthWebsiteBaseUrl
             }
             {
-              name:   'CYPRESS_VIEWPORT_WIDTH'
-              value:  '3840'
+              name: 'CYPRESS_VIEWPORT_WIDTH'
+              value: '5120'
             }
             {
-              name:   'CYPRESS_VIEWPORT_HEIGHT'
-              value:  '2160'
+              name: 'CYPRESS_VIEWPORT_HEIGHT'
+              value: '1440'
             }
           ]
         }

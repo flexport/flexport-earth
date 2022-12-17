@@ -42,7 +42,7 @@ try {
             Write-Information ""
             Write-Information "Running tests..."
 
-            $CypressCommand = "$(npm bin)/cypress run --spec ""cypress/integration/**/*"" --env BUILD_NUMBER=$BuildNumber,EARTH_WEBSITE_URL=$EarthWebsiteUrl --reporter junit --reporter-options ""mochaFile=results/cypress.xml"""
+            $CypressCommand = "$(npm bin)/cypress run --spec ""cypress/integration/**/*"" --env BUILD_NUMBER=$BuildNumber,EARTH_WEBSITE_URL=$EarthWebsiteUrl --browser chrome --reporter junit --reporter-options ""mochaFile=results/cypress.xml"""
 
             Write-Information ""
             Write-Information "Command: $CypressCommand"
