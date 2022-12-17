@@ -182,7 +182,7 @@ function Set-E2EMonitorResources {
             if ($ContainerLogsJson.Contains($TestRunCompletionTextToLookFor) -eq $false) {
                 $ContainerLogsRaw
 
-                Write-Error "Container logs do not indicate the E2E test suite is working properly. Did not find \"$TestRunCompletionTextToLookFor\" in the logs."
+                Write-Error "Container logs do not indicate the E2E test suite is working properly. Did not find '$TestRunCompletionTextToLookFor' in the logs."
             }
 
             Write-Information "E2E tests were executed!"
