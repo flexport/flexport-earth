@@ -18,7 +18,11 @@ class DataPaging {
                 relativeUrlWithQueryString
             );
 
-            page    = JSON.parse(await response.text());
+            const rawBody = await response.text();
+
+            console.log(rawBody);
+
+            page    = JSON.parse(rawBody);
             allData = allData.concat(page.data);
 
             relativeUrlWithQueryString = page.next;
