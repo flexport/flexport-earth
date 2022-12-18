@@ -1,3 +1,3 @@
 ## High Level Design
 
-![alt text](./flexport-earth-design.png)
+![High level design of Flexport Earth](./flexport-earth-design.png)
