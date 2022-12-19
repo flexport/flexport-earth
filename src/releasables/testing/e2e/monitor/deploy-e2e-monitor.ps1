@@ -171,18 +171,10 @@ function Set-E2EMonitorResources {
             # text since the original raw output contains all sorts of encoding.
             $ContainerLogsJson = $ContainerLogsRaw | ConvertTo-Json
 
-            if ($ContainerLogsJson.Contains($BuildNumber) -eq $false) {
+            if ($ContainerLogsJson.Contains("Cypress run for build $BuildNumber completed!") -eq $false) {
                 $ContainerLogsRaw
 
-                Write-Error "Did not find build number $BuildNumber in the logs. The correct image may not have been deployed."
-            }
-
-            $TestRunCompletionTextToLookFor = "Run Finished"
-
-            if ($ContainerLogsJson.Contains($TestRunCompletionTextToLookFor) -eq $false) {
-                $ContainerLogsRaw
-
-                Write-Error "Container logs do not indicate the E2E test suite is working properly. Did not find '$TestRunCompletionTextToLookFor' in the logs."
+                Write-Error "It does not seem tests for build $BuildNumber are executing or finishing. The correct image may not have been deployed or the tests are having trouble running."
             }
 
             Write-Information "E2E tests were executed!"
