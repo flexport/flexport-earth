@@ -1,6 +1,14 @@
 ﻿# This script is for local development purposes only to make it easier
 # for developers to work with all the various scripts and their parameters.
 
+# This script operates similarly to a CI/CD system in that it feeds
+# settings and configuration values into the various scripts to run them.
+
+# Because this script behaves similarly to the CI/CD system, using it to
+# run and test Earth locally should behave consistently with how these scripts
+# will behave when executed by the CI/CD system so that there's no surprises
+# when running everything outside of a developers environment.
+
 [CmdletBinding()]
 param (
     [Parameter(Mandatory = $true)]
@@ -103,8 +111,6 @@ function Invoke-Workflow {
 
         BuildReleaseAndPublish
         {
-            Write-Information "EarthRuntimeConfig: $EarthRuntimeConfig"
-
             Invoke-BuildAndPublish `
                 -GlobalDevelopmentSettings      $GlobalDevelopmentSettings `
                 -DeveloperEnvironmentSettings   $DeveloperEnvironmentSettings `
