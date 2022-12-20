@@ -124,7 +124,11 @@
 }
 
 .productFeedbackLink {
-  text-decoration: underline;
+  text-decoration:    underline;
+}
+
+.productFeedbackLink :hover {
+  cursor:             pointer;
 }
 
 .footerInfoDescription {
