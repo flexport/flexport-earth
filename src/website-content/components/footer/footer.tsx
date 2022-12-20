@@ -6,7 +6,34 @@ import Link                 from 'next/link'
 import IconSupplyChainBook  from 'public/images/icon-supply-chain-book.png'
 import FlexportLogo         from 'public/images/flexport-logo.svg'
 
-const Footer = () => (
+import React, { useEffect } from 'react'
+
+
+const Footer = () => {
+    // Update the document title using the browser API
+    const openUserFeedbackEmail = () => {
+        const currentWebPage    = window.location.href;
+        const userAgent         = window.navigator.userAgent;
+        const screenSize        = window.screen.width + 'x' + window.screen.height;
+
+        const userFeedbackEmailBody = `
+
+
+
+------------------------------------------------------
+Technical Details:
+-Current Webpage: ${currentWebPage}
+-User Agent: ${userAgent}
+-Screen Size: ${screenSize}`;
+
+        const emailTo   = 'earth-feedback@flexport.com';
+        const emailSub  = 'Earth Feedback';
+        const emailBody = userFeedbackEmailBody.replace(/[\r\n]/gm, '%0D%0A');
+
+        window.open("mailto:"+emailTo+'?subject='+emailSub+'&body='+emailBody);
+    }
+
+    return (
       <footer className={Styles.footer}>
         <div className={Styles.footerContent}>
             <div className={Styles.footerMainContentSection}>
@@ -60,7 +87,14 @@ const Footer = () => (
                             Interested in tech stack behind this website?
                         </div>
                         <div className={Styles.footerInfoDescription}>
-                            <span>Read our public</span><a href="https://apidocs.flexport.com" target="_blank" rel="noreferrer">API documentation</a><span>, or check our</span><a href="https://github.com/flexport/flexport-earth" target="_blank" rel="noreferrer">Github repository</a>
+                            Read our public <a href="https://apidocs.flexport.com" target="_blank" rel="noreferrer">API documentation</a>, or check our <a href="https://github.com/flexport/flexport-earth" target="_blank" rel="noreferrer">Github repository</a>
+                        </div>
+
+                        <div className={Styles.footerInfoTitle}>
+                            Product feedback
+                        </div>
+                        <div className={Styles.footerInfoDescription}>
+                            Let us know how we can improve your experience. Tell us about a problem you&apos;d like to report or feedback that you have about your experience by<br/><a className={Styles.productFeedbackLink} onClick={() => openUserFeedbackEmail()} >submitting feedback</a>.
                         </div>
                     </div>
                 </div>
@@ -93,6 +127,6 @@ const Footer = () => (
             </div>
         </div>
       </footer>
-);
-
+    );
+}
 export default Footer;
