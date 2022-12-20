@@ -1,8 +1,3 @@
-
-.footer a {
-  display:            flex;
-}
-
 .footer {
   padding:            2rem 0;
   justify-content:    center;
@@ -20,6 +15,10 @@
   width:          1049px;
   padding-top:    35px;
   padding-bottom: 10px;
+}
+
+.footerMainContentSection {
+  display: flex;
 }
 
 .footerTopTitle {
@@ -64,17 +63,16 @@
 }
 
 .topPorts {
-  float:              left;
+
   width:              268px;
 }
 
 .topVessels {
-  float:              left;
   width:              268px;
 }
 
 .glossaryAndInfo {
-  float:              left;
+
 }
 
 .footerGlossary {
@@ -84,6 +82,7 @@
   border-radius:      8px;
   padding:            20px;
   margin-bottom:      40px;
+  display:            flex;
 }
 
 .footerGlossaryLink {
@@ -91,13 +90,12 @@
 }
 
 .footerGlossaryLeft {
-  float:              left;
   width:              204px;
   margin-right:       68px;
 }
 
 .footerGlossaryRight {
-  float:              left;
+
 }
 
 .footerGlossaryTitle {
@@ -125,22 +123,25 @@
   line-height:        20px;
 }
 
+.productFeedbackLink {
+  text-decoration: underline;
+}
+
 .footerInfoDescription {
   font-weight:        400;
   font-size:          14px;
   line-height:        20px;
   padding-top:        10px;
+  padding-bottom:     25px;
+  width:              475px;
 }
 
 .footerInfoDescription a {
   color:            white;
-  float:              left;
-  margin-left:        4px;
 }
 
 .footerInfoDescription span {
   color:            white;
-  float:              left;
 }
 
 .footerContentHr {
