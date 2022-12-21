@@ -82,21 +82,9 @@
 
 .betaIcon {
     display:                inline-block;
-    background-color:       #F7F9FD;
-    width:                  42px;
-    height:                 24px;
     position:               relative;
-    top:                    -5px;
+    top:                    -18px;
     left:                   -64px;
-    border-radius:          40px;
-    font-size:              12px;
-}
-
-.betaIconText {
-    position:               absolute;
-    top:                    4px;
-    left:                   9px;
-    color:                  #272C34
 }
 
 .main {

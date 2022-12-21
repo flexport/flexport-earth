@@ -47,31 +47,17 @@
     color:                white;
   }
 
-  .betaIcon {
-    background-color:       #F7F9FD;
-    width:                  42px;
-    height:                 24px;
-    position:               absolute;
-    top:                    81px;
-    left:                   502px;
-    border-radius:          40px;
-    font-size:              12px;
-    text-align:             center;
-  }
-
-  .betaIconText {
-    position:               absolute;
-    top:                    4px;
-    left:                   9px;
-  }
-
   .rightChevron {
     position:             relative;
     top:                  -7px;
     margin-left:          18px;
   }
 
-
+  .betaIcon {
+    position:               absolute;
+    top:                    81px;
+    left:                   502px;
+  }
 
   .vesselsAndContainersSection {
     margin-top:           24px;
