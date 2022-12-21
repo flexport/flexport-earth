@@ -39,11 +39,18 @@ const Layout = ({
                   width={106}
                 />
               </a>
+
               <span id="wiki-title-vertical-line" className={Styles.wikiTitleVerticalLine} />
+
               <span id="wiki-subtitle" className={Styles.wikiSubTitle}>
                 <Link href="/">Wiki</Link>
               </span>
           </div>
+          <span className={Styles.betaIcon}>
+                  <span className={Styles.betaIconText}>
+                      Beta
+                  </span>
+          </span>
           <div className={Styles.majorLinks}>
             <Link href='/facts/places/ports'>
               <div className={selectMajorLink == 'ports' ? Styles.selectedMajorLink : ""}>
