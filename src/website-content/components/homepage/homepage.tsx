@@ -51,6 +51,12 @@ return (
 
             <span className={Styles.wikiSubTitle}>Wiki</span>
 
+            <span className={Styles.betaIcon}>
+                <span className={Styles.betaIconText}>
+                    Beta
+                </span>
+            </span>
+
             <div className={Styles.tagLine}>
                 Discover the world of supply chain
             </div>
