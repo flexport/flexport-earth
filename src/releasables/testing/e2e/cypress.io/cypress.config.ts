@@ -5,6 +5,9 @@ module.exports = defineConfig({
   viewportHeight: 1200,
   videosFolder: "results/videos",
   screenshotsFolder: "results/screenshots",
+  retries: {
+    "runMode": 3
+  },
   e2e: {
     setupNodeEvents() {
       // implement node event listeners here
