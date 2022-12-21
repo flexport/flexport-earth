@@ -10,7 +10,8 @@ import VesselIcon       from 'public/images/icon-vessel.svg'
 import ContainersIcon   from 'public/images/icon-containers.svg'
 import Background       from 'public/images/boat-background-optimized.webp'
 
-import PortCard from './ports-card'
+import PortCard         from './ports-card'
+import BetaIcon         from 'components/beta-icon/beta-icon';
 
 type CountryInfo = {
   countryName:      string,
@@ -51,11 +52,7 @@ return (
 
             <span className={Styles.wikiSubTitle}>Wiki</span>
 
-            <span className={Styles.betaIcon}>
-                <span className={Styles.betaIconText}>
-                    Beta
-                </span>
-            </span>
+            <BetaIcon className={Styles.betaIcon} />
 
             <div className={Styles.tagLine}>
                 Discover the world of supply chain

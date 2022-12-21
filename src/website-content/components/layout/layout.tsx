@@ -5,7 +5,9 @@ import Image                from 'next/image'
 import Link                 from 'next/link';
 
 import Styles               from './layout.module.css'
-import Footer               from '../footer/footer'
+
+import Footer               from 'components/footer/footer'
+import BetaIcon             from 'components/beta-icon/beta-icon';
 
 import FlexportLogo         from 'public/images/flexport-logo.svg'
 
@@ -46,11 +48,9 @@ const Layout = ({
                 <Link href="/">Wiki</Link>
               </span>
           </div>
-          <span className={Styles.betaIcon}>
-                  <span className={Styles.betaIconText}>
-                      Beta
-                  </span>
-          </span>
+
+          <BetaIcon className={Styles.betaIcon} />
+
           <div className={Styles.majorLinks}>
             <Link href='/facts/places/ports'>
               <div className={selectMajorLink == 'ports' ? Styles.selectedMajorLink : ""}>
