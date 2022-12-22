@@ -15,5 +15,9 @@
 }
 
 .betaIconPopup {
+    background-color: #272C34;
+}
+
+.betaIconPopupInactive {
     display:                none;
 }
