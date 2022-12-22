@@ -77,13 +77,23 @@ function Get-DeveloperEnvironmentSettings {
         -Settings         $LocalSettings `
         -SettingsFilePath $LocalSettingsPath `
         -ConfigName       "AzureSubscriptionName" `
-        -ConfigPrompt     "What is the name of the Azure Subscription you'll deploy to?"
+        -ConfigPrompt     "What is the name of the Azure Subscription you'll deploy to?
+
+Don't have an Azure Subscription?
+- If you're a Flexport sanctioned developer, contact the Earth Dev Team to create a paid subscription for you.
+- If not a Flexport sanctioned developer, you can create your own free Azure account yourself.
+
+"
 
     Set-ConfigValue `
         -Settings         $LocalSettings `
         -SettingsFilePath $LocalSettingsPath `
         -ConfigName       "EnvironmentName" `
-        -ConfigPrompt     "What is the name of the Environment to create within your Azure Subscription (short single word)?"
+        -ConfigPrompt     "What is the name of the Environment to create within your Azure Subscription?
+
+You can make up any name you prefer, just keep it short (6 characters or less) and alphanumeric.
+
+"
 
     Set-ConfigValue `
         -Settings         $LocalSettings `
@@ -95,7 +105,13 @@ function Get-DeveloperEnvironmentSettings {
         -Settings         $LocalSettings `
         -SettingsFilePath $LocalSettingsPath `
         -ConfigName       "FlexportApiClientId" `
-        -ConfigPrompt     "What's your Flexport API Client ID?"
+        -ConfigPrompt     "What's your Flexport API Client ID?
+
+Don't have a Flexport API Client ID?
+- If you're a Flexport sanctioned developer, contact the Earth Dev Team to create one for you.
+- If not a Flexport sanctioned developer, I'm afraid we cannot provide API credentials to you at this time.
+
+"
 
     Set-ConfigValue `
         -Settings         $LocalSettings `
