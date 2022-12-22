@@ -25,7 +25,19 @@ function Set-ConfigValue {
 
     process {
         if ($PSCmdlet.ShouldProcess($ConfigName)) {
-            $SettingExists = [Bool]($Settings.PSObject.Properties.Name -Match $ConfigName)
+
+            $HasObjects = $false
+
+            # Verify the properties are populated before trying to use them.
+            $Settings.PSObject.Properties | ForEach-Object {
+                $HasObjects = $true
+            }
+
+            $SettingExists = [Bool](
+                $HasObjects -eq $true `
+                -and `
+                $Settings.PSObject.Properties.Name -Match $ConfigName
+            )
 
             if (-Not ($SettingExists)) {
                 $ConfigValue = Read-Host $ConfigPrompt
@@ -46,9 +58,15 @@ function Get-DeveloperEnvironmentSettings {
     $GlobalDevelopmentSettings  = Get-GlobalDevelopmentSettings
     $LocalSettingsPath          = "$($GlobalDevelopmentSettings.CacheDirectory)/environment-settings.json"
 
+    if (-Not (Test-Path $GlobalDevelopmentSettings.CacheDirectory)) {
+        New-Item -ItemType Directory -Path $GlobalDevelopmentSettings.CacheDirectory
+        Write-Information "Created cache folder $($GlobalDevelopmentSettings.CacheDirectory) for your personal configuration values."
+    }
+
     if (-Not (Test-Path $LocalSettingsPath)) {
         Set-Content -Path $LocalSettingsPath -Value "{}"
         Write-Information "Created settings file: $LocalSettingsPath"
+        Write-Information ""
     }
 
     $LocalSettingsJson = Get-Content $LocalSettingsPath
