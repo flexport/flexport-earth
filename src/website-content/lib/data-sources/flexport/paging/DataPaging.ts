@@ -20,7 +20,8 @@ class DataPaging {
 
             const rawBody = await response.text();
 
-            console.log(rawBody);
+            if (response.status != 200)
+                console.log(rawBody);
 
             page    = JSON.parse(rawBody);
             allData = allData.concat(page.data);

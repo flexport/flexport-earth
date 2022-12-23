@@ -63,7 +63,24 @@ function Get-DeployerServicePrincipalCredentials {
         $CredsPath      = "$CacheDirectory/$($EarthRuntimeConfig.EarthDeployerServicePrincipalName).json"
 
         if (-Not (Test-Path $CredsPath)) {
-            Write-Error "Service Principal cached credentials not found at $.CredsPath. Please run ./azure/subscription-provision.ps1 to create a Service Principal, which will cache the credentials for use."
+            Write-Information "Deployer Service Principal cached credentials not found at $CredsPath.
+
+To resolve this, please perform the following:
+
+1. Sign in to Azure as the Administrator of your Azure Subscription by running the following on your command line:
+
+    az login
+
+2. Run the following script on your command line:
+
+    ./src/azure/provisioning/subscription-provision.ps1
+
+This will create a Service Principal in Azure and cache the credentials for use.
+
+3. Rerun your previous command.
+"
+
+            exit
         }
 
         $ServicePrincipalCredentials = Get-Content -Path $CredsPath | ConvertFrom-Json
@@ -187,7 +204,7 @@ function Invoke-Build {
         ./build.ps1 `
             -BuildNumber                    $BuildNumber `
             -FlexportApiClientID            $DeveloperEnvironmentSettings.FlexportApiClientID `
-            -FlexportApiClientSecret        $DeveloperEnvironmentSettings.FlexportApiClientSecret
+            -FlexportApiClientSecret        $($DeveloperEnvironmentSettings.FlexportApiClientSecret | ConvertFrom-SecureString -AsPlainText)
 
         Write-Information ""
         Write-Information "To run the build locally:"
@@ -234,7 +251,7 @@ function Invoke-BuildAndPublish {
         ./build-and-publish.ps1 `
             -BuildNumber                     $BuildNumber `
             -FlexportApiClientID             $DeveloperEnvironmentSettings.FlexportApiClientID `
-            -FlexportApiClientSecret         $DeveloperEnvironmentSettings.FlexportApiClientSecret `
+            -FlexportApiClientSecret         $($DeveloperEnvironmentSettings.FlexportApiClientSecret | ConvertFrom-SecureString -AsPlainText) `
             -PublishToEnvironment            $DeveloperEnvironmentSettings.EnvironmentName `
             -AzureServicePrincipalTenant     $ServicePrincipalCredentials.Tenant `
             -AzureServicePrincipalAppId      $ServicePrincipalCredentials.AppId `
@@ -283,11 +300,6 @@ function Invoke-Deploy {
         -DeveloperEnvironmentSettings   $DeveloperEnvironmentSettings `
         -EarthRuntimeConfig             $EarthRuntimeConfig
 
-    $ContainerSourceRegistryServerAddress               = $DeveloperEnvironmentSettings.ContainerSourceRegistryServerAddress
-    $ContainerTargetRegistryServicePrincipalTenant      = $DeveloperEnvironmentSettings.ContainerSourceRegistryServicePrincipalTenant
-    $ContainerSourceRegistryServicePrincipalUsername    = $DeveloperEnvironmentSettings.ContainerSourceRegistryServicePrincipalUsername
-    $ContainerSourceRegistryServicePrincipalPassword    = $($DeveloperEnvironmentSettings.ContainerSourceRegistryServicePrincipalPassword | ConvertTo-SecureString -AsPlainText)
-
     $BuildNumber = Get-BuildNumber
 
     try {
@@ -300,10 +312,7 @@ function Invoke-Deploy {
             -FlexportApiClientId                                $DeveloperEnvironmentSettings.FlexportApiClientId `
             -FlexportApiClientSecret                            $DeveloperEnvironmentSettings.FlexportApiClientSecret `
             -GoogleAnalyticsMeasurementId                       $DeveloperEnvironmentSettings.GoogleAnalyticsMeasurementId `
-            -ContainerSourceRegistryServerAddress               $ContainerSourceRegistryServerAddress `
-            -ContainerTargetRegistryTenant                      $ContainerTargetRegistryServicePrincipalTenant `
-            -ContainerSourceRegistryServicePrincipalUsername    $ContainerSourceRegistryServicePrincipalUsername `
-            -ContainerSourceRegistryServicePrincipalPassword    $ContainerSourceRegistryServicePrincipalPassword `
+            -ContainerTargetRegistryTenant                      $DeployerServicePrincipalCredentials.Tenant `
             -ContainerTargetRegistryUsername                    $DeployerServicePrincipalCredentials.AppId `
             -ContainerTargetRegistryPassword                    $DeployerServicePrincipalCredentials.Password
     }

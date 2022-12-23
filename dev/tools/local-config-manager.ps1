@@ -20,7 +20,11 @@ function Set-ConfigValue {
 
         [Parameter(Mandatory = $true)]
         [String]
-        $ConfigPrompt
+        $ConfigPrompt,
+
+        [Parameter(Mandatory = $false)]
+        [Switch]
+        $AsSecureString
     )
 
     process {
@@ -40,8 +44,17 @@ function Set-ConfigValue {
             )
 
             if (-Not ($SettingExists)) {
-                $ConfigValue = Read-Host $ConfigPrompt
-                Add-Member -InputObject $Settings -NotePropertyName $ConfigName -NotePropertyValue $ConfigValue
+                if ($AsSecureString) {
+                    $ConfigValue = (Read-Host $ConfigPrompt -AsSecureString) | ConvertFrom-SecureString
+                } else {
+                    $ConfigValue = Read-Host $ConfigPrompt
+                }
+
+                Add-Member `
+                    -InputObject        $Settings `
+                    -NotePropertyName   $ConfigName `
+                    -NotePropertyValue  $ConfigValue
+
                 $Settings | ConvertTo-Json | Set-Content -Path $SettingsFilePath
             }
         }
@@ -59,6 +72,14 @@ function Get-DeveloperEnvironmentSettings {
     $LocalSettingsPath          = "$($GlobalDevelopmentSettings.CacheDirectory)/environment-settings.json"
 
     if (-Not (Test-Path $GlobalDevelopmentSettings.CacheDirectory)) {
+        Write-Information "
+Hello, Earthling!
+
+This appears to be the first time running the Earth Development scripts from this folder...
+
+Let's do some one-time set up to get you up and running!
+"
+
         New-Item -ItemType Directory -Path $GlobalDevelopmentSettings.CacheDirectory
         Write-Information "Created cache folder $($GlobalDevelopmentSettings.CacheDirectory) for your personal configuration values."
     }
@@ -72,12 +93,15 @@ function Get-DeveloperEnvironmentSettings {
     $LocalSettingsJson = Get-Content $LocalSettingsPath
     $LocalSettings     = $LocalSettingsJson | ConvertFrom-Json
 
+    $LocalSettings.FlexportApiClientSecret = $($LocalSettings.FlexportApiClientSecret) | ConvertTo-SecureString
+
     # Ensure all the expected settings are configured before returning.
     Set-ConfigValue `
         -Settings         $LocalSettings `
         -SettingsFilePath $LocalSettingsPath `
         -ConfigName       "AzureSubscriptionName" `
-        -ConfigPrompt     "What is the name of the Azure Subscription you'll deploy to?
+        -ConfigPrompt     "
+What is the name of the Azure Subscription you'll deploy to?
 
 Don't have an Azure Subscription?
 - If you're a Flexport sanctioned developer, contact the Earth Dev Team to create a paid subscription for you.
@@ -89,7 +113,8 @@ Don't have an Azure Subscription?
         -Settings         $LocalSettings `
         -SettingsFilePath $LocalSettingsPath `
         -ConfigName       "EnvironmentName" `
-        -ConfigPrompt     "What is the name of the Environment to create within your Azure Subscription?
+        -ConfigPrompt     "
+What is the name of the Environment to create within your Azure Subscription?
 
 You can make up any name you prefer, just keep it short (6 characters or less) and alphanumeric.
 
@@ -105,7 +130,8 @@ You can make up any name you prefer, just keep it short (6 characters or less) a
         -Settings         $LocalSettings `
         -SettingsFilePath $LocalSettingsPath `
         -ConfigName       "FlexportApiClientId" `
-        -ConfigPrompt     "What's your Flexport API Client ID?
+        -ConfigPrompt     "
+What's your Flexport API Client ID?
 
 Don't have a Flexport API Client ID?
 - If you're a Flexport sanctioned developer, contact the Earth Dev Team to create one for you.
@@ -117,42 +143,20 @@ Don't have a Flexport API Client ID?
         -Settings         $LocalSettings `
         -SettingsFilePath $LocalSettingsPath `
         -ConfigName       "FlexportApiClientSecret" `
-        -ConfigPrompt     "What's your Flexport API Client Secret?"
+        -ConfigPrompt     "What's your Flexport API Client Secret?" `
+        -AsSecureString
 
     Set-ConfigValue `
         -Settings         $LocalSettings `
         -SettingsFilePath $LocalSettingsPath `
         -ConfigName       "GoogleAnalyticsMeasurementId" `
-        -ConfigPrompt     "What's your Google Analytics Measurement ID (G-XXXXXXXXXX)?
+        -ConfigPrompt     "
+What's your Google Analytics Measurement ID (G-XXXXXXXXXX)?
 
 See docs here on how to set it up:
 https://github.com/flexport/flexport-earth/tree/main/product/docs/administrative-features/reporting-and-analytics/google-analytics#how-to-provision-a-new-google-analytics-account-for-a-new-earth-environment
 
 "
-
-    Set-ConfigValue `
-        -Settings         $LocalSettings `
-        -SettingsFilePath $LocalSettingsPath `
-        -ConfigName       "ContainerSourceRegistryServerAddress" `
-        -ConfigPrompt     "What's the server address for the Azure Container Registry that Container images should be promoted from?"
-
-    Set-ConfigValue `
-        -Settings         $LocalSettings `
-        -SettingsFilePath $LocalSettingsPath `
-        -ConfigName       "ContainerSourceRegistryServicePrincipalTenant" `
-        -ConfigPrompt     "What's the Azure Tenant ID for authenticating for the Azure Container Registry that Container images should be promoted from?"
-
-    Set-ConfigValue `
-        -Settings         $LocalSettings `
-        -SettingsFilePath $LocalSettingsPath `
-        -ConfigName       "ContainerSourceRegistryServicePrincipalUsername" `
-        -ConfigPrompt     "What's the username for authenticating for the Azure Container Registry that Container images should be promoted from?"
-
-    Set-ConfigValue `
-        -Settings         $LocalSettings `
-        -SettingsFilePath $LocalSettingsPath `
-        -ConfigName       "ContainerSourceRegistryServicePrincipalPassword" `
-        -ConfigPrompt     "What's the password for authenticating for the Azure Container Registry that Container images should be promoted from?"
 
     return $LocalSettings
 }
