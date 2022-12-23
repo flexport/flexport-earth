@@ -27,9 +27,13 @@ Write-Information "Provisioning subscription $AzureSubscriptionName (id: $Subscr
 Write-Information "- Provisioning $SubscriptionDeploymentServicePricipalName service principle..."
 
 $ServicePrincipalCredentials = az ad sp create-for-rbac `
-    --name $SubscriptionDeploymentServicePricipalName `
-    --role "Deployer" `
-    --scopes "/subscriptions/$SubscriptionId"
+    --name      $SubscriptionDeploymentServicePricipalName `
+    --role      "Deployer" `
+    --scopes    "/subscriptions/$SubscriptionId"
+
+if (!$?) {
+    Write-Error "Failed to create the Service Principal!"
+}
 
 # Load Global Development Settings
 $GlobalDevelopmentSettings = Get-Content 'dev/development-config.json' | ConvertFrom-Json

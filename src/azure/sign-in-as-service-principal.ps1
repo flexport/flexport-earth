@@ -33,5 +33,6 @@ if (!$?) {
     Write-Error "Failed to login as service principal."
 }
 
+Write-Information ""
 Write-Information "Sign in completed successfully!"
 Write-Information ""

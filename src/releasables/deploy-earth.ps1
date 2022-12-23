@@ -24,15 +24,15 @@ param (
     [String]
     $GoogleAnalyticsMeasurementId,
 
-    [Parameter(Mandatory = $true)]
+    [Parameter(Mandatory = $false)]
     [String]
     $ContainerSourceRegistryServerAddress,
 
-    [Parameter(Mandatory = $true)]
+    [Parameter(Mandatory = $false)]
     [String]
     $ContainerSourceRegistryServicePrincipalUsername,
 
-    [Parameter(Mandatory = $true)]
+    [Parameter(Mandatory = $false)]
     [SecureString]
     $ContainerSourceRegistryServicePrincipalPassword,
 
