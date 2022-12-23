@@ -30,4 +30,23 @@ describe('Beta Icon', () => {
             .get(betaIconPopupCssSelector)
             .should('be.visible');
     })
+
+    it.only('popup is hidden on mouse leave', () => {
+        // Arrange
+        cy.mount(<BetaIcon />);
+
+        cy
+            .get(betaIconCssSelector)
+            .realHover();
+
+        // Act
+        cy
+            .get('body')
+            .realMouseMove(0, 0);
+
+        // Assert
+        cy
+            .get(betaIconPopupCssSelector)
+            .should('not.be.visible');
+    })
 })

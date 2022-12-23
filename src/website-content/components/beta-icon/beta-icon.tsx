@@ -1,16 +1,27 @@
 import Styles from './styles.module.css'
 
 const BetaIcon = ({className = ''}) => {
-    function showPopup(){
+    function showPopup() {
         var elements     = document.getElementsByClassName(`${Styles.betaIconPopup}`);
         var popupElement = elements[0];
 
         popupElement.classList.remove(Styles.betaIconPopupInactive);
     }
 
+    function hidePopup() {
+        var elements     = document.getElementsByClassName(`${Styles.betaIconPopup}`);
+        var popupElement = elements[0];
+
+        popupElement.classList.add(Styles.betaIconPopupInactive);
+    }
+
     return (
         <span className={Styles.betaIconContainer}>
-            <span className={`${Styles.betaIcon} ${className}`} onMouseEnter={showPopup}>
+            <span
+                className   ={`${Styles.betaIcon} ${className}`}
+                onMouseEnter={showPopup}
+                onMouseLeave={hidePopup}
+            >
                 <span className={Styles.betaIconText}>
                     Beta
                 </span>
