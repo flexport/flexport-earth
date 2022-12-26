@@ -1,0 +1,39 @@
+.betaIcon {
+    display:                inline-block;
+    background-color:       #F7F9FD;
+    width:                  42px;
+    height:                 24px;
+    border-radius:          40px;
+    font-size:              12px;
+}
+
+.betaIconText {
+    position:               relative;
+    top:                    4px;
+    left:                   9px;
+    color:                  #272C34
+}
+
+.betaIconPopup {
+    background-color:       white;
+    width:                  426px;
+    height:                 153px;
+    box-shadow:             0px 0px 2px rgba(0, 0, 0, 0.12), 0px 8px 8px rgba(0, 0, 0, 0.12);
+}
+
+.betaIconPopupDescription {
+    font-weight:            400;
+    font-size:              14px;
+    line-height:            20px;
+    letter-spacing:         0.01em;
+    font-feature-settings:  'tnum' on, 'lnum' on;
+    color:                  #39414D;
+}
+
+.betaIconPopupInactive {
+    display:                none;
+}
+
+.betaIconPopupCloseButton {
+    display:                block;
+}

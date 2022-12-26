@@ -19,7 +19,6 @@
 // Alternatively you can use CommonJS syntax:
 // require('./commands')
 
-import 'cypress-real-events';
 import { ReactNode } from 'react'
 import { mount } from 'cypress/react'
 import { MountOptions, MountReturn } from 'cypress/react'

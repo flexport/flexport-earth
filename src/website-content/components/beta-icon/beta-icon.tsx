@@ -1,4 +1,8 @@
-import Styles from './styles.module.css'
+import Styles       from './beta-icon.module.css'
+
+import Image        from 'next/image'
+
+import IconX        from 'public/images/icon-X.svg'
 
 const BetaIcon = ({className = ''}) => {
     function showPopup() {
@@ -18,16 +22,26 @@ const BetaIcon = ({className = ''}) => {
     return (
         <span className={Styles.betaIconContainer}>
             <span
-                className   ={`${Styles.betaIcon} ${className}`}
-                onMouseEnter={showPopup}
-                onMouseLeave={hidePopup}
+                className   = {`${Styles.betaIcon} ${className}`}
+                onClick     = {showPopup}
             >
                 <span className={Styles.betaIconText}>
                     Beta
                 </span>
             </span>
             <div className={`${Styles.betaIconPopup} ${Styles.betaIconPopupInactive}`}>
-                <div className={Styles.betaIconPopupTitle}>Beta mode</div>
+                <div className={Styles.betaIconPopupTitleBar}>
+                    <div className={Styles.betaIconPopupTitle}>
+                        Beta mode
+                    </div>
+                    <Image
+                        className = {Styles.betaIconPopupCloseButton}
+                        src       = {IconX}
+                        alt       = 'Close Button'
+                        width     = {14.44}
+                        onClick   = {hidePopup}
+                    />
+                </div>
                 <div className={Styles.betaIconPopupDescription}>
                     The site is in beta. Please help us improve it by reporting any bugs or issues you find.
                 </div>

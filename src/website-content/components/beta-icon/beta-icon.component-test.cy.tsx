@@ -1,8 +1,9 @@
 import BetaIcon from './beta-icon';
-import Styles   from './styles.module.css'
+import Styles   from './beta-icon.module.css'
 
-const betaIconCssSelector       = `.${Styles.betaIcon}`;
-const betaIconPopupCssSelector  = `.${Styles.betaIconPopup}`;
+const betaIconCssSelector                   = `.${Styles.betaIcon}`;
+const betaIconPopupCssSelector              = `.${Styles.betaIconPopup}`;
+const betaIconPopupCloseButtonCssSelector   = `.${Styles.betaIconPopupCloseButton}`;
 
 describe('Beta Icon', () => {
     it.only('popup is hidden on load', () => {
@@ -16,14 +17,14 @@ describe('Beta Icon', () => {
             .should('not.be.visible');
     })
 
-    it.only('popup is shown on mouse hover', () => {
+    it.only('popup is shown on mouse click', () => {
         // Arrange
         cy.mount(<BetaIcon />);
 
         // Act
         cy
             .get(betaIconCssSelector)
-            .realHover();
+            .click();
 
         // Assert
         cy
@@ -31,18 +32,18 @@ describe('Beta Icon', () => {
             .should('be.visible');
     })
 
-    it.only('popup is hidden on mouse leave', () => {
+    it.only('popup is closed on close button click', () => {
         // Arrange
         cy.mount(<BetaIcon />);
 
         cy
             .get(betaIconCssSelector)
-            .realHover();
+            .click();
 
         // Act
         cy
-            .get('body')
-            .realMouseMove(0, 0);
+            .get(betaIconPopupCloseButtonCssSelector)
+            .click();
 
         // Assert
         cy
