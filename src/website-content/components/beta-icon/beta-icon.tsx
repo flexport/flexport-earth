@@ -6,6 +6,10 @@ import SubmitFeedbackLink   from 'components/submit-feedback/submit-feedback-lin
 
 const BetaIcon = ({className = '', enablePopup = false}) => {
     function showPopup() {
+        if (window.location.pathname == '/') {
+            return;
+        }
+
         // Show the popup pointer
         var elements        = document.getElementsByClassName(`${Styles.betaIconPopupPointer}`);
         var pointerElement  = elements[0];
