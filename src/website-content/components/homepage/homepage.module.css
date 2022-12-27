@@ -59,6 +59,10 @@
     left:                   502px;
   }
 
+  .betaIcon :hover {
+    cursor:                 default;
+  }
+
   .vesselsAndContainersSection {
     margin-top:           24px;
   }
