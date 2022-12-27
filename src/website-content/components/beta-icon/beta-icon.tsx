@@ -5,15 +5,29 @@ import Image        from 'next/image'
 import IconX        from 'public/images/icon-X.svg'
 import Arrow        from 'public/images/icon-arrow-right-blue.svg'
 
-const BetaIcon = ({className = ''}) => {
+const BetaIcon = ({className = '', enablePopup = false}) => {
     function showPopup() {
-        var elements     = document.getElementsByClassName(`${Styles.betaIconPopup}`);
-        var popupElement = elements[0];
+        // Show the popup pointer
+        var elements        = document.getElementsByClassName(`${Styles.betaIconPopupPointer}`);
+        var pointerElement  = elements[0];
+
+        pointerElement.classList.remove(Styles.betaIconPopupInactive);
+
+        // Show the popup box
+        elements            = document.getElementsByClassName(`${Styles.betaIconPopup}`);
+        var popupElement    = elements[0];
 
         popupElement.classList.remove(Styles.betaIconPopupInactive);
     }
 
     function hidePopup() {
+         // Hide the popup pointer
+         var elements     = document.getElementsByClassName(`${Styles.betaIconPopupPointer}`);
+         var popupElement = elements[0];
+
+         popupElement.classList.add(Styles.betaIconPopupInactive);
+
+        // Hide the popup box
         var elements     = document.getElementsByClassName(`${Styles.betaIconPopup}`);
         var popupElement = elements[0];
 
@@ -30,6 +44,7 @@ const BetaIcon = ({className = ''}) => {
                     Beta
                 </span>
             </span>
+            <span className={`${Styles.betaIconPopupPointer} ${Styles.betaIconPopupInactive}`}></span>
             <div className={`${Styles.betaIconPopup} ${Styles.betaIconPopupInactive}`}>
                 <div className={Styles.betaIconPopupTitleBar}>
                     <p className={Styles.betaIconPopupTitle}>
