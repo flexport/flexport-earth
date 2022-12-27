@@ -23,6 +23,7 @@ If running on Windows, install the [Windows Subsystem for Linux](https://docs.mi
 1. [PowerShell Core (7.3.0)](https://docs.microsoft.com/en-us/powershell/scripting/install/installing-powershell)
 2. [Azure CLI (2.43.0)](https://docs.microsoft.com/en-us/cli/azure/install-azure-cli)
 3. [NodeJS (16.15.0)](https://nodejs.org/en/download/)
+4. [Docker (version 20.10.21)](https://docs.docker.com/get-docker/)
 
 ## Start a PowerShell Console
 
