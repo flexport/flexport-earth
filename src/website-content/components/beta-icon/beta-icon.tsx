@@ -3,6 +3,7 @@ import Styles       from './beta-icon.module.css'
 import Image        from 'next/image'
 
 import IconX        from 'public/images/icon-X.svg'
+import Arrow        from 'public/images/icon-arrow-right-blue.svg'
 
 const BetaIcon = ({className = ''}) => {
     function showPopup() {
@@ -31,9 +32,9 @@ const BetaIcon = ({className = ''}) => {
             </span>
             <div className={`${Styles.betaIconPopup} ${Styles.betaIconPopupInactive}`}>
                 <div className={Styles.betaIconPopupTitleBar}>
-                    <div className={Styles.betaIconPopupTitle}>
+                    <p className={Styles.betaIconPopupTitle}>
                         Beta mode
-                    </div>
+                    </p>
                     <Image
                         className = {Styles.betaIconPopupCloseButton}
                         src       = {IconX}
@@ -42,10 +43,18 @@ const BetaIcon = ({className = ''}) => {
                         onClick   = {hidePopup}
                     />
                 </div>
-                <div className={Styles.betaIconPopupDescription}>
+                <p className={Styles.betaIconPopupDescription}>
                     The site is in beta. Please help us improve it by reporting any bugs or issues you find.
-                </div>
-                <a>Submit feedback &#8594;</a>
+                </p>
+                <a className={Styles.betaIconPopupSubmitFeedbackLink}>
+                    Submit feedback
+                    &nbsp;
+                    <Image
+                        src       = {Arrow}
+                        alt       = 'Right Pointing Blue Arrow'
+                        width     = {12}
+                    />
+                </a>
             </div>
         </span>
     );
