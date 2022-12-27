@@ -10,7 +10,6 @@ import React, { useEffect } from 'react'
 
 
 const Footer = () => {
-    // Update the document title using the browser API
     const openUserFeedbackEmail = () => {
         const currentWebPage    = window.location.href;
         const userAgent         = window.navigator.userAgent;

@@ -1,9 +1,8 @@
-import Styles       from './beta-icon.module.css'
-
 import Image        from 'next/image'
 
-import IconX        from 'public/images/icon-X.svg'
-import Arrow        from 'public/images/icon-arrow-right-blue.svg'
+import Styles               from './beta-icon.module.css'
+import IconX                from 'public/images/icon-X.svg'
+import SubmitFeedbackLink   from 'components/submit-feedback/submit-feedback-link'
 
 const BetaIcon = ({className = '', enablePopup = false}) => {
     function showPopup() {
@@ -61,15 +60,8 @@ const BetaIcon = ({className = '', enablePopup = false}) => {
                 <p className={Styles.betaIconPopupDescription}>
                     The site is in beta. Please help us improve it by reporting any bugs or issues you find.
                 </p>
-                <a className={Styles.betaIconPopupSubmitFeedbackLink}>
-                    Submit feedback
-                    &nbsp;
-                    <Image
-                        src       = {Arrow}
-                        alt       = 'Right Pointing Blue Arrow'
-                        width     = {12}
-                    />
-                </a>
+
+                <SubmitFeedbackLink className={Styles.betaIconPopupSubmitFeedbackLink} />
             </div>
         </span>
     );
