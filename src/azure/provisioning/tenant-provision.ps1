@@ -2,7 +2,7 @@
 $InformationPreference = "Continue"
 
 # Run dependency management
-. ../releasables/dependencies/dependency-manager.ps1
+. ./src/releasables/dependencies/dependency-manager.ps1
 
 $AzureTenantId = (az account show | ConvertFrom-Json).HomeTenantId
 
@@ -13,5 +13,5 @@ $Parameters = '{"azureTenantId":{"value":"' + $AzureTenantId + '"}}'
 az deployment mg create `
     --location              WestUS `
     --management-group-id   $AzureTenantId `
-    --template-file         deployer-role.bicep `
+    --template-file         ./src/azure/provisioning/deployer-role.bicep `
     --parameters            $Parameters
