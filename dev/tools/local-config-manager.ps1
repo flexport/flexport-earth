@@ -93,8 +93,6 @@ Let's do some one-time set up to get you up and running!
     $LocalSettingsJson = Get-Content $LocalSettingsPath
     $LocalSettings     = $LocalSettingsJson | ConvertFrom-Json
 
-    $LocalSettings.FlexportApiClientSecret = $($LocalSettings.FlexportApiClientSecret) | ConvertTo-SecureString
-
     # Ensure all the expected settings are configured before returning.
     Set-ConfigValue `
         -Settings         $LocalSettings `
@@ -157,6 +155,9 @@ See docs here on how to set it up:
 https://github.com/flexport/flexport-earth/tree/main/product/docs/administrative-features/reporting-and-analytics/google-analytics#how-to-provision-a-new-google-analytics-account-for-a-new-earth-environment
 
 "
+
+    $LocalSettings.FlexportApiClientSecret = $($LocalSettings.FlexportApiClientSecret) | ConvertTo-SecureString
+
 
     return $LocalSettings
 }
