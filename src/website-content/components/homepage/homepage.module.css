@@ -59,8 +59,16 @@
     left:                   502px;
   }
 
-  .betaIcon :hover {
-    cursor:                 default;
+  .betaIconPopup {
+    position:               absolute;
+    top:                    18.2%;
+    left:                   29.9%;
+  }
+
+  .betaIconPopupPointer {
+    position:               absolute;
+    top:                    17%;
+    left:                   31.3%;
   }
 
   .vesselsAndContainersSection {

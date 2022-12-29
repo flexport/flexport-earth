@@ -52,7 +52,11 @@ return (
 
             <span className={Styles.wikiSubTitle}>Wiki</span>
 
-            <BetaIcon className={Styles.betaIcon} />
+            <BetaIcon
+                className           = {Styles.betaIcon}
+                popupClassName      = {Styles.betaIconPopup}
+                pointerClassName    = {Styles.betaIconPopupPointer}
+            />
 
             <div className={Styles.tagLine}>
                 Discover the world of supply chain
