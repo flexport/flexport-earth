@@ -95,10 +95,6 @@
   margin-right:       68px;
 }
 
-.footerGlossaryRight {
-
-}
-
 .footerGlossaryTitle {
   font-weight:        700;
   font-size:          16px;
@@ -114,6 +110,10 @@
   color:            #F7F9FD;
 }
 
+.productFeedbackLink {
+  text-decoration:    underline;
+}
+
 .footerInfo {
   padding-top:        8px;
 }
@@ -122,14 +122,6 @@
   font-weight:        700;
   font-size:          16px;
   line-height:        20px;
-}
-
-.productFeedbackLink {
-  text-decoration:    underline;
-}
-
-.productFeedbackLink :hover {
-  cursor:             pointer;
 }
 
 .footerInfoDescription {

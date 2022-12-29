@@ -1,15 +1,14 @@
 import Image        from 'next/image'
 
 import Styles               from './beta-icon.module.css'
+
 import IconX                from 'public/images/icon-X.svg'
+import Arrow                from 'public/images/icon-arrow-right-blue.svg'
+
 import SubmitFeedbackLink   from 'components/submit-feedback/submit-feedback-link'
 
-const BetaIcon = ({className = '', enablePopup = false}) => {
+const BetaIcon = ({className = '', popupClassName = '', pointerClassName = ''}) => {
     function showPopup() {
-        if (window.location.pathname == '/') {
-            return;
-        }
-
         // Show the popup pointer
         var elements        = document.getElementsByClassName(`${Styles.betaIconPopupPointer}`);
         var pointerElement  = elements[0];
@@ -47,8 +46,8 @@ const BetaIcon = ({className = '', enablePopup = false}) => {
                     Beta
                 </span>
             </span>
-            <span className={`${Styles.betaIconPopupPointer} ${Styles.betaIconPopupInactive}`}></span>
-            <div className={`${Styles.betaIconPopup} ${Styles.betaIconPopupInactive}`}>
+            <span className={`${Styles.betaIconPopupPointer} ${Styles.betaIconPopupInactive} ${pointerClassName}`}></span>
+            <div className={`${Styles.betaIconPopup} ${Styles.betaIconPopupInactive} ${popupClassName}`}>
                 <div className={Styles.betaIconPopupTitleBar}>
                     <p className={Styles.betaIconPopupTitle}>
                         Beta mode
@@ -57,7 +56,7 @@ const BetaIcon = ({className = '', enablePopup = false}) => {
                         className = {Styles.betaIconPopupCloseButton}
                         src       = {IconX}
                         alt       = 'Close Button'
-                        width     = {14.44}
+                        width     = {12}
                         onClick   = {hidePopup}
                     />
                 </div>
@@ -65,7 +64,14 @@ const BetaIcon = ({className = '', enablePopup = false}) => {
                     The site is in beta. Please help us improve it by reporting any bugs or issues you find.
                 </p>
 
-                <SubmitFeedbackLink className={Styles.betaIconPopupSubmitFeedbackLink} />
+                <SubmitFeedbackLink className={Styles.betaIconPopupSubmitFeedbackLink}>
+                    Submit feedback
+                    <Image
+                        src     = {Arrow}
+                        alt     = 'Right Pointing Blue Arrow'
+                        width   = {12}
+                    />
+                </SubmitFeedbackLink>
             </div>
         </span>
     );

@@ -1,9 +1,13 @@
-import Image        from 'next/image'
+import { ReactNode } from 'react'
 
-import Styles       from './submit-feedback-link.module.css'
-import Arrow        from 'public/images/icon-arrow-right-blue.svg'
-
-const SubmitFeedbackLink = ({className = ''}) => {
+const SubmitFeedbackLink = (
+    {
+        children,
+        className = ''
+    } : {
+        children:  ReactNode,
+        className: string
+    }) => {
     const openUserFeedbackEmail = () => {
         const currentWebPage    = window.location.href;
         const userAgent         = window.navigator.userAgent;
@@ -28,16 +32,10 @@ Technical Details:
 
     return (
         <a
-            className   = {`${Styles.productFeedbackLink} ${className}`}
+            className   = {`${className}`}
             onClick     = {() => openUserFeedbackEmail()}
         >
-            Submit feedback
-            &nbsp;
-            <Image
-                src     = {Arrow}
-                alt     = 'Right Pointing Blue Arrow'
-                width   = {12}
-            />
+            {children}
         </a>
     );
 }

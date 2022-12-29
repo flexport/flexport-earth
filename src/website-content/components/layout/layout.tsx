@@ -49,7 +49,11 @@ const Layout = ({
               </span>
           </div>
 
-          <BetaIcon className={Styles.betaIcon} />
+          <BetaIcon
+            className         = {Styles.betaIcon}
+            popupClassName    = {Styles.betaIconPopup}
+            pointerClassName  = {Styles.betaIconPopupPointer}
+          />
 
           <div className={Styles.majorLinks}>
             <Link href='/facts/places/ports'>

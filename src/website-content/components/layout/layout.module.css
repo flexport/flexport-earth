@@ -81,10 +81,22 @@
 }
 
 .betaIcon {
-    display:                inline-block;
-    position:               relative;
-    top:                    -18px;
-    left:                   -64px;
+    display:            inline-block;
+    position:           relative;
+    top:                -18px;
+    left:               -64px;
+}
+
+.betaIconPopup {
+    position:           absolute;
+    top:                6.2%;
+    left:               31.5%;
+}
+
+.betaIconPopupPointer {
+    position:           absolute;
+    top:                5.4%;
+    left:               32.6%;
 }
 
 .main {

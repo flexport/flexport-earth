@@ -6,32 +6,11 @@ import Link                 from 'next/link'
 import IconSupplyChainBook  from 'public/images/icon-supply-chain-book.png'
 import FlexportLogo         from 'public/images/flexport-logo.svg'
 
-import React, { useEffect } from 'react'
+import React                from 'react'
 
+import SubmitFeedbackLink   from 'components/submit-feedback/submit-feedback-link'
 
 const Footer = () => {
-    const openUserFeedbackEmail = () => {
-        const currentWebPage    = window.location.href;
-        const userAgent         = window.navigator.userAgent;
-        const screenSize        = window.screen.width + 'x' + window.screen.height;
-
-        const userFeedbackEmailBody = `
-
-
-
-------------------------------------------------------
-Technical Details:
--Current Webpage: ${currentWebPage}
--User Agent: ${userAgent}
--Screen Size: ${screenSize}`;
-
-        const emailTo   = 'earth-feedback@flexport.com';
-        const emailSub  = 'Earth Feedback';
-        const emailBody = userFeedbackEmailBody.replace(/[\r\n]/gm, '%0D%0A');
-
-        window.open("mailto:"+emailTo+'?subject='+emailSub+'&body='+emailBody);
-    }
-
     return (
       <footer className={Styles.footer}>
         <div className={Styles.footerContent}>
@@ -93,7 +72,7 @@ Technical Details:
                             Product feedback
                         </div>
                         <div className={Styles.footerInfoDescription}>
-                            Let us know how we can improve your experience. Tell us about a problem you&apos;d like to report or feedback that you have about your experience by<br/><a className={Styles.productFeedbackLink} onClick={() => openUserFeedbackEmail()} >submitting feedback</a>.
+                            Let us know how we can improve your experience. Tell us about a problem you&apos;d like to report or feedback that you have about your experience by<br/><SubmitFeedbackLink className={Styles.productFeedbackLink}>submitting feedback</SubmitFeedbackLink>.
                         </div>
                     </div>
                 </div>
