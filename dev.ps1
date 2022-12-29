@@ -378,6 +378,9 @@ function Invoke-Push {
     }
 
     # Make sure we're testing with latest from origin/main.
+    Write-Information "Fetching latest changes from the main Flexport Earth GitHub repository to ensure you're up to date before continuing..."
+    Write-Information ""
+
     git fetch origin main
 
     $CurrentBranchName       = git rev-parse --abbrev-ref HEAD
@@ -387,6 +390,10 @@ function Invoke-Push {
     if ($CommitsBehindOriginMain -gt 0) {
         Write-Error "The current branch is behind origin/main by $CommitsBehindOriginMain, please update it before continuing."
     }
+
+    Write-Information ""
+    Write-Information "You're in sync with origin main, excellent! Continuing to test and push your changes..."
+    Write-Information ""
 
     Invoke-BuildAndPublish  -GlobalDevelopmentSettings $GlobalDevelopmentSettings -DeveloperEnvironmentSettings $DeveloperEnvironmentSettings -EarthRuntimeConfig $EarthRuntimeConfig
     Invoke-Deploy           -GlobalDevelopmentSettings $GlobalDevelopmentSettings -DeveloperEnvironmentSettings $DeveloperEnvironmentSettings -EarthRuntimeConfig $EarthRuntimeConfig
