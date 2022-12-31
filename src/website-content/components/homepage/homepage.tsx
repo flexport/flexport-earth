@@ -1,4 +1,3 @@
-import Head     from 'next/head'
 import Image    from 'next/image'
 
 import Styles from './homepage.module.css'
@@ -19,23 +18,17 @@ type CountryInfo = {
   portCount:        number
 }
 
-const Homepage = ({countryPortsToHighlight}: {countryPortsToHighlight: CountryInfo[]}) => {
-
-return (
+const Homepage = (
+    {countryPortsToHighlight}: {countryPortsToHighlight: CountryInfo[]}
+) => {
+    return (
         <div className={Styles.container}>
-        <Head>
-            <title>Flexport Earth</title>
-            <meta name="description" content="Facts of global trade" />
-            <link rel="icon" href="/favicon.ico" />
-        </Head>
 
         <main className={Styles.main}>
             <div className={Styles.mainBackgroundContainer}>
             <Image
                 src={Background}
                 alt="Boat Background"
-                objectFit='cover'
-                layout='fill'
                 className={Styles.mainBackground}
                 priority={true}
             />

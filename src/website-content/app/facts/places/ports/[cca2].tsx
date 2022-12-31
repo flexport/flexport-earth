@@ -1,9 +1,7 @@
-import type { NextPage }  from 'next'
-import { useRouter }      from 'next/router'
-import Link               from 'next/link'
-import Image              from 'next/image'
+import { useRouter }              from 'next/router'
+import Link                       from 'next/link'
+import Image                      from 'next/image'
 
-import Layout                     from 'components/layout/layout'
 import Breadcrumbs                from 'components/breadcrumbs/breadcrumbs'
 
 import { getFlexportApiClient }   from 'lib/data-sources/flexport/api'
@@ -43,7 +41,7 @@ export async function getStaticPaths() {
     }
 }
 
-export async function getStaticProps(params: Cca2Params) {
+async function getCountrInfo(params: Cca2Params) {
     const countriesApi          = getRestCountriesApiClient();
     const flexportApi           = await getFlexportApiClient();
     const portsResponseData     = await flexportApi.places.getSeaportsByCca2(params.params.cca2);
@@ -90,31 +88,30 @@ export async function getStaticProps(params: Cca2Params) {
     }
 
     return {
-      props: {
         cca2:           params.params.cca2,
         countryName:    countryResponseData[0].name.common,
         statesAndPorts: Array.from(administrativeAreaPortsMap.values())
-      },
-      revalidate: 3600
-    }
+    };
 }
 
-const PortsByCountryPage: NextPage<PortsByCountryPageParams> = (params) => {
+export default async function PortsByCountryPage(params: Cca2Params) {
     const router        = useRouter();
 
     if (router.isFallback) {
         return (
-            <Layout>Loading...</Layout>
+            <div>Loading...</div>
         )
     }
 
+    const countryInfo = await getCountrInfo(params);
+
     return (
-      <Layout title='Ports' selectMajorLink='ports'>
+      <div>
         <Breadcrumbs
-          currentPageName={params.countryName}
+          currentPageName={countryInfo.countryName}
         />
 
-        <h1 className={Styles.title}>{params.countryName} ports</h1>
+        <h1 className={Styles.title}>{countryInfo.countryName} ports</h1>
 
         <div className={Styles.pageTabs}>
           <span className={Styles.selectedRegionStatePageTab}>
@@ -123,7 +120,7 @@ const PortsByCountryPage: NextPage<PortsByCountryPageParams> = (params) => {
         </div>
 
         <div>
-        {params.statesAndPorts.map(({ administrativeAreaCode, ports }) => (
+        {countryInfo.statesAndPorts.map(({ administrativeAreaCode, ports }) => (
 
         <div key={administrativeAreaCode} className={Styles.stateSection}>
           <div className={Styles.administrativeAreaTitle}>{administrativeAreaCode}</div>
@@ -142,8 +139,8 @@ const PortsByCountryPage: NextPage<PortsByCountryPageParams> = (params) => {
                       />
                     </div>
                     <Image
-                      src={`https://assets.flexport.com/flags/svg/1/${params.cca2}.svg`}
-                      alt={`${params.cca2} Flag`}
+                      src={`https://assets.flexport.com/flags/svg/1/${countryInfo.cca2}.svg`}
+                      alt={`${countryInfo.cca2} Flag`}
                       height={32}
                       width={32}
                     />
@@ -158,8 +155,6 @@ const PortsByCountryPage: NextPage<PortsByCountryPageParams> = (params) => {
 
         ))}
         </div>
-      </Layout>
+      </div>
     )
 }
-
-export default PortsByCountryPage;

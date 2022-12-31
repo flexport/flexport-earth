@@ -1,15 +1,16 @@
+'use client';
+
 import Breadcrumbs                from '@mui/material/Breadcrumbs';
 import Link                       from '@mui/material/Link';
 import Image                      from 'next/image'
-import { NextRouter, useRouter }  from 'next/router';
+import { usePathname }            from 'next/navigation';
 import React, { useEffect }       from 'react'
-import type { ParsedUrlQuery }    from 'querystring'
 import Styles                     from './breadcrumbs.module.css'
 import RightChevron               from 'public/images/right-chevron.svg'
 
 // NOTE: This code adapted from https://dev.to/dan_starner/building-dynamic-breadcrumbs-in-nextjs-17oa
 
-const _defaultGetTextGenerator          = (param: string, query: ParsedUrlQuery)  => null;
+const _defaultGetTextGenerator          = (param: string)  => null;
 const _defaultGetDefaultTextGenerator   = (path:  string, href:  string)          => path;
 
 // Pulled out the path part breakdown because its
@@ -32,27 +33,24 @@ export default function NextBreadcrumbs({
   doNotLinkList             = [''],
   getTextGenerator          = _defaultGetTextGenerator,
   getDefaultTextGenerator   = _defaultGetDefaultTextGenerator,
-  router                    = ({} as NextRouter), // This parameter is primarily for unit tests to inject a mock.
+  router                    = ({}), // This parameter is primarily for unit tests to inject a mock.
   omitCrumbs                = ['Facts', 'Places', 'Vehicles']
 }) {
-    const nextRouter = useRouter();
 
-    if (router.asPath == undefined) {
-      router = nextRouter;
-    }
+    const pathname = usePathname();
+    const generated = generatePathParts(pathname ?? "");
+    //const searchParams = useSearchParams();
 
     const breadcrumbs = React.useMemo(
-        function generateBreadcrumbs() {
-            const asPathNestedRoutes   = generatePathParts(router.asPath);
-            const pathnameNestedRoutes = generatePathParts(router.pathname);
 
-            const crumblist = asPathNestedRoutes.map((subpath, idx) => {
-                const param = pathnameNestedRoutes[idx].replace("[", "").replace("]", "");
-                const href  = "/" + asPathNestedRoutes.slice(0, idx + 1).join("/");
+
+        function generateBreadcrumbs() {
+            const crumblist = generated.map((subpath, idx) => {
+                const href  = "/" + generated.slice(0, idx + 1).join("/");
 
                 let text = '';
 
-                if (idx == asPathNestedRoutes.length - 1 && currentPageName != '') {
+                if (idx == generated.length - 1 && currentPageName != '') {
                   text = currentPageName;
                 } else {
                   text = getDefaultTextGenerator(titleize(subpath), href);
@@ -60,7 +58,7 @@ export default function NextBreadcrumbs({
 
                 return {
                     href,
-                    textGenerator:  getTextGenerator(param, router.query),
+                    textGenerator:  getTextGenerator(currentPageName),
                     text:           text
                 };
             });
@@ -72,9 +70,7 @@ export default function NextBreadcrumbs({
             );
         },
         [
-          router.asPath,
-          router.pathname,
-          router.query,
+          generated,
           currentPageName,
           getTextGenerator,
           getDefaultTextGenerator,

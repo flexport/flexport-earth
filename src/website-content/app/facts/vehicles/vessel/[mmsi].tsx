@@ -1,12 +1,9 @@
-import type { NextPage }    from 'next'
 import Image                from 'next/image'
 import { useRouter }        from 'next/router'
 
-import Layout                       from 'components/layout/layout'
 import Breadcrumbs                  from 'components/breadcrumbs/breadcrumbs'
 
 import { getFlexportApiClient }     from 'lib/data-sources/flexport/api'
-import Vessel                       from 'lib/data-sources/flexport/facts/vehicles/vessels/vessel'
 
 import Styles                       from './mmsi.module.css'
 import VesselDetailHeaderBackground from 'public/images/vessel-detail-header-background.png'
@@ -17,10 +14,6 @@ type MMSIParams = {
     }
 };
 
-type VesselPageParams = {
-    vessel: Vessel,
-}
-
 export async function getStaticPaths() {
     const paths = [{params: {mmsi: "353136000"}}];
 
@@ -30,32 +23,29 @@ export async function getStaticPaths() {
     }
 }
 
-export async function getStaticProps(params: MMSIParams) {
+async function getVessel(params: MMSIParams) {
     const flexportApi   = await getFlexportApiClient();
     const responseData  = await flexportApi.vehicles.getVesselByMmsi(params.params.mmsi);
     const vessel        = responseData.vessels[0];
 
-    return {
-      props: {
-        vessel: vessel
-      },
-      revalidate: 3600
-    }
+    return vessel;
 }
 
-const VesselPage: NextPage<VesselPageParams> = (params) => {
+export default async function VesselPage(params: MMSIParams) {
     const router = useRouter();
 
     if (router.isFallback) {
         return (
-            <Layout>Loading...</Layout>
+            <div>Loading...</div>
         )
     }
 
+    const vessel = await getVessel(params);
+
     return (
-        <Layout title={params.vessel.name} selectMajorLink='vessels'>
+        <div>
             <Breadcrumbs
-                currentPageName={params.vessel.name}
+                currentPageName={vessel.name}
             />
 
             <div className={Styles.vesselDetailHeader}>
@@ -69,13 +59,13 @@ const VesselPage: NextPage<VesselPageParams> = (params) => {
                 </div>
                 <div className={Styles.vesselDetailTitle}>
                     <Image
-                        src={`https://assets.flexport.com/flags/svg/1/${params.vessel.registration_country_code}.svg`}
-                        alt={`${params.vessel.registration_country_code} Flag`}
+                        src={`https://assets.flexport.com/flags/svg/1/${vessel.registration_country_code}.svg`}
+                        alt={`${vessel.registration_country_code} Flag`}
                         height={32}
                         width={32}
                     />
 
-                    <h1>{params.vessel.name}</h1>
+                    <h1>{vessel.name}</h1>
                 </div>
             </div>
 
@@ -92,7 +82,7 @@ const VesselPage: NextPage<VesselPageParams> = (params) => {
                             Vessel name
                         </div>
                         <div className={Styles.vesselDetailFieldValue}>
-                            {params.vessel.name}
+                            {vessel.name}
                         </div>
                     </div>
 
@@ -101,7 +91,7 @@ const VesselPage: NextPage<VesselPageParams> = (params) => {
                             Flag state
                         </span>
                         <span className={Styles.vesselDetailFieldValue}>
-                            {params.vessel.registration_country_code}
+                            {vessel.registration_country_code}
                         </span>
                     </div>
 
@@ -110,7 +100,7 @@ const VesselPage: NextPage<VesselPageParams> = (params) => {
                             Carrier
                         </span>
                         <span className={Styles.vesselDetailFieldValue}>
-                            {params.vessel.carrier.carrier_name}
+                            {vessel.carrier.carrier_name}
                         </span>
                     </div>
 
@@ -119,7 +109,7 @@ const VesselPage: NextPage<VesselPageParams> = (params) => {
                             IMO number
                         </span>
                         <span className={Styles.vesselDetailFieldValue}>
-                            {params.vessel.imo}
+                            {vessel.imo}
                         </span>
                     </div>
 
@@ -128,7 +118,7 @@ const VesselPage: NextPage<VesselPageParams> = (params) => {
                             MMSI number
                         </span>
                         <span className={Styles.vesselDetailFieldValue}>
-                            {params.vessel.mmsi}
+                            {vessel.mmsi}
                         </span>
                     </div>
                 </div>
@@ -151,8 +141,6 @@ const VesselPage: NextPage<VesselPageParams> = (params) => {
                     </div>
                 </div>
             </div>
-        </Layout>
+        </div>
     )
 }
-
-export default VesselPage;

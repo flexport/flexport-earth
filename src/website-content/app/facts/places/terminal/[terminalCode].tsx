@@ -1,8 +1,6 @@
-import type { NextPage }    from 'next'
 import { useRouter }        from 'next/router'
 import Image                from 'next/image'
 
-import Layout                   from 'components/layout/layout'
 import Breadcrumbs              from 'components/breadcrumbs/breadcrumbs'
 
 import { getFlexportApiClient } from 'lib/data-sources/flexport/api'
@@ -52,7 +50,7 @@ export async function getStaticPaths() {
     }
 }
 
-export async function getStaticProps(params: TerminalCodeParams) {
+async function getTerminal(params: TerminalCodeParams) {
     const flexportApi           = await getFlexportApiClient();
     const responseData          = await flexportApi.places.getTerminalByTerminalCode(params.params.terminalCode);
     const flexportApiTerminal   = responseData.terminals[0];
@@ -75,27 +73,24 @@ export async function getStaticProps(params: TerminalCodeParams) {
 
     const cachePageDurationSeconds = 86400;
 
-    return {
-      props: {
-        ...terminalDetailPageViewModel
-      },
-      revalidate: cachePageDurationSeconds
-    }
+    return terminalDetailPageViewModel;
 }
 
-const PortDetailPage: NextPage<TerminalDetailPageViewModel> = (port) => {
+export default async function PortDetailPage(params: TerminalCodeParams) {
     const router = useRouter();
 
     if (router.isFallback) {
         return (
-            <Layout>Loading...</Layout>
+            <div>Loading...</div>
         )
     }
 
+    const terminal = await getTerminal(params);
+
     return (
-        <Layout title={port.general.terminalName} selectMajorLink='terminals'>
+        <div>
             <Breadcrumbs
-                currentPageName={port.general.terminalName}
+                currentPageName={terminal.general.terminalName}
                 doNotLinkList={['Terminal']}
             />
 
@@ -110,13 +105,13 @@ const PortDetailPage: NextPage<TerminalDetailPageViewModel> = (port) => {
                 </div>
                 <div className={Styles.portDetailTitle}>
                     <Image
-                        src={`https://assets.flexport.com/flags/svg/1/${port.general.country}.svg`}
-                        alt={`${port.general.country} Flag`}
+                        src={`https://assets.flexport.com/flags/svg/1/${terminal.general.country}.svg`}
+                        alt={`${terminal.general.country} Flag`}
                         height={32}
                         width={32}
                     />
 
-                    <h1>{port.general.terminalName} terminal</h1>
+                    <h1>{terminal.general.terminalName} terminal</h1>
                 </div>
             </div>
 
@@ -133,7 +128,7 @@ const PortDetailPage: NextPage<TerminalDetailPageViewModel> = (port) => {
                             Port name
                         </div>
                         <div className={Styles.portDetailFieldValue}>
-                            {port.general.terminalName}
+                            {terminal.general.terminalName}
                         </div>
                     </div>
 
@@ -142,7 +137,7 @@ const PortDetailPage: NextPage<TerminalDetailPageViewModel> = (port) => {
                             Country
                         </span>
                         <span className={Styles.portDetailFieldValue}>
-                            {port.general.country}
+                            {terminal.general.country}
                         </span>
                     </div>
 
@@ -151,7 +146,7 @@ const PortDetailPage: NextPage<TerminalDetailPageViewModel> = (port) => {
                             Region/City
                         </span>
                         <span className={Styles.portDetailFieldValue}>
-                            {port.general.regionCity}
+                            {terminal.general.regionCity}
                         </span>
                     </div>
 
@@ -160,7 +155,7 @@ const PortDetailPage: NextPage<TerminalDetailPageViewModel> = (port) => {
                             Address
                         </span>
                         <span className={Styles.portDetailFieldValue}>
-                            {port.general.address }
+                            {terminal.general.address }
                         </span>
                     </div>
 
@@ -169,7 +164,7 @@ const PortDetailPage: NextPage<TerminalDetailPageViewModel> = (port) => {
                             Firms Code
                         </span>
                         <span className={Styles.portDetailFieldValue}>
-                            {port.general.firmsCode}
+                            {terminal.general.firmsCode}
                         </span>
                     </div>
 
@@ -178,7 +173,7 @@ const PortDetailPage: NextPage<TerminalDetailPageViewModel> = (port) => {
                             UNLoCode
                         </span>
                         <span className={Styles.portDetailFieldValue}>
-                            {port.general.unlocode}
+                            {terminal.general.unlocode}
                         </span>
                     </div>
 
@@ -187,7 +182,7 @@ const PortDetailPage: NextPage<TerminalDetailPageViewModel> = (port) => {
                             Terminal code
                         </span>
                         <span className={Styles.portDetailFieldValue}>
-                            {port.general.terminalCode}
+                            {terminal.general.terminalCode}
                         </span>
                     </div>
                 </div>
@@ -203,7 +198,7 @@ const PortDetailPage: NextPage<TerminalDetailPageViewModel> = (port) => {
                                 Latitude
                             </span>
                             <span className={Styles.portDetailFieldValue}>
-                                {port.location.latitude}
+                                {terminal.location.latitude}
                             </span>
                         </div>
 
@@ -212,7 +207,7 @@ const PortDetailPage: NextPage<TerminalDetailPageViewModel> = (port) => {
                                 Longitude
                             </span>
                             <span className={Styles.portDetailFieldValue}>
-                                {port.location.longitude}
+                                {terminal.location.longitude}
                             </span>
                         </div>
 
@@ -221,7 +216,7 @@ const PortDetailPage: NextPage<TerminalDetailPageViewModel> = (port) => {
                                 <a
                                     target='_blank'
                                     rel='noreferrer'
-                                    href={`https://www.google.com/maps/search/?api=1&query=${port.location.latitude},${port.location.longitude}`}>
+                                    href={`https://www.google.com/maps/search/?api=1&query=${terminal.location.latitude},${terminal.location.longitude}`}>
                                         View on map
                                 </a>
                             </span>
@@ -245,8 +240,6 @@ const PortDetailPage: NextPage<TerminalDetailPageViewModel> = (port) => {
                     </div>
                 </div>
             </div>
-        </Layout>
+        </div>
     )
 }
-
-export default PortDetailPage;

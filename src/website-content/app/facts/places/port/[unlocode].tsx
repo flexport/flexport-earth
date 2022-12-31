@@ -1,9 +1,7 @@
-import type { NextPage }    from 'next'
-import Image                from 'next/image'
-import Link                 from 'next/link';
-import { useRouter }        from 'next/router'
+import Image                    from 'next/image'
+import Link                     from 'next/link';
+import { useRouter }            from 'next/router'
 
-import Layout                   from 'components/layout/layout'
 import Breadcrumbs              from 'components/breadcrumbs/breadcrumbs'
 
 import { getFlexportApiClient } from 'lib/data-sources/flexport/api'
@@ -60,7 +58,7 @@ export async function getStaticPaths() {
     }
 }
 
-export async function getStaticProps(params: UNLoCodeParams) {
+async function getPort(params: UNLoCodeParams) {
     const flexportApi       = await getFlexportApiClient();
 
     const responseDataPort      = await flexportApi.places.getPortByUnlocode(params.params.unlocode);
@@ -92,25 +90,22 @@ export async function getStaticProps(params: UNLoCodeParams) {
 
     const cachePageDurationSeconds = 86400;
 
-    return {
-      props: {
-        ...portDetailPageViewModel
-      },
-      revalidate: cachePageDurationSeconds
-    }
+    return portDetailPageViewModel;
 }
 
-const PortDetailPage: NextPage<PortDetailPageViewModel> = (port) => {
+export default async function PortDetailPage(params: UNLoCodeParams) {
     const router = useRouter();
 
     if (router.isFallback) {
         return (
-            <Layout>Loading...</Layout>
+            <div>Loading...</div>
         )
     }
 
+    const port = await getPort(params);
+
     return (
-        <Layout title={port.general.portName} selectMajorLink='ports'>
+        <div>
             <Breadcrumbs
                 currentPageName={port.general.portName}
             />
@@ -286,8 +281,6 @@ const PortDetailPage: NextPage<PortDetailPageViewModel> = (port) => {
                     </div>
                 </div>
             </div>
-        </Layout>
+        </div>
     )
 }
-
-export default PortDetailPage;

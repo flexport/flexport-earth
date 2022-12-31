@@ -1,6 +1,3 @@
-import React, { ReactNode } from 'react';
-
-import Head                 from 'next/head';
 import Image                from 'next/image'
 import Link                 from 'next/link';
 
@@ -12,24 +9,17 @@ import BetaIcon             from 'components/beta-icon/beta-icon';
 import FlexportLogo         from 'public/images/flexport-logo.svg'
 
 type Props = {
-  children:         ReactNode;
+  children:         React.ReactNode;
   title?:           string;
   selectMajorLink?: string;
 };
 
 const Layout = ({
     children,
-    title,
     selectMajorLink
   }: Props) => (
     <>
     <div className={Styles.container}>
-      <Head>
-        <title>Flexport Earth: {title}</title>
-        <meta name="description" content="Facts of global trade" />
-        <link rel="icon" href="/favicon.ico" />
-      </Head>
-
       <header className={Styles.pageHeader}>
         <div className={Styles.pageHeaderContent}>
           <div className={Styles.pageWikiTitle}>
