@@ -1,6 +1,5 @@
 import Image                    from 'next/image'
 import Link                     from 'next/link';
-import { useRouter }            from 'next/router'
 
 import Breadcrumbs              from 'components/breadcrumbs/breadcrumbs'
 
@@ -94,14 +93,6 @@ async function getPort(params: UNLoCodeParams) {
 }
 
 export default async function PortDetailPage(params: UNLoCodeParams) {
-    const router = useRouter();
-
-    if (router.isFallback) {
-        return (
-            <div>Loading...</div>
-        )
-    }
-
     const port = await getPort(params);
 
     return (
