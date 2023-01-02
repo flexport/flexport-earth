@@ -17,11 +17,11 @@ export async function generateStaticParams() {
     return paths;
 }
 
-async function getCountryInfo(params: CountryCodeParams) {
+async function getCountryInfo(cca2: string) {
     const flexportApi     = await getFlexportApiClient();
-    const countries       = await countriesApi.countries.getCountryByCountryCode(params.params.cca2);
+    const countries       = await countriesApi.countries.getCountryByCountryCode(cca2);
     const country         = countries[0];
-    const countrySeaports = await flexportApi.places.getSeaportsByCca2(params.params.cca2);
+    const countrySeaports = await flexportApi.places.getSeaportsByCca2(cca2);
 
     return {
         country:      country,
@@ -30,7 +30,7 @@ async function getCountryInfo(params: CountryCodeParams) {
 }
 
 export default async function CountryPage(params: CountryCodeParams) {
-    const countryInfo = await getCountryInfo(params);
+    const countryInfo = await getCountryInfo(params.params.cca2);
 
     return (
         <div>
