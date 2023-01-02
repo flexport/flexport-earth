@@ -34,7 +34,7 @@ export default async function CountryPage(params: CountryCodeParams) {
 
     return (
         <div>
-            <Breadcrumbs />
+            <Breadcrumbs currentPageName={countryInfo.country.name.common} />
 
             <h1>{countryInfo.country.name.common}</h1>
 
