@@ -29,26 +29,6 @@ type TerminalDetailPageViewModel = {
     }
 }
 
-export async function getStaticPaths() {
-
-    // getStaticPaths executes at BUILD TIME.
-
-    // Instead of getting and building all ports at BUILD TIME (which would take a long time)
-    // we're just building one here for sake of verifying the functionality works at BUILD TIME.
-    // All the other ports will be generated at RUN TIME on-demand.
-
-    // USPCV-CTT == CT2 Terminal.
-    // Nothing special about this terminal.
-    const testTerminalCode = 'USPCV-CTT';
-
-    const paths = [{params: {terminalCode: testTerminalCode}}];
-
-    return {
-        paths,
-        fallback: true
-    }
-}
-
 async function getTerminal(params: TerminalCodeParams) {
     const flexportApi           = await getFlexportApiClient();
     const responseData          = await flexportApi.places.getTerminalByTerminalCode(params.params.terminalCode);
