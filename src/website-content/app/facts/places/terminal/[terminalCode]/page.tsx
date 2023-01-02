@@ -1,5 +1,4 @@
-import { useRouter }        from 'next/router'
-import Image                from 'next/image'
+import Image                    from 'next/image'
 
 import Breadcrumbs              from 'components/breadcrumbs/breadcrumbs'
 
@@ -71,20 +70,10 @@ async function getTerminal(params: TerminalCodeParams) {
         }
     }
 
-    const cachePageDurationSeconds = 86400;
-
     return terminalDetailPageViewModel;
 }
 
 export default async function PortDetailPage(params: TerminalCodeParams) {
-    const router = useRouter();
-
-    if (router.isFallback) {
-        return (
-            <div>Loading...</div>
-        )
-    }
-
     const terminal = await getTerminal(params);
 
     return (
