@@ -1,4 +1,5 @@
-import { useRouter }              from 'next/router'
+import { Suspense }               from 'react'
+
 import Link                       from 'next/link'
 import Image                      from 'next/image'
 
@@ -21,31 +22,16 @@ type AdministrativeAreaPorts = {
   ports:                  AdministrativeAreaPortListItem[]
 }
 
-type PortsByCountryPageParams = {
-    cca2:           string,
-    countryName:    string,
-    statesAndPorts: AdministrativeAreaPorts[]
-}
-
 type AdministrativeAreaPortListItem = {
   portName: string,
   unlocode: string
 }
 
-export async function getStaticPaths() {
-    const paths = [{params: {cca2: 'US'}}];
-
-    return {
-        paths,
-        fallback: true
-    }
-}
-
-async function getCountrInfo(params: Cca2Params) {
+async function getCountryInfo(cca2: string) {
     const countriesApi          = getRestCountriesApiClient();
     const flexportApi           = await getFlexportApiClient();
-    const portsResponseData     = await flexportApi.places.getSeaportsByCca2(params.params.cca2);
-    const countryResponseData   = await countriesApi.countries.getCountryByCountryCode(params.params.cca2);
+    const portsResponseData     = await flexportApi.places.getSeaportsByCca2(cca2);
+    const countryResponseData   = await countriesApi.countries.getCountryByCountryCode(cca2);
 
     // Sort raw data by administrative area, port name:
     const sortedPorts = portsResponseData.ports.sort(
@@ -88,73 +74,64 @@ async function getCountrInfo(params: Cca2Params) {
     }
 
     return {
-        cca2:           params.params.cca2,
+        cca2:           cca2,
         countryName:    countryResponseData[0].name.common,
         statesAndPorts: Array.from(administrativeAreaPortsMap.values())
     };
 }
 
 export default async function PortsByCountryPage(params: Cca2Params) {
-    const router        = useRouter();
-
-    if (router.isFallback) {
-        return (
-            <div>Loading...</div>
-        )
-    }
-
-    const countryInfo = await getCountrInfo(params);
+    const countryInfo = await getCountryInfo(params.params.cca2);
 
     return (
-      <div>
-        <Breadcrumbs
-          currentPageName={countryInfo.countryName}
-        />
-
-        <h1 className={Styles.title}>{countryInfo.countryName} ports</h1>
-
-        <div className={Styles.pageTabs}>
-          <span className={Styles.selectedRegionStatePageTab}>
-            By Region/State
-          </span>
-        </div>
-
         <div>
-        {countryInfo.statesAndPorts.map(({ administrativeAreaCode, ports }) => (
+          <Breadcrumbs
+            currentPageName={countryInfo.countryName}
+          />
 
-        <div key={administrativeAreaCode} className={Styles.stateSection}>
-          <div className={Styles.administrativeAreaTitle}>{administrativeAreaCode}</div>
+          <h1 className={Styles.title}>{countryInfo.countryName} ports</h1>
 
-          <ol className={`${Styles.countriesList}`}>
-            {ports.map(({ portName, unlocode }) => (
-                <Link key={unlocode} prefetch={false} href={`/facts/places/port/${unlocode}`}>
+          <div className={Styles.pageTabs}>
+            <span className={Styles.selectedRegionStatePageTab}>
+              By Region/State
+            </span>
+          </div>
 
-                  <li id={`port-${unlocode}`} className={Styles.port}>
-                    <div className={Styles.portBackground}>
-                      <Image
-                        src={SatelitePort}
-                        alt="Satelite Port Background"
-                        objectFit='cover'
-                        layout='fill'
-                      />
-                    </div>
-                    <Image
-                      src={`https://assets.flexport.com/flags/svg/1/${countryInfo.cca2}.svg`}
-                      alt={`${countryInfo.cca2} Flag`}
-                      height={32}
-                      width={32}
-                    />
-                    <div>
-                      {portName} port
-                    </div>
-                  </li>
-                </Link>
+          <div>
+            {countryInfo.statesAndPorts.map(({ administrativeAreaCode, ports }) => (
+
+            <div key={administrativeAreaCode} className={Styles.stateSection}>
+              <div className={Styles.administrativeAreaTitle}>{administrativeAreaCode}</div>
+
+              <ol className={`${Styles.countriesList}`}>
+                {ports.map(({ portName, unlocode }) => (
+                    <Link key={unlocode} prefetch={false} href={`/facts/places/port/${unlocode}`}>
+
+                      <li id={`port-${unlocode}`} className={Styles.port}>
+                        <div className={Styles.portBackground}>
+                          <Image
+                            src={SatelitePort}
+                            alt="Satelite Port Background"
+                            objectFit='cover'
+                            layout='fill'
+                          />
+                        </div>
+                        <Image
+                          src={`https://assets.flexport.com/flags/svg/1/${countryInfo.cca2}.svg`}
+                          alt={`${countryInfo.cca2} Flag`}
+                          height={32}
+                          width={32}
+                        />
+                        <div>
+                          {portName} port
+                        </div>
+                      </li>
+                    </Link>
+                ))}
+              </ol>
+            </div>
             ))}
-          </ol>
+          </div>
         </div>
-
-        ))}
-        </div>
-      </div>
     )
 }

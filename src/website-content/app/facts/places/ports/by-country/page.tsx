@@ -15,7 +15,7 @@ type CountryInfo = {
   portCount:        number
 }
 
-export async function getPorts() {
+async function getPorts() {
   const countriesApi = getRestCountriesApiClient();
   const countries    = await countriesApi.countries.getAllCountriesAsMap();
   const flexportApi  = await getFlexportApiClient();
