@@ -46,10 +46,6 @@ export default function NextBreadcrumbs({
       urlPath = pathname ?? '';
     }
 
-    console.log('');
-    console.log(`urlPath: ${urlPath}`)
-    console.log('');
-
     const pathParts = getPathParts(urlPath);
 
     const breadcrumbs = React.useMemo(
