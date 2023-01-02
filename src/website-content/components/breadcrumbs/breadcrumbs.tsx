@@ -13,9 +13,6 @@ import RightChevron               from 'public/images/right-chevron.svg'
 
 // NOTE: This code adapted from https://dev.to/dan_starner/building-dynamic-breadcrumbs-in-nextjs-17oa
 
-const _defaultGetTextGenerator          = (param: string)  => null;
-const _defaultGetDefaultTextGenerator   = (path:  string, href:  string)  => path;
-
 // Pulled out the path part breakdown because its
 // going to be used by both `asPath` and `pathname`
 const getPathParts = (pathStr: string) => {
@@ -35,8 +32,6 @@ export default function NextBreadcrumbs({
   breadcrumbsComponentCssId = 'breadcrumbs',
   currentPageName           = '',
   doNotLinkList             = [''],
-  getTextGenerator          = _defaultGetTextGenerator,
-  getDefaultTextGenerator   = _defaultGetDefaultTextGenerator,
   omitCrumbs                = ['Facts', 'Places', 'Vehicles']
 }) {
     // Get the current path from NextJS.
@@ -69,16 +64,12 @@ export default function NextBreadcrumbs({
                 if (idx == pathParts.length - 1 && currentPageName != '') {
                   crumbLinkText = currentPageName;
                 } else {
-                  crumbLinkText = getDefaultTextGenerator(
-                    titleize(subpath),
-                    crumbHref
-                  );
+                  crumbLinkText = titleize(subpath);
                 }
 
                 return {
-                  href:           crumbHref,
-                  textGenerator:  getTextGenerator(currentPageName),
-                  text:           crumbLinkText
+                  href: crumbHref,
+                  text: crumbLinkText
                 };
             });
 
@@ -91,8 +82,6 @@ export default function NextBreadcrumbs({
         [
           pathParts,
           currentPageName,
-          getTextGenerator,
-          getDefaultTextGenerator,
           omitCrumbs
         ]
     );
