@@ -1,5 +1,4 @@
-import Image                from 'next/image'
-import { useRouter }        from 'next/router'
+import Image                        from 'next/image'
 
 import Breadcrumbs                  from 'components/breadcrumbs/breadcrumbs'
 
@@ -14,15 +13,6 @@ type MMSIParams = {
     }
 };
 
-export async function getStaticPaths() {
-    const paths = [{params: {mmsi: "353136000"}}];
-
-    return {
-        paths,
-        fallback: true
-    }
-}
-
 async function getVessel(params: MMSIParams) {
     const flexportApi   = await getFlexportApiClient();
     const responseData  = await flexportApi.vehicles.getVesselByMmsi(params.params.mmsi);
@@ -32,14 +22,6 @@ async function getVessel(params: MMSIParams) {
 }
 
 export default async function VesselPage(params: MMSIParams) {
-    const router = useRouter();
-
-    if (router.isFallback) {
-        return (
-            <div>Loading...</div>
-        )
-    }
-
     const vessel = await getVessel(params);
 
     return (
