@@ -22,11 +22,7 @@ param (
 
     [Parameter(Mandatory = $false)]
     [String]
-    $AzureContainerRegistryLoginServer,
-
-    [Parameter(Mandatory = $false)]
-    [String]
-    $BuildEnvironmentName
+    $AzureContainerRegistryLoginServer
 )
 
 Set-StrictMode –Version latest
@@ -151,11 +147,7 @@ function Invoke-BuildWorkflow {
 
         [Parameter(Mandatory = $false)]
         [String]
-        $AzureContainerRegistryLoginServer,
-
-        [Parameter(Mandatory = $false)]
-        [String]
-        $BuildEnvironmentName
+        $AzureContainerRegistryLoginServer
     )
 
     # Validate all the PowerShell scripts
@@ -199,8 +191,7 @@ function Invoke-BuildWorkflow {
         ./build-e2e-tests.ps1 `
             -BuildNumber                        $BuildNumber `
             -Publish                            $Publish `
-            -AzureContainerRegistryLoginServer  $AzureContainerRegistryLoginServer `
-            -BuildEnvironmentName               $BuildEnvironmentName
+            -AzureContainerRegistryLoginServer  $AzureContainerRegistryLoginServer
     }
     finally {
         Pop-Location
@@ -220,8 +211,7 @@ Invoke-BuildWorkflow `
     -FlexportApiClientId                $FlexportApiClientId `
     -FlexportApiClientSecret            $FlexportApiClientSecret `
     -Publish                            $Publish `
-    -AzureContainerRegistryLoginServer  $AzureContainerRegistryLoginServer `
-    -BuildEnvironmentName               $BuildEnvironmentName
+    -AzureContainerRegistryLoginServer  $AzureContainerRegistryLoginServer
 
 $Duration = New-TimeSpan `
     -Start $ScriptStartTime `
