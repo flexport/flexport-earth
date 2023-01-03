@@ -1,5 +1,6 @@
 import React from 'react';
 
+import './globals.css'
 import 'public/build-number.css'
 
 export default function RootLayout({ children }: {
