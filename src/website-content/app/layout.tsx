@@ -1,3 +1,7 @@
+import React from 'react';
+
+import 'public/build-number.css'
+
 export default function RootLayout({ children }: {
     children: React.ReactNode;
   }) {
