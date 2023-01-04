@@ -45,11 +45,6 @@ const GTAmerica = localFont({
       path:   './fonts/GT-America-Extended-Bold.woff',
       weight: '800',
       style:  'normal'
-    },
-    {
-      path:   './fonts/GT-America-Extended-Bold.eot',
-      weight: '800',
-      style:  'normal'
     }
   ]
 });
