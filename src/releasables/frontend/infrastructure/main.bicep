@@ -19,6 +19,8 @@ param websiteName string = '${environmentShortName}-earth-website'
 
 param customDomainName string
 
+param logAnalyticsWorkspaceId string
+
 module actionGroup 'action-group.bicep' = {
   name:   '${environmentShortName}-${resourceGroup().name}-action-group'
   params: {
@@ -34,10 +36,11 @@ module actionGroup 'action-group.bicep' = {
 }
 
 module website 'website.bicep' = {
-  name: 'earth-website'
+  name:   'earth-website'
   params: {
-    location: location
-    websiteName: websiteName
+    location:                 location
+    websiteName:              websiteName
+    logAnalyticsWorkspaceId:  logAnalyticsWorkspaceId
   }
 }
 
