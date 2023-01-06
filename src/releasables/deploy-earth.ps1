@@ -71,6 +71,15 @@ Write-Information ""
 #Update-SubscriptionBudget
 
 try {
+    Push-Location "./shared-infrastructure/log-analytics"
+
+    ./deploy-log-analytics.ps1 -EnvironmentName $EnvironmentName
+}
+finally {
+    Pop-Location
+}
+
+try {
     Push-Location "./shared-infrastructure/containers"
 
     ./deploy-container-infrastructure.ps1 -EnvironmentName $EnvironmentName
