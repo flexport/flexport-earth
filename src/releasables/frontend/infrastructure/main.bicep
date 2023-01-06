@@ -19,12 +19,35 @@ param websiteName string = '${environmentShortName}-earth-website'
 
 param customDomainName string
 
+module actionGroup 'action-group.bicep' = {
+  name:   '${environmentShortName}-${resourceGroup().name}-action-group'
+  params: {
+            actionGroupName:      '${environmentShortName}-${resourceGroup().name}-action-group'
+            actionGroupShortName: 'envops'
+            emailReceivers:       [
+                                    {
+                                      name:         'Matthew Thomas'
+                                      emailAddress: 'matthewthomas@flexport.com'
+                                    }
+                                  ]
+          }
+}
+
 module website 'website.bicep' = {
   name: 'earth-website'
   params: {
     location: location
     websiteName: websiteName
   }
+}
+
+module websiteHttp404Alert 'website-404-alert.bicep' = {
+  name:   'earth-website-http-404-alert'
+  params: {
+            alertRuleName:         '${environmentShortName} - Earth Website HTTP 404 Alert'
+            actionGroupResourceId: actionGroup.outputs.actionGroupId
+            webAppResourceId:      website.outputs.resourceId
+          }
 }
 
 module frontDoor 'cdn-front-door.bicep' = {
@@ -38,6 +61,6 @@ module frontDoor 'cdn-front-door.bicep' = {
   }
 }
 
-output websiteName string = websiteName
-output frontDoorEndpointName string = frontDoorEndpointName
-output frontDoorEndpointHostName string = frontDoor.outputs.frontDoorEndpointHostName
+output websiteName                string = websiteName
+output frontDoorEndpointName      string = frontDoorEndpointName
+output frontDoorEndpointHostName  string = frontDoor.outputs.frontDoorEndpointHostName

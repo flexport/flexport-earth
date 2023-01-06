@@ -31,4 +31,5 @@ resource nextJSwebsite 'Microsoft.Web/sites@2021-03-01' = {
   }
 }
 
-output hostname string = nextJSwebsite.properties.hostNames[0]
+output hostname   string = nextJSwebsite.properties.hostNames[0]
+output resourceId string = nextJSwebsite.id
