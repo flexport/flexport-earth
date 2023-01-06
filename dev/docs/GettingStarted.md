@@ -7,8 +7,13 @@ All instructions below are tested to work for:
 # Getting started for development
 
 1. Clone this repo locally.
+    `git clone https://github.com/flexport/flexport-earth.git`
+
 2. Fork this repo.
-3. Update your remotes:
+    in github click the fork icon in the upper right.
+3. cd flexport-earth
+
+4. Update your remotes replacing <your-username-here> with your github username:
 
     `git remote set-url --push origin https://github.com/<your-username-here>/flexport-earth.git`
 
@@ -20,7 +25,17 @@ Your commits must be be [verified](https://docs.github.com/en/authentication/man
 
 If running on Windows, install the [Windows Subsystem for Linux](https://docs.microsoft.com/en-us/windows/wsl/install) first.
 
-1. [PowerShell Core (7.3.0)](https://docs.microsoft.com/en-us/powershell/scripting/install/installing-powershell)
+1. [PowerShell Core (7.3.1)](https://docs.microsoft.com/en-us/powershell/scripting/install/installing-powershell)
+
+    If you get the following message "<installer-name> can’t be opened because Apple cannot check it for malicious software." please do the following:
+        Open System Settings
+        in the left hand nav select "Privacy & Security"
+        in the right hand section scroll down to the Security section. there will be an entry for <installer-name> was blocked from use because it is not from an identified developer.
+        click open Anyway
+        enter login credentials. 
+        click Open. installer should now run
+
+
 2. [Azure CLI (2.43.0)](https://docs.microsoft.com/en-us/cli/azure/install-azure-cli)
 3. [NodeJS (16.15.0)](https://nodejs.org/en/download/)
 4. [Docker (version 20.10.21)](https://docs.docker.com/get-docker/)
