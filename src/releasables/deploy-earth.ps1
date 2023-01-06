@@ -70,10 +70,12 @@ Write-Information ""
 
 #Update-SubscriptionBudget
 
+$LogAnalyticsWorkspaceId = $null
+
 try {
     Push-Location "./shared-infrastructure/log-analytics"
 
-    ./deploy-log-analytics.ps1 -EnvironmentName $EnvironmentName
+    $LogAnalyticsWorkspaceId = ./deploy-log-analytics.ps1 -EnvironmentName $EnvironmentName
 }
 finally {
     Pop-Location
@@ -99,7 +101,8 @@ try {
         -EarthWebsiteCustomDomainName   $EarthWebsiteCustomDomainName `
         -FlexportApiClientId            $FlexportApiClientId `
         -FlexportApiClientSecret        $FlexportApiClientSecret `
-        -GoogleAnalyticsMeasurementId   $GoogleAnalyticsMeasurementId
+        -GoogleAnalyticsMeasurementId   $GoogleAnalyticsMeasurementId `
+        -LogAnalyticsWorkspaceId        $LogAnalyticsWorkspaceId
 }
 finally {
     Pop-Location

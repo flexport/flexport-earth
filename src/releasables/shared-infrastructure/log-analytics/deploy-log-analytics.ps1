@@ -72,7 +72,12 @@ function Set-LogAnalyticsResources {
 
             $Response = $ResponseJson | ConvertFrom-Json
 
+            $LogAnalyticsWorkspaceId = $Response.properties.outputs.logAnalyticsWorkspaceId.value
+
             Write-Information "Provisioning Log Analytics infra resources completed!"
+            Write-Information "logAnalyticsWorkspaceId: $logAnalyticsWorkspaceId"
+
+            return $LogAnalyticsWorkspaceId
         }
     }
 }

@@ -8,7 +8,7 @@ resource logAnalyticsWorkspace 'Microsoft.OperationalInsights/workspaces@2022-10
                 sku:              {
                                     name: 'PerGB2018'
                                   }
-                retentionInDays:  120
+                retentionInDays:  30
                 features:         {
                                     searchVersion:                                1
                                     legacy:                                       0
@@ -16,3 +16,5 @@ resource logAnalyticsWorkspace 'Microsoft.OperationalInsights/workspaces@2022-10
                                   }
   }
 }
+
+output logAnalyticsWorkspaceId string = logAnalyticsWorkspace.id

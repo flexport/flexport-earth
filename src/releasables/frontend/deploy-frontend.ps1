@@ -22,7 +22,11 @@ param (
 
     [Parameter(Mandatory = $true)]
     [String]
-    $GoogleAnalyticsMeasurementId
+    $GoogleAnalyticsMeasurementId,
+
+    [Parameter(Mandatory = $true)]
+    [String]
+    $LogAnalyticsWorkspaceId
 )
 
 Set-StrictMode –Version latest
@@ -55,7 +59,11 @@ function Update-FrontendInfrastructure {
 
         [Parameter(Mandatory = $true)]
         [String]
-        $GoogleAnalyticsMeasurementId
+        $GoogleAnalyticsMeasurementId,
+
+        [Parameter(Mandatory = $true)]
+        [String]
+        $LogAnalyticsWorkspaceId
     )
 
     process {
@@ -74,8 +82,9 @@ function Update-FrontendInfrastructure {
             }
 
             $FrontendParameters = @{
-                environmentShortName = @{ value = $EnvironmentName.ToLower() }
-                customDomainName     = @{ value = $CustomDomainName.ToLower() }
+                environmentShortName    = @{ value = $EnvironmentName.ToLower() }
+                customDomainName        = @{ value = $CustomDomainName.ToLower() }
+                logAnalyticsWorkspaceId = @{ value = $LogAnalyticsWorkspaceId }
             }
 
             $FrontendParametersJson = $FrontendParameters | ConvertTo-Json
@@ -276,7 +285,8 @@ $FrontendInfraOutput = Update-FrontendInfrastructure `
     -CustomDomainName               $EarthWebsiteCustomDomainName `
     -FlexportApiClientId            $FlexportApiClientId `
     -FlexportApiClientSecret        $FlexportApiClientSecret `
-    -GoogleAnalyticsMeasurementId   $GoogleAnalyticsMeasurementId
+    -GoogleAnalyticsMeasurementId   $GoogleAnalyticsMeasurementId `
+    -LogAnalyticsWorkspaceId        $LogAnalyticsWorkspaceId
 
 Write-Information ""
 Write-Information "Frontend infrastructure deployed, deploying NextJS website..."
