@@ -46,7 +46,11 @@ param (
 
     [Parameter(Mandatory = $true)]
     [SecureString]
-    $ContainerTargetRegistryPassword
+    $ContainerTargetRegistryPassword,
+
+    [Parameter(Mandatory = $true)]
+    [String]
+    $EarthEnvironmentOperatorsEmailAddress
 )
 
 Set-StrictMode –Version latest
@@ -96,13 +100,14 @@ try {
     Push-Location "./frontend"
 
     $EarthWebsiteUrl = ./deploy-frontend.ps1 `
-        -EnvironmentName                $EnvironmentName `
-        -BuildNumber                    $BuildNumber `
-        -EarthWebsiteCustomDomainName   $EarthWebsiteCustomDomainName `
-        -FlexportApiClientId            $FlexportApiClientId `
-        -FlexportApiClientSecret        $FlexportApiClientSecret `
-        -GoogleAnalyticsMeasurementId   $GoogleAnalyticsMeasurementId `
-        -LogAnalyticsWorkspaceId        $LogAnalyticsWorkspaceId
+        -EnvironmentName                        $EnvironmentName `
+        -BuildNumber                            $BuildNumber `
+        -EarthWebsiteCustomDomainName           $EarthWebsiteCustomDomainName `
+        -FlexportApiClientId                    $FlexportApiClientId `
+        -FlexportApiClientSecret                $FlexportApiClientSecret `
+        -GoogleAnalyticsMeasurementId           $GoogleAnalyticsMeasurementId `
+        -LogAnalyticsWorkspaceId                $LogAnalyticsWorkspaceId `
+        -EarthEnvironmentOperatorsEmailAddress  $EarthEnvironmentOperatorsEmailAddress
 }
 finally {
     Pop-Location

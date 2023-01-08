@@ -156,8 +156,13 @@ https://github.com/flexport/flexport-earth/tree/main/product/docs/administrative
 
 "
 
-    $LocalSettings.FlexportApiClientSecret = $($LocalSettings.FlexportApiClientSecret) | ConvertTo-SecureString
+    Set-ConfigValue `
+        -Settings         $LocalSettings `
+        -SettingsFilePath $LocalSettingsPath `
+        -ConfigName       "EarthEnvironmentOperatorsEmailAddress" `
+        -ConfigPrompt     "What email address should be used for this environments Earth Environment Operators for things such as alert notifications?"
 
+    $LocalSettings.FlexportApiClientSecret = $($LocalSettings.FlexportApiClientSecret) | ConvertTo-SecureString
 
     return $LocalSettings
 }

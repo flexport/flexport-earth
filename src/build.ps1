@@ -75,7 +75,8 @@ function Build-Website {
     Write-Information ""
     Write-Information "Compiling website files..."
 
-    npm install --force
+    npm install
+
     if (!$?) {
         Write-Error "Failed to install dependencies, see previous log entries."
     }
