@@ -30,15 +30,15 @@ If you work with multiple subscriptions, be sure to set the correct default subs
 
     **Shared Environments**
 
-    Add the `EnvironmentOperatorAlertEmailAddress` setting to the relevant Azure DevOps Variable Library group:
+    Add the `EarthEnvironmentOperatorsEmailAddress` setting to the relevant Azure DevOps Variable Library group:
 
     ![Azure DevOps Variable Groups](./docs/images/azure-devops-variable-group-library.png)
 
-    ![Azure DevOps EnvironmentOperatorAlertEmailAddress](./docs/images/azure-devops-variable-group-EnvironmentOperatorAlertEmailAddress.png)
+    ![Azure DevOps EarthEnvironmentOperatorsEmailAddress](./docs/images/azure-devops-variable-group-EarthEnvironmentOperatorsEmailAddress.png)
 
 **Personal Environments**
 
-- Add `EnvironmentOperatorAlertEmailAddress` to your local configuration. The developer automation scripts will prompt you for this value.
+- Add `EarthEnvironmentOperatorsEmailAddress` to your local configuration. The developer automation scripts will prompt you for this value.
 
 ## Deprovisioning
 
