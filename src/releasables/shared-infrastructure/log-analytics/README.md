@@ -1,0 +1,1 @@
+Azure Log Analytics provides infrastructure and features to receive logs from all the various Earth infrastructure and application components which can then be easily queried for diagnostic and troubleshooting purposes.

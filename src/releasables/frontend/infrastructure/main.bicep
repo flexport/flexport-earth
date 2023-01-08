@@ -21,6 +21,8 @@ param customDomainName string
 
 param logAnalyticsWorkspaceId string
 
+param earthEnvironmentOperatorsEmailAddress string
+
 module actionGroup 'action-group.bicep' = {
   name:   '${environmentShortName}-${resourceGroup().name}-action-group'
   params: {
@@ -28,8 +30,8 @@ module actionGroup 'action-group.bicep' = {
             actionGroupShortName: 'envops'
             emailReceivers:       [
                                     {
-                                      name:         'Matthew Thomas'
-                                      emailAddress: 'matthewthomas@flexport.com'
+                                      name:         'Earth Environment Operators'
+                                      emailAddress: earthEnvironmentOperatorsEmailAddress
                                     }
                                   ]
           }

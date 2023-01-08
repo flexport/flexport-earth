@@ -314,7 +314,8 @@ function Invoke-Deploy {
             -GoogleAnalyticsMeasurementId                       $DeveloperEnvironmentSettings.GoogleAnalyticsMeasurementId `
             -ContainerTargetRegistryTenant                      $DeployerServicePrincipalCredentials.Tenant `
             -ContainerTargetRegistryUsername                    $DeployerServicePrincipalCredentials.AppId `
-            -ContainerTargetRegistryPassword                    $DeployerServicePrincipalCredentials.Password
+            -ContainerTargetRegistryPassword                    $DeployerServicePrincipalCredentials.Password `
+            -EarthEnvironmentOperatorsEmailAddress              $DeveloperEnvironmentSettings.EarthEnvironmentOperatorsEmailAddress
     }
     finally {
         Pop-Location
