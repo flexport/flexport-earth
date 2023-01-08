@@ -26,7 +26,7 @@ param earthEnvironmentOperatorsEmailAddress string
 module actionGroup 'action-group.bicep' = {
   name:   '${environmentShortName}-${resourceGroup().name}-action-group'
   params: {
-            actionGroupName:      '${environmentShortName}-${resourceGroup().name}-action-group'
+            actionGroupName:      '${resourceGroup().name}-action-group'
             actionGroupShortName: 'envops'
             emailReceivers:       [
                                     {
