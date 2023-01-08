@@ -75,7 +75,8 @@ function Set-ContainerInfraResources {
             $ContainerLoginServer = $Response.properties.outputs.containerLoginServer.value
 
             Write-Information "Provisioning Container infra resources completed!"
-
+            Write-Information ""
+            Write-Information "Container Repository Address:"
             $ContainerLoginServer
         }
     }

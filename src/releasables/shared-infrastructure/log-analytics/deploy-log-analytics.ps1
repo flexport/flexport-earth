@@ -76,6 +76,7 @@ function Set-LogAnalyticsResources {
 
             Write-Information "Provisioning Log Analytics infra resources completed!"
             Write-Information "logAnalyticsWorkspaceId: $logAnalyticsWorkspaceId"
+            Write-Information ""
 
             return $LogAnalyticsWorkspaceId
         }

@@ -26,7 +26,11 @@ param (
 
     [Parameter(Mandatory = $true)]
     [String]
-    $LogAnalyticsWorkspaceId
+    $LogAnalyticsWorkspaceId,
+
+    [Parameter(Mandatory = $true)]
+    [String]
+    $EarthEnvironmentOperatorsEmailAddress
 )
 
 Set-StrictMode –Version latest
@@ -63,7 +67,11 @@ function Update-FrontendInfrastructure {
 
         [Parameter(Mandatory = $true)]
         [String]
-        $LogAnalyticsWorkspaceId
+        $LogAnalyticsWorkspaceId,
+
+        [Parameter(Mandatory = $true)]
+        [String]
+        $EarthEnvironmentOperatorsEmailAddress
     )
 
     process {
@@ -82,9 +90,10 @@ function Update-FrontendInfrastructure {
             }
 
             $FrontendParameters = @{
-                environmentShortName    = @{ value = $EnvironmentName.ToLower() }
-                customDomainName        = @{ value = $CustomDomainName.ToLower() }
-                logAnalyticsWorkspaceId = @{ value = $LogAnalyticsWorkspaceId }
+                environmentShortName                    = @{ value = $EnvironmentName.ToLower()             }
+                customDomainName                        = @{ value = $CustomDomainName.ToLower()            }
+                logAnalyticsWorkspaceId                 = @{ value = $LogAnalyticsWorkspaceId               }
+                earthEnvironmentOperatorsEmailAddress   = @{ value = $EarthEnvironmentOperatorsEmailAddress }
             }
 
             $FrontendParametersJson = $FrontendParameters | ConvertTo-Json
@@ -280,13 +289,14 @@ if (!$?) {
 Write-Information "Resource group created, deploying infrastructure to it..."
 
 $FrontendInfraOutput = Update-FrontendInfrastructure `
-    -EnvironmentName                $EnvironmentName `
-    -EarthFrontendResourceGroupName $FrontendConfig.EarthFrontendResourceGroupName `
-    -CustomDomainName               $EarthWebsiteCustomDomainName `
-    -FlexportApiClientId            $FlexportApiClientId `
-    -FlexportApiClientSecret        $FlexportApiClientSecret `
-    -GoogleAnalyticsMeasurementId   $GoogleAnalyticsMeasurementId `
-    -LogAnalyticsWorkspaceId        $LogAnalyticsWorkspaceId
+    -EnvironmentName                        $EnvironmentName `
+    -EarthFrontendResourceGroupName         $FrontendConfig.EarthFrontendResourceGroupName `
+    -CustomDomainName                       $EarthWebsiteCustomDomainName `
+    -FlexportApiClientId                    $FlexportApiClientId `
+    -FlexportApiClientSecret                $FlexportApiClientSecret `
+    -GoogleAnalyticsMeasurementId           $GoogleAnalyticsMeasurementId `
+    -LogAnalyticsWorkspaceId                $LogAnalyticsWorkspaceId `
+    -EarthEnvironmentOperatorsEmailAddress  $EarthEnvironmentOperatorsEmailAddress
 
 Write-Information ""
 Write-Information "Frontend infrastructure deployed, deploying NextJS website..."
