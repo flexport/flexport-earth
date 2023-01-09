@@ -90,6 +90,7 @@ function Update-FrontendInfrastructure {
             }
 
             $FrontendParameters = @{
+                buildNumber                             = @{ value = $BuildNumber                           }
                 environmentShortName                    = @{ value = $EnvironmentName.ToLower()             }
                 customDomainName                        = @{ value = $CustomDomainName.ToLower()            }
                 logAnalyticsWorkspaceId                 = @{ value = $LogAnalyticsWorkspaceId               }
@@ -97,6 +98,10 @@ function Update-FrontendInfrastructure {
             }
 
             $FrontendParametersJson = $FrontendParameters | ConvertTo-Json
+
+            Write-Information "FrontendParametersJson:"
+            Write-Information $FrontendParametersJson
+            Write-Information ""
 
             # PowerShell v7.3.0 has a breaking change in how it handles
             # parsing double quotes in strings. Previous versions required

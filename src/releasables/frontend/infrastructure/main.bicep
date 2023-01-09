@@ -1,5 +1,7 @@
 targetScope='resourceGroup'
 
+param buildNumber string
+
 @description('The location into which regionally scoped resources should be deployed.')
 param location string = resourceGroup().location
 
@@ -49,7 +51,7 @@ module website 'website.bicep' = {
 module websiteHttp404Alert 'website-404-alert.bicep' = {
   name:   'earth-website-http-404-alert'
   params: {
-            alertRuleName:         '${environmentShortName} - Earth Website HTTP 404 Alert'
+            alertRuleName:         '${environmentShortName} - Earth Website HTTP 404 Alert (${buildNumber})'
             actionGroupResourceId: actionGroup.outputs.actionGroupId
             webAppResourceId:      website.outputs.resourceId
           }
