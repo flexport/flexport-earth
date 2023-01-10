@@ -3,15 +3,39 @@
 param (
     [Parameter(Mandatory=$true)]
     [String]
+    $EnvironmentName,
+
+    [Parameter(Mandatory=$true)]
+    [String]
     $EarthWebsiteUrl,
 
     [Parameter(Mandatory=$true)]
     [String]
     $BuildNumber,
 
+    [Parameter(Mandatory=$true)]
+    [String]
+    $EarthEnvironmentOperatorsEmailAddress,
+
+    [Parameter(Mandatory=$true)]
+    [SecureString]
+    $EarthEnvironmentOperatorsGmailApiClientId,
+
+    [Parameter(Mandatory=$true)]
+    [SecureString]
+    $EarthEnvironmentOperatorsGmailApiClientSecret,
+
+    [Parameter(Mandatory=$true)]
+    [SecureString]
+    $EarthEnvironmentOperatorsGmailApiRefreshToken,
+
     [Parameter(Mandatory=$false)]
     [Int16]
-    $MaxTries = 1
+    $MaxTries = 1,
+
+    [Parameter(Mandatory=$false)]
+    [Switch]
+    $OpenTestUI = $false
 )
 
 Set-StrictMode –Version latest
@@ -33,6 +57,24 @@ try {
     npm install
     Write-Information "Dependencies installed!"
 
+    $Specs              = ""
+    $CypressMode        = "run"
+    $ReporterOptions    = ""
+
+    if ($OpenTestUI) {
+        $CypressMode = "open"
+        $MaxTries    = 1
+    } else {
+        $Specs              = '--spec "cypress/integration/**/*"'
+        $ReporterOptions    = '--reporter junit --reporter-options ""mochaFile=results/cypress.xml""'
+    }
+
+    $EarthEnvironmentOperatorsGmailApiClientIdPlain      = $($EarthEnvironmentOperatorsGmailApiClientId     | ConvertFrom-SecureString -AsPlainText)
+    $EarthEnvironmentOperatorsGmailApiClientSecretPlain  = $($EarthEnvironmentOperatorsGmailApiClientSecret | ConvertFrom-SecureString -AsPlainText)
+    $EarthEnvironmentOperatorsGmailApiRefreshTokenPlain  = $($EarthEnvironmentOperatorsGmailApiRefreshToken | ConvertFrom-SecureString -AsPlainText)
+
+    $CypressCommand = "$(npm bin)/cypress $CypressMode $Specs --env EARTH_ENVIRONMENT_NAME=$EnvironmentName,EARTH_ENV_OPS_EMAIL=$EarthEnvironmentOperatorsEmailAddress,EARTH_ENV_OPS_GMAIL_CLIENT_ID=$EarthEnvironmentOperatorsGmailApiClientIdPlain,EARTH_ENV_OPS_GMAIL_CLIENT_SECRET=$EarthEnvironmentOperatorsGmailApiClientSecretPlain,EARTH_ENV_OPS_GMAIL_REFRESH_TOKEN=$EarthEnvironmentOperatorsGmailApiRefreshTokenPlain,BUILD_NUMBER=$BuildNumber,EARTH_WEBSITE_URL=$EarthWebsiteUrl --browser chrome $ReporterOptions"
+
     for ($i = 1; $i -le $MaxTries; $i++) {
         try {
             if (Test-Path $TestResultsDirectory) {
@@ -41,8 +83,6 @@ try {
 
             Write-Information ""
             Write-Information "Running tests..."
-
-            $CypressCommand = "$(npm bin)/cypress run --spec ""cypress/integration/**/*"" --env BUILD_NUMBER=$BuildNumber,EARTH_WEBSITE_URL=$EarthWebsiteUrl --browser chrome --reporter junit --reporter-options ""mochaFile=results/cypress.xml"""
 
             Write-Information ""
             Write-Information "Command: $CypressCommand"

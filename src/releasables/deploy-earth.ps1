@@ -50,7 +50,19 @@ param (
 
     [Parameter(Mandatory = $true)]
     [String]
-    $EarthEnvironmentOperatorsEmailAddress
+    $EarthEnvironmentOperatorsEmailAddress,
+
+    [Parameter(Mandatory=$true)]
+    [SecureString]
+    $EarthEnvironmentOperatorsGmailApiClientId,
+
+    [Parameter(Mandatory=$true)]
+    [SecureString]
+    $EarthEnvironmentOperatorsGmailApiClientSecret,
+
+    [Parameter(Mandatory=$true)]
+    [SecureString]
+    $EarthEnvironmentOperatorsGmailApiRefreshToken
 )
 
 Set-StrictMode –Version latest
@@ -118,9 +130,14 @@ finally {
 # The retries avoid doing full deployments and also avoid
 # blocking CD pipeline waiting for someone to manually retry.
 ./test-earth.ps1 `
-    -BuildNumber        $BuildNumber `
-    -EarthWebsiteUrl    $EarthWebsiteUrl `
-    -MaxTries           3
+    -EnvironmentName                                $EnvironmentName `
+    -BuildNumber                                    $BuildNumber `
+    -EarthWebsiteUrl                                $EarthWebsiteUrl `
+    -EarthEnvironmentOperatorsEmailAddress          $EarthEnvironmentOperatorsEmailAddress `
+    -EarthEnvironmentOperatorsGmailApiClientId      $EarthEnvironmentOperatorsGmailApiClientId `
+    -EarthEnvironmentOperatorsGmailApiClientSecret  $EarthEnvironmentOperatorsGmailApiClientSecret `
+    -EarthEnvironmentOperatorsGmailApiRefreshToken  $EarthEnvironmentOperatorsGmailApiRefreshToken `
+    -MaxTries                                       3
 
 # Once we've confirmed the latest application and tests are working successfully,
 # deploy the E2E Monitor for continuously running the tests against the environment
