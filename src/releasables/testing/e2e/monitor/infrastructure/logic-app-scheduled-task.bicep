@@ -20,7 +20,7 @@ param deployerServicePrincipalUsername  string
 param deployerServicePrincipalPassword  string
 
 var frequency       = 'Minute'
-var interval        = '30'
+var interval        = '60'
 var type            = 'recurrence'
 var workflowSchema  = 'https://schema.management.azure.com/providers/Microsoft.Logic/schemas/2016-06-01/workflowdefinition.json#'
 var connectionName = 'aci'
