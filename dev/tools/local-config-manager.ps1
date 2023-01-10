@@ -162,7 +162,31 @@ https://github.com/flexport/flexport-earth/tree/main/product/docs/administrative
         -ConfigName       "EarthEnvironmentOperatorsEmailAddress" `
         -ConfigPrompt     "What email address should be used for this environments Earth Environment Operators for things such as alert notifications?"
 
-    $LocalSettings.FlexportApiClientSecret = $($LocalSettings.FlexportApiClientSecret) | ConvertTo-SecureString
+    Set-ConfigValue `
+        -Settings         $LocalSettings `
+        -SettingsFilePath $LocalSettingsPath `
+        -ConfigName       "EarthEnvironmentOperatorsGmailApiClientId" `
+        -ConfigPrompt     "What's your GMail API Client ID for accessing EarthEnvironmentOperatorsEmailAddress?" `
+        -AsSecureString
+
+    Set-ConfigValue `
+        -Settings         $LocalSettings `
+        -SettingsFilePath $LocalSettingsPath `
+        -ConfigName       "EarthEnvironmentOperatorsGmailApiClientSecret" `
+        -ConfigPrompt     "What's your GMail API Client Secret for accessing EarthEnvironmentOperatorsEmailAddress?" `
+        -AsSecureString
+
+    Set-ConfigValue `
+        -Settings         $LocalSettings `
+        -SettingsFilePath $LocalSettingsPath `
+        -ConfigName       "EarthEnvironmentOperatorsGmailApiRefreshToken" `
+        -ConfigPrompt     "What's your GMail API Refresh Token for accessing EarthEnvironmentOperatorsEmailAddress?" `
+        -AsSecureString
+
+    $LocalSettings.FlexportApiClientSecret                          = $($LocalSettings.FlexportApiClientSecret) | ConvertTo-SecureString
+    $LocalSettings.EarthEnvironmentOperatorsGmailApiClientId        = $($LocalSettings.EarthEnvironmentOperatorsGmailApiClientId) | ConvertTo-SecureString
+    $LocalSettings.EarthEnvironmentOperatorsGmailApiClientSecret    = $($LocalSettings.EarthEnvironmentOperatorsGmailApiClientSecret) | ConvertTo-SecureString
+    $LocalSettings.EarthEnvironmentOperatorsGmailApiRefreshToken    = $($LocalSettings.EarthEnvironmentOperatorsGmailApiRefreshToken) | ConvertTo-SecureString
 
     return $LocalSettings
 }

@@ -18,6 +18,7 @@ param (
         'StartWebsiteLocallyDevMode',
         'StartWebsiteLocallyProdMode',
         'DeployToAzure',
+        'OpenE2ETests',
         'RunE2ETests',
         'Push',
         'DestroyAzureEnvironment'
@@ -37,6 +38,7 @@ enum DevWorkflows {
     StartWebsiteLocallyDevMode
     StartWebsiteLocallyProdMode
     DeployToAzure
+    OpenE2ETests
     RunE2ETests
     Push
     DestroyAzureEnvironment
@@ -173,9 +175,16 @@ function Invoke-Workflow {
                 -Mode                           Prod
         }
 
+        OpenE2ETests
+        {
+            Invoke-OpenE2ETests `
+                -GlobalDevelopmentSettings      $GlobalDevelopmentSettings `
+                -DeveloperEnvironmentSettings   $DeveloperEnvironmentSettings
+        }
+
         RunE2ETests
         {
-            Invoke-E2ETests `
+            Invoke-RunE2ETests `
                 -GlobalDevelopmentSettings      $GlobalDevelopmentSettings `
                 -DeveloperEnvironmentSettings   $DeveloperEnvironmentSettings
         }
@@ -315,7 +324,10 @@ function Invoke-Deploy {
             -ContainerTargetRegistryTenant                      $DeployerServicePrincipalCredentials.Tenant `
             -ContainerTargetRegistryUsername                    $DeployerServicePrincipalCredentials.AppId `
             -ContainerTargetRegistryPassword                    $DeployerServicePrincipalCredentials.Password `
-            -EarthEnvironmentOperatorsEmailAddress              $DeveloperEnvironmentSettings.EarthEnvironmentOperatorsEmailAddress
+            -EarthEnvironmentOperatorsEmailAddress              $DeveloperEnvironmentSettings.EarthEnvironmentOperatorsEmailAddress `
+            -EarthEnvironmentOperatorsGmailApiClientId          $DeveloperEnvironmentSettings.EarthEnvironmentOperatorsGmailApiClientId `
+            -EarthEnvironmentOperatorsGmailApiClientSecret      $DeveloperEnvironmentSettings.EarthEnvironmentOperatorsGmailApiClientSecret `
+            -EarthEnvironmentOperatorsGmailApiRefreshToken      $DeveloperEnvironmentSettings.EarthEnvironmentOperatorsGmailApiRefreshToken
     }
     finally {
         Pop-Location
@@ -456,7 +468,44 @@ function Start-Website {
     }
 }
 
-function Invoke-E2ETests {
+function Invoke-OpenE2ETests {
+    [CmdletBinding()]
+    param (
+        [Parameter(Mandatory = $true)]
+        [Object]
+        $GlobalDevelopmentSettings,
+
+        [Parameter(Mandatory = $true)]
+        [Object]
+        $DeveloperEnvironmentSettings
+    )
+
+    $DevelopmentToolsDirectory  = $GlobalDevelopmentSettings.DevelopmentToolsDirectory
+    $RelesablesDirectory        = $GlobalDevelopmentSettings.ReleasablesDirectory
+
+    . "$DevelopmentToolsDirectory/build-number.ps1"
+
+    $BuildNumber = Get-BuildNumber
+
+    try {
+        Push-Location "$RelesablesDirectory/testing/e2e"
+
+        ./run-e2e-tests.ps1 `
+            -EnvironmentName                                $DeveloperEnvironmentSettings.EnvironmentName `
+            -EarthWebsiteUrl                                http://localhost:3000 `
+            -BuildNumber                                    $BuildNumber `
+            -EarthEnvironmentOperatorsEmailAddress          $DeveloperEnvironmentSettings.EarthEnvironmentOperatorsEmailAddress `
+            -EarthEnvironmentOperatorsGmailApiClientId      $DeveloperEnvironmentSettings.EarthEnvironmentOperatorsGmailApiClientId `
+            -EarthEnvironmentOperatorsGmailApiClientSecret  $DeveloperEnvironmentSettings.EarthEnvironmentOperatorsGmailApiClientSecret `
+            -EarthEnvironmentOperatorsGmailApiRefreshToken  $DeveloperEnvironmentSettings.EarthEnvironmentOperatorsGmailApiRefreshToken `
+            -OpenTestUI
+    }
+    finally {
+        Pop-Location
+    }
+}
+
+function Invoke-RunE2ETests {
     [CmdletBinding()]
     param (
         [Parameter(Mandatory = $true)]
@@ -479,13 +528,17 @@ function Invoke-E2ETests {
         Push-Location "$RelesablesDirectory"
 
         ./test-earth.ps1 `
-            -EarthWebsiteUrl http://localhost:3000 `
-            -BuildNumber     $BuildNumber
+            -EnvironmentName                                $DeveloperEnvironmentSettings.EnvironmentName `
+            -EarthWebsiteUrl                                http://localhost:3000 `
+            -BuildNumber                                    $BuildNumber `
+            -EarthEnvironmentOperatorsEmailAddress          $DeveloperEnvironmentSettings.EarthEnvironmentOperatorsEmailAddress `
+            -EarthEnvironmentOperatorsGmailApiClientId      $DeveloperEnvironmentSettings.EarthEnvironmentOperatorsGmailApiClientId `
+            -EarthEnvironmentOperatorsGmailApiClientSecret  $DeveloperEnvironmentSettings.EarthEnvironmentOperatorsGmailApiClientSecret `
+            -EarthEnvironmentOperatorsGmailApiRefreshToken  $DeveloperEnvironmentSettings.EarthEnvironmentOperatorsGmailApiRefreshToken `
     }
     finally {
         Pop-Location
     }
-
 }
 
 # Ensure all the local development tools are installed
