@@ -33,6 +33,7 @@ if($PSCmdlet.ShouldProcess($EnvironmentName)) {
 
         az group delete `
             --name $ResourceGroupName `
+            --no-wait `
             --yes
 
         Write-Information "Deleted!"

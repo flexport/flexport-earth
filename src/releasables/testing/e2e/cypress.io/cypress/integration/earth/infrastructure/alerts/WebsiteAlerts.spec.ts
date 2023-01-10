@@ -23,14 +23,9 @@ describe('Requires Azure: Earth Website Alerts: Notify Earth Operators', () => {
       refreshToken: earthEnvironmentOperatorsGmailRefreshToken
     };
 
-    // Act:
-    // Request invalid url from the website.
-    // const response = await fetch(
-    //   `${earthWebsiteBaseUrl}/website-alerts/test/404`
-    // );
-
     const startTimestamp = Date.now();
 
+    // Act:
     fetch(
       `https://${earthWebsiteBaseUrl}/website-alerts/test/404/build/${currentBuildNumber}`
     ).then(response => {
