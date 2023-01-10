@@ -44,7 +44,7 @@ async function GmailCheck(
       from,
       to,
       wait_time_sec:      10, // Poll interval (in seconds)
-      max_wait_time_sec:  30  // Maximum poll interval (in seconds). If reached, return null, indicating the completion of the task().
+      max_wait_time_sec:  120  // Maximum poll interval (in seconds). If reached, return null, indicating the completion of the task().
     }
   );
   return email;

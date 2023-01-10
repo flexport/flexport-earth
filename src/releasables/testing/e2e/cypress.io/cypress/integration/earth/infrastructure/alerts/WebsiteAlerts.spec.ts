@@ -26,7 +26,7 @@ describe('Requires Azure: Earth Website Alerts: Notify Earth Operators', () => {
     // Act:
     // Request invalid url from the website.
     const response = await fetch(
-      `${earthWebsiteBaseUrl}/website-alerts/test/404`
+      `${earthWebsiteBaseUrl}/website-alerts/test/404/build/${currentBuildNumber}`
     );
 
     assert(
