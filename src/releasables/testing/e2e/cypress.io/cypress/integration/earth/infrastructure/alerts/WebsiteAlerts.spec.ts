@@ -26,8 +26,13 @@ describe('Requires Azure: Earth Website Alerts: Notify Earth Operators', () => {
     const startTimestamp = Date.now();
 
     // Act:
+    const notFoundUrl = `${earthWebsiteBaseUrl}/website-alerts/test/404/build/${currentBuildNumber}`;
+
+    cy.log(`earthWebsiteBaseUrl:  ${earthWebsiteBaseUrl}`);
+    cy.log(`notFoundUrl:          ${notFoundUrl}`);
+
     fetch(
-      `${earthWebsiteBaseUrl}/website-alerts/test/404/build/${currentBuildNumber}`
+      notFoundUrl
     ).then(response => {
       assert(
         response.status == 404,
@@ -50,8 +55,6 @@ describe('Requires Azure: Earth Website Alerts: Notify Earth Operators', () => {
       .then(email => {
         assert.isNotNull(email);
       });
-
-      assert.isFalse(true);
   })
 })
 
