@@ -7,7 +7,7 @@
 // if you run them against your locally running Earth website.
 
 describe('Requires Azure: Earth Website Alerts: Notify Earth Operators', () => {
-  it('When a Website User encounters a HTTP 404 error', async () => {
+  it('When a Website User encounters a HTTP 404 error', () => {
     // Arrange:
     const currentBuildNumber                          = Cypress.env('BUILD_NUMBER');
     const earthEnvironmentName                        = Cypress.env('EARTH_ENVIRONMENT_NAME');
@@ -23,31 +23,37 @@ describe('Requires Azure: Earth Website Alerts: Notify Earth Operators', () => {
       refreshToken: earthEnvironmentOperatorsGmailRefreshToken
     };
 
-    // Act:
-    // Request invalid url from the website.
-    const response = await fetch(
-      `${earthWebsiteBaseUrl}/website-alerts/test/404/build/${currentBuildNumber}`
-    );
+    const startTimestamp = Date.now();
 
-    assert(
-      response.status == 404,
-      "Expected a HTTP 404 response from the server."
-    );
+    // Act:
+    const notFoundUrl = `${earthWebsiteBaseUrl}/website-alerts/test/404/build/${currentBuildNumber}`;
+
+    cy.log(`earthWebsiteBaseUrl:  ${earthWebsiteBaseUrl}`);
+    cy.log(`notFoundUrl:          ${notFoundUrl}`);
+
+    fetch(
+      notFoundUrl
+    ).then(response => {
+      assert(
+        response.status == 404,
+        "Expected a HTTP 404 response from the server."
+      );
+    });
 
     // Assert:
     // Verify alerts have been received in the Earth Environment Operator email.
+    cy.log(`Checking for emails after ${new Date(startTimestamp)}`);
+
     cy
       .task("gmail:check", {
         gmailApiCredentials:  gmailApiCredentials,
         from:                 "azure-noreply@microsoft.com",
         to:                   earthEnvironmentOperatorsEmailAddress,
-        subject:              `Azure: Activated Severity: 2 ${earthEnvironmentName} - Earth Website HTTP 404 Alert (${currentBuildNumber})`
-      })
+        subject:              `Azure: Activated Severity: 2 ${earthEnvironmentName} - Earth Website HTTP 404 Alert (${currentBuildNumber})`,
+        after:                startTimestamp
+      }, { timeout: 500000 })
       .then(email => {
-        assert.isNotNull(
-          email,
-          `Email was not found`
-        );
+        assert.isNotNull(email);
       });
   })
 })
