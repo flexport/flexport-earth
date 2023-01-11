@@ -32,11 +32,11 @@ If running on Windows, install the [Windows Subsystem for Linux](https://docs.mi
         in the left hand nav select "Privacy & Security"
         in the right hand section scroll down to the Security section. there will be an entry for <installer-name> was blocked from use because it is not from an identified developer.
         click open Anyway
-        enter login credentials. 
+        enter login credentials.
         click Open. installer should now run
 
 
-2. [Azure CLI (2.43.0)](https://docs.microsoft.com/en-us/cli/azure/install-azure-cli)
+2. [Azure CLI (2.44.0)](https://docs.microsoft.com/en-us/cli/azure/install-azure-cli)
 3. [NodeJS (16.15.0)](https://nodejs.org/en/download/)
 4. [Docker (version 20.10.21)](https://docs.docker.com/get-docker/)
 
