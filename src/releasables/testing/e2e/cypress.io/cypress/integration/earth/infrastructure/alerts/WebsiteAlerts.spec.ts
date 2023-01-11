@@ -46,7 +46,7 @@ describe('Requires Azure: Earth Website Alerts: Notify Earth Operators', () => {
         to:                   earthEnvironmentOperatorsEmailAddress,
         subject:              `Azure: Activated Severity: 2 ${earthEnvironmentName} - Earth Website HTTP 404 Alert (${currentBuildNumber})`,
         after:                startTimestamp
-      }, { timeout: 300000 })
+      }, { timeout: 400000 })
       .then(email => {
         assert.isNotNull(email);
       });
