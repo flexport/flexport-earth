@@ -227,4 +227,6 @@ $Duration = New-TimeSpan `
     -Start $ScriptStartTime `
     -End   $(Get-Date)
 
+Write-Information ""
 Write-Information "Earth website build completed in $Duration"
+Write-Information ""
