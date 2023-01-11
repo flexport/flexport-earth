@@ -27,7 +27,7 @@ describe('Requires Azure: Earth Website Alerts: Notify Earth Operators', () => {
 
     // Act:
     fetch(
-      `https://malex-earth-cdn-endpoint-eraehgb4dah6h5eu.z01.azurefd.net/website-alerts/test/404/build/${currentBuildNumber}`
+      `https://${earthWebsiteBaseUrl}/website-alerts/test/404/build/${currentBuildNumber}`
     ).then(response => {
       assert(
         response.status == 404,
