@@ -27,7 +27,7 @@ describe('Requires Azure: Earth Website Alerts: Notify Earth Operators', () => {
 
     // Act:
     fetch(
-      `https://${earthWebsiteBaseUrl}/website-alerts/test/404/build/${currentBuildNumber}`
+      `${earthWebsiteBaseUrl}/website-alerts/test/404/build/${currentBuildNumber}`
     ).then(response => {
       assert(
         response.status == 404,
@@ -50,6 +50,8 @@ describe('Requires Azure: Earth Website Alerts: Notify Earth Operators', () => {
       .then(email => {
         assert.isNotNull(email);
       });
+
+      assert.isFalse(true);
   })
 })
 
