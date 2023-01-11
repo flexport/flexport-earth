@@ -66,7 +66,7 @@ try {
         $MaxTries    = 1
     } else {
         $Specs              = '--spec "cypress/integration/**/*"'
-        $ReporterOptions    = '--reporter junit --reporter-options ""mochaFile=results/cypress.xml""'
+        $ReporterOptions    = '--reporter junit --reporter-options "mochaFile=results/cypress.xml"'
     }
 
     $EarthEnvironmentOperatorsGmailApiClientIdPlain      = $($EarthEnvironmentOperatorsGmailApiClientId     | ConvertFrom-SecureString -AsPlainText)
