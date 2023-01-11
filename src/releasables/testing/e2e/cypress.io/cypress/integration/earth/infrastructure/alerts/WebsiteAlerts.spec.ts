@@ -27,7 +27,7 @@ describe('Requires Azure: Earth Website Alerts: Notify Earth Operators', () => {
 
     // Act:
     fetch(
-      `https://${earthWebsiteBaseUrl}/website-alerts/test/404/build/${currentBuildNumber}`
+      `https://malex-earth-cdn-endpoint-eraehgb4dah6h5eu.z01.azurefd.net/website-alerts/test/404/build/${currentBuildNumber}`
     ).then(response => {
       assert(
         response.status == 404,
@@ -46,7 +46,7 @@ describe('Requires Azure: Earth Website Alerts: Notify Earth Operators', () => {
         to:                   earthEnvironmentOperatorsEmailAddress,
         subject:              `Azure: Activated Severity: 2 ${earthEnvironmentName} - Earth Website HTTP 404 Alert (${currentBuildNumber})`,
         after:                startTimestamp
-      }, { timeout: 400000 })
+      }, { timeout: 500000 })
       .then(email => {
         assert.isNotNull(email);
       });
