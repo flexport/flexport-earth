@@ -1,102 +1,84 @@
-import type { NextPage }    from 'next'
-import { useRouter }        from 'next/router'
-import Image                from 'next/image'
+import Image                    from 'next/image'
+import Link                     from 'next/link';
 
-import Layout                   from 'components/layout/layout'
 import Breadcrumbs              from 'components/breadcrumbs/breadcrumbs'
 
 import { getFlexportApiClient } from 'lib/data-sources/flexport/api'
-
-import Styles                   from './terminalCode.module.css'
 import PortSateliteBackground   from 'public/images/port-satelite-background.png'
 
-type TerminalCodeParams = {
+import Styles                   from './unlocode.module.css'
+
+type UNLoCodeParams = {
     params: {
-        terminalCode: string
+        unlocode: string
     }
 };
 
-type TerminalDetailPageViewModel = {
+type TerminalViewModel = {
+    terminalCode: string,
+    terminalName: string
+}
+
+type PortDetailPageViewModel = {
     general: {
-        terminalName:   string,
+        portName:       string,
         country:        string,
         regionCity:     string,
         address:        string,
+        cbpPortCode:    string,
         unlocode:       string,
-        firmsCode:      string,
-        terminalCode:   string
+        iataCode:       string,
+        icaoCode:       string
     },
     location: {
-        latitude:       number,
-        longitude:      number
+        latitude:       string,
+        longitude:      string
     }
+    terminals: TerminalViewModel[]
 }
 
-export async function getStaticPaths() {
+async function getPort(params: UNLoCodeParams) {
+    const flexportApi       = await getFlexportApiClient();
 
-    // getStaticPaths executes at BUILD TIME.
+    const responseDataPort      = await flexportApi.places.getPortByUnlocode(params.params.unlocode);
+    const responseDataTerminals = await flexportApi.places.getTerminalsByUnlocode(params.params.unlocode);
 
-    // Instead of getting and building all ports at BUILD TIME (which would take a long time)
-    // we're just building one here for sake of verifying the functionality works at BUILD TIME.
-    // All the other ports will be generated at RUN TIME on-demand.
+    const flexportApiPort       = responseDataPort.ports[0];
+    const flexportApiTerminals  = responseDataTerminals.terminals;
 
-    // USPCV-CTT == CT2 Terminal.
-    // Nothing special about this terminal.
-    const testTerminalCode = 'USPCV-CTT';
-
-    const paths = [{params: {terminalCode: testTerminalCode}}];
-
-    return {
-        paths,
-        fallback: true
-    }
-}
-
-export async function getStaticProps(params: TerminalCodeParams) {
-    const flexportApi           = await getFlexportApiClient();
-    const responseData          = await flexportApi.places.getTerminalByTerminalCode(params.params.terminalCode);
-    const flexportApiTerminal   = responseData.terminals[0];
-
-    const terminalDetailPageViewModel: TerminalDetailPageViewModel = {
+    const portDetailPageViewModel: PortDetailPageViewModel = {
         general: {
-            terminalName:   flexportApiTerminal.name,
-            country:        flexportApiTerminal.address.country_code,
-            regionCity:     `${flexportApiTerminal.address.administrative_area}/${flexportApiTerminal.address.locality}`,
-            address:        flexportApiTerminal.address.street_address,
-            terminalCode:   flexportApiTerminal.terminal_code,
-            unlocode:       flexportApiTerminal.unlocode,
-            firmsCode:      flexportApiTerminal.firms_code
+            portName:   flexportApiPort.name,
+            country:    flexportApiPort.address.country_code,
+            regionCity: `${flexportApiPort.address.administrative_area}/${flexportApiPort.address.locality}`,
+            address:    flexportApiPort.address.street_address,
+            cbpPortCode:flexportApiPort.cbp_port_code,
+            unlocode:   flexportApiPort.unlocode,
+            iataCode:   flexportApiPort.iata_code,
+            icaoCode:   flexportApiPort.icao_code
         },
+        terminals:      flexportApiTerminals.map((terminal) => { return {
+                            terminalCode: terminal.terminal_code,
+                            terminalName: terminal.name
+                        } } ),
         location: {
-            latitude:   flexportApiTerminal.address.geo_location.latitude,
-            longitude:  flexportApiTerminal.address.geo_location.longitude
+            latitude:   flexportApiPort.address.geo_location.latitude,
+            longitude:  flexportApiPort.address.geo_location.longitude
         }
     }
 
     const cachePageDurationSeconds = 86400;
 
-    return {
-      props: {
-        ...terminalDetailPageViewModel
-      },
-      revalidate: cachePageDurationSeconds
-    }
+    return portDetailPageViewModel;
 }
 
-const PortDetailPage: NextPage<TerminalDetailPageViewModel> = (port) => {
-    const router = useRouter();
-
-    if (router.isFallback) {
-        return (
-            <Layout>Loading...</Layout>
-        )
-    }
+export default async function PortDetailPage(params: UNLoCodeParams) {
+    const port = await getPort(params);
 
     return (
-        <Layout title={port.general.terminalName} selectMajorLink='terminals'>
+        <div>
             <Breadcrumbs
-                currentPageName={port.general.terminalName}
-                doNotLinkList={['Terminal']}
+                currentPageName={port.general.portName}
             />
 
             <div className={Styles.portDetailHeader}>
@@ -116,13 +98,13 @@ const PortDetailPage: NextPage<TerminalDetailPageViewModel> = (port) => {
                         width={32}
                     />
 
-                    <h1>{port.general.terminalName} terminal</h1>
+                    <h1>{port.general.portName} port</h1>
                 </div>
             </div>
 
             <div className={Styles.portDetail}>
                 <div className={Styles.portDetailLeft}>
-                    <div className={Styles.portDetailSubTitle}>About this terminal</div>
+                    <div className={Styles.portDetailSubTitle}>About this port</div>
 
                     <div className={Styles.portDetailSectionTitle}>
                         General
@@ -133,7 +115,7 @@ const PortDetailPage: NextPage<TerminalDetailPageViewModel> = (port) => {
                             Port name
                         </div>
                         <div className={Styles.portDetailFieldValue}>
-                            {port.general.terminalName}
+                            {port.general.portName}
                         </div>
                     </div>
 
@@ -166,10 +148,10 @@ const PortDetailPage: NextPage<TerminalDetailPageViewModel> = (port) => {
 
                     <div className={Styles.portDetailField}>
                         <span className={Styles.portDetailFieldName}>
-                            Firms Code
+                            CBP Port code
                         </span>
                         <span className={Styles.portDetailFieldValue}>
-                            {port.general.firmsCode}
+                            {port.general.cbpPortCode}
                         </span>
                     </div>
 
@@ -184,12 +166,37 @@ const PortDetailPage: NextPage<TerminalDetailPageViewModel> = (port) => {
 
                     <div className={Styles.portDetailField}>
                         <span className={Styles.portDetailFieldName}>
-                            Terminal code
+                            IATA code
                         </span>
                         <span className={Styles.portDetailFieldValue}>
-                            {port.general.terminalCode}
+                            {port.general.iataCode}
                         </span>
                     </div>
+
+                    <div className={Styles.portDetailField}>
+                        <span className={Styles.portDetailFieldName}>
+                            ICAO code
+                        </span>
+                        <span className={Styles.portDetailFieldValue}>
+                            {port.general.icaoCode}
+                        </span>
+                    </div>
+
+                    {port.terminals.map(({ terminalName, terminalCode }) => (
+                        <div key={terminalName}>
+                            <div className={Styles.portDetailSectionSpacer}></div>
+
+                            <Link
+                                prefetch={false}
+                                key={terminalCode}
+                                id={`terminal-${terminalCode}`}
+                                className={Styles.portDetailSectionTitle}
+                                href={`/facts/places/terminal/${terminalCode}`}
+                            >
+                                Terminal: {terminalName}
+                            </Link>
+                        </div>
+                    ))}
                 </div>
 
                 <div className={Styles.portDetailRight}>
@@ -245,8 +252,6 @@ const PortDetailPage: NextPage<TerminalDetailPageViewModel> = (port) => {
                     </div>
                 </div>
             </div>
-        </Layout>
+        </div>
     )
 }
-
-export default PortDetailPage;

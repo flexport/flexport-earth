@@ -1,20 +1,21 @@
+'use client';
+
+import React, { useEffect }       from 'react'
+
+import Image                      from 'next/image'
+import { usePathname }            from 'next/navigation';
+
 import Breadcrumbs                from '@mui/material/Breadcrumbs';
 import Link                       from '@mui/material/Link';
-import Image                      from 'next/image'
-import { NextRouter, useRouter }  from 'next/router';
-import React, { useEffect }       from 'react'
-import type { ParsedUrlQuery }    from 'querystring'
+
 import Styles                     from './breadcrumbs.module.css'
 import RightChevron               from 'public/images/right-chevron.svg'
 
 // NOTE: This code adapted from https://dev.to/dan_starner/building-dynamic-breadcrumbs-in-nextjs-17oa
 
-const _defaultGetTextGenerator          = (param: string, query: ParsedUrlQuery)  => null;
-const _defaultGetDefaultTextGenerator   = (path:  string, href:  string)          => path;
-
 // Pulled out the path part breakdown because its
 // going to be used by both `asPath` and `pathname`
-const generatePathParts = (pathStr: string) => {
+const getPathParts = (pathStr: string) => {
   const pathWithoutQuery = pathStr.split("?")[0];
   return pathWithoutQuery.split("/")
                          .filter(v => v.length > 0);
@@ -27,41 +28,44 @@ export function titleize(string: string) {
 }
 
 export default function NextBreadcrumbs({
+  urlPath                   = '',
   breadcrumbsComponentCssId = 'breadcrumbs',
   currentPageName           = '',
   doNotLinkList             = [''],
-  getTextGenerator          = _defaultGetTextGenerator,
-  getDefaultTextGenerator   = _defaultGetDefaultTextGenerator,
-  router                    = ({} as NextRouter), // This parameter is primarily for unit tests to inject a mock.
   omitCrumbs                = ['Facts', 'Places', 'Vehicles']
 }) {
-    const nextRouter = useRouter();
+    // Get the current path from NextJS.
+    const pathname = usePathname();
 
-    if (router.asPath == undefined) {
-      router = nextRouter;
+    // Set the urlPath that we'll parse into breadcrumbs.
+    // Typically, the urlPath will come from usePathname()...
+    // However, during component testing scenarios where tests
+    // will supply the path, then the the urlPath parameter will
+    // be used instead of usePathname().
+    if (urlPath == '') {
+      urlPath = pathname ?? '';
     }
+
+    const pathParts = getPathParts(urlPath);
 
     const breadcrumbs = React.useMemo(
         function generateBreadcrumbs() {
-            const asPathNestedRoutes   = generatePathParts(router.asPath);
-            const pathnameNestedRoutes = generatePathParts(router.pathname);
+            // Create a crumb for each part of the path.
+            const crumblist = pathParts.map((subpath, idx) => {
+                // Assemble the href for the current crumb.
+                const crumbHref     = "/" + pathParts.slice(0, idx + 1).join("/");
+                let   crumbLinkText = '';
 
-            const crumblist = asPathNestedRoutes.map((subpath, idx) => {
-                const param = pathnameNestedRoutes[idx].replace("[", "").replace("]", "");
-                const href  = "/" + asPathNestedRoutes.slice(0, idx + 1).join("/");
-
-                let text = '';
-
-                if (idx == asPathNestedRoutes.length - 1 && currentPageName != '') {
-                  text = currentPageName;
+                // Assemble the link text for the current crumb.
+                if (idx == pathParts.length - 1 && currentPageName != '') {
+                  crumbLinkText = currentPageName;
                 } else {
-                  text = getDefaultTextGenerator(titleize(subpath), href);
+                  crumbLinkText = titleize(subpath);
                 }
 
                 return {
-                    href,
-                    textGenerator:  getTextGenerator(param, router.query),
-                    text:           text
+                  href: crumbHref,
+                  text: crumbLinkText
                 };
             });
 
@@ -72,12 +76,8 @@ export default function NextBreadcrumbs({
             );
         },
         [
-          router.asPath,
-          router.pathname,
-          router.query,
+          pathParts,
           currentPageName,
-          getTextGenerator,
-          getDefaultTextGenerator,
           omitCrumbs
         ]
     );
@@ -114,8 +114,8 @@ export default function NextBreadcrumbs({
 }
 
 type CrumbType = {
-    text: string,
-    href: string,
+    text:     string,
+    href:     string,
     skipLink: boolean
 }
 

@@ -8,4 +8,4 @@ Non-Relesables (files outside of the releasables folder) do not get package and 
 
 ## Why isn't the website-content folder in the releasables folder?
 
-The website content in it's raw form is not releasable. The website content is built, and that build output is what is actually releasable.
+The website content in its raw form is not releasable. The website content is built, and that build output is what is actually releasable.

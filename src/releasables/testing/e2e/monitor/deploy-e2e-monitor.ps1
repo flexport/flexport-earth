@@ -190,7 +190,6 @@ Write-Information ""
 . ./e2e-monitor-config.ps1
 
 $E2ETestsConfig = Get-E2ETestConfig `
-    -EnvironmentName    $EnvironmentName `
     -BuildNumber        $BuildNumber
 
 $E2EMonitorConfig = Get-E2EMonitorConfig `

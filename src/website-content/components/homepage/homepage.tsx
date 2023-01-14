@@ -1,4 +1,3 @@
-import Head     from 'next/head'
 import Image    from 'next/image'
 
 import Styles from './homepage.module.css'
@@ -19,96 +18,95 @@ type CountryInfo = {
   portCount:        number
 }
 
-const Homepage = ({countryPortsToHighlight}: {countryPortsToHighlight: CountryInfo[]}) => {
-
-return (
+const Homepage = (
+    {countryPortsToHighlight}: {countryPortsToHighlight: CountryInfo[]}
+) => {
+    return (
         <div className={Styles.container}>
-        <Head>
-            <title>Flexport Earth</title>
-            <meta name="description" content="Facts of global trade" />
-            <link rel="icon" href="/favicon.ico" />
-        </Head>
-
-        <main className={Styles.main}>
-            <div className={Styles.mainBackgroundContainer}>
-            <Image
-                src={Background}
-                alt="Boat Background"
-                objectFit='cover'
-                layout='fill'
-                className={Styles.mainBackground}
-                priority={true}
-            />
-            </div>
-            <div className={Styles.mainContent}>
-            <Image
-                src={FlexportLogo}
-                alt="Flexport Logo"
-                height={30}
-                width={110}
-            />
-
-            <span className={Styles.wikiTitleVerticalLine}></span>
-
-            <span className={Styles.wikiSubTitle}>Wiki</span>
-
-            <BetaIcon
-                className           = {Styles.betaIcon}
-                popupClassName      = {Styles.betaIconPopup}
-                pointerClassName    = {Styles.betaIconPopupPointer}
-            />
-
-            <div className={Styles.tagLine}>
-                Discover the world of supply chain
-            </div>
-
-            <PortCard
-                countries={countryPortsToHighlight}
-            />
-
-            <div className={Styles.vesselsAndContainersSection}>
-                <a id="all-vessels-link" href='facts/vehicles/vessels'>
-                <div className={Styles.vesselsSection}>
+            <main className={Styles.main}>
+                <div className={Styles.mainBackgroundContainer}>
                     <Image
-                    src={VesselIcon}
-                    alt="Vessel Icon"
-                    height={26}
-                    width={26}
-                    />
-
-                    <span className={Styles.vesselsSectionTitle}>Vessels</span>
-
-                    <Image
-                    src={RightChevron}
-                    alt="Right Chevron"
-                    height={14}
-                    width={14}
+                        src         = {Background}
+                        alt         = "Boat Background"
+                        className   = {Styles.mainBackground}
+                        priority    = {true}
                     />
                 </div>
-                </a>
+                <div className={Styles.mainContent}>
+                    <Image
+                        src     = {FlexportLogo}
+                        alt     = "Flexport Logo"
+                        height  = {30}
+                        width   = {110}
+                    />
 
-                <div className={Styles.containersSection}>
-                <Image
-                    src={ContainersIcon}
-                    alt="Containers Icon"
-                    height={26}
-                    width={26}
-                />
+                    <span className={Styles.wikiTitleVerticalLine}></span>
 
-                <span className={Styles.containersSectionTitle}>Containers</span>
+                    <span className={Styles.wikiSubTitle}>
+                        Wiki
+                    </span>
 
-                <Image
-                    src={RightChevron}
-                    alt="Right Chevron"
-                    height={14}
-                    width={14}
-                />
+                    <BetaIcon
+                        className           = {Styles.betaIcon}
+                        popupClassName      = {Styles.betaIconPopup}
+                        pointerClassName    = {Styles.betaIconPopupPointer}
+                    />
+
+                    <div className={Styles.tagLine}>
+                        Discover the world of supply chain
+                    </div>
+
+                    <PortCard
+                        countries={countryPortsToHighlight}
+                    />
+
+                    <div className={Styles.vesselsAndContainersSection}>
+                        <a id="all-vessels-link" href='facts/vehicles/vessels'>
+                        <div className={Styles.vesselsSection}>
+                            <Image
+                                src     = {VesselIcon}
+                                alt     = "Vessel Icon"
+                                height  = {26}
+                                width   = {26}
+                            />
+
+                            <span className={Styles.vesselsSectionTitle}>
+                                Vessels
+                            </span>
+
+                            <Image
+                                src     = {RightChevron}
+                                alt     = "Right Chevron"
+                                height  = {14}
+                                width   = {14}
+                            />
+                        </div>
+                        </a>
+
+                        <div className={Styles.containersSection}>
+                            <Image
+                                src     = {ContainersIcon}
+                                alt     = "Containers Icon"
+                                height  = {26}
+                                width   = {26}
+                            />
+
+                            <span className={Styles.containersSectionTitle}>
+                                Containers
+                            </span>
+
+                            <Image
+                                src     = {RightChevron}
+                                alt     = "Right Chevron"
+                                height  = {14}
+                                width   = {14}
+                            />
+                        </div>
+                    </div>
                 </div>
-            </div>
-            </div>
-        </main>
+            </main>
 
-        <Footer/>
+            <Footer/>
         </div>
     );
 }

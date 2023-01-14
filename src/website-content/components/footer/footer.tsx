@@ -85,7 +85,6 @@ const Footer = () => {
                     <div>
                         <Image
                             className={Styles.footerContentFlexportLogo}
-                            layout="raw"
                             src={FlexportLogo}
                             alt="Flexport Logo"
                             height={20}

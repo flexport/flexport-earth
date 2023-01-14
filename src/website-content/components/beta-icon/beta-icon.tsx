@@ -1,4 +1,6 @@
-import Image        from 'next/image'
+'use client';
+
+import Image                from 'next/image'
 
 import Styles               from './beta-icon.module.css'
 

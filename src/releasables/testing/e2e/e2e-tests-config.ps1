@@ -8,14 +8,10 @@ function Get-E2ETestConfig {
     param (
         [Parameter(Mandatory=$false)]
         [String]
-        $EnvironmentName,
-
-        [Parameter(Mandatory=$false)]
-        [String]
         $BuildNumber
     )
 
-    if($PSCmdlet.ShouldProcess($EnvironmentName)) {
+    if($PSCmdlet.ShouldProcess($BuildNumber)) {
         $E2ETestsContainerImageName = "earth-e2e-tests"
 
         $E2EMonitorConfig = [PSCustomObject]@{

@@ -1,8 +1,6 @@
-import type { NextPage } from 'next'
 import Link from 'next/link';
 import Image from 'next/image'
 
-import Layout                     from 'components/layout/layout'
 import Breadcrumbs                from 'components/breadcrumbs/breadcrumbs'
 
 import { getFlexportApiClient }   from 'lib/data-sources/flexport/api'
@@ -17,7 +15,7 @@ type CountryInfo = {
   portCount:        number
 }
 
-export async function getStaticProps() {
+async function getPorts() {
   const countriesApi = getRestCountriesApiClient();
   const countries    = await countriesApi.countries.getAllCountriesAsMap();
   const flexportApi  = await getFlexportApiClient();
@@ -57,22 +55,16 @@ export async function getStaticProps() {
   );
 
   return {
-    props: {
-      time:  new Date().toISOString(),
-      ports: countriesSortedByPortCount
-    },
-    revalidate: 3600
+    time:  new Date().toISOString(),
+    ports: countriesSortedByPortCount
   };
 }
 
-type Ports = {
-  time:  string,
-  ports: CountryInfo[]
-}
+export default async function PortsPage() {
+  const ports = await getPorts();
 
-const PortsPage: NextPage<Ports> = ({ports, time}) => {
   return (
-    <Layout title='Ports' selectMajorLink='ports'>
+    <div>
         <Breadcrumbs />
 
         <h1 className={Styles.title}>Ports</h1>
@@ -87,7 +79,7 @@ const PortsPage: NextPage<Ports> = ({ports, time}) => {
         </div>
 
         <ol className={Styles.countriesList}>
-          {ports.map(({ countryName, cca2CountryCode, portCount }) => (
+          {ports.ports.map(({ countryName, cca2CountryCode, portCount }) => (
             <Link prefetch={false} key={cca2CountryCode} href={`/facts/places/ports/${cca2CountryCode}`}>
               <li id={`country-${cca2CountryCode}`} className={Styles.port}>
                 <div className={Styles.portBackground}>
@@ -112,10 +104,8 @@ const PortsPage: NextPage<Ports> = ({ports, time}) => {
           ))}
         </ol>
         <br/>
-        { ports.length } ports refreshed @ { time }
+        { ports.ports.length } ports refreshed @ { ports.time }
         <br/><br/>
-    </Layout>
+    </div>
   )
 }
-
-export default PortsPage

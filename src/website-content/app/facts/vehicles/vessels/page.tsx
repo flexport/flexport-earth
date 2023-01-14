@@ -1,8 +1,6 @@
-import type { NextPage }  from 'next'
-import Image              from 'next/image'
-import Link               from 'next/link';
+import Image                    from 'next/image'
+import Link                     from 'next/link';
 
-import Layout                   from 'components/layout/layout'
 import Breadcrumbs              from 'components/breadcrumbs/breadcrumbs'
 
 import { getFlexportApiClient } from 'lib/data-sources/flexport/api'
@@ -22,14 +20,13 @@ function truncate(
   return stringToTruncate;
 }
 
-export async function getStaticProps() {
+async function getVessels() {
   const flexportApi   = await getFlexportApiClient();
   const responseData  = await flexportApi.vehicles.getVessels()
 
   const maxCarrierNameLength = 15;
 
   return {
-    props: {
       time:     new Date().toISOString(),
       vessels:  responseData.vessels.map(vessel => ({
                   name:         vessel.name,
@@ -40,30 +37,20 @@ export async function getStaticProps() {
                                   maxCarrierNameLength
                                 )
                 }))
-    },
-    revalidate: 3600
   };
 }
 
-type Vessels = {
-  time: string,
-  vessels: [{
-    name:         string,
-    mmsi:         number,
-    cca2:         string,
-    carrierName:  string
-  }]
-}
+export default async function VesselsPage() {
+  const vessels = await getVessels();
 
-const VesselsPage: NextPage<Vessels> = ({vessels, time}) => {
   return (
-    <Layout title='Vessels' selectMajorLink='vessels'>
+    <div>
       <Breadcrumbs />
 
       <h1 className={Styles.allVesselsTitle}>All Vessels</h1>
 
       <ol className={Styles.vesselsList}>
-        {vessels.map(({ name, mmsi, cca2, carrierName }) => (
+        {vessels.vessels.map(({ name, mmsi, cca2, carrierName }) => (
             <li key={name} className={Styles.vessel}>
                 <Link prefetch={false} href={`/facts/vehicles/vessel/${mmsi}`}>
                   <div id={`vessel-${mmsi}`} className={Styles.vesselLink}>
@@ -121,12 +108,10 @@ const VesselsPage: NextPage<Vessels> = ({vessels, time}) => {
           ))}
       </ol>
 
-      {vessels.length} vessels refreshed @ { time }
+      {vessels.vessels.length} vessels refreshed @ { vessels.time }
 
       <br/><br/>
 
-    </Layout>
+    </div>
   )
 }
-
-export default VesselsPage

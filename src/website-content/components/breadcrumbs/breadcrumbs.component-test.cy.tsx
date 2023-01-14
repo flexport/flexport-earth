@@ -1,5 +1,4 @@
 import NextBreadcrumbs    from './breadcrumbs';
-import createMockedRouter from '../../testing/NextRouterMock'
 
 const breadcrumbsComponentCssId = 'breadcrumbs';
 const breadcrumbListItemCss     = `#${breadcrumbsComponentCssId} li`;
@@ -7,10 +6,7 @@ const breadcrumbListItemCss     = `#${breadcrumbsComponentCssId} li`;
 describe('Breadcrumbs', () => {
     it('should start with Wiki', () => {
       // Arrange
-      const breadcrumbsComponent =
-        <NextBreadcrumbs
-          router={createMockedRouter()}
-        />;
+      const breadcrumbsComponent = <NextBreadcrumbs />;
 
       // Act
       cy.mount(breadcrumbsComponent);
@@ -26,8 +22,8 @@ describe('Breadcrumbs', () => {
       // Arrange
       let breadcrumbsComponent =
         <NextBreadcrumbs
+          urlPath                   = '/some/path/page-route'
           breadcrumbsComponentCssId = {breadcrumbsComponentCssId}
-          router                    = {createMockedRouter('page-route')}
         />;
 
       // Act
@@ -44,11 +40,11 @@ describe('Breadcrumbs', () => {
       // Arrange
       const testPageName = 'Test Page Name';
 
-      let breadcrumbsComponent =
+      const breadcrumbsComponent =
         <NextBreadcrumbs
+          urlPath                   = '/some/path/page-route'
           breadcrumbsComponentCssId = {breadcrumbsComponentCssId}
           currentPageName           = {testPageName}
-          router                    = {createMockedRouter()}
         />;
 
       // Act
@@ -58,42 +54,18 @@ describe('Breadcrumbs', () => {
       cy
         .get(breadcrumbListItemCss)
         .last()
-        .should('have.text', testPageName);
+        .should(
+          'have.text',
+          testPageName
+        );
     })
 
     it('should link all crumbs except the last', () => {
       // Arrange
-      const testPageName = 'Test Page Name';
-
-      let breadcrumbsComponent =
+      const breadcrumbsComponent =
         <NextBreadcrumbs
+          urlPath                   = '/some/path/page-route'
           breadcrumbsComponentCssId = {breadcrumbsComponentCssId}
-          router                    = {createMockedRouter(
-                                        '/facts/places/terminal/[terminalCode]',
-                                        {terminalCode: 'abc'}
-                                      )}
-        />;
-
-      // Act
-      cy.mount(breadcrumbsComponent);
-
-      // Assert
-      cy.get(breadcrumbListItemCss).contains('Terminal').should('have.attr', 'href');
-      cy.get(breadcrumbListItemCss).last().should('not.have.attr', 'href');
-    })
-
-    it('should allow skipping linking of specific crumbs', () => {
-      // Arrange
-      const testPageName = 'Test Page Name';
-
-      let breadcrumbsComponent =
-        <NextBreadcrumbs
-          breadcrumbsComponentCssId = {breadcrumbsComponentCssId}
-          doNotLinkList             = {['Terminal']}
-          router                    = {createMockedRouter(
-                                        '/facts/places/terminal/[terminalCode]',
-                                        {terminalCode: 'abc'}
-                                      )}
         />;
 
       // Act
@@ -102,7 +74,32 @@ describe('Breadcrumbs', () => {
       // Assert
       cy
         .get(breadcrumbListItemCss)
-          .contains('Terminal')
-              .should('not.have.attr', 'href');
+        .last()
+        .should(
+          'not.have.attr',
+          'href'
+        );
+    })
+
+    it('should allow skipping linking of specific crumbs', () => {
+      // Arrange
+      const breadcrumbsComponent =
+        <NextBreadcrumbs
+          urlPath                   = '/some/path/page-route'
+          breadcrumbsComponentCssId = {breadcrumbsComponentCssId}
+          doNotLinkList             = {['Path']}
+        />;
+
+      // Act
+      cy.mount(breadcrumbsComponent);
+
+      // Assert
+      cy
+        .get(breadcrumbListItemCss)
+        .contains('Path')
+        .should(
+          'not.have.attr',
+          'href'
+        );
     })
 })
